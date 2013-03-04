@@ -49,7 +49,7 @@ Also, the cli should be based on a nice library that handles all this stuff and 
 Implementation
 --------------
 
-Nothing is implemented yet, I'm just playing with some ideas, but I was thinking in implementing this in 2 stages: the first gather the data and put in a big table and the second you summarizes it. The advantage is that this format could group different results of different tools that have the same purpose.
+Nothing is implemented yet, I'm just playing with some ideas, but I was thinking in implementing this in 2 stages: the first gather the data and put in a big table and the second summarizes it. The advantage is that this format could group different results of different tools that have the same purpose.
 
 The table would have as 1st column a number and in consecutive columns the specific information of what the number means, from most generic to most specific. So, for eg, for unit tests:
 ```
