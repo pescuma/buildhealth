@@ -27,10 +27,10 @@ Extracted jacoco coverage for 15 classes
 Build 12 now has id 1234
 
 > buildhealth set coverage good = 70%
-A good coverage is now >= 70%
+A good coverage is now >= 70%                            // good written in green
 
 > buildhealth set coverage warn = 30%
-A so so coverage is now >= 30%
+A so so coverage is now >= 30%                           // so so written in yellow
 
 > buildhealth report
 Your build is GOOD
