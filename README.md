@@ -6,7 +6,7 @@ Idea
 
 A tool that runs after a build and gather metrics to determine if a build was successful or not. Currently we use CI servers to do that but, if you run your build locally, you don't receive any feedback. (A second problem is that all CI servers end up duplicating the code to process the build results).
 
-So, I propose a tool that receive as inputs the results of the build (test results, code coverage files, etc), process them and return as result if the build is GOOD, BAD or SO SO. It should be easy to create plugins for this tool to process new kinds of output. Also, it would be good if the results can be used by other tools to be displayed in different formats. Lastly, it would be good if the tool could store the results from previous builds to tell if the quality has improved or not.
+So, I propose a tool that receive as inputs the results of the build (test results, code coverage files, etc), process them and output if the build is GOOD, BAD or SO SO. It should be easy to create plugins for this tool to process new kinds of output. Also, it would be good if the results can be used by other tools (to be displayed in different formats). Lastly, it would be good if the tool could store the results from previous builds to tell if the quality has improved or not.
 
 
 Interface
