@@ -61,8 +61,10 @@ The table would have as 1st column a number and in consecutive columns the speci
 
 So, you'd have plugins to add data to the table and plugins to summarize it.
 
+To store the data, I was thinking in creating a folder structure that you could put anywhere, for eg `.buildhealth\build_number\data`. That could go in the user home folder or in some random folder initialized for that purpose (maybe similar to git: if there is a parent folder that has a `.buildhealth` use it, else use home folder)
+
 Some other features that I think could be useful:
- - Store the data in a format that is good to store in SCM (eg git)
+ - Store the data in a format that is good to store in VCS (eg git)
  - Store metadata about the build (where the data came from, etc)
  - Be able to add ids and parents to builds (to correctly determine if it improved or not)
 
