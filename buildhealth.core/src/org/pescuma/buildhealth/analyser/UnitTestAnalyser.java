@@ -9,7 +9,6 @@ import java.util.List;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildStatus;
-import org.pescuma.buildhealth.core.FinalReport;
 import org.pescuma.buildhealth.core.Report;
 
 /**
@@ -18,6 +17,8 @@ import org.pescuma.buildhealth.core.Report;
  * <pre>
  * Unit test,language,framework,{passed,error,failed,time},test suite name,method name
  * </pre>
+ * 
+ * For time the value is in seconds, for the others is the number of tests.
  * 
  * Example:
  * 
@@ -39,13 +40,12 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
-		int passed = (int) round(data.filter(4, "passed").sum());
-		int errors = (int) round(data.filter(4, "error").sum());
-		int failures = (int) round(data.filter(4, "failed").sum());
+		int passed = (int) round(data.filter(3, "passed").sum());
+		int errors = (int) round(data.filter(3, "error").sum());
+		int failures = (int) round(data.filter(3, "failed").sum());
 		int total = passed + errors + failures;
 		
-		BuildStatus status = (errors + failures > 0) ? BuildStatus.Failed : BuildStatus.Successful;
-		int percent = (int) round(passed / (double) total);
+		BuildStatus status = (errors + failures > 0) ? BuildStatus.Problematic : BuildStatus.Good;
 		
 		StringBuilder description = new StringBuilder();
 		description.append(total).append(" ").append(total == 1 ? "test" : "tests");
@@ -54,11 +54,12 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		append(description, errors, "error", "errors");
 		append(description, failures, "failure", "failures");
 		
-		BuildData time = data.filter(4, "time");
+		BuildData time = data.filter(3, "time");
 		if (!time.isEmpty())
 			description.append(" (").append(time.sum()).append(" s)");
 		
-		return Arrays.<Report> asList(new FinalReport(status, "Unit tests", percent + "%", description.toString()));
+		return Arrays.<Report> asList(new Report(status, "Unit tests", passed == total ? "PASSED" : "FAILED",
+				description.toString()));
 	}
 	
 	private void append(StringBuilder out, int count, String name, String namePlural) {

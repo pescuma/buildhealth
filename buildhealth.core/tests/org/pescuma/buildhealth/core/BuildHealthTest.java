@@ -7,13 +7,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildDataExtractor;
-import org.pescuma.buildhealth.core.BuildHealth;
-import org.pescuma.buildhealth.core.BuildHealthAnalyser;
-import org.pescuma.buildhealth.core.BuildStatus;
-import org.pescuma.buildhealth.core.FinalReport;
-import org.pescuma.buildhealth.core.Report;
 
 public class BuildHealthTest {
 	
@@ -35,7 +28,7 @@ public class BuildHealthTest {
 		buildhealth.addAnalyser(new BuildHealthAnalyser() {
 			@Override
 			public List<Report> computeSimpleReport(BuildData data) {
-				return asList((Report) new FinalReport(BuildStatus.Successful, "", "", ""));
+				return asList(new Report(BuildStatus.Good, "", "", ""));
 			}
 		});
 		
@@ -56,12 +49,11 @@ public class BuildHealthTest {
 		buildhealth.addAnalyser(new BuildHealthAnalyser() {
 			@Override
 			public List<Report> computeSimpleReport(BuildData data) {
-				return asList((Report) new FinalReport(BuildStatus.Successful, "Unit tests", "100%", data.filter(
-						"Unit test").sum()
+				return asList(new Report(BuildStatus.Good, "Unit tests", "100%", data.filter("Unit test").sum()
 						+ " passed"));
 			}
 		});
 		
-		assertEquals("Build was SUCCESSFUL\nUnit tests: 100% [10.0 passed]\n", buildhealth.generateSimpleReport());
+		assertEquals("Your build is GOOD\n    Unit tests: 100% [10.0 passed]\n", buildhealth.generateSimpleReport());
 	}
 }

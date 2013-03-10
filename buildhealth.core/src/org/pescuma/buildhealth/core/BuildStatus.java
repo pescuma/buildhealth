@@ -2,8 +2,8 @@ package org.pescuma.buildhealth.core;
 
 public enum BuildStatus {
 	
-	Successful,
-	Failed,
+	Good,
+	Problematic,
 	SoSo;
 	
 	public static BuildStatus merge(BuildStatus first, BuildStatus second) {
@@ -12,9 +12,9 @@ public enum BuildStatus {
 		if (second == null)
 			return first;
 		
-		if (first == Successful)
+		if (first == Good)
 			return second;
-		if (second == Successful)
+		if (second == Good)
 			return first;
 		
 		if (first == SoSo)
@@ -22,6 +22,6 @@ public enum BuildStatus {
 		if (second == SoSo)
 			return first;
 		
-		return Failed;
+		return Problematic;
 	}
 }

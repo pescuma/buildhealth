@@ -7,10 +7,10 @@ public class ReportFormater {
 	public String format(List<Report> reports) {
 		StringBuilder result = new StringBuilder();
 		
-		result.append(createTitle(mergeBuildStatus(reports))).append("\n");
+		result.append("Your build is ").append(createTitle(mergeBuildStatus(reports))).append("\n");
 		
 		for (Report report : reports) {
-			result.append(report.getName()).append(": ").append(report.getValue());
+			result.append("    ").append(report.getName()).append(": ").append(report.getValue());
 			result.append(" [").append(report.getDescription()).append("]");
 			result.append("\n");
 		}
@@ -27,12 +27,12 @@ public class ReportFormater {
 	
 	private String createTitle(BuildStatus status) {
 		switch (status) {
-			case Successful:
-				return "Build was SUCCESSFUL";
-			case Failed:
-				return "Build FAILED";
+			case Good:
+				return "GOOD";
+			case Problematic:
+				return "PROBLEMATIC";
 			case SoSo:
-				return "Build is So So";
+				return "So So";
 			default:
 				throw new IllegalStateException();
 		}

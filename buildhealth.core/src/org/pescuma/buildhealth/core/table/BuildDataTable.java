@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.core.table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -101,6 +102,11 @@ public class BuildDataTable implements BuildData {
 		
 		public String[] getInfo() {
 			return info;
+		}
+		
+		@Override
+		public String toString() {
+			return "LineImpl [" + value + " " + Arrays.toString(info) + "]";
 		}
 	}
 }
