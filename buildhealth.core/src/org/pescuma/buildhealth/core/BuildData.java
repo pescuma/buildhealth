@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.core;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface BuildData {
 	
@@ -8,9 +8,11 @@ public interface BuildData {
 	
 	void add(double value, String... info);
 	
-	List<Line> getLines();
+	Collection<Line> getLines();
 	
 	BuildData filter(String... info);
+	
+	BuildData filter(int column, String name);
 	
 	double sum();
 	
@@ -19,4 +21,5 @@ public interface BuildData {
 		
 		String[] getInfo();
 	}
+	
 }

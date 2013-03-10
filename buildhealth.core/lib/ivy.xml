@@ -1,0 +1,10 @@
+<ivy-module version="2.0">
+	<info organisation="org.pescuma" module="buildhealth" />
+	<configurations defaultconfmapping="default->default,sources">
+	</configurations>
+	<dependencies>
+		<dependency org="com.google.guava" name="guava" rev="14.0" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
+		<dependency org="junit" name="junit" rev="4.10" />
+	</dependencies>
+</ivy-module>
