@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.analyser;
+package org.pescuma.buildhealth.analyser.unittest;
 
 import static org.junit.Assert.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
@@ -16,7 +16,7 @@ public class UnitTestAnalyserTest {
 	private UnitTestAnalyser analyser;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		data = new BuildDataTable();
 		analyser = new UnitTestAnalyser();
 	}

@@ -3,7 +3,9 @@ package org.pescuma.buildhealth.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.table.BuildDataTable;
+import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 
 
 public class BuildHealth {

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="machine" name="org.pescuma.test.junit" tests="6" time="0.151" timestamp="2013-03-03T21:10:56">
+  <properties>
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+  </properties>
+  <testcase classname="org.pescuma.test.junit" name="test1" time="0.011" />
+  <testcase classname="org.pescuma.test.junit" name="test2" time="0.003" />
+  <testcase classname="org.pescuma.test.junit" name="test3" time="0.003" />
+  <testcase classname="org.pescuma.test.junit" name="test4" time="0.005" />
+  <testcase classname="org.pescuma.test.junit" name="test5" time="0.003" />
+  <testcase classname="org.pescuma.test.junit" name="test6" time="0.006" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

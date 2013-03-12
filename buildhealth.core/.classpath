@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/auto/hamcrest-core-1.1-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/junit-4.10-jar.jar" sourcepath="lib/auto/junit-4.10-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/slf4j-api-1.6.4-jar.jar" sourcepath="lib/auto/slf4j-api-1.6.4-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/jdom2-2.0.4-jar.jar" sourcepath="lib/auto/jdom2-2.0.4-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

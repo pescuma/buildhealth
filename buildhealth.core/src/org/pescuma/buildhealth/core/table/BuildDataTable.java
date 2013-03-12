@@ -68,6 +68,11 @@ public class BuildDataTable implements BuildData {
 		return result;
 	}
 	
+	@Override
+	public int size() {
+		return lines.size();
+	}
+	
 	private static class LineImpl implements Line {
 		
 		final double value;

@@ -16,6 +16,8 @@ public interface BuildData {
 	
 	double sum();
 	
+	int size();
+	
 	public interface Line {
 		double getValue();
 		

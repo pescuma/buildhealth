@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.analyser;
+package org.pescuma.buildhealth.analyser.unittest;
 
 import static java.lang.Math.*;
 
@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 
@@ -15,7 +15,7 @@ import org.pescuma.buildhealth.core.Report;
  * Expect the lines to be:
  * 
  * <pre>
- * Unit test,language,framework,{passed,error,failed,time},test suite name,method name
+ * Unit test,language,framework,{passed,error,failed,skipped,time},test suite name,method name,message,stack trace
  * </pre>
  * 
  * For time the value is in seconds, for the others is the number of tests.
