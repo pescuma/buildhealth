@@ -3,11 +3,8 @@
 	<configurations defaultconfmapping="default->default,sources">
 	</configurations>
 	<dependencies>
-		<dependency org="org.jdom" name="jdom2" rev="2.0.4" />
-		<dependency org="jaxen" name="jaxen" rev="1.1.4" />
+		<dependency org="io.airlift" name="airline" rev="0.5" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
-		<dependency org="commons-io" name="commons-io" rev="2.4" />
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
 		<dependency org="junit" name="junit" rev="4.10" />
 	</dependencies>
 </ivy-module>

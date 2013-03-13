@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.core;
 
 import static java.util.Arrays.*;
 import static org.junit.Assert.*;
+import static org.pescuma.buildhealth.core.BuildStatus.*;
 
 import java.util.List;
 
@@ -12,21 +13,20 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 
 public class BuildHealthTest {
 	
+	private BuildHealth buildhealth;
+	
 	@Before
 	public void setUp() throws Exception {
+		buildhealth = new BuildHealth();
 	}
 	
 	@Test
 	public void testNoData() {
-		BuildHealth buildhealth = new BuildHealth();
-		
-		assertEquals("No data to generate report", buildhealth.generateSimpleReport());
+		assertEquals(null, buildhealth.generateReportSummary());
 	}
 	
 	@Test
 	public void testNoDataWithAnalyser() {
-		BuildHealth buildhealth = new BuildHealth();
-		
 		buildhealth.addAnalyser(new BuildHealthAnalyser() {
 			@Override
 			public List<Report> computeSimpleReport(BuildData data) {
@@ -34,13 +34,11 @@ public class BuildHealthTest {
 			}
 		});
 		
-		assertEquals("No data to generate report", buildhealth.generateSimpleReport());
+		assertEquals(null, buildhealth.generateReportSummary());
 	}
 	
 	@Test
 	public void testExtractGenerateSimpleReport() {
-		BuildHealth buildhealth = new BuildHealth();
-		
 		buildhealth.extract(new BuildDataExtractor() {
 			@Override
 			public void extractTo(BuildData data) {
@@ -56,6 +54,7 @@ public class BuildHealthTest {
 			}
 		});
 		
-		assertEquals("Your build is GOOD\n    Unit tests: 100% [10.0 passed]\n", buildhealth.generateSimpleReport());
+		assertEquals(new Report(Good, "Build", "Good",
+				new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed")), buildhealth.generateReportSummary());
 	}
 }

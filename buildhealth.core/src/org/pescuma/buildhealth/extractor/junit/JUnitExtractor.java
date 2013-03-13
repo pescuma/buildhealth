@@ -8,10 +8,13 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
@@ -21,14 +24,14 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
  */
 public class JUnitExtractor implements BuildDataExtractor {
 	
-	private final File file;
+	private final File fileOrFolder;
 	private final InputStream stream;
 	
-	private JUnitExtractor(File file, InputStream stream) {
-		if (file == null && stream == null)
+	private JUnitExtractor(File fileOrFolder, InputStream stream) {
+		if (fileOrFolder == null && stream == null)
 			throw new IllegalArgumentException();
 		
-		this.file = file;
+		this.fileOrFolder = fileOrFolder;
 		this.stream = stream;
 	}
 	
@@ -44,20 +47,16 @@ public class JUnitExtractor implements BuildDataExtractor {
 	public void extractTo(BuildData data) {
 		try {
 			
-			SAXBuilder sax = new SAXBuilder();
-			
-			Document doc;
-			String filename;
-			if (file != null) {
-				doc = sax.build(file);
-				filename = file.getName();
+			if (stream != null) {
+				extractStream(stream, data);
+				
+			} else if (fileOrFolder.isDirectory()) {
+				for (File file : FileUtils.listFiles(fileOrFolder, new String[] { "xml" }, true))
+					extractFile(file, data);
 				
 			} else {
-				doc = sax.build(stream);
-				filename = null;
+				extractFile(fileOrFolder, data);
 			}
-			
-			extractDocument(filename, doc, data);
 			
 		} catch (JDOMException e) {
 			throw new BuildDataExtractorException(e);
@@ -66,22 +65,26 @@ public class JUnitExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractDocument(String filename, Document doc, BuildData data) {
-		Element root = doc.getRootElement();
-		if (root.getName().equals("testsuite"))
-			extractSuite(filename, root, data);
-		else
-			extractSuites(filename, root, data);
+	private void extractFile(File file, BuildData data) throws JDOMException, IOException {
+		SAXBuilder sax = new SAXBuilder();
+		Document doc = sax.build(file);
+		extractDocument(file.getName(), doc, data);
 	}
 	
-	private void extractSuites(String filename, Element doc, BuildData data) {
-		for (Element suite : doc.getChildren("testsuite"))
+	private void extractStream(InputStream input, BuildData data) throws JDOMException, IOException {
+		SAXBuilder sax = new SAXBuilder();
+		Document doc = sax.build(input);
+		extractDocument(null, doc, data);
+	}
+	
+	private void extractDocument(String filename, Document doc, BuildData data) {
+		XPathFactory xpath = XPathFactory.instance();
+		
+		for (Element suite : xpath.compile("//testsuite", Filters.element()).evaluate(doc))
 			extractSuite(filename, suite, data);
 	}
 	
 	private void extractSuite(String filename, Element suite, BuildData data) {
-		extractSuites(filename, suite, data);
-		
 		// some user reported that name is null in their environment.
 		// see http://www.nabble.com/Unexpected-Null-Pointer-Exception-in-Hudson-1.131-tf4314802.html
 		String name = suite.getAttributeValue("name", firstNonNull(filename, "(no name)"));

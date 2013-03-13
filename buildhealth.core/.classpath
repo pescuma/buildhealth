@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="lib/auto/junit-4.10-jar.jar" sourcepath="lib/auto/junit-4.10-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/slf4j-api-1.6.4-jar.jar" sourcepath="lib/auto/slf4j-api-1.6.4-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/jdom2-2.0.4-jar.jar" sourcepath="lib/auto/jdom2-2.0.4-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/jaxen-1.1.4-jar.jar" sourcepath="lib/auto/jaxen-1.1.4-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/commons-io-2.4-jar.jar" sourcepath="lib/auto/commons-io-2.4-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

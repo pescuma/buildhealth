@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.core"/>
+	<classpathentry kind="lib" path="lib/auto/airline-0.5-jar.jar" sourcepath="lib/auto/airline-0.5-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/javax.inject-1-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/junit-4.10-jar.jar" sourcepath="lib/auto/junit-4.10-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/guava-14.0-bundle.jar" sourcepath="lib/auto/guava-14.0-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/hamcrest-core-1.1-jar.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
