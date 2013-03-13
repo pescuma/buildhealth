@@ -10,5 +10,16 @@
 	<classpathentry kind="lib" path="lib/auto/jdom2-2.0.4-jar.jar" sourcepath="lib/auto/jdom2-2.0.4-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/jaxen-1.1.4-jar.jar" sourcepath="lib/auto/jaxen-1.1.4-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/commons-io-2.4-jar.jar" sourcepath="lib/auto/commons-io-2.4-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/activation-1.1-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/dtkit-default-junit-0.14-jar.jar" sourcepath="lib/auto/dtkit-default-junit-0.14-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/dtkit-junit-model-0.12-jar.jar" sourcepath="lib/auto/dtkit-junit-model-0.12-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/dtkit-metrics-model-0.11-jar.jar" sourcepath="lib/auto/dtkit-metrics-model-0.11-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/dtkit-metrics-util-0.11-jar.jar" sourcepath="lib/auto/dtkit-metrics-util-0.11-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/dtkit-processor-0.1-jar.jar" sourcepath="lib/auto/dtkit-processor-0.1-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/dtkit-tusar-model-0.11-jar.jar" sourcepath="lib/auto/dtkit-tusar-model-0.11-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/jaxb-api-2.2.1-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/jaxb-impl-2.2.1.1-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/saxon-9.1.0.8-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/stax-api-1.0-2-jar.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

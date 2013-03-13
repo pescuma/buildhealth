@@ -7,8 +7,18 @@ import io.airlift.command.Help;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
+import org.pescuma.buildhealth.cli.commands.AUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.BoostTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.CppTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.CppUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.FPCUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.JUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.MNMLSTCUnitTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.MSTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.NUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.PHPUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
+import org.pescuma.buildhealth.cli.commands.TusarExtractorCommand;
 
 public class BuildHealthCli {
 	
@@ -19,10 +29,15 @@ public class BuildHealthCli {
 				.withDefaultCommand(Help.class) //
 				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class);
 		
-		builder.withGroup("add") //
-				.withDescription("Add information to the current build") //
-				.withDefaultCommand(AddGroupHelp.class) //
-				.withCommands(JUnitExtractorCommand.class);
+		builder.withGroup("add").withDescription("Add information to the current build")
+				.withDefaultCommand(AddGroupHelp.class)
+				.withCommands(AUnitExtractorCommand.class, BoostTestExtractorCommand.class, //
+						CppTestExtractorCommand.class, CppUnitExtractorCommand.class, //
+						FPCUnitExtractorCommand.class, JUnitExtractorCommand.class, //
+						MNMLSTCUnitTestExtractorCommand.class, //
+						MSTestExtractorCommand.class, //
+						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
+						TusarExtractorCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		

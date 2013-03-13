@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.extractor.junit;
 
 import static com.google.common.base.Objects.*;
+import static org.apache.commons.io.FilenameUtils.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class JUnitExtractor implements BuildDataExtractor {
 		try {
 			
 			if (stream != null) {
-				extractStream(stream, data);
+				extractStream(null, stream, data);
 				
 			} else if (fileOrFolder.isDirectory()) {
 				for (File file : FileUtils.listFiles(fileOrFolder, new String[] { "xml" }, true))
@@ -65,26 +66,27 @@ public class JUnitExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractFile(File file, BuildData data) throws JDOMException, IOException {
+	public static void extractFile(File file, BuildData data) throws JDOMException, IOException {
 		SAXBuilder sax = new SAXBuilder();
 		Document doc = sax.build(file);
-		extractDocument(file.getName(), doc, data);
+		extractDocument(getBaseName(file.getName()), doc, data);
 	}
 	
-	private void extractStream(InputStream input, BuildData data) throws JDOMException, IOException {
+	public static void extractStream(String filename, InputStream input, BuildData data) throws JDOMException,
+			IOException {
 		SAXBuilder sax = new SAXBuilder();
 		Document doc = sax.build(input);
-		extractDocument(null, doc, data);
+		extractDocument(filename, doc, data);
 	}
 	
-	private void extractDocument(String filename, Document doc, BuildData data) {
+	private static void extractDocument(String filename, Document doc, BuildData data) {
 		XPathFactory xpath = XPathFactory.instance();
 		
 		for (Element suite : xpath.compile("//testsuite", Filters.element()).evaluate(doc))
 			extractSuite(filename, suite, data);
 	}
 	
-	private void extractSuite(String filename, Element suite, BuildData data) {
+	private static void extractSuite(String filename, Element suite, BuildData data) {
 		// some user reported that name is null in their environment.
 		// see http://www.nabble.com/Unexpected-Null-Pointer-Exception-in-Hudson-1.131-tf4314802.html
 		String name = suite.getAttributeValue("name", firstNonNull(filename, "(no name)"));
@@ -107,7 +109,7 @@ public class JUnitExtractor implements BuildDataExtractor {
 			extractTest(name, testcase, data);
 	}
 	
-	private void extractTest(String suite, Element testcase, BuildData data) {
+	private static void extractTest(String suite, Element testcase, BuildData data) {
 		String name = testcase.getAttributeValue("name", "");
 		
 		// https://hudson.dev.java.net/issues/show_bug.cgi?id=1233 indicates that
@@ -147,7 +149,7 @@ public class JUnitExtractor implements BuildDataExtractor {
 		data.add(1, "Unit test", "java", "junit", "passed", classname, name);
 	}
 	
-	private boolean extractTestType(String classname, String name, Element el, String type, BuildData data) {
+	private static boolean extractTestType(String classname, String name, Element el, String type, BuildData data) {
 		if (el == null)
 			return false;
 		
@@ -156,7 +158,7 @@ public class JUnitExtractor implements BuildDataExtractor {
 		return true;
 	}
 	
-	private double parseTime(String time) {
+	private static double parseTime(String time) {
 		if (time.isEmpty())
 			return -1;
 		

@@ -3,11 +3,18 @@
 	<configurations defaultconfmapping="default->default,sources">
 	</configurations>
 	<dependencies>
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-default-junit" rev="0.14" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-junit-model" rev="0.12" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-metrics-model" rev="0.11" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-metrics-util" rev="0.11" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-tusar-model" rev="0.11" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-processor" rev="0.1" />
 		<dependency org="org.jdom" name="jdom2" rev="2.0.4" />
 		<dependency org="jaxen" name="jaxen" rev="1.1.4" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 		<dependency org="commons-io" name="commons-io" rev="2.4" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
 		<dependency org="junit" name="junit" rev="4.10" />
+		<exclude org="com.google.code.guice" module="guice" />
 	</dependencies>
-</ivy-module>
+</ivy-module> 
