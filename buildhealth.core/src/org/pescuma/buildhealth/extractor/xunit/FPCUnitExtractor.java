@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.xunit;
 
-import java.io.File;
+import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 import com.thalesgroup.dtkit.junit.FPCUnit;
 import com.thalesgroup.dtkit.metrics.model.InputMetric;
@@ -8,8 +8,8 @@ import com.thalesgroup.dtkit.metrics.model.InputMetricFactory;
 
 public class FPCUnitExtractor extends XUnitExtractor {
 	
-	public FPCUnitExtractor(File fileOrFolder) {
-		super(fileOrFolder);
+	public FPCUnitExtractor(PseudoFiles files) {
+		super(files);
 	}
 	
 	@Override

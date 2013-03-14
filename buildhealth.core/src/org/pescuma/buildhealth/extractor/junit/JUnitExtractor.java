@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -17,46 +16,38 @@ import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 /**
  * Based on hudson.tasks.junit.SuiteResult by Kohsuke Kawaguchi
  */
 public class JUnitExtractor implements BuildDataExtractor {
 	
-	private final File fileOrFolder;
-	private final InputStream stream;
+	private final PseudoFiles files;
 	
-	private JUnitExtractor(File fileOrFolder, InputStream stream) {
-		if (fileOrFolder == null && stream == null)
+	public JUnitExtractor(PseudoFiles files) {
+		if (files == null)
 			throw new IllegalArgumentException();
 		
-		this.fileOrFolder = fileOrFolder;
-		this.stream = stream;
-	}
-	
-	public JUnitExtractor(File file) {
-		this(file, null);
-	}
-	
-	public JUnitExtractor(InputStream stream) {
-		this(null, stream);
+		this.files = files;
 	}
 	
 	@Override
-	public void extractTo(BuildData data) {
+	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
 		try {
 			
-			if (stream != null) {
-				extractStream(null, stream, data);
-				
-			} else if (fileOrFolder.isDirectory()) {
-				for (File file : FileUtils.listFiles(fileOrFolder, new String[] { "xml" }, true))
-					extractFile(file, data);
+			if (files.isStream()) {
+				extractStream(null, files.getStream(), data);
+				tracker.streamProcessed();
 				
 			} else {
-				extractFile(fileOrFolder, data);
+				for (File file : files.getFiles("xml")) {
+					extractFile(file, data);
+					tracker.fileProcessed(file);
+				}
 			}
 			
 		} catch (JDOMException e) {

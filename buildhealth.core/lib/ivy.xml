@@ -11,10 +11,17 @@
 		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-processor" rev="0.1" />
 		<dependency org="org.jdom" name="jdom2" rev="2.0.4" />
 		<dependency org="jaxen" name="jaxen" rev="1.1.4" />
+		<dependency org="net.sourceforge.saxon" name="saxon" rev="9.1.0.8" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 		<dependency org="commons-io" name="commons-io" rev="2.4" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
+
+		<!-- Tests only -->
+		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" />
 		<dependency org="junit" name="junit" rev="4.10" />
+
+		<!-- Excluded -->
 		<exclude org="com.google.code.guice" module="guice" />
+		<exclude org="net.sourceforge.saxon" module="saxon" />
 	</dependencies>
 </ivy-module> 

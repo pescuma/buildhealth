@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding='ISO-8859-1' standalone='yes' ?>
+<TestRun>
+  <FailedTests>
+    <FailedTest id="2">
+      <Name>DatastoreTestFixture::testCreateConnection</Name>
+      <FailureType>Error</FailureType>
+      <Message>uncaught exception of unknown type
+</Message>
+    </FailedTest>
+  </FailedTests>
+  <SuccessfulTests>
+    <Test id="1">
+      <Name>DatastoreTestFixture::testConstructor</Name>
+    </Test>
+    <Test id="3">
+      <Name>DatastoreTestFixture::testGetConnectionStatus</Name>
+    </Test>
+    <Test id="4">
+      <Name>DatastoreTestFixture::testDropTable</Name>
+    </Test>
+    <Test id="5">
+      <Name>DatastoreTestFixture::testCreateTable</Name>
+    </Test>
+    <Test id="6">
+      <Name>DatastoreTestFixture::testInserts</Name>
+    </Test>
+    <Test id="7">
+      <Name>DatastoreTestFixture::testUpdates</Name>
+    </Test>
+    <Test id="8">
+      <Name>DatastoreTestFixture::testDropTable</Name>
+    </Test>
+    <Test id="9">
+      <Name>DatastoreTestFixture::testDestroyConnection</Name>
+    </Test>
+    <Test id="10">
+      <Name>DatastoreTestFixture::testShutdown</Name>
+    </Test>
+  </SuccessfulTests>
+  <Statistics>
+    <Tests>10</Tests>
+    <FailuresTotal>1</FailuresTotal>
+    <Errors>1</Errors>
+    <Failures>0</Failures>
+  </Statistics>
+</TestRun>

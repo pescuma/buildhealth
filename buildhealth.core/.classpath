@@ -19,7 +19,10 @@
 	<classpathentry kind="lib" path="lib/auto/dtkit-tusar-model-0.11-jar.jar" sourcepath="lib/auto/dtkit-tusar-model-0.11-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/jaxb-api-2.2.1-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/jaxb-impl-2.2.1.1-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/saxon-9.1.0.8-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/stax-api-1.0-2-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/mockito-all-1.9.5-jar.jar" sourcepath="lib/auto/mockito-all-1.9.5-source.jar"/>
+	<classpathentry kind="lib" path="lib/saxon/saxon9-s9api.jar"/>
+	<classpathentry kind="lib" path="lib/saxon/saxon9.jar"/>
+	<classpathentry kind="lib" path="lib/saxon/saxon9-dom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

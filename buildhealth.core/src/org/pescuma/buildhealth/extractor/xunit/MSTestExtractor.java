@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.xunit;
 
-import java.io.File;
+import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 import com.thalesgroup.dtkit.junit.MSTest;
 import com.thalesgroup.dtkit.metrics.model.InputMetric;
@@ -8,7 +8,7 @@ import com.thalesgroup.dtkit.metrics.model.InputMetricFactory;
 
 public class MSTestExtractor extends XUnitExtractor {
 	
-	public MSTestExtractor(File fileOrFolder) {
+	public MSTestExtractor(PseudoFiles fileOrFolder) {
 		super(fileOrFolder);
 	}
 	

@@ -30,7 +30,17 @@ public class BuildHealth {
 	}
 	
 	public void extract(BuildDataExtractor extractor) {
-		extractor.extractTo(table);
+		extractor.extractTo(table, new BuildDataExtractorTracker() {
+			@Override
+			public void fileProcessed(File file) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void streamProcessed() {
+				// TODO Auto-generated method stub
+			}
+		});
 	}
 	
 	public Report generateReportSummary() {

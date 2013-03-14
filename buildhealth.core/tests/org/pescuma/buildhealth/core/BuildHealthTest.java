@@ -41,7 +41,7 @@ public class BuildHealthTest {
 	public void testExtractGenerateSimpleReport() {
 		buildhealth.extract(new BuildDataExtractor() {
 			@Override
-			public void extractTo(BuildData data) {
+			public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
 				data.add(10, "Unit test", "java", "passed");
 			}
 		});
