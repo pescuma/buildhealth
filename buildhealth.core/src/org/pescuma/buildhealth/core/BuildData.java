@@ -10,6 +10,8 @@ public interface BuildData {
 	
 	Collection<Line> getLines();
 	
+	Collection<String> getDistinct(int column);
+	
 	BuildData filter(String... info);
 	
 	BuildData filter(int column, String name);

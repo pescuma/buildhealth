@@ -14,7 +14,7 @@ import org.pescuma.buildhealth.core.table.BuildDataTable;
 
 import com.google.common.io.Closer;
 
-public class BaseExtractorTest {
+public abstract class BaseExtractorTest {
 	
 	protected BuildDataTable table;
 	protected BuildDataExtractorTracker tracker;

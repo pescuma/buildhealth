@@ -7,18 +7,19 @@ import io.airlift.command.Help;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
-import org.pescuma.buildhealth.cli.commands.AUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.BoostTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.CppTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.CppUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.FPCUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.JUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.MNMLSTCUnitTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.MSTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.NUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.PHPUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.DiskUsageCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
-import org.pescuma.buildhealth.cli.commands.TusarExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.AUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.BoostTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.CppTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.CppUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.FPCUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.JUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.MNMLSTCUnitTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.MSTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.NUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.PHPUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.unittest.TusarExtractorCommand;
 
 public class BuildHealthCli {
 	
@@ -37,7 +38,8 @@ public class BuildHealthCli {
 						MNMLSTCUnitTestExtractorCommand.class, //
 						MSTestExtractorCommand.class, //
 						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
-						TusarExtractorCommand.class);
+						TusarExtractorCommand.class, //
+						DiskUsageCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		

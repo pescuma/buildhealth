@@ -31,14 +31,18 @@ public class PseudoFiles {
 	}
 	
 	public Collection<File> getFiles(String... validExtensions) {
-		if (fileOrFolder == null)
+		if (fileOrFolder == null) {
 			return null;
-		
-		else if (fileOrFolder.isDirectory())
-			return FileUtils.listFiles(fileOrFolder, new String[] { "xml" }, true);
-		
-		else
+			
+		} else if (fileOrFolder.isDirectory()) {
+			if (validExtensions.length > 0)
+				return FileUtils.listFiles(fileOrFolder, validExtensions, true);
+			else
+				return FileUtils.listFiles(fileOrFolder, null, true);
+			
+		} else {
 			return Arrays.asList(fileOrFolder);
+		}
 	}
 	
 }

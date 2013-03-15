@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.pescuma.buildhealth.core.BuildData;
 
@@ -31,6 +33,19 @@ public class BuildDataTable implements BuildData {
 	@Override
 	public Collection<Line> getLines() {
 		return (Collection) Collections.unmodifiableCollection(lines);
+	}
+	
+	@Override
+	public Collection<String> getDistinct(int column) {
+		Set<String> result = new HashSet<String>();
+		for (Line line : lines) {
+			String[] info = line.getInfo();
+			if (column < info.length)
+				result.add(info[column]);
+			else
+				result.add("");
+		}
+		return Collections.unmodifiableCollection(result);
 	}
 	
 	@Override
@@ -85,18 +100,17 @@ public class BuildDataTable implements BuildData {
 		
 		boolean hasInfo(int column, String name) {
 			if (column >= info.length)
-				return false;
+				return name.isEmpty();
 			
 			return info[column].equals(name);
 		}
 		
 		boolean infoStartsWith(String[] start) {
-			if (start.length > info.length)
-				return false;
-			
-			for (int i = 0; i < start.length; i++)
-				if (!info[i].equals(start[i]))
+			for (int i = 0; i < start.length; i++) {
+				String val = (i < info.length ? info[i] : "");
+				if (!val.equals(start[i]))
 					return false;
+			}
 			
 			return true;
 		}

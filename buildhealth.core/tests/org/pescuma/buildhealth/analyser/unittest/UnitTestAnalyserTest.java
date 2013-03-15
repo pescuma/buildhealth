@@ -3,27 +3,19 @@ package org.pescuma.buildhealth.analyser.unittest;
 import static org.junit.Assert.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.pescuma.buildhealth.analyser.BaseAnalyserTest;
 import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.table.BuildDataTable;
 
-public class UnitTestAnalyserTest {
+public class UnitTestAnalyserTest extends BaseAnalyserTest {
 	
-	private BuildDataTable data;
 	private UnitTestAnalyser analyser;
 	
 	@Before
 	public void setUp() {
-		data = new BuildDataTable();
 		analyser = new UnitTestAnalyser();
-	}
-	
-	@Test
-	public void testNoData() {
-		assertEquals(0, analyser.computeSimpleReport(data).size());
+		super.setUp(analyser);
 	}
 	
 	private void createPassed(int i) {
@@ -40,12 +32,6 @@ public class UnitTestAnalyserTest {
 	
 	private void createTime(double i) {
 		data.add(i, "Unit test", "java", "junit", "time");
-	}
-	
-	private Report createReport() {
-		List<Report> report = analyser.computeSimpleReport(data);
-		assertEquals(1, report.size());
-		return report.get(0);
 	}
 	
 	@Test
