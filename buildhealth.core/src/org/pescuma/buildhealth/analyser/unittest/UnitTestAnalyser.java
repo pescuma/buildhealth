@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.analyser.unittest;
 
 import static java.lang.Math.*;
+import static java.util.Arrays.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,8 +58,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		if (!time.isEmpty())
 			description.append(" (").append(time.sum()).append(" s)");
 		
-		return Arrays.<Report> asList(new Report(status, "Unit tests", passed == total ? "PASSED" : "FAILED",
-				description.toString()));
+		return asList(new Report(status, "Unit tests", passed == total ? "PASSED" : "FAILED", description.toString()));
 	}
 	
 	private void append(StringBuilder out, int count, String name, String namePlural) {

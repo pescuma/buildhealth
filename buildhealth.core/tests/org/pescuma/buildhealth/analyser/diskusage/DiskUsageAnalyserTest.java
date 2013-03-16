@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.pescuma.buildhealth.analyser.BaseAnalyserTest;
@@ -17,21 +16,12 @@ import org.pescuma.buildhealth.core.Report;
 public class DiskUsageAnalyserTest extends BaseAnalyserTest {
 	
 	private DiskUsageAnalyser analyser;
-	private Locale oldLocale;
 	
 	@Before
 	public void setUp() {
-		oldLocale = Locale.getDefault();
-		Locale.setDefault(Locale.US);
-		
 		analyser = new DiskUsageAnalyser();
 		
 		super.setUp(analyser);
-	}
-	
-	@After
-	public void tearDown() {
-		Locale.setDefault(oldLocale);
 	}
 	
 	private void create(double size, String... tag) {
@@ -61,9 +51,9 @@ public class DiskUsageAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testSimpleBigB() {
-		create(9876);
+		create(999);
 		
-		assertEquals(new Report(Good, "Disk usage", "9876 B"), createReport());
+		assertEquals(new Report(Good, "Disk usage", "999 B"), createReport());
 	}
 	
 	@Test
