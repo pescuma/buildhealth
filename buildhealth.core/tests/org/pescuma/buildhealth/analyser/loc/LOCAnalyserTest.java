@@ -68,7 +68,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createAll(12 * 1000);
 		createFiles(1 * 1000 * 1000);
 		
-		assertEquals(new Report(Good, "Lines of code", "12.0 K", "in 1.0 M files"), createReport());
+		assertEquals(new Report(Good, "Lines of code", "12.0 k", "in 1.0 M files"), createReport());
 	}
 	
 	@Test

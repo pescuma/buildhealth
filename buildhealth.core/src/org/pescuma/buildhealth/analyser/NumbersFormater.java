@@ -14,7 +14,7 @@ public class NumbersFormater {
 	
 	public static String format1000(double total, String baseUnit) {
 		// http://en.wikipedia.org/wiki/Kilobyte
-		final String[] units = new String[] { "K", "M", "G", "T", "P", "E", "Z", "Yi" };
+		final String[] units = new String[] { "k", "M", "G", "T", "P", "E", "Z", "Yi" };
 		final int scale = 1000;
 		
 		return format(total, baseUnit, units, scale);
