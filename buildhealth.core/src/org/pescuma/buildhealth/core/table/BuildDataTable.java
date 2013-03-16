@@ -1,11 +1,16 @@
 package org.pescuma.buildhealth.core.table;
 
+import static java.util.Arrays.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.pescuma.buildhealth.core.BuildData;
 
@@ -39,18 +44,77 @@ public class BuildDataTable implements BuildData {
 	public Collection<String> getDistinct(int column) {
 		Set<String> result = new HashSet<String>();
 		for (Line line : lines) {
-			String[] info = line.getInfo();
-			if (column < info.length)
-				result.add(info[column]);
-			else
-				result.add("");
+			String info = line.getColumn(column);
+			result.add(info);
 		}
 		return Collections.unmodifiableCollection(result);
 	}
 	
 	@Override
+	public Map<String[], Value> sumDistinct(int... columns) {
+		// By default sort by the columns text
+		Map<String[], Value> result = new TreeMap<String[], Value>(new Comparator<String[]>() {
+			@Override
+			public int compare(String[] o1, String[] o2) {
+				for (int i = 0; i < o1.length; i++) {
+					int comp = o1[i].compareTo(o2[i]);
+					if (comp != 0)
+						return comp;
+				}
+				return 0;
+			}
+		});
+		
+		for (Line line : lines) {
+			String[] key = line.getColumns(columns);
+			
+			Value value = result.get(key);
+			if (value == null) {
+				value = new Value();
+				result.put(key, value);
+			}
+			
+			value.value += line.getValue();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Value> sumDistinct(int columns) {
+		// By default sort by the columns text
+		Map<String, Value> result = new TreeMap<String, Value>();
+		
+		for (Line line : lines) {
+			String key = line.getColumn(columns);
+			
+			Value value = result.get(key);
+			if (value == null) {
+				value = new Value();
+				result.put(key, value);
+			}
+			
+			value.value += line.getValue();
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public void add(double value, String... info) {
+		info = removeEmptyAtEnd(info);
 		lines.add(new LineImpl(value, info));
+	}
+	
+	private String[] removeEmptyAtEnd(String[] info) {
+		int last = info.length - 1;
+		for (; last > 0 && info[last].isEmpty(); last--)
+			;
+		last++;
+		if (last == info.length)
+			return info;
+		else
+			return copyOf(info, last);
 	}
 	
 	@Override
@@ -119,8 +183,22 @@ public class BuildDataTable implements BuildData {
 			return value;
 		}
 		
-		public String[] getInfo() {
-			return info;
+		public String getColumn(int column) {
+			if (column < info.length)
+				return info[column];
+			else
+				return "";
+		}
+		
+		@Override
+		public String[] getColumns(int... columns) {
+			if (columns == null || columns.length == 0)
+				return info;
+			
+			String[] result = new String[columns.length];
+			for (int i = 0; i < columns.length; i++)
+				result[i] = getColumn(columns[i]);
+			return result;
 		}
 		
 		@Override

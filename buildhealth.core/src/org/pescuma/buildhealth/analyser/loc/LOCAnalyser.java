@@ -5,10 +5,12 @@ import static java.util.Arrays.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 
@@ -16,14 +18,13 @@ import org.pescuma.buildhealth.core.Report;
  * Expect the lines to be:
  * 
  * <pre>
- * LOC,language,{files,source,comment,blank,all},file or folder name (optional)
+ * LOC,language,type,file or folder name (optional)
  * </pre>
  * 
  * All values are in lines.
  * 
- * For the same file you should report (source,comment,blank) or (all), but not both.
- * 
- * (files) is the number of files and not exactly lines.
+ * Usual values for type are: source, comment, blank, unknown. There is a special type called files that means the
+ * number of files (and not a line count)
  * 
  * Example:
  * 
@@ -31,7 +32,7 @@ import org.pescuma.buildhealth.core.Report;
  * 100 | LOC,java,comment
  * 900 | LOC,java,code
  * 10 | LOC,c#,blank
- * 12 | LOC,java,all,/tmp/X
+ * 12 | LOC,java,unknown,/tmp/X
  * 15 | LOC,java,files,/tmp/X
  * 12 | LOC,c++,files
  * </pre>
@@ -44,24 +45,25 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
-		long files = round(data.filter(2, "files").sum());
-		long sources = round(data.filter(2, "source").sum());
-		long comments = round(data.filter(2, "comment").sum());
-		long blank = round(data.filter(2, "blank").sum());
-		long all = round(data.filter(2, "all").sum());
-		long total = comments + blank + sources + all;
+		Map<String, BuildData.Value> vals = data.sumDistinct(2);
+		
+		Value files = vals.remove("files");
+		
+		int count = vals.size();
+		
+		long total = 0;
+		for (Map.Entry<String, BuildData.Value> val : vals.entrySet())
+			total += round(val.getValue().value);
 		
 		StringBuilder description = new StringBuilder();
-		if (sources + comments + blank == 0) {
-			append(description, "in", files, "file", "files");
-			
-		} else {
-			append(description, sources, "of source", "of sources");
-			append(description, comments, "of comment", "of comments");
-			append(description, blank, "blank line", "blank lines");
-			append(description, all, "unknown");
-			append(description, "in", files, "file", "files");
+		
+		if (count > 1) {
+			for (Map.Entry<String, BuildData.Value> val : vals.entrySet())
+				append(description, round(val.getValue().value), val.getKey());
 		}
+		
+		if (files != null)
+			append(description, "in", round(files.value), "file", "files");
 		
 		return asList(new Report(BuildStatus.Good, "Lines of code", format(total), description.toString()));
 	}
@@ -70,13 +72,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		append(out, null, value, name, name);
 	}
 	
-	private void append(StringBuilder out, long value, String singular, String plural) {
-		append(out, null, value, singular, plural);
-	}
-	
 	private void append(StringBuilder out, String prefix, long value, String singular, String plural) {
-		if (value <= 0)
-			return;
 		if (out.length() > 0)
 			out.append(", ");
 		if (prefix != null)

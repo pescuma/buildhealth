@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.core;
 
 import java.util.Collection;
+import java.util.Map;
 
 public interface BuildData {
 	
@@ -11,6 +12,10 @@ public interface BuildData {
 	Collection<Line> getLines();
 	
 	Collection<String> getDistinct(int column);
+	
+	Map<String, Value> sumDistinct(int columns);
+	
+	Map<String[], Value> sumDistinct(int... columns);
 	
 	BuildData filter(String... info);
 	
@@ -23,7 +28,13 @@ public interface BuildData {
 	public interface Line {
 		double getValue();
 		
-		String[] getInfo();
+		String getColumn(int column);
+		
+		/** @param column null or empty to get all */
+		String[] getColumns(int... column);
 	}
 	
+	public static class Value {
+		public double value;
+	}
 }

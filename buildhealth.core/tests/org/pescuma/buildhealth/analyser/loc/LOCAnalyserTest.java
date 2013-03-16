@@ -31,8 +31,8 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		data.add(size, "LOC", "java", "blank");
 	}
 	
-	private void createAll(double size) {
-		data.add(size, "LOC", "java", "all");
+	private void createUnknown(double size) {
+		data.add(size, "LOC", "java", "unknown");
 	}
 	
 	private void createFiles(double size) {
@@ -41,15 +41,15 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testJustAll() {
-		createAll(10);
-		createAll(20);
+		createUnknown(10);
+		createUnknown(20);
 		
 		assertEquals(new Report(Good, "Lines of code", "30"), createReport());
 	}
 	
 	@Test
 	public void testAllAndFiles() {
-		createAll(10);
+		createUnknown(10);
 		createFiles(20);
 		
 		assertEquals(new Report(Good, "Lines of code", "10", "in 20 files"), createReport());
@@ -57,7 +57,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testAllAndFilesSingular() {
-		createAll(1);
+		createUnknown(1);
 		createFiles(1);
 		
 		assertEquals(new Report(Good, "Lines of code", "1", "in 1 file"), createReport());
@@ -65,7 +65,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testAllAndFilesWihtUnits() {
-		createAll(12 * 1000);
+		createUnknown(12 * 1000);
 		createFiles(1 * 1000 * 1000);
 		
 		assertEquals(new Report(Good, "Lines of code", "12.0 k", "in 1.0 M files"), createReport());
@@ -77,8 +77,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createBlank(12);
 		createComment(1234567);
 		
-		assertEquals(new Report(Good, "Lines of code", "1.2 M", "123 of sources, 1.2 M of comments, 12 blank lines"),
-				createReport());
+		assertEquals(new Report(Good, "Lines of code", "1.2 M", "12 blank, 1.2 M comment, 123 source"), createReport());
 	}
 	
 	@Test
@@ -88,8 +87,8 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createComment(1234567);
 		createFiles(1);
 		
-		assertEquals(new Report(Good, "Lines of code", "1.2 M",
-				"123 of sources, 1.2 M of comments, 12 blank lines, in 1 file"), createReport());
+		assertEquals(new Report(Good, "Lines of code", "1.2 M", "12 blank, 1.2 M comment, 123 source, in 1 file"),
+				createReport());
 	}
 	
 	@Test
@@ -97,11 +96,12 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createSource(123);
 		createBlank(12);
 		createComment(6);
-		createAll(66);
+		createUnknown(66);
 		createFiles(1);
 		
-		assertEquals(new Report(Good, "Lines of code", "207",
-				"123 of sources, 6 of comments, 12 blank lines, 66 unknown, in 1 file"), createReport());
+		assertEquals(
+				new Report(Good, "Lines of code", "207", "12 blank, 6 comment, 123 source, 66 unknown, in 1 file"),
+				createReport());
 	}
 	
 }
