@@ -1,0 +1,108 @@
+<project>
+
+	<script language="javascript">
+		<![CDATA[ 
+	        importClass(java.util.Locale);
+	        actualDefault = Locale.getDefault();
+	        project.setProperty("---actual-default-locale---", actualDefault);
+	        Locale.setDefault(Locale.US);
+	    ]]>
+	</script>
+
+	<property name="project.dir" value="${basedir}/.." />
+	<property name="src.dir" value="${project.dir}/src" />
+	<property name="tests.dir" value="${project.dir}/tests" />
+	<property name="lib.dir" location="${project.dir}/lib" />
+	<property name="build.dir" value="${project.dir}/build" />
+	<property name="build.tmp.dir" value="${build.dir}/tmp" />
+	<property name="build.bin.dir" location="${build.tmp.dir}/bin" />
+	<property name="build.javac.dir" location="${build.bin.dir}/src" />
+	<property name="build.ejdt.dir" location="${build.bin.dir}/ejdt" />
+	<property name="build.tests.dir" location="${build.bin.dir}/tests" />
+	<property name="reports.dir" value="${build.dir}/reports" />
+	<property name="reports.junit.dir" value="${reports.dir}/junit" />
+	<property name="dist.dir" value="${build.dir}/dist" />
+
+	<target name="all" depends="init, clean, compile, test, pack, clean-tmp">
+	</target>
+
+	<target name="init">
+		<tstamp />
+	</target>
+
+	<target name="clean" depends="init" description="Delete all build results">
+		<delete dir="${build.tmp.dir}" quiet="true" />
+		<delete dir="${reports.dir}" quiet="true" />
+		<delete dir="${dist.dir}" quiet="true" />
+	</target>
+
+	<target name="clean-tmp" depends="init" description="Delete all build results">
+		<delete dir="${build.tmp.dir}" quiet="true" />
+	</target>
+
+	<target name="compile" depends="init" description="Compile the sources">
+		<delete dir="${build.javac.dir}" quiet="true" />
+		<mkdir dir="${build.javac.dir}" />
+
+		<javac destdir="${build.javac.dir}" includeantruntime="false">
+			<src path="${src.dir}" />
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="compile-tests" depends="compile">
+		<delete dir="${build.tests.dir}" quiet="true" />
+		<mkdir dir="${build.tests.dir}" />
+
+		<javac destdir="${build.tests.dir}" debug="true" includeantruntime="false">
+			<src path="${tests.dir}" />
+			<classpath>
+				<pathelement location="${build.javac.dir}" />
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<copy todir="${build.tests.dir}">
+			<fileset dir="${tests.dir}" excludes="**/*.java" />
+		</copy>
+	</target>
+
+	<target name="test" depends="compile-tests" description="Run the tests">
+		<delete dir="${reports.junit.dir}" quiet="true" />
+		<mkdir dir="${reports.junit.dir}" />
+
+		<junit printsummary="yes" fork="yes" haltonerror="false" haltonfailure="false">
+			<classpath>
+				<pathelement location="${build.javac.dir}" />
+				<pathelement location="${build.tests.dir}" />
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<formatter type="xml" />
+
+			<batchtest todir="${reports.junit.dir}">
+				<fileset dir="${tests.dir}">
+					<include name="**/*Test.java" />
+					<exclude name="**/Base*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="pack" description="Create jar archives">
+		<delete dir="${dist.dir}" quiet="true" />
+		<mkdir dir="${dist.dir}" />
+
+		<jar jarfile="${dist.dir}/${project}-${version}.jar" basedir="${build.javac.dir}" />
+		<zip zipfile="${dist.dir}/${project}-${version}-souces.zip" basedir="${src.dir}" />
+	</target>
+
+</project>
