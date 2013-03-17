@@ -56,7 +56,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		
 		BuildData time = data.filter(3, "time");
 		if (!time.isEmpty())
-			description.append(" (").append(time.sum()).append(" s)");
+			description.append(" (").append(String.format("%.1f", time.sum())).append(" s)");
 		
 		return asList(new Report(status, "Unit tests", passed == total ? "PASSED" : "FAILED", description.toString()));
 	}

@@ -66,9 +66,6 @@ public class CLOCExtractor implements BuildDataExtractor {
 		
 		String[] line;
 		while ((line = reader.readNext()) != null) {
-			if (line.length == 0)
-				continue;
-			
 			if (headers == null) {
 				headers = line;
 				languageCol = findHeader(headers, "language");

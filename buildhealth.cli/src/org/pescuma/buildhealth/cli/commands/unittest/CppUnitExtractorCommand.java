@@ -16,8 +16,8 @@ public class CppUnitExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new CppUnitExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new CppUnitExtractor(new PseudoFiles(xml)));
 	}
 	
 }

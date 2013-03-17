@@ -16,8 +16,8 @@ public class PHPUnitExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new PHPUnitExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new PHPUnitExtractor(new PseudoFiles(xml)));
 	}
 	
 }

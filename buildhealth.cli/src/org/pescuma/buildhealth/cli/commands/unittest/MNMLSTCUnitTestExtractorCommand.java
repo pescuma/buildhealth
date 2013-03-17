@@ -16,8 +16,8 @@ public class MNMLSTCUnitTestExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new MNMLSTCUnitTestExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new MNMLSTCUnitTestExtractor(new PseudoFiles(xml)));
 	}
 	
 }

@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.core.table;
+package org.pescuma.buildhealth.core.data;
 
 import static java.util.Arrays.*;
 

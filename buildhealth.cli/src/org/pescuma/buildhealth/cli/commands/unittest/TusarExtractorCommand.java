@@ -16,8 +16,8 @@ public class TusarExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new TusarExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new TusarExtractor(new PseudoFiles(xml)));
 	}
 	
 }

@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.mockito.Mockito;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
-import org.pescuma.buildhealth.core.table.BuildDataTable;
+import org.pescuma.buildhealth.core.data.BuildDataTable;
 
 import com.google.common.io.Closer;
 

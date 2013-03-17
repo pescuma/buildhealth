@@ -7,7 +7,9 @@ import io.airlift.command.Help;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
+import org.pescuma.buildhealth.cli.commands.CLOCCommand;
 import org.pescuma.buildhealth.cli.commands.DiskUsageCommand;
+import org.pescuma.buildhealth.cli.commands.ReportCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
 import org.pescuma.buildhealth.cli.commands.unittest.AUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.unittest.BoostTestExtractorCommand;
@@ -28,7 +30,7 @@ public class BuildHealthCli {
 		CliBuilder<Runnable> builder = Cli.<Runnable> builder("buildhealth") //
 				.withDescription("check the quality of your builds") //
 				.withDefaultCommand(Help.class) //
-				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class);
+				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class);
 		
 		builder.withGroup("add").withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)
@@ -39,21 +41,24 @@ public class BuildHealthCli {
 						MSTestExtractorCommand.class, //
 						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
 						TusarExtractorCommand.class, //
-						DiskUsageCommand.class);
+						DiskUsageCommand.class, CLOCCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		
+		Runnable command = null;
 		try {
 			
-			Runnable command = parser.parse(args);
-			command.run();
+			command = parser.parse(args);
 			
 		} catch (ParseException e) {
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append(e.getMessage()).append("\n\n");
 			Help.help(parser.getMetadata(), asList(args), stringBuilder);
 			System.err.println(stringBuilder.toString());
+			System.exit(-1);
 		}
+		
+		command.run();
 	}
 	
 }

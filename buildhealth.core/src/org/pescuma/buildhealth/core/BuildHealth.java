@@ -1,28 +1,58 @@
 package org.pescuma.buildhealth.core;
 
+import static org.apache.commons.io.FileUtils.*;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.core.table.BuildDataTable;
+import org.pescuma.buildhealth.core.data.BuildDataTable;
+import org.pescuma.buildhealth.core.data.DiskBuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 
 public class BuildHealth {
 	
-	private BuildData table = new BuildDataTable();
-	private List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
+	private static final String DEFAULT_FOLDER_NAME = ".buildhealth";
+	
+	private final File home;
+	private final BuildData table;
+	private final List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
 	
 	public BuildHealth() {
 		this(null);
 	}
 	
 	public BuildHealth(File buildHealthHome) {
-		// TODO Auto-generated constructor stub
+		this.home = getCanonicalFile(buildHealthHome);
+		
+		if (home != null)
+			table = new DiskBuildData(new File(home, "data.csv"), new BuildDataTable());
+		else
+			table = new BuildDataTable();
+	}
+	
+	public void shutdown() {
+		if (table instanceof DiskBuildData)
+			((DiskBuildData) table).saveToDisk();
 	}
 	
 	public void startNewBuild() {
-		// TODO Auto-generated method stub
+		if (home == null)
+			throw new IllegalStateException();
+		
+		try {
+			
+			if (home.exists())
+				forceDelete(home);
+			
+			forceMkdir(home);
+			
+		} catch (IOException e) {
+			throw new RuntimeException();
+		}
 	}
 	
 	public void addAnalyser(BuildHealthAnalyser analyser) {
@@ -34,6 +64,7 @@ public class BuildHealth {
 			@Override
 			public void fileProcessed(File file) {
 				// TODO Auto-generated method stub
+				System.out.println("File processed: " + file);
 			}
 			
 			@Override
@@ -60,4 +91,46 @@ public class BuildHealth {
 		return new Report(status, "Build", status.name(), null, reports);
 	}
 	
+	// Helper methods to find home
+	
+	public static File findHome(File home, boolean searchCurrentFolder) {
+		if (home != null)
+			return home;
+		
+		if (searchCurrentFolder) {
+			File result = searchForHomeFolder(new File("."));
+			if (result != null)
+				return result;
+		}
+		
+		return getDefaultHomeFolder();
+	}
+	
+	public static File searchForHomeFolder(File currentPath) {
+		currentPath = getCanonicalFile(currentPath);
+		
+		do {
+			File result = new File(currentPath, DEFAULT_FOLDER_NAME);
+			if (result.exists() && result.isDirectory())
+				return result;
+			currentPath = currentPath.getParentFile();
+		} while (currentPath != null);
+		
+		return null;
+	}
+	
+	private static File getCanonicalFile(File file) {
+		if (file == null)
+			return null;
+		
+		try {
+			return file.getCanonicalFile();
+		} catch (IOException e) {
+			return file.getAbsoluteFile();
+		}
+	}
+	
+	public static File getDefaultHomeFolder() {
+		return new File(FileUtils.getUserDirectory(), DEFAULT_FOLDER_NAME);
+	}
 }

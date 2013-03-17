@@ -8,7 +8,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 public class StartNewBuildCommand extends BuildHealthCliCommand {
 	
 	@Override
-	public void run() {
-		getBuildHealth().startNewBuild();
+	public void execute() {
+		buildHealth.startNewBuild();
 	}
 }

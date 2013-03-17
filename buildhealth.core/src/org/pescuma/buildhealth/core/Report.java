@@ -68,11 +68,11 @@ public class Report {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((children == null) ? 0 : children.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + children.hashCode();
+		result = prime * result + description.hashCode();
+		result = prime * result + name.hashCode();
+		result = prime * result + status.hashCode();
+		result = prime * result + value.hashCode();
 		return result;
 	}
 	
@@ -85,27 +85,15 @@ public class Report {
 		if (getClass() != obj.getClass())
 			return false;
 		Report other = (Report) obj;
-		if (children == null) {
-			if (other.children != null)
-				return false;
-		} else if (!children.equals(other.children))
+		if (!children.equals(other.children))
 			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
+		if (!description.equals(other.description))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		if (!name.equals(other.name))
 			return false;
 		if (status != other.status)
 			return false;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
+		if (!value.equals(other.value))
 			return false;
 		return true;
 	}

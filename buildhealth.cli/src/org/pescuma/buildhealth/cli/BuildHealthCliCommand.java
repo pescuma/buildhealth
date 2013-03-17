@@ -9,16 +9,20 @@ import org.pescuma.buildhealth.core.BuildHealth;
 
 public abstract class BuildHealthCliCommand implements Runnable {
 	
-	private BuildHealth buildHealth;
+	protected BuildHealth buildHealth;
 	
 	@Option(type = OptionType.GLOBAL, name = "--home", title = "buildhealth home", description = "Folder to store buildhealth data")
 	public File buildHealthHome;
 	
-	protected BuildHealth getBuildHealth() {
-		if (buildHealth == null)
-			buildHealth = new BuildHealth(buildHealthHome);
+	@Override
+	public final void run() {
+		buildHealth = new BuildHealth(BuildHealth.findHome(buildHealthHome, true));
 		
-		return buildHealth;
+		execute();
+		
+		buildHealth.shutdown();
 	}
+	
+	protected abstract void execute();
 	
 }

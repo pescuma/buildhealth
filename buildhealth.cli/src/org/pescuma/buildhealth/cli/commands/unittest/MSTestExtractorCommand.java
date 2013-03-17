@@ -16,8 +16,8 @@ public class MSTestExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new MSTestExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new MSTestExtractor(new PseudoFiles(xml)));
 	}
 	
 }

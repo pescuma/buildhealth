@@ -16,8 +16,8 @@ public class BoostTestExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new BoostTestExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new BoostTestExtractor(new PseudoFiles(xml)));
 	}
 	
 }

@@ -20,8 +20,8 @@ public class DiskUsageCommand extends BuildHealthCliCommand {
 	public String tag;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new DiskUsageExtractor(new PseudoFiles(file), tag));
+	public void execute() {
+		buildHealth.extract(new DiskUsageExtractor(new PseudoFiles(file), tag));
 	}
 	
 }

@@ -53,7 +53,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Unit tests", "PASSED", "5 tests, 5 passed (12.01 s)"), report);
+		assertEquals(new Report(Good, "Unit tests", "PASSED", "5 tests, 5 passed (12.0 s)"), report);
 	}
 	
 	@Test

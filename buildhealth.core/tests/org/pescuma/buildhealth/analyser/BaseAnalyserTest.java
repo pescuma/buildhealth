@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Test;
 import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.table.BuildDataTable;
+import org.pescuma.buildhealth.core.data.BuildDataTable;
 
 public abstract class BaseAnalyserTest {
 	

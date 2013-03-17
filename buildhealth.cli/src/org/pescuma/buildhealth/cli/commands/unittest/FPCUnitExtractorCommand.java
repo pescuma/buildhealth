@@ -16,8 +16,8 @@ public class FPCUnitExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new FPCUnitExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new FPCUnitExtractor(new PseudoFiles(xml)));
 	}
 	
 }

@@ -16,8 +16,8 @@ public class AUnitExtractorCommand extends BuildHealthCliCommand {
 	public File xml;
 	
 	@Override
-	public void run() {
-		getBuildHealth().extract(new AUnitExtractor(new PseudoFiles(xml)));
+	public void execute() {
+		buildHealth.extract(new AUnitExtractor(new PseudoFiles(xml)));
 	}
 	
 }

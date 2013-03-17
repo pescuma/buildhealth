@@ -31,7 +31,9 @@ public class ReportFormater {
 		for (Report report : reports) {
 			result.append(prefix);
 			result.append(report.getName()).append(": ").append(report.getValue());
-			result.append(" [").append(report.getDescription()).append("]");
+			String description = report.getDescription();
+			if (!description.isEmpty())
+				result.append(" [").append(description).append("]");
 			result.append("\n");
 			
 			append(result, report.getChildren(), prefix + PREFIX);
