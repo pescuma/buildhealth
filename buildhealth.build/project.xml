@@ -9,6 +9,12 @@
 	    ]]>
 	</script>
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${basedir}/../../buildhealth.build/lib/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
 	<property name="project.dir" value="${basedir}/.." />
 	<property name="src.dir" value="${project.dir}/src" />
 	<property name="tests.dir" value="${project.dir}/tests" />
@@ -23,7 +29,42 @@
 	<property name="reports.junit.dir" value="${reports.dir}/junit" />
 	<property name="dist.dir" value="${build.dir}/dist" />
 
-	<target name="all" depends="init, clean, compile, test, pack, clean-tmp">
+	<property name="project.deps" value="" />
+
+	<if>
+		<equals arg1="${project.deps}" arg2="" />
+		<then>
+			<path id="project.deps.path">
+			</path>
+		</then>
+		<else>
+			<filelist id="project.deps.dirs" dir="../.." files="${project.deps}" />
+
+			<pathconvert refid="project.deps.dirs" property="project.deps.prop">
+				<regexpmapper from="(.*)" to="\1/build/dist" />
+			</pathconvert>
+
+			<path id="project.deps.path">
+				<fileset dir="${project.deps.prop}">
+					<include name="**/*.jar" />
+					<exclude name="**/*-source.jar" />
+				</fileset>
+			</path>
+		</else>
+	</if>
+
+	<path id="libs.path">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+			<exclude name="**/*-source.jar" />
+		</fileset>
+	</path>
+	<path id="compile.path">
+		<path refid="project.deps.path" />
+		<path refid="libs.path" />
+	</path>
+
+	<target name="all" depends="init, clean, compile, test, pack, clean-tmp" description="Compile, test and pack">
 	</target>
 
 	<target name="init">
@@ -36,7 +77,7 @@
 		<delete dir="${dist.dir}" quiet="true" />
 	</target>
 
-	<target name="clean-tmp" depends="init" description="Delete all build results">
+	<target name="clean-tmp" depends="init">
 		<delete dir="${build.tmp.dir}" quiet="true" />
 	</target>
 
@@ -46,11 +87,7 @@
 
 		<javac destdir="${build.javac.dir}" includeantruntime="false">
 			<src path="${src.dir}" />
-			<classpath>
-				<fileset dir="${lib.dir}">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
+			<classpath refid="compile.path" />
 		</javac>
 	</target>
 
@@ -60,11 +97,9 @@
 
 		<javac destdir="${build.tests.dir}" debug="true" includeantruntime="false">
 			<src path="${tests.dir}" />
+			<classpath refid="compile.path" />
 			<classpath>
 				<pathelement location="${build.javac.dir}" />
-				<fileset dir="${lib.dir}">
-					<include name="**/*.jar" />
-				</fileset>
 			</classpath>
 		</javac>
 
@@ -78,12 +113,10 @@
 		<mkdir dir="${reports.junit.dir}" />
 
 		<junit printsummary="yes" fork="yes" haltonerror="false" haltonfailure="false">
+			<classpath refid="compile.path" />
 			<classpath>
 				<pathelement location="${build.javac.dir}" />
 				<pathelement location="${build.tests.dir}" />
-				<fileset dir="${lib.dir}">
-					<include name="**/*.jar" />
-				</fileset>
 			</classpath>
 
 			<formatter type="xml" />
@@ -102,7 +135,7 @@
 		<mkdir dir="${dist.dir}" />
 
 		<jar jarfile="${dist.dir}/${project}-${version}.jar" basedir="${build.javac.dir}" />
-		<zip zipfile="${dist.dir}/${project}-${version}-souces.zip" basedir="${src.dir}" />
+		<jar jarfile="${dist.dir}/${project}-${version}-source.jar" basedir="${src.dir}" />
 	</target>
 
 </project>

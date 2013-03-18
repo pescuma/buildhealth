@@ -1,4 +1,112 @@
-<project name="ivy">
+<project name="buildhealth.build" default="all">
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
+	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/lib/proguard-4.9.jar" />
+
+	<property name="projs" value="buildhealth.core,buildhealth.cli" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.tmp.dir" value="${build.dir}/tmp" />
+
+	<target name="all" description="Compile, test and pack">
+		<delete dir="${build.dir}" quiet="true" />
+
+		<antcall target="call-in-projs">
+			<param name="target" value="all" />
+		</antcall>
+
+		<antcall target="pack-cli" />
+
+	</target>
+
+	<target name="pack-cli">
+		<delete dir="${build.dir}" includes="buildhealth*.jar" quiet="true" />
+
+		<delete dir="${build.tmp.dir}" quiet="true" />
+		<mkdir dir="${build.tmp.dir}" />
+
+		<for list="${projs}" param="proj">
+			<sequential>
+				<copy todir="${build.tmp.dir}" flatten="true">
+					<fileset dir="../@{proj}/build/dist">
+						<include name="**/*.jar" />
+						<exclude name="**/*-source.jar" />
+					</fileset>
+					<fileset dir="../@{proj}/lib">
+						<include name="**/*.jar" />
+						<exclude name="**/*-source.jar" />
+						<exclude name="**/ivy-*.jar" />
+						<exclude name="**/junit-*.jar" />
+						<exclude name="**/hamcrest-*.jar" />
+						<exclude name="**/mockito-*.jar" />
+					</fileset>
+				</copy>
+			</sequential>
+		</for>
+
+		<property name="tojar.dir" value="${build.tmp.dir}/tojar" />
+
+		<mkdir dir="${tojar.dir}" />
+		<unzip dest="${tojar.dir}">
+			<fileset dir="${build.tmp.dir}" includes="**/*.jar" />
+		</unzip>
+		<delete dir="${tojar.dir}/META-INF" includeemptydirs="true">
+			<exclude name="services/**" />
+			<exclude name="*.default" />
+		</delete>
+
+		<jar destfile="${build.dir}/buildhealth.cli.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="org.pescuma.buildhealth.cli.BuildHealthCli" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="${tojar.dir}" />
+		</jar>
+
+		<delete dir="${build.tmp.dir}" />
+
+		<proguard>
+			-libraryjars "${java.home}/lib/rt.jar"
+			-injars      "${build.dir}/buildhealth.cli.jar"
+			-outjars     "${build.dir}/buildhealth.cli.shrink.jar"
+			-dontoptimize
+			-dontobfuscate
+			-dontwarn
+				
+			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
+			-keep class com.google.common.base.FinalizableReference {*;}
+			-keep class org.jaxen.saxpath.base.XPathReader {*;}
+			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
+		</proguard>
+	</target>
+
+	<target name="clean" description="Delete all build results">
+		<delete dir="${build.dir}" includes="buildhealth*.jar" quiet="true" />
+		<delete dir="${build.tmp.dir}" quiet="true" />
+
+		<antcall target="call-in-projs">
+			<param name="target" value="clean" />
+		</antcall>
+	</target>
+
+	<target name="test" description="Run the tests">
+		<antcall target="call-in-projs">
+			<param name="target" value="test" />
+		</antcall>
+	</target>
+
+	<target name="deps" description="Download dependencies needed to build">
+		<antcall target="call-in-projs">
+			<param name="target" value="deps" />
+		</antcall>
+	</target>
+
+	<target name="call-in-projs">
+		<for list="${projs}" param="proj">
+			<sequential>
+				<echo>Calling ${target} in @{proj}</echo>
+				<ant antfile="../@{proj}/build/build.xml" target="${target}" inheritall="false" />
+			</sequential>
+		</for>
+	</target>
 
 </project>

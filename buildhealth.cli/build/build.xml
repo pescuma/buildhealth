@@ -2,6 +2,7 @@
 
 	<property name="project" value="buildhealth.cli" />
 	<property name="version" value="0.1" />
+	<property name="project.deps" value="buildhealth.core" />
 
 	<import file="../../buildhealth.build/ivy.xml" />
 	<import file="../../buildhealth.build/project.xml" />
