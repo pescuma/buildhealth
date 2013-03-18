@@ -26,7 +26,7 @@
 
 		<for list="${projs}" param="proj">
 			<sequential>
-				<copy todir="${build.tmp.dir}" flatten="true">
+				<unzip dest="${build.tmp.dir}">
 					<fileset dir="../@{proj}/build/dist">
 						<include name="**/*.jar" />
 						<exclude name="**/*-source.jar" />
@@ -39,35 +39,29 @@
 						<exclude name="**/hamcrest-*.jar" />
 						<exclude name="**/mockito-*.jar" />
 					</fileset>
-				</copy>
+				</unzip>
 			</sequential>
 		</for>
 
-		<property name="tojar.dir" value="${build.tmp.dir}/tojar" />
-
-		<mkdir dir="${tojar.dir}" />
-		<unzip dest="${tojar.dir}">
-			<fileset dir="${build.tmp.dir}" includes="**/*.jar" />
-		</unzip>
-		<delete dir="${tojar.dir}/META-INF" includeemptydirs="true">
+		<delete dir="${build.tmp.dir}/META-INF" includeemptydirs="true">
 			<exclude name="services/**" />
 			<exclude name="*.default" />
 		</delete>
 
-		<jar destfile="${build.dir}/buildhealth.cli.jar" filesetmanifest="mergewithoutmain">
+		<jar destfile="${build.dir}/buildhealth.cli.full.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="org.pescuma.buildhealth.cli.BuildHealthCli" />
 				<attribute name="Class-Path" value="." />
 			</manifest>
-			<fileset dir="${tojar.dir}" />
+			<fileset dir="${build.tmp.dir}" />
 		</jar>
 
 		<delete dir="${build.tmp.dir}" />
 
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
-			-injars      "${build.dir}/buildhealth.cli.jar"
-			-outjars     "${build.dir}/buildhealth.cli.shrink.jar"
+			-injars      "${build.dir}/buildhealth.cli.full.jar"
+			-outjars     "${build.dir}/buildhealth.cli.jar"
 			-dontoptimize
 			-dontobfuscate
 			-dontwarn
@@ -76,6 +70,7 @@
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
 			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
+			-keep class net.sf.saxon.event.MessageEmitter {*;}
 		</proguard>
 	</target>
 
