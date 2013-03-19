@@ -41,7 +41,7 @@
 		<delete dir="${build.tmp.dir}" quiet="true" />
 		<mkdir dir="${build.tmp.dir}" />
 
-		<for list="${projs}" param="proj">
+		<for list="buildhealth.core,buildhealth.cli" param="proj">
 			<sequential>
 				<unzip dest="${build.tmp.dir}">
 					<fileset dir="../@{proj}/build/dist">
