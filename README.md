@@ -1,6 +1,8 @@
 buildhealth
 ===========
 
+[![Build Status](https://travis-ci.org/pescuma/buildhealth.png?branch=master)](https://travis-ci.org/pescuma/buildhealth)
+
 Idea
 ----
 
