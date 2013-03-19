@@ -130,7 +130,7 @@
 		</junit>
 	</target>
 
-	<target name="pack" description="Create jar archives">
+	<target name="pack" depends="init" description="Create jar archives">
 		<delete dir="${dist.dir}" quiet="true" />
 		<mkdir dir="${dist.dir}" />
 

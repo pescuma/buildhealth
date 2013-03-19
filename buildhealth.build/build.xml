@@ -88,6 +88,8 @@
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
 			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
 			-keep class net.sf.saxon.event.MessageEmitter {*;}
+			
+			-dontnote **
 		</proguard>
 	</target>
 
@@ -96,12 +98,6 @@
 
 		<antcall target="call-in-projs">
 			<param name="target" value="clean" />
-		</antcall>
-	</target>
-
-	<target name="test" description="Run the tests">
-		<antcall target="call-in-projs">
-			<param name="target" value="test" />
 		</antcall>
 	</target>
 
