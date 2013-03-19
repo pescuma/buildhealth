@@ -112,7 +112,7 @@
 		<delete dir="${reports.junit.dir}" quiet="true" />
 		<mkdir dir="${reports.junit.dir}" />
 
-		<junit printsummary="yes" fork="yes" haltonerror="false" haltonfailure="false">
+		<junit printsummary="yes" fork="yes">
 			<classpath refid="compile.path" />
 			<classpath>
 				<pathelement location="${build.javac.dir}" />
