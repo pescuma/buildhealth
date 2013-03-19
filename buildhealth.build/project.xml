@@ -11,11 +11,11 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="${basedir}/../../buildhealth.build/lib/ant-contrib-1.0b3.jar" />
+			<pathelement location="${basedir}/../buildhealth.build/lib/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
-	<property name="project.dir" value="${basedir}/.." />
+	<property name="project.dir" value="${basedir}" />
 	<property name="src.dir" value="${project.dir}/src" />
 	<property name="tests.dir" value="${project.dir}/tests" />
 	<property name="lib.dir" location="${project.dir}/lib" />
@@ -38,7 +38,7 @@
 			</path>
 		</then>
 		<else>
-			<filelist id="project.deps.dirs" dir="../.." files="${project.deps}" />
+			<filelist id="project.deps.dirs" dir=".." files="${project.deps}" />
 
 			<pathconvert refid="project.deps.dirs" property="project.deps.prop">
 				<regexpmapper from="(.*)" to="\1/build/dist" />
@@ -72,9 +72,7 @@
 	</target>
 
 	<target name="clean" depends="init" description="Delete all build results">
-		<delete dir="${build.tmp.dir}" quiet="true" />
-		<delete dir="${reports.dir}" quiet="true" />
-		<delete dir="${dist.dir}" quiet="true" />
+		<delete dir="${build.dir}" quiet="true" />
 	</target>
 
 	<target name="clean-tmp" depends="init">

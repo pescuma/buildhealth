@@ -1,6 +1,6 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="ivy">
 
-	<property name="project.dir" value="${basedir}/.." />
+	<property name="project.dir" value="${basedir}" />
 	<property name="lib.dir" value="${project.dir}/lib" />
 	<property name="lib.auto.dir" value="${lib.dir}/auto" />
 

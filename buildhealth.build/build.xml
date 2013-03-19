@@ -6,6 +6,7 @@
 	<property name="projs" value="buildhealth.core,buildhealth.cli" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="build.tmp.dir" value="${build.dir}/tmp" />
+	<property name="reports.dir" value="${build.dir}/reports" />
 
 	<target name="all" description="Compile, test and pack">
 		<delete dir="${build.dir}" quiet="true" />
@@ -14,8 +15,22 @@
 			<param name="target" value="all" />
 		</antcall>
 
-		<antcall target="pack-cli" />
+		<antcall target="cloc" />
 
+		<antcall target="pack-cli" />
+	</target>
+
+	<target name="cloc">
+		<delete file="${reports.dir}/cloc.files.csv" quiet="true" />
+
+		<exec executable="perl" dir="${basedir}/.." failonerror="false" failifexecutionfails="false">
+			<arg value="${basedir}/tools/cloc-1.58.pl" />
+			<arg value="--by-file" />
+			<arg value="--csv" />
+			<arg value="--out=${reports.dir}/cloc.files.csv" />
+			<arg value="--exclude-dir=build,tools,lib" />
+			<arg value="." />
+		</exec>
 	</target>
 
 	<target name="pack-cli">
@@ -75,8 +90,7 @@
 	</target>
 
 	<target name="clean" description="Delete all build results">
-		<delete dir="${build.dir}" includes="buildhealth*.jar" quiet="true" />
-		<delete dir="${build.tmp.dir}" quiet="true" />
+		<delete dir="${build.dir}" quiet="true" />
 
 		<antcall target="call-in-projs">
 			<param name="target" value="clean" />
@@ -99,7 +113,7 @@
 		<for list="${projs}" param="proj">
 			<sequential>
 				<echo>Calling ${target} in @{proj}</echo>
-				<ant antfile="../@{proj}/build/build.xml" target="${target}" inheritall="false" />
+				<ant antfile="../@{proj}/build.xml" target="${target}" inheritall="false" />
 			</sequential>
 		</for>
 	</target>
