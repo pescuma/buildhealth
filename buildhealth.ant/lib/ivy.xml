@@ -1,0 +1,10 @@
+<ivy-module version="2.0">
+	<info organisation="org.pescuma" module="buildhealth.ant" />
+	<configurations defaultconfmapping="default->default,sources">
+	</configurations>
+	<dependencies>
+		<dependency org="org.apache.ant" name="ant" rev="1.7.0">
+			<exclude org="org.apache.ant" module="ant-launcher" />
+		</dependency>
+	</dependencies>
+</ivy-module>
