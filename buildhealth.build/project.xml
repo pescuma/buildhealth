@@ -1,5 +1,9 @@
 <project>
 
+	<property name="project" value="MISSING_NAME" />
+	<property name="project.deps" value="" />
+	<property name="version" value="devel" />
+
 	<script language="javascript">
 		<![CDATA[ 
 	        importClass(java.util.Locale);
@@ -28,8 +32,6 @@
 	<property name="reports.dir" value="${build.dir}/reports" />
 	<property name="reports.junit.dir" value="${reports.dir}/junit" />
 	<property name="dist.dir" value="${build.dir}/dist" />
-
-	<property name="project.deps" value="" />
 
 	<if>
 		<equals arg1="${project.deps}" arg2="" />

@@ -1,7 +1,6 @@
 <project name="buildhealth.core" default="all">
 
 	<property name="project" value="buildhealth.core" />
-	<property name="version" value="0.1" />
 
 	<import file="../buildhealth.build/ivy.xml" />
 	<import file="../buildhealth.build/project.xml" />

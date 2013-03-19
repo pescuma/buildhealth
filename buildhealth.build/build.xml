@@ -1,9 +1,11 @@
 <project name="buildhealth.build" default="all">
 
+	<property name="projs" value="buildhealth.core,buildhealth.cli" />
+	<property name="version" value="0.1" />
+
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
 	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/lib/proguard-4.9.jar" />
 
-	<property name="projs" value="buildhealth.core,buildhealth.cli" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="build.tmp.dir" value="${build.dir}/tmp" />
 	<property name="reports.dir" value="${build.dir}/reports" />
@@ -63,7 +65,7 @@
 			<exclude name="*.default" />
 		</delete>
 
-		<jar destfile="${build.dir}/buildhealth.cli.full.jar" filesetmanifest="mergewithoutmain">
+		<jar destfile="${build.dir}/buildhealth.cli.full-${version}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="org.pescuma.buildhealth.cli.BuildHealthCli" />
 				<attribute name="Class-Path" value="." />
@@ -75,8 +77,8 @@
 
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
-			-injars      "${build.dir}/buildhealth.cli.full.jar"
-			-outjars     "${build.dir}/buildhealth.cli.jar"
+			-injars      "${build.dir}/buildhealth.cli.full-${version}.jar"
+			-outjars     "${build.dir}/buildhealth.cli-${version}.jar"
 			-dontoptimize
 			-dontobfuscate
 			-dontwarn
@@ -113,7 +115,9 @@
 		<for list="${projs}" param="proj">
 			<sequential>
 				<echo>Calling ${target} in @{proj}</echo>
-				<ant antfile="../@{proj}/build.xml" target="${target}" inheritall="false" />
+				<ant antfile="../@{proj}/build.xml" target="${target}" inheritall="false">
+					<property name="version" value="${version}" />
+				</ant>
 			</sequential>
 		</for>
 	</target>
