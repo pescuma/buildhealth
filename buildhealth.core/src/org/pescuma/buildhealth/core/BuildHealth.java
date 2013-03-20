@@ -11,6 +11,8 @@ import org.apache.commons.io.FileUtils;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.data.BuildDataTable;
 import org.pescuma.buildhealth.core.data.DiskBuildData;
+import org.pescuma.buildhealth.core.listener.BuildHealthListener;
+import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 
 public class BuildHealth {
@@ -20,6 +22,7 @@ public class BuildHealth {
 	private final File home;
 	private final BuildData table;
 	private final List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
+	private final CompositeBuildHealthListener listeners = new CompositeBuildHealthListener();
 	
 	public BuildHealth() {
 		this(null);
@@ -37,6 +40,14 @@ public class BuildHealth {
 	public void shutdown() {
 		if (table instanceof DiskBuildData)
 			((DiskBuildData) table).saveToDisk();
+	}
+	
+	public boolean addListener(BuildHealthListener listener) {
+		return listeners.addListener(listener);
+	}
+	
+	public boolean removeListener(BuildHealthListener listener) {
+		return listeners.removeListener(listener);
 	}
 	
 	public void startNewBuild() {
@@ -59,17 +70,16 @@ public class BuildHealth {
 		analysers.add(analyser);
 	}
 	
-	public void extract(BuildDataExtractor extractor) {
+	public void extract(final BuildDataExtractor extractor) {
 		extractor.extractTo(table, new BuildDataExtractorTracker() {
 			@Override
 			public void fileProcessed(File file) {
-				// TODO Auto-generated method stub
-				System.out.println("File processed: " + file);
+				listeners.onFileExtracted(extractor, file);
 			}
 			
 			@Override
 			public void streamProcessed() {
-				// TODO Auto-generated method stub
+				listeners.onStreamExtracted(extractor);
 			}
 		});
 	}

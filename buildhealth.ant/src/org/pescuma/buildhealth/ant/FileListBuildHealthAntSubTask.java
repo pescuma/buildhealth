@@ -11,7 +11,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.FileResourceIterator;
 
-abstract class FileListTask extends BaseAntTask {
+public abstract class FileListBuildHealthAntSubTask extends BaseBuildHealthAntSubTask {
 	
 	private File dir;
 	private File file;

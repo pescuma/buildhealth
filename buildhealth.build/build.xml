@@ -52,6 +52,7 @@
 						<include name="**/*.jar" />
 						<exclude name="**/*-source.jar" />
 						<exclude name="**/ivy-*.jar" />
+						<exclude name="**/ant-*.jar" />
 						<exclude name="**/junit-*.jar" />
 						<exclude name="**/hamcrest-*.jar" />
 						<exclude name="**/mockito-*.jar" />
