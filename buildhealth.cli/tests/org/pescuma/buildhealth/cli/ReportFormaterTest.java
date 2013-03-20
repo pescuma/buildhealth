@@ -5,9 +5,9 @@ import static org.pescuma.buildhealth.core.BuildStatus.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pescuma.buildhealth.cli.ReportFormater;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.ReportFormater;
 
 public class ReportFormaterTest {
 	

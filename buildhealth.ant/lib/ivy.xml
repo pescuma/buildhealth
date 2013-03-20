@@ -4,7 +4,7 @@
 	</configurations>
 	<dependencies>
 		<dependency org="org.apache.ant" name="ant" rev="1.7.0">
-			<exclude org="org.apache.ant" module="ant-launcher" />
+			<!--  exclude org="org.apache.ant" module="ant-launcher" / -->
 		</dependency>
 	</dependencies>
 </ivy-module>

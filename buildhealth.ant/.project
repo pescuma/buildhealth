@@ -3,6 +3,7 @@
 	<name>buildhealth.ant</name>
 	<comment></comment>
 	<projects>
+		<project>buildhealth.core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -6,8 +6,8 @@ import org.pescuma.buildhealth.analyser.diskusage.DiskUsageAnalyser;
 import org.pescuma.buildhealth.analyser.loc.LOCAnalyser;
 import org.pescuma.buildhealth.analyser.unittest.UnitTestAnalyser;
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
-import org.pescuma.buildhealth.cli.ReportFormater;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.ReportFormater;
 
 @Command(name = "report", description = "Report the status of the current build")
 public class ReportCommand extends BuildHealthCliCommand {

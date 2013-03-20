@@ -7,8 +7,8 @@ import io.airlift.command.Help;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
-import org.pescuma.buildhealth.cli.commands.CLOCCommand;
-import org.pescuma.buildhealth.cli.commands.DiskUsageCommand;
+import org.pescuma.buildhealth.cli.commands.CLOCExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.DiskUsageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.ReportCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
 import org.pescuma.buildhealth.cli.commands.unittest.AUnitExtractorCommand;
@@ -41,7 +41,7 @@ public class BuildHealthCli {
 						MSTestExtractorCommand.class, //
 						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
 						TusarExtractorCommand.class, //
-						DiskUsageCommand.class, CLOCCommand.class);
+						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		

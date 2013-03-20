@@ -1,23 +1,21 @@
-package org.pescuma.buildhealth.cli;
+package org.pescuma.buildhealth.core;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.pescuma.buildhealth.core.BuildStatus;
-import org.pescuma.buildhealth.core.Report;
-
 public class ReportFormater {
 	
+	private static final String NO_DATA = "No data to generate report";
 	private static final String PREFIX = "    ";
 	
 	public String format(Report report) {
 		if (report == null)
-			return "No data to generate report";
+			return NO_DATA;
 		
 		StringBuilder result = new StringBuilder();
 		
 		if (report.getName().equals("Build")) {
-			result.append("Your build is ").append(createTitle(report.getStatus())).append("\n");
+			result.append(createSummaryLine(report)).append("\n");
 			append(result, report.getChildren(), PREFIX);
 			
 		} else {
@@ -25,6 +23,13 @@ public class ReportFormater {
 		}
 		
 		return result.toString();
+	}
+	
+	public String createSummaryLine(Report report) {
+		if (report == null)
+			return NO_DATA;
+		
+		return "Your build is " + createTitle(report.getStatus());
 	}
 	
 	private void append(StringBuilder result, List<Report> reports, String prefix) {

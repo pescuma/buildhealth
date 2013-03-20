@@ -11,7 +11,7 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.diskusage.DiskUsageExtractor;
 
 @Command(name = "diskusage", description = "Add disk usage information")
-public class DiskUsageCommand extends BuildHealthCliCommand {
+public class DiskUsageExtractorCommand extends BuildHealthCliCommand {
 	
 	@Arguments(title = "file or folder", description = "File or folder to compute disk usage", required = true)
 	public File file;

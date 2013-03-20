@@ -1,0 +1,16 @@
+<project name="buildhealth.ant" default="all">
+
+	<taskdef name="buildhealth" classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" />
+	<taskdef name="add-junit" classname="org.pescuma.buildhealth.ant.JUnitExtractorAntTask" />
+	<taskdef name="add-cloc" classname="org.pescuma.buildhealth.ant.CLOCExtractorAntTask" />
+
+	<target name="all">
+		<buildhealth>
+			<add-junit>
+				<fileset dir="C:\Desenvolvimento\java\buildhealth\buildhealth.cli\build\reports\junit" />
+			</add-junit>
+			<add-cloc file="C:\Desenvolvimento\java\buildhealth\buildhealth.build\build\reports\cloc.files.csv" />
+		</buildhealth>
+	</target>
+
+</project>

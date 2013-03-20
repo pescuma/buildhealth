@@ -10,7 +10,7 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.loc.CLOCExtractor;
 
 @Command(name = "cloc", description = "Add lines of code information from cloc csv output")
-public class CLOCCommand extends BuildHealthCliCommand {
+public class CLOCExtractorCommand extends BuildHealthCliCommand {
 	
 	@Arguments(title = "file or folder", description = "File or folder with cloc csv output(s)", required = true)
 	public File file;
