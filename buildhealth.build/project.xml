@@ -91,7 +91,11 @@
 		</javac>
 	</target>
 
-	<target name="compile-tests" depends="compile">
+	<target name="check-tests">
+		<available file="${tests.dir}" property="tests.present" />
+	</target>
+
+	<target name="compile-tests" depends="compile, check-tests" if="tests.present">
 		<delete dir="${build.tests.dir}" quiet="true" />
 		<mkdir dir="${build.tests.dir}" />
 
@@ -108,7 +112,7 @@
 		</copy>
 	</target>
 
-	<target name="test" depends="compile-tests" description="Run the tests">
+	<target name="test" depends="compile-tests, check-tests" if="tests.present" description="Run the tests">
 		<delete dir="${reports.junit.dir}" quiet="true" />
 		<mkdir dir="${reports.junit.dir}" />
 
@@ -134,7 +138,11 @@
 		<delete dir="${dist.dir}" quiet="true" />
 		<mkdir dir="${dist.dir}" />
 
-		<jar jarfile="${dist.dir}/${project}-${version}.jar" basedir="${build.javac.dir}" />
+		<jar jarfile="${dist.dir}/${project}-${version}.jar" basedir="${build.javac.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</jar>
 		<jar jarfile="${dist.dir}/${project}-${version}-source.jar" basedir="${src.dir}" />
 	</target>
 

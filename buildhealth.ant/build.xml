@@ -6,8 +6,4 @@
 	<import file="../buildhealth.build/ivy.xml" />
 	<import file="../buildhealth.build/project.xml" />
 
-	<target name="all">
-		<!-- disabled for now -->
-	</target>
-
 </project>

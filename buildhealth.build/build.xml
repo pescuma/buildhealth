@@ -20,6 +20,9 @@
 		<antcall target="cloc" />
 
 		<antcall target="pack-cli" />
+		<antcall target="pack-ant" />
+
+		<antcall target="report" />
 	</target>
 
 	<target name="cloc">
@@ -36,8 +39,6 @@
 	</target>
 
 	<target name="pack-cli">
-		<delete dir="${build.dir}" includes="buildhealth*.jar" quiet="true" />
-
 		<delete dir="${build.tmp.dir}" quiet="true" />
 		<mkdir dir="${build.tmp.dir}" />
 
@@ -66,6 +67,8 @@
 			<exclude name="*.default" />
 		</delete>
 
+		<delete dir="${build.dir}/buildhealth.cli.*" quiet="true" />
+
 		<jar destfile="${build.dir}/buildhealth.cli.full-${version}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="org.pescuma.buildhealth.cli.BuildHealthCli" />
@@ -92,6 +95,75 @@
 			
 			-dontnote **
 		</proguard>
+	</target>
+
+	<target name="pack-ant">
+		<delete dir="${build.tmp.dir}" quiet="true" />
+		<mkdir dir="${build.tmp.dir}" />
+
+		<for list="buildhealth.core,buildhealth.ant" param="proj">
+			<sequential>
+				<unzip dest="${build.tmp.dir}">
+					<fileset dir="../@{proj}/build/dist">
+						<include name="**/*.jar" />
+						<exclude name="**/*-source.jar" />
+					</fileset>
+					<fileset dir="../@{proj}/lib">
+						<include name="**/*.jar" />
+						<exclude name="**/*-source.jar" />
+						<exclude name="**/ivy-*.jar" />
+						<exclude name="**/ant-*.jar" />
+						<exclude name="**/junit-*.jar" />
+						<exclude name="**/hamcrest-*.jar" />
+						<exclude name="**/mockito-*.jar" />
+					</fileset>
+				</unzip>
+			</sequential>
+		</for>
+
+		<delete dir="${build.tmp.dir}/META-INF" includeemptydirs="true">
+			<exclude name="services/**" />
+			<exclude name="*.default" />
+		</delete>
+
+		<delete dir="${build.dir}/buildhealth.ant.*" quiet="true" />
+
+		<jar destfile="${build.dir}/buildhealth.ant.full-${version}.jar" filesetmanifest="mergewithoutmain">
+			<fileset dir="${build.tmp.dir}" />
+		</jar>
+
+		<delete dir="${build.tmp.dir}" />
+
+		<proguard>
+			-libraryjars "${java.home}/lib/rt.jar"
+			-injars      "${build.dir}/buildhealth.ant.full-${version}.jar"
+			-outjars     "${build.dir}/buildhealth.ant-${version}.jar"
+			-dontoptimize
+			-dontobfuscate
+			-dontwarn
+				
+			-keep class org.pescuma.buildhealth.ant.** {*;}
+			-keep class com.google.common.base.FinalizableReference {*;}
+			-keep class org.jaxen.saxpath.base.XPathReader {*;}
+			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
+			-keep class net.sf.saxon.event.MessageEmitter {*;}
+			
+			-dontnote **
+		</proguard>
+	</target>
+
+	<target name="report">
+		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml" classpath="${build.dir}/buildhealth.ant-${version}.jar" />
+
+		<buildhealth home="${reports.dir}/builhealth">
+			<add-junit>
+				<fileset dir="${basedir}/..">
+					<include name="**/reports/junit/*.xml" />
+				</fileset>
+			</add-junit>
+			<add-cloc file="${reports.dir}/cloc.files.csv" />
+			<add-diskusage dir="${build.dir}" />
+		</buildhealth>
 	</target>
 
 	<target name="clean" description="Delete all build results">

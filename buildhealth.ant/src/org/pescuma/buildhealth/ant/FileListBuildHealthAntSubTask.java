@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.FileResourceIterator;
@@ -55,7 +56,7 @@ public abstract class FileListBuildHealthAntSubTask extends BaseBuildHealthAntSu
 		}
 		
 		if (result.isEmpty())
-			throw new BuildException("You need to expecify which files to load.", getLocation());
+			log("No files available to be processed.", Project.MSG_WARN);
 		
 		return result;
 	}
