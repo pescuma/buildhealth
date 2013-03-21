@@ -90,51 +90,67 @@ public class DiskBuildData implements BuildData {
 		}
 	}
 	
+	@Override
 	public boolean isEmpty() {
 		loadFromDisk();
 		return data.isEmpty();
 	}
 	
+	@Override
 	public void add(double value, String... info) {
 		wroteData = true;
 		data.add(value, info);
 	}
 	
+	@Override
+	public double get(String... info) {
+		loadFromDisk();
+		return data.get(info);
+	}
+	
+	@Override
 	public Collection<Line> getLines() {
 		loadFromDisk();
 		return data.getLines();
 	}
 	
+	@Override
 	public Collection<String> getDistinct(int column) {
 		loadFromDisk();
 		return data.getDistinct(column);
 	}
 	
+	@Override
 	public Map<String, Value> sumDistinct(int columns) {
 		loadFromDisk();
 		return data.sumDistinct(columns);
 	}
 	
+	@Override
 	public Map<String[], Value> sumDistinct(int... columns) {
 		loadFromDisk();
 		return data.sumDistinct(columns);
 	}
 	
+	@Override
 	public BuildData filter(String... info) {
 		loadFromDisk();
 		return data.filter(info);
 	}
 	
+	@Override
 	public BuildData filter(int column, String name) {
 		loadFromDisk();
 		return data.filter(column, name);
 	}
 	
+	@Override
 	public double sum() {
 		loadFromDisk();
 		return data.sum();
 	}
 	
+	@Override
 	public int size() {
 		loadFromDisk();
 		return data.size();

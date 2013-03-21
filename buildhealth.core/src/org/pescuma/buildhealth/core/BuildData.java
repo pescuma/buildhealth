@@ -9,6 +9,8 @@ public interface BuildData {
 	
 	void add(double value, String... info);
 	
+	double get(String... info);
+	
 	Collection<Line> getLines();
 	
 	Collection<String> getDistinct(int column);

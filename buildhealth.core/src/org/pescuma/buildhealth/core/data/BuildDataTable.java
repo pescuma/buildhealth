@@ -102,8 +102,29 @@ public class BuildDataTable implements BuildData {
 	
 	@Override
 	public void add(double value, String... info) {
+		info = replaceNull(info);
 		info = removeEmptyAtEnd(info);
 		lines.add(new LineImpl(value, info));
+	}
+	
+	private String[] replaceNull(String[] info) {
+		int nullPos = findNull(info);
+		if (nullPos < 0)
+			return info;
+		
+		String[] result = Arrays.copyOf(info, info.length);
+		for (int i = nullPos; i < result.length; i++) {
+			if (result[i] == null)
+				result[i] = "";
+		}
+		return result;
+	}
+	
+	private int findNull(String[] info) {
+		for (int i = 0; i < info.length; i++)
+			if (info[i] == null)
+				return i;
+		return -1;
 	}
 	
 	private String[] removeEmptyAtEnd(String[] info) {
@@ -115,6 +136,24 @@ public class BuildDataTable implements BuildData {
 			return info;
 		else
 			return copyOf(info, last);
+	}
+	
+	@Override
+	public double get(final String... info) {
+		Collection<LineImpl> filtered = Collections2.filter(lines, new Predicate<LineImpl>() {
+			@Override
+			public boolean apply(LineImpl input) {
+				return input.info.length <= info.length && input.infoStartsWith(info);
+			}
+		});
+		
+		int size = filtered.size();
+		if (size > 1)
+			throw new IllegalArgumentException("More than one line has info " + Arrays.toString(info));
+		if (size == 0)
+			throw new IllegalArgumentException("Line not found " + Arrays.toString(info));
+		
+		return filtered.iterator().next().value;
 	}
 	
 	@Override
@@ -171,7 +210,7 @@ public class BuildDataTable implements BuildData {
 		
 		boolean infoStartsWith(String[] start) {
 			for (int i = 0; i < start.length; i++) {
-				String val = (i < info.length ? info[i] : "");
+				String val = getColumn(i);
 				if (!val.equals(start[i]))
 					return false;
 			}
@@ -179,10 +218,12 @@ public class BuildDataTable implements BuildData {
 			return true;
 		}
 		
+		@Override
 		public double getValue() {
 			return value;
 		}
 		
+		@Override
 		public String getColumn(int column) {
 			if (column < info.length)
 				return info[column];

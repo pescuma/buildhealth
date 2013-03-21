@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- EMMA v2.0.4015 (stable) report, generated Sat May 15 12:02:28 CDT 2004 -->
+
+<report>
+  <stats>
+    <packages value="8"/>
+    <classes value="185"/>
+    <methods value="2061"/>
+    <srcfiles value="62"/>
+    <srclines value="13135"/>
+  </stats>
+  <data>
+    <all name="all classes">
+      <coverage type="class, %" value="100% (85/85)"/>
+      <coverage type="method, %" value="65%  (345/061)"/>
+      <coverage type="block, %" value="60%  (4997/4846)"/>
+      <coverage type="line, %" value="64%  (346.3/3135)"/>
+    </all>
+  </data>
+</report>

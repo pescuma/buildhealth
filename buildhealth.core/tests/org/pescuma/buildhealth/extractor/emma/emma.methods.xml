@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- EMMA v2.0.4015 (stable) report, generated Sat May 15 12:02:28 CDT 2004 -->
+
+<report>
+  <data>
+    <all name="all classes">
+      <coverage type="class, %" value="100% (185/185)"/>
+      <coverage type="method, %" value="65%  (1345/2061)"/>
+      <coverage type="block, %" value="60%  (44997/74846)"/>
+      <coverage type="line, %" value="64%  (8346.3/13135)"/>
+
+      <package name="com.sun.tools.javac.v8.resources">
+        <coverage type="class, %" value="100% (4/4)"/>
+        <coverage type="method, %" value="25%  (3/12)"/>
+        <coverage type="block, %" value="40%  (3012/7446)"/>
+        <coverage type="line, %" value="25%  (3/12)"/>
+
+        <srcfile name="compiler_ja.java">
+          <coverage type="class, %" value="100% (1/1)"/>
+          <coverage type="method, %" value="0%   (0/3)"/>
+          <coverage type="block, %" value="0%   (0/3012)"/>
+          <coverage type="line, %" value="0%   (0/3)"/>
+
+          <class name="compiler_ja">
+            <coverage type="class, %" value="0%   (0/1)"/>
+            <coverage type="method, %" value="0%   (0/3)"/>
+            <coverage type="block, %" value="0%   (0/3012)"/>
+            <coverage type="line, %" value="0%   (0/3)"/>
+
+            <method name="&lt;static initializer&gt;">
+              <coverage type="method, %" value="0%   (0/1)"/>
+              <coverage type="block, %" value="0%   (0/3007)"/>
+              <coverage type="line, %" value="0%   (0/1)"/>
+            </method>
+            <method name="compiler_ja (): void">
+              <coverage type="method, %" value="0%   (0/1)"/>
+              <coverage type="block, %" value="0%   (0/3)"/>
+              <coverage type="line, %" value="0%   (0/1)"/>
+            </method>
+            <method name="getContents (): Object [][]">
+              <coverage type="method, %" value="0%   (0/1)"/>
+              <coverage type="block, %" value="0%   (0/2)"/>
+              <coverage type="line, %" value="0%   (0/1)"/>
+            </method>
+          </class>
+        </srcfile>
+      </package>
+    </all>
+  </data>
+</report>
