@@ -56,19 +56,4 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		assertTable(18, 3018, table.filter("Coverage", "java", "emma").filter(5, "method"));
 	}
 	
-	@Test
-	public void testBig() {
-		InputStream stream = load("emma.big.xml");
-		
-		EmmaExtractor extractor = new EmmaExtractor(new PseudoFiles(stream));
-		
-		extractor.extractTo(table, tracker);
-		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
-		
-		assertEquals(14414, table.size());
-		assertEquals(8, table.filter("Coverage", "java", "emma").filter(5, "all").size());
-	}
-	
 }
