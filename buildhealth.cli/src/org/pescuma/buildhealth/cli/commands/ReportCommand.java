@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.cli.commands;
 
 import io.airlift.command.Command;
 
+import org.pescuma.buildhealth.analyser.coverage.CoverageAnalyser;
 import org.pescuma.buildhealth.analyser.diskusage.DiskUsageAnalyser;
 import org.pescuma.buildhealth.analyser.loc.LOCAnalyser;
 import org.pescuma.buildhealth.analyser.unittest.UnitTestAnalyser;
@@ -16,6 +17,7 @@ public class ReportCommand extends BuildHealthCliCommand {
 	public void execute() {
 		// TODO
 		buildHealth.addAnalyser(new UnitTestAnalyser());
+		buildHealth.addAnalyser(new CoverageAnalyser());
 		buildHealth.addAnalyser(new LOCAnalyser());
 		buildHealth.addAnalyser(new DiskUsageAnalyser());
 		

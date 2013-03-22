@@ -16,4 +16,6 @@
 	<typedef name="add-nunit" classname="org.pescuma.buildhealth.ant.tasks.NUnitExtractorAntTask" />
 	<typedef name="add-phpunit" classname="org.pescuma.buildhealth.ant.tasks.PHPUnitExtractorAntTask" />
 	<typedef name="add-tusar" classname="org.pescuma.buildhealth.ant.tasks.TusarExtractorAntTask" />
+
+	<typedef name="add-emma" classname="org.pescuma.buildhealth.ant.tasks.EmmaExtractorAntTask" />
 </antlib>

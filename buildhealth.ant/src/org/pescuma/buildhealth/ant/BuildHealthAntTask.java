@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.TaskContainer;
+import org.pescuma.buildhealth.analyser.coverage.CoverageAnalyser;
 import org.pescuma.buildhealth.analyser.diskusage.DiskUsageAnalyser;
 import org.pescuma.buildhealth.analyser.loc.LOCAnalyser;
 import org.pescuma.buildhealth.analyser.unittest.UnitTestAnalyser;
@@ -50,6 +51,7 @@ public class BuildHealthAntTask extends Task implements TaskContainer {
 		
 		// TODO
 		buildHealth.addAnalyser(new UnitTestAnalyser());
+		buildHealth.addAnalyser(new CoverageAnalyser());
 		buildHealth.addAnalyser(new LOCAnalyser());
 		buildHealth.addAnalyser(new DiskUsageAnalyser());
 		

@@ -1,5 +1,6 @@
 package org.pescuma.buildhealth.extractor.emma;
 
+import static com.google.common.base.Strings.*;
 import static org.apache.commons.io.FilenameUtils.*;
 
 import java.io.File;
@@ -19,12 +20,10 @@ import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EmmaExtractor implements BuildDataExtractor {
 	
-	private static final Logger log = LoggerFactory.getLogger(EmmaExtractor.class);
+	// TODO private static final Logger log = LoggerFactory.getLogger(EmmaExtractor.class);
 	
 	private static final Pattern VALUE_PATTERN = Pattern.compile("(\\d+)% +\\((\\d+(?:\\.\\d+)?)/(\\d+)\\)");
 	
@@ -95,8 +94,7 @@ public class EmmaExtractor implements BuildDataExtractor {
 	private static void addAll(BuildData data, Element all) {
 		addCoverage(data, all, "all", null);
 		
-		NodeInfo[] nodes = new NodeInfo[] { //
-		new NodeInfo("package", "package", false), //
+		NodeInfo[] nodes = new NodeInfo[] { new NodeInfo("package", "package", false), //
 				new NodeInfo("srcfile", "file", true), //
 				new NodeInfo("class", "class", false), //
 				new NodeInfo("method", "method", false), //
@@ -119,8 +117,8 @@ public class EmmaExtractor implements BuildDataExtractor {
 		NodeInfo node = nodes[i];
 		
 		String name = el.getAttributeValue("name");
-		if (name == null || name.isEmpty()) {
-			log.info("Ignoring " + node.emma + " because of missing name");
+		if (isNullOrEmpty(name)) {
+			// TODO log.info("Ignoring " + node.emma + " because of missing name");
 			return;
 		}
 		
@@ -141,14 +139,14 @@ public class EmmaExtractor implements BuildDataExtractor {
 		for (Element coverage : el.getChildren("coverage")) {
 			String type = emmaTypeToCoverageType(coverage.getAttributeValue("type"));
 			if (type == null) {
-				log.info("Ignoring coverage of " + placeType + " because of unknown type: " + type);
+				// TODO log.info("Ignoring coverage of " + placeType + " because of unknown type: " + type);
 				continue;
 			}
 			
 			String value = coverage.getAttributeValue("value");
 			Matcher m = VALUE_PATTERN.matcher(value);
 			if (!m.matches()) {
-				log.info("Ignoring coverage of " + placeType + " because of unknown value: " + value);
+				// TODO log.info("Ignoring coverage of " + placeType + " because of unknown value: " + value);
 				continue;
 			}
 			

@@ -67,7 +67,7 @@ public class DiskUsageAnalyserTest extends BaseAnalyserTest {
 	public void testSimpleM() {
 		create(12 * 1024 * 1024);
 		
-		assertEquals(new Report(Good, "Disk usage", "12.0 MiB"), createReport());
+		assertEquals(new Report(Good, "Disk usage", "12 MiB"), createReport());
 	}
 	
 	@Test

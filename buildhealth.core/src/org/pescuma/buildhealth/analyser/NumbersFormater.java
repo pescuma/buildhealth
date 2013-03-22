@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.analyser;
 
-import com.google.common.base.Strings;
+import static com.google.common.base.Strings.*;
+import static java.lang.Math.*;
 
 public class NumbersFormater {
 	
@@ -21,17 +22,26 @@ public class NumbersFormater {
 	}
 	
 	private static String format(double total, String baseUnit, final String[] units, final int scale) {
-		String unit = null;
+		String unit = "";
 		for (int i = 0; i < units.length && total >= scale; i++) {
 			total /= scale;
 			unit = units[i];
 		}
 		
-		if (unit == null && Strings.isNullOrEmpty(baseUnit))
-			return String.format("%.0f", total);
-		else if (unit == null)
-			return String.format("%.0f %s", total, baseUnit);
+		int decimals = detectDecimals(total);
+		if (!unit.isEmpty())
+			decimals = min(decimals, 1);
+		
+		return String.format("%." + decimals + "f%s%s%s", total, isNullOrEmpty(baseUnit) ? "" : " ", unit, baseUnit);
+	}
+	
+	private static int detectDecimals(double total) {
+		int tmp = ((int) round(total * 100)) % 100;
+		if (tmp == 0)
+			return 0;
+		else if (tmp % 10 == 0)
+			return 1;
 		else
-			return String.format("%.1f %s%s", total, unit, baseUnit);
+			return 2;
 	}
 }

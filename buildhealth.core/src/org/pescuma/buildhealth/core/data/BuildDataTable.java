@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.pescuma.buildhealth.core.BuildData;
 
@@ -42,7 +42,8 @@ public class BuildDataTable implements BuildData {
 	
 	@Override
 	public Collection<String> getDistinct(int column) {
-		Set<String> result = new HashSet<String>();
+		// By default sort by the columns text
+		Set<String> result = new TreeSet<String>();
 		for (Line line : lines) {
 			String info = line.getColumn(column);
 			result.add(info);
@@ -53,17 +54,7 @@ public class BuildDataTable implements BuildData {
 	@Override
 	public Map<String[], Value> sumDistinct(int... columns) {
 		// By default sort by the columns text
-		Map<String[], Value> result = new TreeMap<String[], Value>(new Comparator<String[]>() {
-			@Override
-			public int compare(String[] o1, String[] o2) {
-				for (int i = 0; i < o1.length; i++) {
-					int comp = o1[i].compareTo(o2[i]);
-					if (comp != 0)
-						return comp;
-				}
-				return 0;
-			}
-		});
+		Map<String[], Value> result = new TreeMap<String[], Value>(getLinesComparator());
 		
 		for (Line line : lines) {
 			String[] key = line.getColumns(columns);
@@ -78,6 +69,20 @@ public class BuildDataTable implements BuildData {
 		}
 		
 		return result;
+	}
+	
+	private Comparator<String[]> getLinesComparator() {
+		return new Comparator<String[]>() {
+			@Override
+			public int compare(String[] o1, String[] o2) {
+				for (int i = 0; i < o1.length; i++) {
+					int comp = o1[i].compareTo(o2[i]);
+					if (comp != 0)
+						return comp;
+				}
+				return 0;
+			}
+		};
 	}
 	
 	@Override
