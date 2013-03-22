@@ -24,7 +24,7 @@ import org.pescuma.buildhealth.core.Report;
  * All values are in lines.
  * 
  * Usual values for type are: source, comment, blank, unknown. There is a special type called files that means the
- * number of files (and not a line count)
+ * number of files (and not a line count).
  * 
  * Example:
  * 
@@ -36,11 +36,34 @@ import org.pescuma.buildhealth.core.Report;
  * 15 | LOC,java,files,/tmp/X
  * 12 | LOC,c++,files
  * </pre>
+ * 
+ * If not LOC information is found, it will try to get this information from coverage data.
  */
 public class LOCAnalyser implements BuildHealthAnalyser {
 	
 	@Override
 	public List<Report> computeSimpleReport(BuildData data) {
+		List<Report> result = computeFromLOC(data);
+		
+		if (result.isEmpty())
+			result = computeFromCoverage(data);
+		
+		return result;
+	}
+	
+	private List<Report> computeFromCoverage(BuildData data) {
+		data = data.filter("Coverage").filter(5, "all").filter(3, "line").filter(4, "total");
+		if (data.isEmpty())
+			return Collections.emptyList();
+		
+		long lines = round(data.sum());
+		if (lines < 1)
+			return Collections.emptyList();
+		
+		return asList(new Report(BuildStatus.Good, "Lines of code", format(lines), "from coverage"));
+	}
+	
+	private List<Report> computeFromLOC(BuildData data) {
 		data = data.filter("LOC");
 		if (data.isEmpty())
 			return Collections.emptyList();

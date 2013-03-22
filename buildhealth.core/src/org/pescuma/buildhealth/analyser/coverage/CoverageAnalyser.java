@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildStatus;
@@ -41,6 +42,8 @@ import org.pescuma.buildhealth.core.Report;
  */
 public class CoverageAnalyser implements BuildHealthAnalyser {
 	
+	private final boolean showDetailsInDescription = false;
+	
 	@Override
 	public List<Report> computeSimpleReport(BuildData data) {
 		data = data.filter("Coverage").filter(5, "all");
@@ -60,9 +63,12 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			
 			if (description.length() > 0)
 				description.append(", ");
+			
 			description.append(type.name).append(": ").append(percentage).append("%");
-			description.append(" (").append(format1000(type.covered, "")).append("/")
-					.append(format1000(type.total, "")).append(")");
+			
+			if (showDetailsInDescription)
+				description.append(" (").append(format(type.covered)).append("/").append(format1000(type.total, ""))
+						.append(")");
 			
 			if (defPercentage < 0 || "line".equals(type.name))
 				defPercentage = percentage;
@@ -72,6 +78,10 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			return Collections.emptyList();
 		
 		return asList(new Report(BuildStatus.Good, "Coverage", defPercentage + "%", description.toString()));
+	}
+	
+	private String format(double val) {
+		return NumbersFormater.format1000(val, "");
 	}
 	
 	private void sort(List<Type> types) {
