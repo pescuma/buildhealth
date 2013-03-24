@@ -1,4 +1,4 @@
-<project>
+<project xmlns:jacoco="antlib:org.jacoco.ant">
 
 	<property name="project" value="MISSING_NAME" />
 	<property name="project.deps" value="" />
@@ -19,19 +19,21 @@
 		</classpath>
 	</taskdef>
 
-	<property name="project.dir" value="${basedir}" />
-	<property name="src.dir" value="${project.dir}/src" />
-	<property name="tests.dir" value="${project.dir}/tests" />
+	<property name="project.dir" location="${basedir}" />
+	<property name="src.dir" location="${project.dir}/src" />
+	<property name="tests.dir" location="${project.dir}/tests" />
 	<property name="lib.dir" location="${project.dir}/lib" />
-	<property name="build.dir" value="${project.dir}/build" />
-	<property name="build.tmp.dir" value="${build.dir}/tmp" />
+	<property name="build.dir" location="${project.dir}/build" />
+	<property name="build.tmp.dir" location="${build.dir}/tmp" />
 	<property name="build.bin.dir" location="${build.tmp.dir}/bin" />
 	<property name="build.javac.dir" location="${build.bin.dir}/src" />
 	<property name="build.ejdt.dir" location="${build.bin.dir}/ejdt" />
 	<property name="build.tests.dir" location="${build.bin.dir}/tests" />
-	<property name="reports.dir" value="${build.dir}/reports" />
-	<property name="reports.junit.dir" value="${reports.dir}/junit" />
-	<property name="dist.dir" value="${build.dir}/dist" />
+	<property name="reports.dir" location="${build.dir}/reports" />
+	<property name="reports.junit.dir" location="${reports.dir}/junit" />
+	<property name="reports.coverage.dir" location="${reports.dir}/coverage" />
+	<property name="dist.dir" location="${build.dir}/dist" />
+	<property name="tools.lib.dir" location="../buildhealth.build/lib" />
 
 	<if>
 		<equals arg1="${project.deps}" arg2="" />
@@ -112,26 +114,53 @@
 		</copy>
 	</target>
 
-	<target name="test" depends="compile-tests, check-tests" if="tests.present" description="Run the tests">
+	<target name="test" depends="check-tests, compile-tests" if="tests.present" description="Run the tests">
 		<delete dir="${reports.junit.dir}" quiet="true" />
 		<mkdir dir="${reports.junit.dir}" />
 
-		<junit printsummary="yes" fork="yes">
-			<classpath refid="compile.path" />
-			<classpath>
-				<pathelement location="${build.javac.dir}" />
-				<pathelement location="${build.tests.dir}" />
-			</classpath>
+		<delete dir="${reports.coverage.dir}" quiet="true" />
+		<mkdir dir="${reports.coverage.dir}" />
 
-			<formatter type="xml" />
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml" classpath="${tools.lib.dir}/jacocoant.jar" />
 
-			<batchtest todir="${reports.junit.dir}">
-				<fileset dir="${tests.dir}">
-					<include name="**/*Test.java" />
-					<exclude name="**/Base*Test.java" />
-				</fileset>
-			</batchtest>
-		</junit>
+		<jacoco:coverage destfile="${reports.coverage.dir}/jacoco.exec">
+			<junit printsummary="yes" fork="yes" forkmode="once">
+				<classpath refid="compile.path" />
+				<classpath>
+					<pathelement location="${build.javac.dir}" />
+					<pathelement location="${build.tests.dir}" />
+				</classpath>
+
+				<formatter type="xml" />
+
+				<batchtest todir="${reports.junit.dir}">
+					<fileset dir="${tests.dir}">
+						<include name="**/*Test.java" />
+						<exclude name="**/Base*Test.java" />
+					</fileset>
+				</batchtest>
+			</junit>
+		</jacoco:coverage>
+
+		<jacoco:report>
+			<executiondata>
+				<file file="${reports.coverage.dir}/jacoco.exec" />
+			</executiondata>
+
+			<structure name="${project}">
+				<classfiles>
+					<fileset dir="${build.javac.dir}" />
+					<fileset dir="${build.tests.dir}" />
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${src.dir}" />
+					<fileset dir="${tests.dir}" />
+				</sourcefiles>
+			</structure>
+
+			<html destdir="${reports.coverage.dir}" />
+			<xml destfile="${reports.coverage.dir}/jacoco.xml" />
+		</jacoco:report>
 	</target>
 
 	<target name="pack" depends="init" description="Create jar archives">
