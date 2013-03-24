@@ -1,6 +1,5 @@
-package org.pescuma.buildhealth.extractor.jacoco;
+package org.pescuma.buildhealth.extractor.dotcover;
 
-import static com.google.common.base.Objects.*;
 import static com.google.common.base.Strings.*;
 import static org.apache.commons.io.FilenameUtils.*;
 
@@ -20,11 +19,11 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
-public class JacocoExtractor implements BuildDataExtractor {
+public class DotCoverExtractor implements BuildDataExtractor {
 	
 	private final PseudoFiles files;
 	
-	public JacocoExtractor(PseudoFiles files) {
+	public DotCoverExtractor(PseudoFiles files) {
 		if (files == null)
 			throw new IllegalArgumentException();
 		
@@ -66,8 +65,8 @@ public class JacocoExtractor implements BuildDataExtractor {
 	
 	private static void extractDocument(String filename, Document doc, BuildData data) {
 		Element report = doc.getRootElement();
-		if (!report.getName().equals("report"))
-			throw new BuildDataExtractorException("Invalid file format: top node must be a report");
+		if (!report.getName().equals("Root"))
+			throw new BuildDataExtractorException("Invalid file format: top node must be Root");
 		
 		List<String> place = new ArrayList<String>();
 		
@@ -75,78 +74,49 @@ public class JacocoExtractor implements BuildDataExtractor {
 	}
 	
 	private static void extract(BuildData data, Element el, String placeType, List<String> place) {
-		String name = el.getAttributeValue("name");
-		
-		String desc = el.getAttributeValue("desc");
-		if (!isNullOrEmpty(desc))
-			name = firstNonNull(name, "") + " " + desc;
+		String name = el.getAttributeValue("Name");
+		if ("Root".equals(el.getName()) && "Root".equals(name))
+			name = null;
 		
 		if (!isNullOrEmpty(name))
 			place.add(name);
 		
 		addCoverage(data, el, placeType, place);
 		
-		for (Element pkg : el.getChildren("package"))
+		for (Element pkg : el.getChildren("Assembly"))
+			extract(data, pkg, "library", place);
+		
+		for (Element pkg : el.getChildren("Namespace"))
 			extract(data, pkg, "package", place);
 		
-		for (Element group : el.getChildren("group"))
-			extract(data, group, "group", place);
-		
-		for (Element cls : el.getChildren("class"))
+		for (Element cls : el.getChildren("Type"))
 			extract(data, cls, "class", place);
 		
-		for (Element method : el.getChildren("method"))
+		for (Element method : el.getChildren("Member"))
 			extract(data, method, "method", place);
-		
-		for (Element source : el.getChildren("sourcefile"))
-			extract(data, source, "sourceFile", place);
 		
 		if (!isNullOrEmpty(name))
 			place.remove(name);
 	}
 	
 	private static void addCoverage(BuildData data, Element el, String placeType, List<String> place) {
-		for (Element coverage : el.getChildren("counter")) {
-			String type = jacocoTypeToCoverageType(coverage.getAttributeValue("type"));
-			if (type == null)
-				continue;
-			
-			double missed = Double.parseDouble(coverage.getAttributeValue("missed"));
-			double covered = Double.parseDouble(coverage.getAttributeValue("covered"));
-			double total = covered + missed;
-			
-			List<String> infos = new ArrayList<String>();
-			infos.add("Coverage");
-			infos.add("java");
-			infos.add("jacoco");
-			infos.add(type);
-			infos.add("covered");
-			infos.add(placeType);
-			if (place != null)
-				infos.addAll(place);
-			
-			data.add(covered, infos.toArray(new String[infos.size()]));
-			
-			infos.set(4, "total");
-			data.add(total, infos.toArray(new String[infos.size()]));
-		}
-	}
-	
-	private static String jacocoTypeToCoverageType(String type) {
-		if ("INSTRUCTION".equals(type))
-			return "instruction";
-		else if ("BRANCH".equals(type))
-			return "branch";
-		else if ("LINE".equals(type))
-			return "line";
-		else if ("COMPLEXITY".equals(type))
-			return "complexity";
-		else if ("METHOD".equals(type))
-			return "method";
-		else if ("CLASS".equals(type))
-			return "class";
-		else
-			return null;
+		double total = Double.parseDouble(el.getAttributeValue("TotalStatements"));
+		double covered = Double.parseDouble(el.getAttributeValue("CoveredStatements"));
+		
+		List<String> infos = new ArrayList<String>();
+		infos.add("Coverage");
+		infos.add("c#");
+		infos.add("dotCover");
+		infos.add("line");
+		infos.add("covered");
+		infos.add(placeType);
+		if (place != null)
+			infos.addAll(place);
+		
+		data.add(covered, infos.toArray(new String[infos.size()]));
+		
+		infos.set(4, "total");
+		data.add(total, infos.toArray(new String[infos.size()]));
 	}
 	
 }

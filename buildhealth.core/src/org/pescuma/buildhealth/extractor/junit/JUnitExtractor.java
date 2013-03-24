@@ -13,12 +13,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.filter.Filters;
-import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 /**
@@ -58,15 +58,13 @@ public class JUnitExtractor implements BuildDataExtractor {
 	}
 	
 	public static void extractFile(File file, BuildData data) throws JDOMException, IOException {
-		SAXBuilder sax = new SAXBuilder();
-		Document doc = sax.build(file);
+		Document doc = JDomUtil.parse(file);
 		extractDocument(getBaseName(file.getName()), doc, data);
 	}
 	
 	public static void extractStream(String filename, InputStream input, BuildData data) throws JDOMException,
 			IOException {
-		SAXBuilder sax = new SAXBuilder();
-		Document doc = sax.build(input);
+		Document doc = JDomUtil.parse(input);
 		extractDocument(filename, doc, data);
 	}
 	

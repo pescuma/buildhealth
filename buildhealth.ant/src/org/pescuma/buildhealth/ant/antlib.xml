@@ -18,5 +18,5 @@
 	<typedef name="add-tusar" classname="org.pescuma.buildhealth.ant.tasks.TusarExtractorAntTask" />
 
 	<typedef name="add-emma" classname="org.pescuma.buildhealth.ant.tasks.EmmaExtractorAntTask" />
-	<typedef name="add-jacoco" classname="org.pescuma.buildhealth.ant.tasks.JacocoExtractorAntTask" />
+	<typedef name="add-dotCover" classname="org.pescuma.buildhealth.ant.tasks.DotCoverExtractorAntTask" />
 </antlib>

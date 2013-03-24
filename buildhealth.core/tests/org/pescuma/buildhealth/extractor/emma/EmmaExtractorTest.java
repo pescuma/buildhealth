@@ -51,7 +51,7 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		assertEquals(50, table.size());
 		assertTable(8, 145100.3, table.filter("Coverage", "java", "emma").filter(5, "all"));
 		assertTable(8, 10496, table.filter("Coverage", "java", "emma").filter(5, "package"));
-		assertTable(8, 3020, table.filter("Coverage", "java", "emma").filter(5, "file"));
+		assertTable(8, 3020, table.filter("Coverage", "java", "emma").filter(5, "sourceFile"));
 		assertTable(8, 3019, table.filter("Coverage", "java", "emma").filter(5, "class"));
 		assertTable(18, 3018, table.filter("Coverage", "java", "emma").filter(5, "method"));
 	}

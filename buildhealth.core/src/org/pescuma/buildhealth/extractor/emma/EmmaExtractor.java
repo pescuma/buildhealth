@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 public class EmmaExtractor implements BuildDataExtractor {
@@ -59,15 +59,13 @@ public class EmmaExtractor implements BuildDataExtractor {
 	}
 	
 	public static void extractFile(File file, BuildData data) throws JDOMException, IOException {
-		SAXBuilder sax = new SAXBuilder();
-		Document doc = sax.build(file);
+		Document doc = JDomUtil.parse(file);
 		extractDocument(getBaseName(file.getName()), doc, data);
 	}
 	
 	public static void extractStream(String filename, InputStream input, BuildData data) throws JDOMException,
 			IOException {
-		SAXBuilder sax = new SAXBuilder();
-		Document doc = sax.build(input);
+		Document doc = JDomUtil.parse(input);
 		extractDocument(filename, doc, data);
 	}
 	
@@ -95,7 +93,7 @@ public class EmmaExtractor implements BuildDataExtractor {
 		addCoverage(data, all, "all", null);
 		
 		NodeInfo[] nodes = new NodeInfo[] { new NodeInfo("package", "package", false), //
-				new NodeInfo("srcfile", "file", true), //
+				new NodeInfo("srcfile", "sourceFile", true), //
 				new NodeInfo("class", "class", false), //
 				new NodeInfo("method", "method", false), //
 		};

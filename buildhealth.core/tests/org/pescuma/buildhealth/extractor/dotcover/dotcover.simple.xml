@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root Name="Root" CoveredStatements="1" TotalStatements="5" CoveragePercent="20">
+  <Assembly Name="Assembly.Name" CoveredStatements="1" TotalStatements="5" CoveragePercent="20">
+    <Namespace Name="Namespace.Name" CoveredStatements="1" TotalStatements="5" CoveragePercent="20">
+      <Type Name="MyClass" CoveredStatements="1" TotalStatements="5" CoveragePercent="0">
+        <Member Name=".ctor" CoveredStatements="1" TotalStatements="4" CoveragePercent="0" />
+        <Member Name="Method1" CoveredStatements="0" TotalStatements="1" CoveragePercent="0" />
+      </Type>
+    </Namespace>
+  </Assembly>
+</Root>
