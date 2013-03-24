@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.extractor.BaseExtractorTest;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.extractor.unittest.JUnitExtractor;
 
 public class JUnitExtractorTest extends BaseExtractorTest {
 	

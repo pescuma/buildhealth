@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.CppTestExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.CppTestExtractor;
 
 @Command(name = "cpptest", description = "Add information from a CppTest XML file")
 public class CppTestExtractorCommand extends BuildHealthCliCommand {

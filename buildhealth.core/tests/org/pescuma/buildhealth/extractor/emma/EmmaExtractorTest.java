@@ -10,6 +10,7 @@ import java.io.InputStream;
 import org.junit.Test;
 import org.pescuma.buildhealth.extractor.BaseExtractorTest;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.extractor.coverage.EmmaExtractor;
 
 public class EmmaExtractorTest extends BaseExtractorTest {
 	

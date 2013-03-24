@@ -5,18 +5,19 @@
 	<typedef name="add-cloc" classname="org.pescuma.buildhealth.ant.tasks.CLOCExtractorAntTask" />
 	<typedef name="add-diskusage" classname="org.pescuma.buildhealth.ant.tasks.DiskUsageExtractorAntTask" />
 
-	<typedef name="add-aunit" classname="org.pescuma.buildhealth.ant.tasks.AUnitExtractorAntTask" />
-	<typedef name="add-boosttest" classname="org.pescuma.buildhealth.ant.tasks.BoostTestExtractorAntTask" />
-	<typedef name="add-cpptest" classname="org.pescuma.buildhealth.ant.tasks.CppTestExtractorAntTask" />
-	<typedef name="add-cppunit" classname="org.pescuma.buildhealth.ant.tasks.CppUnitExtractorAntTask" />
-	<typedef name="add-fpcunit" classname="org.pescuma.buildhealth.ant.tasks.FPCUnitExtractorAntTask" />
-	<typedef name="add-junit" classname="org.pescuma.buildhealth.ant.tasks.JUnitExtractorAntTask" />
-	<typedef name="add-mnmlstcUnittest" classname="org.pescuma.buildhealth.ant.tasks.MNMLSTCUnitTestExtractorAntTask" />
-	<typedef name="add-mstest" classname="org.pescuma.buildhealth.ant.tasks.MSTestExtractorAntTask" />
-	<typedef name="add-nunit" classname="org.pescuma.buildhealth.ant.tasks.NUnitExtractorAntTask" />
-	<typedef name="add-phpunit" classname="org.pescuma.buildhealth.ant.tasks.PHPUnitExtractorAntTask" />
-	<typedef name="add-tusar" classname="org.pescuma.buildhealth.ant.tasks.TusarExtractorAntTask" />
+	<typedef name="add-aunit" classname="org.pescuma.buildhealth.ant.tasks.unittest.AUnitExtractorAntTask" />
+	<typedef name="add-boosttest" classname="org.pescuma.buildhealth.ant.tasks.unittest.BoostTestExtractorAntTask" />
+	<typedef name="add-cpptest" classname="org.pescuma.buildhealth.ant.tasks.unittest.CppTestExtractorAntTask" />
+	<typedef name="add-cppunit" classname="org.pescuma.buildhealth.ant.tasks.unittest.CppUnitExtractorAntTask" />
+	<typedef name="add-fpcunit" classname="org.pescuma.buildhealth.ant.tasks.unittest.FPCUnitExtractorAntTask" />
+	<typedef name="add-junit" classname="org.pescuma.buildhealth.ant.tasks.unittest.JUnitExtractorAntTask" />
+	<typedef name="add-mnmlstcUnittest" classname="org.pescuma.buildhealth.ant.tasks.unittest.MNMLSTCUnitTestExtractorAntTask" />
+	<typedef name="add-mstest" classname="org.pescuma.buildhealth.ant.tasks.unittest.MSTestExtractorAntTask" />
+	<typedef name="add-nunit" classname="org.pescuma.buildhealth.ant.tasks.unittest.NUnitExtractorAntTask" />
+	<typedef name="add-phpunit" classname="org.pescuma.buildhealth.ant.tasks.unittest.PHPUnitExtractorAntTask" />
+	<typedef name="add-tusar" classname="org.pescuma.buildhealth.ant.tasks.unittest.TusarExtractorAntTask" />
 
-	<typedef name="add-emma" classname="org.pescuma.buildhealth.ant.tasks.EmmaExtractorAntTask" />
-	<typedef name="add-dotCover" classname="org.pescuma.buildhealth.ant.tasks.DotCoverExtractorAntTask" />
+	<typedef name="add-emma" classname="org.pescuma.buildhealth.ant.tasks.coverage.EmmaExtractorAntTask" />
+	<typedef name="add-jacoco" classname="org.pescuma.buildhealth.ant.tasks.coverage.JacocoExtractorAntTask" />
+	<typedef name="add-dotCover" classname="org.pescuma.buildhealth.ant.tasks.coverage.DotCoverExtractorAntTask" />
 </antlib>

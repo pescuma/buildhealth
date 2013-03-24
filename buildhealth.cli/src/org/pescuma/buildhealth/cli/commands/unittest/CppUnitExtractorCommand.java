@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.CppUnitExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.CppUnitExtractor;
 
 @Command(name = "cppunit", description = "Add information from a CppUnit XML file")
 public class CppUnitExtractorCommand extends BuildHealthCliCommand {

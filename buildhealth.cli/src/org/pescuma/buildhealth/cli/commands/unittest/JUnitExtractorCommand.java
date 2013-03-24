@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.junit.JUnitExtractor;
+import org.pescuma.buildhealth.extractor.unittest.JUnitExtractor;
 
 @Command(name = "junit", description = "Add information from a JUnit XML file")
 public class JUnitExtractorCommand extends BuildHealthCliCommand {

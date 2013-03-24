@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.MSTestExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.MSTestExtractor;
 
 @Command(name = "mstest", description = "Add information from a MSTest XML file")
 public class MSTestExtractorCommand extends BuildHealthCliCommand {

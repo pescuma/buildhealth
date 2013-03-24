@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.MNMLSTCUnitTestExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.MNMLSTCUnitTestExtractor;
 
 @Command(name = "mnmlstcUnittest", description = "Add information from a MNMLSTC unittest XML file")
 public class MNMLSTCUnitTestExtractorCommand extends BuildHealthCliCommand {

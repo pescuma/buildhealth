@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.FPCUnitExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.FPCUnitExtractor;
 
 @Command(name = "fpcunit", description = "Add information from a FPCUnit XML file")
 public class FPCUnitExtractorCommand extends BuildHealthCliCommand {

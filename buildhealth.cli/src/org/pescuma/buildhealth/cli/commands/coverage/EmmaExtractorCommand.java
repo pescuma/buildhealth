@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.emma.EmmaExtractor;
+import org.pescuma.buildhealth.extractor.coverage.EmmaExtractor;
 
 @Command(name = "emma", description = "Add coverage information from an Emma XML file")
 public class EmmaExtractorCommand extends BuildHealthCliCommand {

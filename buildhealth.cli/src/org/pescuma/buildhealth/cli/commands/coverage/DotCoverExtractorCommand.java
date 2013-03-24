@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.dotcover.DotCoverExtractor;
+import org.pescuma.buildhealth.extractor.coverage.DotCoverExtractor;
 
 @Command(name = "dotCover", description = "Add coverage information from an JaCoCo XML file")
 public class DotCoverExtractorCommand extends BuildHealthCliCommand {

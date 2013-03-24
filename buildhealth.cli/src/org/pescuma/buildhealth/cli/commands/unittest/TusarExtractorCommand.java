@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.TusarExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.TusarExtractor;
 
 @Command(name = "tusar", description = "Add information from a Tusar XML file")
 public class TusarExtractorCommand extends BuildHealthCliCommand {

@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.xunit.BoostTestExtractor;
+import org.pescuma.buildhealth.extractor.unittest.xunit.BoostTestExtractor;
 
 @Command(name = "boosttest", description = "Add information from a Boost Test XML file")
 public class BoostTestExtractorCommand extends BuildHealthCliCommand {
