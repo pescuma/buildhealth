@@ -161,6 +161,11 @@
 					<include name="**/reports/junit/*.xml" />
 				</fileset>
 			</add-junit>
+			<add-jacoco>
+				<fileset dir="${basedir}/..">
+					<include name="**/reports/coverage/*.xml" />
+				</fileset>
+			</add-jacoco>
 			<add-cloc file="${reports.dir}/cloc.files.csv" />
 			<add-diskusage dir="${build.dir}" />
 		</buildhealth>

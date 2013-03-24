@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.0//EN" "report.dtd">
+  <report name="report_name">
+    <sessioninfo id="sam17-f17147a5" start="1364129726168" dump="1364129728788"/>
+    <package name="org/pescuma/buildhealth/analyser">
+      <class name="org/pescuma/buildhealth/analyser/BaseAnalyserTest">
+        <method name="&lt;init&gt;" desc="()V" line="13">
+          <counter type="INSTRUCTION" missed="0" covered="3"/>
+          <counter type="LINE" missed="0" covered="1"/>
+          <counter type="COMPLEXITY" missed="0" covered="1"/>
+          <counter type="METHOD" missed="0" covered="1"/>
+        </method>
+        <method name="setUp" desc="(Lorg/pescuma/buildhealth/analyser/BuildHealthAnalyser;)V" line="20">
+          <counter type="INSTRUCTION" missed="0" covered="14"/>
+          <counter type="LINE" missed="0" covered="5"/>
+          <counter type="COMPLEXITY" missed="0" covered="1"/>
+          <counter type="METHOD" missed="0" covered="1"/>
+        </method>
+        <counter type="INSTRUCTION" missed="0" covered="47"/>
+        <counter type="LINE" missed="0" covered="13"/>
+        <counter type="COMPLEXITY" missed="0" covered="5"/>
+        <counter type="METHOD" missed="0" covered="5"/>
+        <counter type="CLASS" missed="0" covered="1"/>
+      </class>
+      <sourcefile name="BaseAnalyserTest.java">
+        <line nr="13" mi="0" ci="3" mb="0" cb="0"/>
+        <line nr="40" mi="0" ci="9" mb="0" cb="0"/>
+        <line nr="41" mi="0" ci="1" mb="0" cb="0"/>
+        <counter type="INSTRUCTION" missed="0" covered="47"/>
+        <counter type="LINE" missed="0" covered="13"/>
+        <counter type="COMPLEXITY" missed="0" covered="5"/>
+        <counter type="METHOD" missed="0" covered="5"/>
+        <counter type="CLASS" missed="0" covered="1"/>
+      </sourcefile>
+      <counter type="INSTRUCTION" missed="3" covered="219"/>
+      <counter type="BRANCH" missed="1" covered="11"/>
+      <counter type="LINE" missed="0" covered="13"/>
+      <counter type="COMPLEXITY" missed="2" covered="14"/>
+      <counter type="METHOD" missed="1" covered="9"/>
+      <counter type="CLASS" missed="0" covered="2"/>
+    </package>
+    <counter type="INSTRUCTION" missed="1901" covered="4372"/>
+    <counter type="BRANCH" missed="171" covered="201"/>
+    <counter type="LINE" missed="2" covered="289"/>
+    <counter type="COMPLEXITY" missed="204" covered="253"/>
+    <counter type="METHOD" missed="90" covered="180"/>
+    <counter type="CLASS" missed="18" covered="38"/>
+  </report>

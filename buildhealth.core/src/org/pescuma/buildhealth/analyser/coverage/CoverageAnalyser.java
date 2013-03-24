@@ -23,7 +23,7 @@ import org.pescuma.buildhealth.core.Report;
  * Expect the lines to be:
  * 
  * <pre>
- * Coverage,language,framework,{type:line,block,method,class},{covered,total},{place type:all,file,package,class,method},place
+ * Coverage,language,framework,{type:line,block,method,class},{covered,total},{place type:all,group,file,package,class,method},place
  * </pre>
  * 
  * The value is the number for covered or total entries. For all entries you must have both.
@@ -42,7 +42,11 @@ import org.pescuma.buildhealth.core.Report;
  */
 public class CoverageAnalyser implements BuildHealthAnalyser {
 	
-	private final boolean showDetailsInDescription = false;
+	private boolean showDetailsInDescription = false;
+	
+	public void setShowDetailsInDescription(boolean showDetailsInDescription) {
+		this.showDetailsInDescription = showDetailsInDescription;
+	}
 	
 	@Override
 	public List<Report> computeSimpleReport(BuildData data) {
@@ -52,6 +56,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		
 		StringBuilder description = new StringBuilder();
 		int defPercentage = -1;
+		int defType = -1;
+		
+		List<String> prefered = new ArrayList<String>();
+		prefered.add("line");
+		prefered.add("instruction");
 		
 		List<Type> types = groupTypes(data.sumDistinct(3, 4));
 		sort(types);
@@ -70,8 +79,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				description.append(" (").append(format(type.covered)).append("/").append(format1000(type.total, ""))
 						.append(")");
 			
-			if (defPercentage < 0 || "line".equals(type.name))
+			int typeIndex = prefered.indexOf(type.name);
+			if (defType < 0 || defType < typeIndex) {
 				defPercentage = percentage;
+				defType = typeIndex;
+			}
 		}
 		
 		if (defPercentage < 0)
@@ -90,6 +102,8 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		fixed.put("method", 1);
 		fixed.put("block", 2);
 		fixed.put("line", 3);
+		fixed.put("branch", 4);
+		fixed.put("instruction", 5);
 		
 		Collections.sort(types, new Comparator<Type>() {
 			@Override

@@ -87,7 +87,7 @@
 		<delete dir="${build.javac.dir}" quiet="true" />
 		<mkdir dir="${build.javac.dir}" />
 
-		<javac destdir="${build.javac.dir}" includeantruntime="false">
+		<javac destdir="${build.javac.dir}" debug="true" includeantruntime="false">
 			<src path="${src.dir}" />
 			<classpath refid="compile.path" />
 		</javac>

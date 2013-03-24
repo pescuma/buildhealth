@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.cli.commands;
+package org.pescuma.buildhealth.cli.commands.coverage;
 
 import io.airlift.command.Arguments;
 import io.airlift.command.Command;
