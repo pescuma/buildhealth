@@ -10,7 +10,7 @@
 	<property name="build.tmp.dir" value="${build.dir}/tmp" />
 	<property name="reports.dir" value="${build.dir}/reports" />
 
-	<target name="all" description="Compile, test and pack">
+	<target name="all" description="Compile, test, pack and report">
 		<delete dir="${build.dir}" quiet="true" />
 
 		<antcall target="call-in-projs">

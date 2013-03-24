@@ -3,6 +3,7 @@ package org.pescuma.buildhealth.extractor;
 import static org.apache.commons.io.FileUtils.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,6 +56,18 @@ public class PseudoFiles {
 			}
 		}
 		
+		// Make all canonical
+		for (int i = 0; i < result.size(); i++)
+			result.set(i, getCanonicalFile(result.get(i)));
+		
 		return result;
+	}
+	
+	private File getCanonicalFile(File file) {
+		try {
+			return file.getCanonicalFile();
+		} catch (IOException e) {
+			return file.getAbsoluteFile();
+		}
 	}
 }

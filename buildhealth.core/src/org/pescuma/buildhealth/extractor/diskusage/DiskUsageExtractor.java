@@ -40,16 +40,19 @@ public class DiskUsageExtractor implements BuildDataExtractor {
 			} catch (IOException e) {
 				throw new BuildDataExtractorException(e);
 			}
+			addUsage(data, total, null);
 			
 		} else {
 			for (File file : files.getFiles())
-				total += file.length();
+				addUsage(data, file.length(), file.getPath());
 		}
-		
+	}
+	
+	private void addUsage(BuildData data, long total, String filename) {
 		if (Strings.isNullOrEmpty(tag))
-			data.add(total, "Disk usage");
+			data.add(total, "Disk usage", filename);
 		else
-			data.add(total, "Disk usage", tag);
+			data.add(total, "Disk usage", tag, filename);
 	}
 	
 }
