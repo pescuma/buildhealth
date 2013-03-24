@@ -92,11 +92,32 @@ public class DotCoverExtractor implements BuildDataExtractor {
 		for (Element cls : el.getChildren("Type"))
 			extract(data, cls, "class", place);
 		
+		for (Element method : el.getChildren("Property"))
+			extract(data, method, "property", place);
+		
+		for (Element method : el.getChildren("Event"))
+			extract(data, method, "event", place);
+		
 		for (Element method : el.getChildren("Member"))
 			extract(data, method, "method", place);
 		
+		for (Element method : el.getChildren("Constructor"))
+			extract(data, method, "method", place);
+		
+		for (Element method : el.getChildren("Method"))
+			extract(data, method, "method", place);
+		
+		for (Element method : el.getChildren("AnonymousMethod"))
+			extract(data, method, "method", place);
+		
+		for (Element method : el.getChildren("OwnCoverage")) {
+			place.add("OwnCoverage");
+			extract(data, method, "method", place);
+			place.remove(place.size() - 1);
+		}
+		
 		if (!isNullOrEmpty(name))
-			place.remove(name);
+			place.remove(place.size() - 1);
 	}
 	
 	private static void addCoverage(BuildData data, Element el, String placeType, List<String> place) {

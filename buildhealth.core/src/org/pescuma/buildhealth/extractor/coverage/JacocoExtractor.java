@@ -102,7 +102,7 @@ public class JacocoExtractor implements BuildDataExtractor {
 			extract(data, source, "sourceFile", place);
 		
 		if (!isNullOrEmpty(name))
-			place.remove(name);
+			place.remove(place.size() - 1);
 	}
 	
 	private static void addCoverage(BuildData data, Element el, String placeType, List<String> place) {

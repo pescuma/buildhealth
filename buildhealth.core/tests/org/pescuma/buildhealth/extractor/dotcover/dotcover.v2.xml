@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root Name="Root" CoveredStatements="14" TotalStatements="32" CoveragePercent="44" ReportType="XML" DotCoverVersion="2.0">
+	<Assembly Name="Assembly.Name" CoveredStatements="14" TotalStatements="32" CoveragePercent="44">
+		<Namespace Name="Namespace.Name" CoveredStatements="14" TotalStatements="32" CoveragePercent="44">
+			<Type Name="MyClass" CoveredStatements="14" TotalStatements="32" CoveragePercent="44">
+				<Constructor Name="MyClass()" CoveredStatements="0" TotalStatements="5" CoveragePercent="0" />
+				<Method Name="Method1" CoveredStatements="0" TotalStatements="9" CoveragePercent="0" />
+				<Property Name="Prop1" CoveredStatements="0" TotalStatements="0" CoveragePercent="0">
+					<Method Name="set" CoveredStatements="0" TotalStatements="0" CoveragePercent="0" />
+					<Method Name="get" CoveredStatements="0" TotalStatements="0" CoveragePercent="0" />
+				</Property>
+				<Method Name="Method2:void" CoveredStatements="12" TotalStatements="14" CoveragePercent="100">
+					<AnonymousMethod Name="():void" CoveredStatements="1" TotalStatements="1" CoveragePercent="100" />
+					<AnonymousMethod Name="(int):int" CoveredStatements="1" TotalStatements="1" CoveragePercent="100" />
+					<OwnCoverage CoveredStatements="10" TotalStatements="12" CoveragePercent="100" />
+				</Method>
+				<Event Name="Evt1" CoveredStatements="2" TotalStatements="4" CoveragePercent="0">
+					<Method Name="add" CoveredStatements="1" TotalStatements="2" CoveragePercent="0" />
+					<Method Name="remove" CoveredStatements="1" TotalStatements="2" CoveragePercent="0" />
+				</Event>
+			</Type>
+		</Namespace>
+	</Assembly>
+</Root>
