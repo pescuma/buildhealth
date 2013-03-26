@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.jdom2.JDOMException;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
@@ -70,23 +69,34 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 	
 	private File createTmpFile() {
 		try {
-			return File.createTempFile("CppUnit-", ".xml");
+			return File.createTempFile("XUnit-", ".xml");
 		} catch (IOException e) {
 			throw new BuildDataExtractorException("Failed to create tmp file", e);
 		}
 	}
 	
 	private void extractFile(File inputFile, String filename, BuildData data) {
-		File junitFile = convertFile(inputFile);
+		InputMetric metric = getInputMetric();
+		
+		File junitFile = convertFile(metric, inputFile);
 		
 		InputStream stream = null;
 		try {
 			stream = new FileInputStream(junitFile);
 			
-			JUnitExtractor.extractStream(filename, stream, data);
+			new JUnitExtractor(new PseudoFiles(stream, filename), getLanguage(), metric.getToolName()).extractTo(data,
+					new BuildDataExtractorTracker() {
+						@Override
+						public void streamProcessed() {
+							// Ignore
+						}
+						
+						@Override
+						public void fileProcessed(File file) {
+							// Ignore
+						}
+					});
 			
-		} catch (JDOMException e) {
-			throw new BuildDataExtractorException(e);
 		} catch (IOException e) {
 			throw new BuildDataExtractorException(e);
 		} finally {
@@ -97,11 +107,12 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 	
 	protected abstract InputMetric getInputMetric();
 	
-	private File convertFile(File file) {
+	protected abstract String getLanguage();
+	
+	private File convertFile(InputMetric metric, File file) {
 		File junitFile = null;
 		boolean succeeded = false;
 		try {
-			InputMetric metric = getInputMetric();
 			
 			if (!metric.validateInputFile(file)) {
 				StringBuilder out = new StringBuilder();

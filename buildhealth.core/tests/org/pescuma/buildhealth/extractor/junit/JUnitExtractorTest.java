@@ -36,7 +36,7 @@ public class JUnitExtractorTest extends BaseExtractorTest {
 		
 		Line line = lines.iterator().next();
 		assertEquals(1, line.getValue(), 0.0001);
-		assertArrayEquals(new String[] { "Unit test", "java", "junit", "passed", "org.pescuma.test.junit", "test1" },
+		assertArrayEquals(new String[] { "Unit test", "Java", "JUnit", "passed", "org.pescuma.test.junit", "test1" },
 				line.getColumns());
 	}
 	

@@ -17,4 +17,9 @@ public class FPCUnitExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(FPCUnit.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		return "Pascal";
+	}
+	
 }

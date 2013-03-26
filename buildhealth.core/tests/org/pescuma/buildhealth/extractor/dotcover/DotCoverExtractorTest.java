@@ -26,14 +26,14 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker, never()).fileProcessed(any(File.class));
 		
 		assertEquals(12, table.size());
-		assertEquals(12, table.filter("Coverage", "c#", "dotCover").size());
+		assertEquals(12, table.filter("Coverage", "C#", "dotCover").size());
 		
-		assertEquals(1, table.get("Coverage", "c#", "dotCover", "line", "covered", "all"), 0.0001);
-		assertEquals(5, table.get("Coverage", "c#", "dotCover", "line", "total", "all"), 0.0001);
+		assertEquals(1, table.get("Coverage", "C#", "dotCover", "line", "covered", "all"), 0.0001);
+		assertEquals(5, table.get("Coverage", "C#", "dotCover", "line", "total", "all"), 0.0001);
 		
-		assertEquals(1, table.get("Coverage", "c#", "dotCover", "line", "covered", "method", "Assembly.Name",
+		assertEquals(1, table.get("Coverage", "C#", "dotCover", "line", "covered", "method", "Assembly.Name",
 				"Namespace.Name", "MyClass", ".ctor"), 0.0001);
-		assertEquals(4, table.get("Coverage", "c#", "dotCover", "line", "total", "method", "Assembly.Name",
+		assertEquals(4, table.get("Coverage", "C#", "dotCover", "line", "total", "method", "Assembly.Name",
 				"Namespace.Name", "MyClass", ".ctor"), 0.0001);
 	}
 	
@@ -49,14 +49,14 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker, never()).fileProcessed(any(File.class));
 		
 		assertEquals(32, table.size());
-		assertEquals(32, table.filter("Coverage", "c#", "dotCover").size());
+		assertEquals(32, table.filter("Coverage", "C#", "dotCover").size());
 		
-		assertEquals(14, table.get("Coverage", "c#", "dotCover", "line", "covered", "all"), 0.0001);
-		assertEquals(32, table.get("Coverage", "c#", "dotCover", "line", "total", "all"), 0.0001);
+		assertEquals(14, table.get("Coverage", "C#", "dotCover", "line", "covered", "all"), 0.0001);
+		assertEquals(32, table.get("Coverage", "C#", "dotCover", "line", "total", "all"), 0.0001);
 		
-		assertEquals(10, table.get("Coverage", "c#", "dotCover", "line", "covered", "method", "Assembly.Name",
+		assertEquals(10, table.get("Coverage", "C#", "dotCover", "line", "covered", "method", "Assembly.Name",
 				"Namespace.Name", "MyClass", "Method2:void", "OwnCoverage"), 0.0001);
-		assertEquals(12, table.get("Coverage", "c#", "dotCover", "line", "total", "method", "Assembly.Name",
+		assertEquals(12, table.get("Coverage", "C#", "dotCover", "line", "total", "method", "Assembly.Name",
 				"Namespace.Name", "MyClass", "Method2:void", "OwnCoverage"), 0.0001);
 	}
 	

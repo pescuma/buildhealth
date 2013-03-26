@@ -17,4 +17,9 @@ public class CppUnitExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(CppUnit.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		return "C++";
+	}
+	
 }

@@ -17,4 +17,10 @@ public class TusarExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(Tusar.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		// I have no idea
+		return "";
+	}
+	
 }

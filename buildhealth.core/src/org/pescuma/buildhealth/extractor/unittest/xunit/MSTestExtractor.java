@@ -17,4 +17,10 @@ public class MSTestExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(MSTest.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		// Guess
+		return "C#";
+	}
+	
 }

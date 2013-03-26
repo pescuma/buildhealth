@@ -5,7 +5,6 @@ import static org.apache.commons.io.FilenameUtils.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
@@ -27,12 +26,20 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 public class JUnitExtractor implements BuildDataExtractor {
 	
 	private final PseudoFiles files;
+	private final String language;
+	private final String tool;
 	
 	public JUnitExtractor(PseudoFiles files) {
+		this(files, "Java", "JUnit");
+	}
+	
+	public JUnitExtractor(PseudoFiles files, String language, String tool) {
 		if (files == null)
 			throw new IllegalArgumentException();
 		
 		this.files = files;
+		this.language = language;
+		this.tool = tool;
 	}
 	
 	@Override
@@ -40,12 +47,12 @@ public class JUnitExtractor implements BuildDataExtractor {
 		try {
 			
 			if (files.isStream()) {
-				extractStream(null, files.getStream(), data);
+				extractDocument(getBaseName(files.getStreamFilename()), JDomUtil.parse(files.getStream()), data);
 				tracker.streamProcessed();
 				
 			} else {
 				for (File file : files.getFiles("xml")) {
-					extractFile(file, data);
+					extractDocument(file.getName(), JDomUtil.parse(file), data);
 					tracker.fileProcessed(file);
 				}
 			}
@@ -57,25 +64,14 @@ public class JUnitExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	public static void extractFile(File file, BuildData data) throws JDOMException, IOException {
-		Document doc = JDomUtil.parse(file);
-		extractDocument(getBaseName(file.getName()), doc, data);
-	}
-	
-	public static void extractStream(String filename, InputStream input, BuildData data) throws JDOMException,
-			IOException {
-		Document doc = JDomUtil.parse(input);
-		extractDocument(filename, doc, data);
-	}
-	
-	private static void extractDocument(String filename, Document doc, BuildData data) {
+	private void extractDocument(String filename, Document doc, BuildData data) {
 		XPathFactory xpath = XPathFactory.instance();
 		
 		for (Element suite : xpath.compile("//testsuite", Filters.element()).evaluate(doc))
 			extractSuite(filename, suite, data);
 	}
 	
-	private static void extractSuite(String filename, Element suite, BuildData data) {
+	private void extractSuite(String filename, Element suite, BuildData data) {
 		// some user reported that name is null in their environment.
 		// see http://www.nabble.com/Unexpected-Null-Pointer-Exception-in-Hudson-1.131-tf4314802.html
 		String name = suite.getAttributeValue("name", firstNonNull(filename, "(no name)"));
@@ -98,7 +94,7 @@ public class JUnitExtractor implements BuildDataExtractor {
 			extractTest(name, testcase, data);
 	}
 	
-	private static void extractTest(String suite, Element testcase, BuildData data) {
+	private void extractTest(String suite, Element testcase, BuildData data) {
 		String name = testcase.getAttributeValue("name", "");
 		
 		// https://hudson.dev.java.net/issues/show_bug.cgi?id=1233 indicates that
@@ -126,7 +122,7 @@ public class JUnitExtractor implements BuildDataExtractor {
 		
 		double time = parseTime(testcase.getAttributeValue("time", ""));
 		if (time >= 0)
-			data.add(time, "Unit test", "java", "junit", "time", classname, name);
+			data.add(time, "Unit test", language, "junit", "time", classname, name);
 		
 		if (extractTestType(classname, name, testcase.getChild("skipped"), "skipped", data))
 			return;
@@ -135,19 +131,19 @@ public class JUnitExtractor implements BuildDataExtractor {
 		if (extractTestType(classname, name, testcase.getChild("failure"), "failed", data))
 			return;
 		
-		data.add(1, "Unit test", "java", "junit", "passed", classname, name);
+		data.add(1, "Unit test", language, tool, "passed", classname, name);
 	}
 	
-	private static boolean extractTestType(String classname, String name, Element el, String type, BuildData data) {
+	private boolean extractTestType(String classname, String name, Element el, String type, BuildData data) {
 		if (el == null)
 			return false;
 		
-		data.add(1, "Unit test", "java", "junit", type, classname, name, el.getAttributeValue("message", ""),
+		data.add(1, "Unit test", language, tool, type, classname, name, el.getAttributeValue("message", ""),
 				el.getTextTrim());
 		return true;
 	}
 	
-	private static double parseTime(String time) {
+	private double parseTime(String time) {
 		if (time.isEmpty())
 			return -1;
 		

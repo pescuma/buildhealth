@@ -17,4 +17,9 @@ public class MNMLSTCUnitTestExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(UnitTest.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		return "C++";
+	}
+	
 }

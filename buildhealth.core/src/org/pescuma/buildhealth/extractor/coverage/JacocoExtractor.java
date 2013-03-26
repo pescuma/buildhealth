@@ -117,8 +117,8 @@ public class JacocoExtractor implements BuildDataExtractor {
 			
 			List<String> infos = new ArrayList<String>();
 			infos.add("Coverage");
-			infos.add("java");
-			infos.add("jacoco");
+			infos.add("Java");
+			infos.add("JaCoCo");
 			infos.add(type);
 			infos.add("covered");
 			infos.add(placeType);

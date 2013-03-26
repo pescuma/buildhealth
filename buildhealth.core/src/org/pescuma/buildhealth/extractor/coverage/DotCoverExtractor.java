@@ -126,7 +126,7 @@ public class DotCoverExtractor implements BuildDataExtractor {
 		
 		List<String> infos = new ArrayList<String>();
 		infos.add("Coverage");
-		infos.add("c#");
+		infos.add("C#");
 		infos.add("dotCover");
 		infos.add("line");
 		infos.add("covered");

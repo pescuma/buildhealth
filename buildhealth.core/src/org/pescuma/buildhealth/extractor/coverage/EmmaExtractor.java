@@ -153,8 +153,8 @@ public class EmmaExtractor implements BuildDataExtractor {
 			
 			List<String> infos = new ArrayList<String>();
 			infos.add("Coverage");
-			infos.add("java");
-			infos.add("emma");
+			infos.add("Java");
+			infos.add("Emma");
 			infos.add(type);
 			infos.add("covered");
 			infos.add(placeType);

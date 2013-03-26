@@ -17,4 +17,9 @@ public class BoostTestExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(BoostTest.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		return "C++";
+	}
+	
 }

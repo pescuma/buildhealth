@@ -17,4 +17,10 @@ public class NUnitExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(NUnit.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		// Guess
+		return "C#";
+	}
+	
 }

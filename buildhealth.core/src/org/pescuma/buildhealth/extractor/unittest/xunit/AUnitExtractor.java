@@ -17,4 +17,9 @@ public class AUnitExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(AUnit.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		return "Ada";
+	}
+	
 }

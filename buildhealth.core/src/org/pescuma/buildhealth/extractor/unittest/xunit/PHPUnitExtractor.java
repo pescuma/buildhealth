@@ -17,4 +17,9 @@ public class PHPUnitExtractor extends XUnitExtractor {
 		return InputMetricFactory.getInstance(PHPUnit.class);
 	}
 	
+	@Override
+	protected String getLanguage() {
+		return "PHP";
+	}
+	
 }
