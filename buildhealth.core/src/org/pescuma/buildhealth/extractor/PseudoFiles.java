@@ -14,19 +14,27 @@ public class PseudoFiles {
 	
 	private final List<File> files = new ArrayList<File>();
 	private final InputStream stream;
+	private final String streamFilename;
 	
 	public PseudoFiles(InputStream stream) {
+		this(stream, null);
+	}
+	
+	public PseudoFiles(InputStream stream, String streamFilename) {
 		this.stream = stream;
+		this.streamFilename = streamFilename;
 	}
 	
 	public PseudoFiles(File file) {
 		this.files.add(file);
 		this.stream = null;
+		this.streamFilename = null;
 	}
 	
 	public PseudoFiles(List<File> files) {
 		this.files.addAll(files);
 		this.stream = null;
+		this.streamFilename = null;
 	}
 	
 	public boolean isStream() {
@@ -35,6 +43,10 @@ public class PseudoFiles {
 	
 	public InputStream getStream() {
 		return stream;
+	}
+	
+	public String getStreamFilename() {
+		return streamFilename;
 	}
 	
 	public Collection<File> getFiles(String... validExtensions) {
