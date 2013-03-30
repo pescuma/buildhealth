@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import static com.google.common.base.Objects.*;
+import static org.pescuma.buildhealth.utils.FilenameToLanguage.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,7 +18,6 @@ import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.utils.FilenameToLanguage;
 
 // Based on https://github.com/jenkinsci/tasks-plugin/blob/master/src/main/java/hudson/plugins/tasks/parser/TaskScanner.java by Ulli Hafner
 public class TasksExtractor implements BuildDataExtractor {
@@ -67,7 +67,10 @@ public class TasksExtractor implements BuildDataExtractor {
 				tracker.streamProcessed();
 				
 			} else {
-				for (File file : files.getFiles("xml")) {
+				for (File file : files.getFiles()) {
+					if (!isKnownFileType(file.getPath()))
+						continue;
+					
 					FileReader reader = new FileReader(file);
 					try {
 						
@@ -110,8 +113,8 @@ public class TasksExtractor implements BuildDataExtractor {
 						text = text.substring(1).trim();
 				}
 				
-				data.add(1, "Static analysis", FilenameToLanguage.detectLanguage(filename), "Task", filename,
-						Integer.toString(lineNum), marker, text);
+				data.add(1, "Static analysis", detectLanguage(filename), "Tasks", filename, Integer.toString(lineNum),
+						marker, text);
 			}
 		}
 	}

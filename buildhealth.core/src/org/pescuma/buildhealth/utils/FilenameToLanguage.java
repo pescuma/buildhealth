@@ -247,4 +247,8 @@ public class FilenameToLanguage {
 		
 		return "";
 	}
+	
+	public static boolean isKnownFileType(String filename) {
+		return !detectLanguage(filename).isEmpty();
+	}
 }

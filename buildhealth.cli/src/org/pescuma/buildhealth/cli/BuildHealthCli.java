@@ -14,6 +14,7 @@ import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
 import org.pescuma.buildhealth.cli.commands.coverage.DotCoverExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.coverage.EmmaExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.coverage.JacocoExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.staticanalysis.TasksExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.unittest.AUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.unittest.BoostTestExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.unittest.CppTestExtractorCommand;
@@ -45,7 +46,8 @@ public class BuildHealthCli {
 						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
 						TusarExtractorCommand.class, //
 						EmmaExtractorCommand.class, JacocoExtractorCommand.class, DotCoverExtractorCommand.class, //
-						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
+						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class, //
+						TasksExtractorCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		

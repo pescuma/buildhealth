@@ -27,13 +27,13 @@ public class TasksExtractorTest extends BaseExtractorTest {
 		
 		assertEquals(4, table.size());
 		
-		assertEquals(1, table.get("Static analysis", "Java", "Task", "tasks.oneeach.upper.java", "2", "TODO", "123"),
+		assertEquals(1, table.get("Static analysis", "Java", "Tasks", "tasks.oneeach.upper.java", "2", "TODO", "123"),
 				0.001);
-		assertEquals(1, table.get("Static analysis", "Java", "Task", "tasks.oneeach.upper.java", "4", "HACK", "456"),
+		assertEquals(1, table.get("Static analysis", "Java", "Tasks", "tasks.oneeach.upper.java", "4", "HACK", "456"),
 				0.001);
-		assertEquals(1, table.get("Static analysis", "Java", "Task", "tasks.oneeach.upper.java", "6", "XXX", "789"),
+		assertEquals(1, table.get("Static analysis", "Java", "Tasks", "tasks.oneeach.upper.java", "6", "XXX", "789"),
 				0.001);
-		assertEquals(1, table.get("Static analysis", "Java", "Task", "tasks.oneeach.upper.java", "8", "FIXME", "012"),
+		assertEquals(1, table.get("Static analysis", "Java", "Tasks", "tasks.oneeach.upper.java", "8", "FIXME", "012"),
 				0.001);
 	}
 	
@@ -45,7 +45,7 @@ public class TasksExtractorTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Static analysis", "", "Task", "<stream>", "1", "TODO", "a"), 0.001);
+		assertEquals(1, table.get("Static analysis", "", "Tasks", "<stream>", "1", "TODO", "a"), 0.001);
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class TasksExtractorTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Static analysis", "", "Task", "<stream>", "1", "TODO", ""), 0.001);
+		assertEquals(1, table.get("Static analysis", "", "Tasks", "<stream>", "1", "TODO", ""), 0.001);
 	}
 	
 	@Test
@@ -86,10 +86,10 @@ public class TasksExtractorTest extends BaseExtractorTest {
 		
 		assertEquals(4, table.size());
 		
-		assertEquals(1, table.get("Static analysis", "C++", "Task", "c:\\a.cpp", "2", "TODO", "123"), 0.001);
-		assertEquals(1, table.get("Static analysis", "C++", "Task", "c:\\a.cpp", "4", "HACK", "456"), 0.001);
-		assertEquals(1, table.get("Static analysis", "C++", "Task", "c:\\a.cpp", "6", "XXX", "789"), 0.001);
-		assertEquals(1, table.get("Static analysis", "C++", "Task", "c:\\a.cpp", "8", "FIXME", "012"), 0.001);
+		assertEquals(1, table.get("Static analysis", "C++", "Tasks", "c:\\a.cpp", "2", "TODO", "123"), 0.001);
+		assertEquals(1, table.get("Static analysis", "C++", "Tasks", "c:\\a.cpp", "4", "HACK", "456"), 0.001);
+		assertEquals(1, table.get("Static analysis", "C++", "Tasks", "c:\\a.cpp", "6", "XXX", "789"), 0.001);
+		assertEquals(1, table.get("Static analysis", "C++", "Tasks", "c:\\a.cpp", "8", "FIXME", "012"), 0.001);
 	}
 	
 }

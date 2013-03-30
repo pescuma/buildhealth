@@ -20,4 +20,6 @@
 	<typedef name="add-emma" classname="org.pescuma.buildhealth.ant.tasks.coverage.EmmaExtractorAntTask" />
 	<typedef name="add-jacoco" classname="org.pescuma.buildhealth.ant.tasks.coverage.JacocoExtractorAntTask" />
 	<typedef name="add-dotCover" classname="org.pescuma.buildhealth.ant.tasks.coverage.DotCoverExtractorAntTask" />
+
+	<typedef name="add-tasks" classname="org.pescuma.buildhealth.ant.tasks.staticanalysis.TasksExtractorAntTask" />
 </antlib>
