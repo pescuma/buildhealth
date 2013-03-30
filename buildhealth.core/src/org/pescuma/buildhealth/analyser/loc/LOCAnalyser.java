@@ -29,12 +29,12 @@ import org.pescuma.buildhealth.core.Report;
  * Example:
  * 
  * <pre>
- * 100 | LOC,java,comment
- * 900 | LOC,java,code
- * 10 | LOC,c#,blank
- * 12 | LOC,java,unknown,/tmp/X
- * 15 | LOC,java,files,/tmp/X
- * 12 | LOC,c++,files
+ * 100 | LOC,Java,comment
+ * 900 | LOC,Java,code
+ * 10 | LOC,C#,blank
+ * 12 | LOC,Java,unknown,/tmp/X
+ * 15 | LOC,Java,files,/tmp/X
+ * 12 | LOC,C++,files
  * </pre>
  * 
  * If not LOC information is found, it will try to get this information from coverage data.

@@ -34,10 +34,10 @@ import org.pescuma.buildhealth.core.Report;
  * Example:
  * 
  * <pre>
- * 10 | Coverage,java,emma,line,covered,all
- * 15 | Coverage,java,emma,line,total,all
- * 1 | Coverage,java,emma,line,covered,class,a,b,c,D
- * 2 | Coverage,java,emma,line,total,class,a,b,c,D
+ * 10 | Coverage,Java,Emma,line,covered,all
+ * 15 | Coverage,Java,Emma,line,total,all
+ * 1 | Coverage,Java,Emma,line,covered,class,a,b,c,D
+ * 2 | Coverage,Java,Emma,line,total,class,a,b,c,D
  * </pre>
  */
 public class CoverageAnalyser implements BuildHealthAnalyser {

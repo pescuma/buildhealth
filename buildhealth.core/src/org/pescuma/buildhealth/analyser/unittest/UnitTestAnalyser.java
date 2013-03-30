@@ -23,13 +23,13 @@ import org.pescuma.buildhealth.core.Report;
  * Example:
  * 
  * <pre>
- * 10 | Unit test,java,junit,passed,package.TestWithoutMethodsInfo
- * 1 | Unit test,java,junit,passed,package.TestWithMethodInfo,testMethod1
- * 1 | Unit test,java,junit,failed,package.TestWithMethodInfo,testMethod2
- * 1 | Unit test,java,junit,passed,package.TestWithMethodInfo,testMethod3
- * 1 | Unit test,java,junit,error,package.TestWithMethodInfo,testMethod4
- * 1 | Unit test,java,junit,passed,package.TestWithMethodAndTimeInfo,testMethod1
- * 0.01 | Unit test,java,junit,time,package.TestWithMethodAndTimeInfo,testMethod1
+ * 10 | Unit test,Java,JUnit,passed,package.TestWithoutMethodsInfo
+ * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodInfo,testMethod1
+ * 1 | Unit test,Java,JUnit,failed,package.TestWithMethodInfo,testMethod2
+ * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodInfo,testMethod3
+ * 1 | Unit test,Java,JUnit,error,package.TestWithMethodInfo,testMethod4
+ * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodAndTimeInfo,testMethod1
+ * 0.01 | Unit test,Java,JUnit,time,package.TestWithMethodAndTimeInfo,testMethod1
  * </pre>
  */
 public class UnitTestAnalyser implements BuildHealthAnalyser {
