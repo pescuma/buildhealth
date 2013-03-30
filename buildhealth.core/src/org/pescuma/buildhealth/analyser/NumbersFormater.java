@@ -13,6 +13,10 @@ public class NumbersFormater {
 		return format(total, "B", units, scale);
 	}
 	
+	public static String format1000(double total) {
+		return format1000(total, "");
+	}
+	
 	public static String format1000(double total, String baseUnit) {
 		// http://en.wikipedia.org/wiki/Kilobyte
 		final String[] units = new String[] { "k", "M", "G", "T", "P", "E", "Z", "Yi" };
