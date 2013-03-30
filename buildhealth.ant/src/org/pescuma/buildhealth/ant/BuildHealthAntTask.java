@@ -54,8 +54,8 @@ public class BuildHealthAntTask extends Task implements TaskContainer {
 		buildHealth.addAnalyser(new UnitTestAnalyser());
 		buildHealth.addAnalyser(new CoverageAnalyser());
 		buildHealth.addAnalyser(new LOCAnalyser());
-		buildHealth.addAnalyser(new DiskUsageAnalyser());
 		buildHealth.addAnalyser(new StaticAnalysisAnalyser());
+		buildHealth.addAnalyser(new DiskUsageAnalyser());
 		
 		buildHealth.startNewBuild();
 		

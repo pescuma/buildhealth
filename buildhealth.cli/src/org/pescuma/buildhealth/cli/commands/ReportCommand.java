@@ -20,8 +20,8 @@ public class ReportCommand extends BuildHealthCliCommand {
 		buildHealth.addAnalyser(new UnitTestAnalyser());
 		buildHealth.addAnalyser(new CoverageAnalyser());
 		buildHealth.addAnalyser(new LOCAnalyser());
-		buildHealth.addAnalyser(new DiskUsageAnalyser());
 		buildHealth.addAnalyser(new StaticAnalysisAnalyser());
+		buildHealth.addAnalyser(new DiskUsageAnalyser());
 		
 		Report report = buildHealth.generateReportSummary();
 		System.out.println(new ReportFormater().format(report));
