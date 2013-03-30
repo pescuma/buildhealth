@@ -3,8 +3,7 @@
 	<configurations defaultconfmapping="default->default,sources">
 	</configurations>
 	<dependencies>
-		<dependency org="org.apache.ant" name="ant" rev="1.7.0">
-			<!--  exclude org="org.apache.ant" module="ant-launcher" / -->
-		</dependency>
+		<dependency org="org.apache.ant" name="ant" rev="1.7.0" />
+		<dependency org="junit" name="junit" rev="4.10" />
 	</dependencies>
 </ivy-module>

@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.cli;
+package org.pescuma.buildhealth.core;
 
 import static org.junit.Assert.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
