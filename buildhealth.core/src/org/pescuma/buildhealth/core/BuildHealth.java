@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.core;
 
 import static org.apache.commons.io.FileUtils.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -158,17 +159,6 @@ public class BuildHealth {
 		} while (currentPath != null);
 		
 		return null;
-	}
-	
-	private static File getCanonicalFile(File file) {
-		if (file == null)
-			return null;
-		
-		try {
-			return file.getCanonicalFile();
-		} catch (IOException e) {
-			return file.getAbsoluteFile();
-		}
 	}
 	
 	public static File getDefaultHomeFolder() {

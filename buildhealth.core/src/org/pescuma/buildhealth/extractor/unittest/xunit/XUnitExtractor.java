@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.extractor.unittest.xunit;
 
 import static org.apache.commons.io.FilenameUtils.*;
 import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
@@ -56,7 +56,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 				tracker.onStreamProcessed();
 				
 			} finally {
-				delete(tmp);
+				deleteFile(tmp);
 			}
 			
 		} else {
@@ -101,7 +101,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 			throw new BuildDataExtractorException(e);
 		} finally {
 			closeQuietly(stream);
-			delete(junitFile);
+			deleteFile(junitFile);
 		}
 	}
 	
@@ -144,16 +144,8 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 			throw new BuildDataExtractorException(e);
 		} finally {
 			if (!succeeded)
-				delete(junitFile);
+				deleteFile(junitFile);
 		}
-	}
-	
-	private void delete(File file) {
-		if (file == null)
-			return;
-		
-		if (!FileUtils.deleteQuietly(file))
-			file.deleteOnExit();
 	}
 	
 	private void appendErrors(StringBuilder out, List<ValidationError> errors) {

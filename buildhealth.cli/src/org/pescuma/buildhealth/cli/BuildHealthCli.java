@@ -25,6 +25,7 @@ import org.pescuma.buildhealth.cli.commands.add.unittest.MSTestExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.NUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.PHPUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.TusarExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.compute.LOCComputerCommand;
 import org.pescuma.buildhealth.cli.commands.compute.staticanalysis.TasksExtractorCommand;
 
 public class BuildHealthCli {
@@ -49,7 +50,8 @@ public class BuildHealthCli {
 						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
-				.withDefaultCommand(ComputeGroupHelp.class).withCommands(TasksExtractorCommand.class);
+				.withDefaultCommand(ComputeGroupHelp.class) //
+				.withCommands(LOCComputerCommand.class, TasksExtractorCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		

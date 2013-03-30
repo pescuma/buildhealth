@@ -3,6 +3,7 @@ package org.pescuma.buildhealth.extractor;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,10 +51,8 @@ public abstract class BaseExtractorTest {
 	public void tearDown() throws IOException {
 		closer.close();
 		
-		for (File file : toDelete) {
-			if (!file.delete())
-				file.deleteOnExit();
-		}
+		for (File file : toDelete)
+			deleteFile(file);
 	}
 	
 	protected InputStream load(String filename) {

@@ -17,25 +17,10 @@
 			<param name="target" value="all" />
 		</antcall>
 
-		<antcall target="cloc" />
-
 		<antcall target="pack-cli" />
 		<antcall target="pack-ant" />
 
 		<antcall target="report" />
-	</target>
-
-	<target name="cloc">
-		<delete file="${reports.dir}/cloc.files.csv" quiet="true" />
-
-		<exec executable="perl" dir="${basedir}/.." failonerror="false" failifexecutionfails="false">
-			<arg value="${basedir}/tools/cloc-1.58.pl" />
-			<arg value="--by-file" />
-			<arg value="--csv" />
-			<arg value="--out=${reports.dir}/cloc.files.csv" />
-			<arg value="--exclude-dir=build,tools,lib" />
-			<arg value="." />
-		</exec>
 	</target>
 
 	<target name="pack-cli">
@@ -156,6 +141,12 @@
 		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml" classpath="${build.dir}/buildhealth.ant-${version}.jar" />
 
 		<buildhealth home="${reports.dir}/builhealth">
+			<compute-loc>
+				<fileset dir="${basedir}/..">
+					<exclude name="**/build/**" />
+					<exclude name="**/lib/**" />
+				</fileset>
+			</compute-loc>
 			<add-junit>
 				<fileset dir="${basedir}/..">
 					<include name="**/reports/junit/*.xml" />
@@ -166,7 +157,6 @@
 					<include name="**/reports/coverage/*.xml" />
 				</fileset>
 			</add-jacoco>
-			<add-cloc file="${reports.dir}/cloc.files.csv" />
 			<add-diskusage dir="${build.dir}" />
 			<compute-tasks>
 				<fileset dir="${basedir}/..">
