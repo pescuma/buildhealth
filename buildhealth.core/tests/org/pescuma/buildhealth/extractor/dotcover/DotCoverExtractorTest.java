@@ -22,8 +22,8 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertEquals(12, table.size());
 		assertEquals(12, table.filter("Coverage", "C#", "dotCover").size());
@@ -45,8 +45,8 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertEquals(32, table.size());
 		assertEquals(32, table.filter("Coverage", "C#", "dotCover").size());

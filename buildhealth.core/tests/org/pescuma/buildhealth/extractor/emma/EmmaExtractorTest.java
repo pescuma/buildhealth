@@ -22,8 +22,8 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertEquals(8, table.size());
 		assertEquals(8, table.filter("Coverage", "Java", "Emma").size());
@@ -46,8 +46,8 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertEquals(50, table.size());
 		assertTable(8, 145100.3, table.filter("Coverage", "Java", "Emma").filter(5, "all"));

@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.core.BuildHealth;
 import org.pescuma.buildhealth.core.listener.AbstractBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
@@ -20,6 +21,11 @@ public abstract class BaseBuildHealthAntSubTask extends Task {
 			@Override
 			public void onFileExtracted(BuildDataExtractor extractor, File file) {
 				log("File processed: " + file);
+			}
+			
+			@Override
+			public void onFileComputed(BuildDataComputer computer, File file) {
+				log("File computed: " + file);
 			}
 		};
 		buildHealth.addListener(listener);

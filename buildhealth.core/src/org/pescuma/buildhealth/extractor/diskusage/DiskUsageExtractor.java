@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 import com.google.common.base.Strings;

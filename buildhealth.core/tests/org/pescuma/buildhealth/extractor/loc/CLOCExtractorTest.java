@@ -17,8 +17,8 @@ public class CLOCExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertTable(3, 61, table.filter("LOC").filter(2, "files"));
 		assertTable(1, 55, table.filter("LOC", "Java", "files"));
@@ -33,8 +33,8 @@ public class CLOCExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertTable(61, 61, table.filter("LOC").filter(2, "files"));
 		assertTable(55, 55, table.filter("LOC", "Java", "files"));

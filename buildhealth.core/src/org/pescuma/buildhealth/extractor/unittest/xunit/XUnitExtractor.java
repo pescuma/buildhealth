@@ -13,9 +13,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.unittest.JUnitExtractor;
 
@@ -53,7 +53,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 				}
 				
 				extractFile(tmp, null, data);
-				tracker.streamProcessed();
+				tracker.onStreamProcessed();
 				
 			} finally {
 				delete(tmp);
@@ -62,7 +62,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 		} else {
 			for (File f : files.getFiles("xml")) {
 				extractFile(f, getBaseName(f.getName()), data);
-				tracker.fileProcessed(f);
+				tracker.onFileProcessed(f);
 			}
 		}
 	}
@@ -87,12 +87,12 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 			new JUnitExtractor(new PseudoFiles(stream, filename), getLanguage(), metric.getToolName()).extractTo(data,
 					new BuildDataExtractorTracker() {
 						@Override
-						public void streamProcessed() {
+						public void onStreamProcessed() {
 							// Ignore
 						}
 						
 						@Override
-						public void fileProcessed(File file) {
+						public void onFileProcessed(File file) {
 							// Ignore
 						}
 					});

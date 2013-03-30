@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 
 public class BuildHealthTest {
 	

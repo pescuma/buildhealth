@@ -14,9 +14,9 @@ import org.jdom2.JDOMException;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
@@ -48,12 +48,12 @@ public class JUnitExtractor implements BuildDataExtractor {
 			
 			if (files.isStream()) {
 				extractDocument(getBaseName(files.getStreamFilename()), JDomUtil.parse(files.getStream()), data);
-				tracker.streamProcessed();
+				tracker.onStreamProcessed();
 				
 			} else {
 				for (File file : files.getFiles("xml")) {
 					extractDocument(file.getName(), JDomUtil.parse(file), data);
-					tracker.fileProcessed(file);
+					tracker.onFileProcessed(file);
 				}
 			}
 			

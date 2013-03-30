@@ -5,6 +5,7 @@ import io.airlift.command.OptionType;
 
 import java.io.File;
 
+import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.core.BuildHealth;
 import org.pescuma.buildhealth.core.listener.AbstractBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
@@ -23,6 +24,11 @@ public abstract class BuildHealthCliCommand implements Runnable {
 			@Override
 			public void onFileExtracted(BuildDataExtractor extractor, File file) {
 				System.out.println("File processed: " + file);
+			}
+			
+			@Override
+			public void onFileComputed(BuildDataComputer computer, File file) {
+				System.out.println("File computed: " + file);
 			}
 		});
 		

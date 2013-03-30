@@ -1,10 +1,9 @@
 package org.pescuma.buildhealth.cli;
 
+import static java.util.Arrays.*;
 import io.airlift.command.Command;
 import io.airlift.command.Help;
 import io.airlift.command.model.GlobalMetadata;
-
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -17,7 +16,7 @@ public class AddGroupHelp implements Runnable {
 	
 	@Override
 	public void run() {
-		Help.help(global, Arrays.asList("add"));
+		Help.help(global, asList("add"));
 	}
 	
 }

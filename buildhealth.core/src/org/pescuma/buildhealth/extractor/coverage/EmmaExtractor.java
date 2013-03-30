@@ -15,9 +15,9 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
@@ -42,12 +42,12 @@ public class EmmaExtractor implements BuildDataExtractor {
 			
 			if (files.isStream()) {
 				extractStream(null, files.getStream(), data);
-				tracker.streamProcessed();
+				tracker.onStreamProcessed();
 				
 			} else {
 				for (File file : files.getFiles("xml")) {
 					extractFile(file, data);
-					tracker.fileProcessed(file);
+					tracker.onFileProcessed(file);
 				}
 			}
 			

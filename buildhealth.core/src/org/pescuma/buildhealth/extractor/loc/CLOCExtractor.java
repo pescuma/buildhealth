@@ -11,9 +11,9 @@ import java.io.InputStreamReader;
 
 import org.apache.commons.io.IOUtils;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -32,12 +32,12 @@ public class CLOCExtractor implements BuildDataExtractor {
 			
 			if (files.isStream()) {
 				extractStream(files.getStream(), data);
-				tracker.streamProcessed();
+				tracker.onStreamProcessed();
 				
 			} else {
 				for (File file : files.getFiles("csv")) {
 					extractFile(file, data);
-					tracker.fileProcessed(file);
+					tracker.onFileProcessed(file);
 				}
 			}
 			

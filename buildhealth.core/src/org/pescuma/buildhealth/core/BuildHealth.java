@@ -9,11 +9,15 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.computer.BuildDataComputer;
+import org.pescuma.buildhealth.computer.BuildDataComputerException;
+import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
 import org.pescuma.buildhealth.core.data.BuildDataTable;
 import org.pescuma.buildhealth.core.data.DiskBuildData;
 import org.pescuma.buildhealth.core.listener.BuildHealthListener;
 import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
+import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 
 public class BuildHealth {
 	
@@ -70,15 +74,42 @@ public class BuildHealth {
 		analysers.add(analyser);
 	}
 	
+	public void compute(final BuildDataComputer computer) {
+		File computedFolder = new File(home, "computed");
+		
+		try {
+			forceMkdir(computedFolder);
+		} catch (IOException e) {
+			throw new BuildDataComputerException(e);
+		}
+		
+		BuildDataExtractor extractor = computer.compute(computedFolder, new BuildDataComputerTracker() {
+			@Override
+			public void onStreamProcessed() {
+			}
+			
+			@Override
+			public void onFileProcessed(File file) {
+			}
+			
+			@Override
+			public void onFileOutputCreated(File file) {
+				listeners.onFileComputed(computer, file);
+			}
+		});
+		
+		extract(extractor);
+	}
+	
 	public void extract(final BuildDataExtractor extractor) {
 		extractor.extractTo(table, new BuildDataExtractorTracker() {
 			@Override
-			public void fileProcessed(File file) {
+			public void onFileProcessed(File file) {
 				listeners.onFileExtracted(extractor, file);
 			}
 			
 			@Override
-			public void streamProcessed() {
+			public void onStreamProcessed() {
 				listeners.onStreamExtracted(extractor);
 			}
 		});

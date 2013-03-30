@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 
 public class CompositeBuildHealthListener implements BuildHealthListener {
@@ -16,6 +17,12 @@ public class CompositeBuildHealthListener implements BuildHealthListener {
 	
 	public boolean removeListener(BuildHealthListener listener) {
 		return listeners.remove(listener);
+	}
+	
+	@Override
+	public void onFileComputed(BuildDataComputer computer, File file) {
+		for (BuildHealthListener listener : listeners)
+			listener.onFileComputed(computer, file);
 	}
 	
 	@Override

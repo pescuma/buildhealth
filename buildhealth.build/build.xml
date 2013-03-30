@@ -168,12 +168,12 @@
 			</add-jacoco>
 			<add-cloc file="${reports.dir}/cloc.files.csv" />
 			<add-diskusage dir="${build.dir}" />
-			<add-tasks>
+			<compute-tasks>
 				<fileset dir="${basedir}/..">
 					<include name="**/*.java" />
 					<exclude name="**/TasksExtractor*.java" />
 				</fileset>
-			</add-tasks>
+			</compute-tasks>
 		</buildhealth>
 	</target>
 

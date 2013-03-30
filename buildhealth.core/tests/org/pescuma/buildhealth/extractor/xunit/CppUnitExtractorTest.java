@@ -21,8 +21,8 @@ public class CppUnitExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertTable(10, 10, table.filter("Unit test", "C++", "CppUnit"));
 		assertTable(9, 9, table.filter("Unit test").filter(3, "passed"));

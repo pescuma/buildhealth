@@ -24,8 +24,8 @@ public class JUnitExtractorTest extends BaseExtractorTest {
 		
 		extractor.extractTo(table, tracker);
 		
-		verify(tracker).streamProcessed();
-		verify(tracker, never()).fileProcessed(any(File.class));
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertTable(6, 6, table.filter("Unit test").filter(3, "passed"));
 		assertTable(6, 0.031, table.filter("Unit test").filter(3, "time"));

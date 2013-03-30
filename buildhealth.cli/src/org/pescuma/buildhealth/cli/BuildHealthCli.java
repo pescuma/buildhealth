@@ -7,25 +7,25 @@ import io.airlift.command.Help;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
-import org.pescuma.buildhealth.cli.commands.CLOCExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.DiskUsageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.ReportCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
-import org.pescuma.buildhealth.cli.commands.coverage.DotCoverExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.coverage.EmmaExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.coverage.JacocoExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.staticanalysis.TasksExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.AUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.BoostTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.CppTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.CppUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.FPCUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.JUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.MNMLSTCUnitTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.MSTestExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.NUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.PHPUnitExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.unittest.TusarExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.CLOCExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.DiskUsageExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.coverage.DotCoverExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.coverage.EmmaExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.coverage.JacocoExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.AUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.BoostTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.CppTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.CppUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.FPCUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.JUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.MNMLSTCUnitTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.MSTestExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.NUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.PHPUnitExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.unittest.TusarExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.compute.staticanalysis.TasksExtractorCommand;
 
 public class BuildHealthCli {
 	
@@ -46,8 +46,10 @@ public class BuildHealthCli {
 						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
 						TusarExtractorCommand.class, //
 						EmmaExtractorCommand.class, JacocoExtractorCommand.class, DotCoverExtractorCommand.class, //
-						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class, //
-						TasksExtractorCommand.class);
+						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
+		
+		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
+				.withDefaultCommand(ComputeGroupHelp.class).withCommands(TasksExtractorCommand.class);
 		
 		Cli<Runnable> parser = builder.build();
 		
