@@ -10,12 +10,9 @@ import org.pescuma.buildhealth.core.Report;
 
 public class UnitTestAnalyserTest extends BaseAnalyserTest {
 	
-	private UnitTestAnalyser analyser;
-	
 	@Before
 	public void setUp() {
-		analyser = new UnitTestAnalyser();
-		super.setUp(analyser);
+		super.setUp(new UnitTestAnalyser());
 	}
 	
 	private void createPassed(int i) {

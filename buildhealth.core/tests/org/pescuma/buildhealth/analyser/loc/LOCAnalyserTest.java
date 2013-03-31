@@ -10,13 +10,9 @@ import org.pescuma.buildhealth.core.Report;
 
 public class LOCAnalyserTest extends BaseAnalyserTest {
 	
-	private LOCAnalyser analyser;
-	
 	@Before
 	public void setUp() {
-		analyser = new LOCAnalyser();
-		
-		super.setUp(analyser);
+		super.setUp(new LOCAnalyser());
 	}
 	
 	private void createSource(double size) {

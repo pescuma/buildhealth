@@ -67,7 +67,7 @@ public class BuildHealth {
 			forceMkdir(home);
 			
 		} catch (IOException e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 	}
 	

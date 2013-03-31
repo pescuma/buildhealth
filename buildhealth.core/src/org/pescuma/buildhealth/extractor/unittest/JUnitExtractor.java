@@ -1,31 +1,23 @@
 package org.pescuma.buildhealth.extractor.unittest;
 
 import static com.google.common.base.Objects.*;
-import static org.apache.commons.io.FilenameUtils.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.extractor.BuildDataExtractor;
-import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
-import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
-import org.pescuma.buildhealth.extractor.JDomUtil;
+import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 /**
  * Based on hudson.tasks.junit.SuiteResult by Kohsuke Kawaguchi
  */
-public class JUnitExtractor implements BuildDataExtractor {
+public class JUnitExtractor extends BaseXMLExtractor {
 	
-	private final PseudoFiles files;
 	private final String language;
 	private final String tool;
 	
@@ -34,39 +26,14 @@ public class JUnitExtractor implements BuildDataExtractor {
 	}
 	
 	public JUnitExtractor(PseudoFiles files, String language, String tool) {
-		if (files == null)
-			throw new IllegalArgumentException();
-		
-		this.files = files;
+		super(files);
 		this.language = language;
 		this.tool = tool;
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
-		try {
-			
-			if (files.isStream()) {
-				extractDocument(getBaseName(files.getStreamFilename()), JDomUtil.parse(files.getStream()), data);
-				tracker.onStreamProcessed();
-				
-			} else {
-				for (File file : files.getFiles("xml")) {
-					extractDocument(file.getName(), JDomUtil.parse(file), data);
-					tracker.onFileProcessed(file);
-				}
-			}
-			
-		} catch (JDOMException e) {
-			throw new BuildDataExtractorException(e);
-		} catch (IOException e) {
-			throw new BuildDataExtractorException(e);
-		}
-	}
-	
-	private void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(String filename, Document doc, BuildData data) {
 		XPathFactory xpath = XPathFactory.instance();
-		
 		for (Element suite : xpath.compile("//testsuite", Filters.element()).evaluate(doc))
 			extractSuite(filename, suite, data);
 	}

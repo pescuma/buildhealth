@@ -13,12 +13,6 @@
 	    ]]>
 	</script>
 
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${basedir}/../buildhealth.build/lib/ant-contrib-1.0b3.jar" />
-		</classpath>
-	</taskdef>
-
 	<property name="project.dir" location="${basedir}" />
 	<property name="src.dir" location="${project.dir}/src" />
 	<property name="tests.dir" location="${project.dir}/tests" />
@@ -32,8 +26,11 @@
 	<property name="reports.dir" location="${build.dir}/reports" />
 	<property name="reports.junit.dir" location="${reports.dir}/junit" />
 	<property name="reports.coverage.dir" location="${reports.dir}/coverage" />
+	<property name="reports.pmd.dir" location="${reports.dir}/pmd" />
 	<property name="dist.dir" location="${build.dir}/dist" />
-	<property name="tools.lib.dir" location="../buildhealth.build/lib" />
+	<property name="tools.lib.dir" location="${basedir}/../buildhealth.build/lib" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
 
 	<if>
 		<equals arg1="${project.deps}" arg2="" />
@@ -68,7 +65,7 @@
 		<path refid="libs.path" />
 	</path>
 
-	<target name="all" depends="init, clean, compile, test, pack, clean-tmp" description="Compile, test and pack">
+	<target name="all" depends="init, clean, compile, test, pmd, pack, clean-tmp" description="Compile, test and pack">
 	</target>
 
 	<target name="init">
@@ -161,6 +158,32 @@
 			<html destdir="${reports.coverage.dir}" />
 			<xml destfile="${reports.coverage.dir}/jacoco.xml" />
 		</jacoco:report>
+	</target>
+
+	<target name="pmd" depends="init" description="Run PMD on sources">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+			<classpath>
+				<fileset dir="${tools.lib.dir}/pmd">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+
+		<delete dir="${reports.pmd.dir}" quiet="true" />
+		<mkdir dir="${reports.pmd.dir}" />
+
+		<pmd shortFilenames="true">
+			<ruleset>rulesets/java/design.xml</ruleset>
+			<ruleset>java-basic</ruleset>
+			<formatter type="html" toFile="${reports.pmd.dir}/pmd_report.html" />
+			<formatter type="xml" toFile="${reports.pmd.dir}/pmd_report.xml" />
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${tests.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
 	</target>
 
 	<target name="pack" depends="init" description="Create jar archives">

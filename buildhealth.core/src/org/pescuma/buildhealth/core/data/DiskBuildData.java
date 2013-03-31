@@ -52,7 +52,7 @@ public class DiskBuildData implements BuildData {
 			}
 			
 		} catch (IOException e) {
-			throw new RuntimeException("Error writing csv: " + file);
+			throw new RuntimeException("Error writing csv: " + file, e);
 			
 		} finally {
 			closeQuietly(csv);
@@ -82,7 +82,7 @@ public class DiskBuildData implements BuildData {
 			}
 			
 		} catch (IOException e) {
-			throw new RuntimeException("Error reading csv: " + file);
+			throw new RuntimeException("Error reading csv: " + file, e);
 			
 		} finally {
 			closeQuietly(csv);

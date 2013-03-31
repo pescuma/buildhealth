@@ -10,12 +10,9 @@ import org.pescuma.buildhealth.core.Report;
 
 public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 	
-	private StaticAnalysisAnalyser analyser;
-	
 	@Before
 	public void setUp() {
-		analyser = new StaticAnalysisAnalyser();
-		super.setUp(analyser);
+		super.setUp(new StaticAnalysisAnalyser());
 	}
 	
 	private void create(String type, int count) {

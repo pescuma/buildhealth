@@ -157,6 +157,11 @@
 					<include name="**/reports/coverage/*.xml" />
 				</fileset>
 			</add-jacoco>
+			<add-pmd>
+				<fileset dir="${basedir}/..">
+					<include name="**/reports/pmd/*.xml" />
+				</fileset>
+			</add-pmd>
 			<add-diskusage dir="${build.dir}" />
 			<compute-tasks>
 				<fileset dir="${basedir}/..">

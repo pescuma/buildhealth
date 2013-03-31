@@ -15,13 +15,9 @@ import org.pescuma.buildhealth.core.Report;
 
 public class DiskUsageAnalyserTest extends BaseAnalyserTest {
 	
-	private DiskUsageAnalyser analyser;
-	
 	@Before
 	public void setUp() {
-		analyser = new DiskUsageAnalyser();
-		
-		super.setUp(analyser);
+		super.setUp(new DiskUsageAnalyser());
 	}
 	
 	private void create(double size, String... tag) {

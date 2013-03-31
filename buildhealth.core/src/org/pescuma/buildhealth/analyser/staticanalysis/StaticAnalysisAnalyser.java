@@ -17,7 +17,7 @@ import org.pescuma.buildhealth.core.Report;
  * Expect the lines to be:
  * 
  * <pre>
- * Static analysis,language,framework,filename,line,category,description
+ * Static analysis,language,framework,filename,line or beginLine:beginColumn:endLine:endColumn,category,description,URL with details
  * </pre>
  * 
  * The number is the number of violations in that place. Empty line means all file.
@@ -26,6 +26,7 @@ import org.pescuma.buildhealth.core.Report;
  * 
  * <pre>
  * 1 | Static analysis,Java,Task,/a/b.java,12,Type1,Go to bed
+ * 1 | Static analysis,Java,PMD,/a/b.java,12:1:12:5,A/Type1,Go to bed,http://a.com/info.html
  * 10 | Static analysis,Java,Task,/a/c.java,,Type2
  * </pre>
  */
