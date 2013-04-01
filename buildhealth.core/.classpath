@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/saxon/saxon9.jar"/>
 	<classpathentry kind="lib" path="lib/saxon/saxon9-dom.jar"/>
 	<classpathentry kind="lib" path="lib/auto/opencsv-2.3-jar.jar" sourcepath="lib/auto/opencsv-2.3-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/jsoup-1.7.2-jar.jar" sourcepath="lib/auto/jsoup-1.7.2-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

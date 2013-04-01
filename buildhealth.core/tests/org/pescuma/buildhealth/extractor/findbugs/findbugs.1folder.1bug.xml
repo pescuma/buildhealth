@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="2.0.2" sequence="0" timestamp="1364818261067" analysisTimestamp="1364818261083" release="">
+  <Project projectName="">
+    <SrcDir>c:\buildhealth.core\src</SrcDir>
+  </Project>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" abbrev="Dm" category="I18N" instanceHash="1a0bf9e249a5375f587e6520a9088d9d" instanceOccurrenceNum="0" instanceOccurrenceMax="0" rank="19">
+    <ShortMessage>Reliance on default encoding</ShortMessage>
+    <LongMessage>Found reliance on default encoding in org.pescuma.buildhealth.computer.loc.LOCComputer.createFileList(): new java.io.FileWriter(File)</LongMessage>
+    <Class classname="org.pescuma.buildhealth.computer.loc.LOCComputer" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.computer.loc.LOCComputer" start="25" end="142" sourcefile="LOCComputer.java" sourcepath="org/pescuma/buildhealth/computer/loc/LOCComputer.java" relSourcepath="src\org\pescuma\buildhealth\computer\loc\LOCComputer.java">
+        <Message>At LOCComputer.java:[lines 25-142]</Message>
+      </SourceLine>
+      <Message>In class org.pescuma.buildhealth.computer.loc.LOCComputer</Message>
+    </Class>
+    <Method classname="org.pescuma.buildhealth.computer.loc.LOCComputer" name="createFileList" signature="()Ljava/io/File;" isStatic="false" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.computer.loc.LOCComputer" start="79" end="101" startBytecode="0" endBytecode="387" sourcefile="LOCComputer.java" sourcepath="org/pescuma/buildhealth/computer/loc/LOCComputer.java" relSourcepath="src\org\pescuma\buildhealth\computer\loc\LOCComputer.java"/>
+      <Message>In method org.pescuma.buildhealth.computer.loc.LOCComputer.createFileList()</Message>
+    </Method>
+    <Method classname="java.io.FileWriter" name="&lt;init&gt;" signature="(Ljava/io/File;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.FileWriter" start="73" end="74" startBytecode="0" endBytecode="40" sourcefile="FileWriter.java" sourcepath="java/io/FileWriter.java"/>
+      <Message>Called method new java.io.FileWriter(File)</Message>
+    </Method>
+    <SourceLine classname="org.pescuma.buildhealth.computer.loc.LOCComputer" primary="true" start="86" end="86" startBytecode="19" endBytecode="19" sourcefile="LOCComputer.java" sourcepath="org/pescuma/buildhealth/computer/loc/LOCComputer.java" relSourcepath="src\org\pescuma\buildhealth\computer\loc\LOCComputer.java">
+      <Message>At LOCComputer.java:[line 86]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugCategory category="I18N">
+    <Description>Internationalization</Description>
+  </BugCategory>
+  <BugPattern type="DM_DEFAULT_ENCODING" abbrev="Dm" category="I18N">
+    <ShortDescription>Reliance on default encoding</ShortDescription>
+    <Details><![CDATA[
+
+<p> Found a call to a method which will perform a byte to String (or String to byte) conversion, and will assume that the default platform encoding is suitable. This will cause the application behaviour to vary between platforms. Use an alternative API and specify a charset name or Charset object explicitly.  </p>
+
+      ]]></Details>
+  </BugPattern>
+  <BugCode abbrev="Dm">
+    <Description>Dubious method used</Description>
+  </BugCode>
+  <Errors errors="0" missingClasses="0"></Errors>
+</BugCollection>

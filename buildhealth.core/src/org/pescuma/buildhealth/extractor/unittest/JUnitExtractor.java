@@ -7,8 +7,6 @@ import java.text.ParseException;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.filter.Filters;
-import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
@@ -33,8 +31,7 @@ public class JUnitExtractor extends BaseXMLExtractor {
 	
 	@Override
 	protected void extractDocument(String filename, Document doc, BuildData data) {
-		XPathFactory xpath = XPathFactory.instance();
-		for (Element suite : xpath.compile("//testsuite", Filters.element()).evaluate(doc))
+		for (Element suite : findElementsXPath(doc, "//testsuite"))
 			extractSuite(filename, suite, data);
 	}
 	

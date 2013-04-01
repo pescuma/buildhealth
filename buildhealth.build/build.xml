@@ -94,7 +94,7 @@
 			</compute-loc>
 			<add-junit>
 				<fileset dir="${basedir}/..">
-					<include name="**/reports/junit/*.xml" />
+					<include name="**/reports/junit/*" />
 				</fileset>
 			</add-junit>
 			<add-jacoco>
@@ -104,14 +104,19 @@
 			</add-jacoco>
 			<add-pmd>
 				<fileset dir="${basedir}/..">
-					<include name="**/reports/pmd/*.xml" />
+					<include name="**/reports/pmd/*" />
 				</fileset>
 			</add-pmd>
 			<add-cpd>
 				<fileset dir="${basedir}/..">
-					<include name="**/reports/cpd/*.txt" />
+					<include name="**/reports/cpd/*" />
 				</fileset>
 			</add-cpd>
+			<add-findbugs>
+				<fileset dir="${basedir}/..">
+					<include name="**/reports/findbugs/*" />
+				</fileset>
+			</add-findbugs>
 			<add-diskusage dir="${build.dir}" />
 			<compute-tasks>
 				<fileset dir="${basedir}/..">

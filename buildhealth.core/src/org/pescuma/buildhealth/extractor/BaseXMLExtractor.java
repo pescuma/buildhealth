@@ -2,9 +2,13 @@ package org.pescuma.buildhealth.extractor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.jdom2.Document;
+import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
 
 public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
@@ -30,6 +34,14 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	protected void checkRoot(Document doc, String name) {
 		if (!doc.getRootElement().getName().equals(name))
 			throw new BuildDataExtractorException("Invalid file format: top node must be " + name);
+	}
+	
+	protected List<Element> findElementsXPath(Document doc, String xpath) {
+		return XPathFactory.instance().compile(xpath, Filters.element()).evaluate(doc);
+	}
+	
+	protected List<Element> findElementsXPath(Element el, String xpath) {
+		return XPathFactory.instance().compile(xpath, Filters.element()).evaluate(el);
 	}
 	
 }

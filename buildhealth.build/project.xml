@@ -28,6 +28,7 @@
 	<property name="reports.coverage.dir" location="${reports.dir}/coverage" />
 	<property name="reports.pmd.dir" location="${reports.dir}/pmd" />
 	<property name="reports.cpd.dir" location="${reports.dir}/cpd" />
+	<property name="reports.findbugs.dir" location="${reports.dir}/findbugs" />
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="tools.lib.dir" location="${basedir}/../buildhealth.build/lib" />
 
@@ -66,7 +67,7 @@
 		<path refid="libs.path" />
 	</path>
 
-	<target name="all" depends="init, clean, compile, test, pmd, cpd, pack, clean-tmp" description="Compile, test and pack">
+	<target name="all" depends="init, clean, compile, test, pmd, cpd, findbugs, pack, clean-tmp" description="Compile, test and pack">
 	</target>
 
 	<target name="init">
@@ -176,7 +177,6 @@
 		<pmd shortFilenames="true">
 			<ruleset>rulesets/java/design.xml</ruleset>
 			<ruleset>java-basic</ruleset>
-			<formatter type="html" toFile="${reports.pmd.dir}/pmd_report.html" />
 			<formatter type="xml" toFile="${reports.pmd.dir}/pmd_report.xml" />
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
@@ -207,6 +207,22 @@
 				<include name="**/*.java" />
 			</fileset>
 		</cpd>
+	</target>
+
+	<target name="findbugs" depends="init" description="Run FindBugs on sources">
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${tools.lib.dir}/findbugs/lib/findbugs-ant.jar" />
+		<property name="findbugs.home" value="${tools.lib.dir}/findbugs" />
+
+		<delete dir="${reports.findbugs.dir}" quiet="true" />
+		<mkdir dir="${reports.findbugs.dir}" />
+
+		<findbugs home="${findbugs.home}" output="xml:withMessages" outputFile="${reports.findbugs.dir}/findbugs.xml">
+			<sourcePath path="${src.dir}" />
+			<sourcePath path="${tests.dir}" />
+			<class location="${build.javac.dir}" />
+			<class location="${build.tests.dir}" />
+			<auxClasspath refid="compile.path" />
+		</findbugs>
 	</target>
 
 	<target name="pack" depends="init" description="Create jar archives">

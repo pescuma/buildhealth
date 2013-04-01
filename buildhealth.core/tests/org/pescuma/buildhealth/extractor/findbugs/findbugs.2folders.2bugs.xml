@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="2.0.2" sequence="0" timestamp="1364824379060" analysisTimestamp="1364824379060" release="">
+  <Project projectName="">
+    <Jar>C:\buildhealth.ant\build\tmp\bin\src</Jar>
+    <Jar>C:\buildhealth.ant\build\tmp\bin\tests</Jar>
+    <AuxClasspathEntry>C:\buildhealth.core\build\dist\buildhealth.core-0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\buildhealth.ant\lib\auto\ant-1.7.0-jar.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\buildhealth.ant\lib\auto\ant-launcher-1.7.0-jar.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\buildhealth.ant\lib\auto\hamcrest-core-1.1-jar.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\buildhealth.ant\lib\auto\junit-4.10-jar.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\buildhealth.ant\lib\ivy\ivy-2.3.0.jar</AuxClasspathEntry>
+    <SrcDir>C:\buildhealth.ant\src</SrcDir>
+    <SrcDir>C:\buildhealth.ant\tests</SrcDir>
+  </Project>
+  <BugInstance type="MS_PKGPROTECT" priority="2" abbrev="MS" category="MALICIOUS_CODE" instanceHash="2d857c762818386224d4a6b0443098e" instanceOccurrenceNum="0" instanceOccurrenceMax="0" rank="18">
+    <ShortMessage>Field should be package protected</ShortMessage>
+    <LongMessage>org.pescuma.buildhealth.ant.BuildHealthAntTask.buildHealth should be package protected</LongMessage>
+    <Class classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" start="20" end="73" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java">
+        <Message>At BuildHealthAntTask.java:[lines 20-73]</Message>
+      </SourceLine>
+      <Message>In class org.pescuma.buildhealth.ant.BuildHealthAntTask</Message>
+    </Class>
+    <Field classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" name="buildHealth" signature="Lorg/pescuma/buildhealth/core/BuildHealth;" isStatic="true" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java">
+        <Message>In BuildHealthAntTask.java</Message>
+      </SourceLine>
+      <Message>Field org.pescuma.buildhealth.ant.BuildHealthAntTask.buildHealth</Message>
+    </Field>
+    <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java" synthetic="true">
+      <Message>In BuildHealthAntTask.java</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" priority="2" abbrev="ST" category="STYLE" instanceHash="abb172d84259071c7307c8bbc54483a9" instanceOccurrenceNum="0" instanceOccurrenceMax="0" rank="17">
+    <ShortMessage>Write to static field from instance method</ShortMessage>
+    <LongMessage>Write to static field org.pescuma.buildhealth.ant.BuildHealthAntTask.buildHealth from instance method org.pescuma.buildhealth.ant.BuildHealthAntTask.execute()</LongMessage>
+    <Class classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" start="20" end="73" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java">
+        <Message>At BuildHealthAntTask.java:[lines 20-73]</Message>
+      </SourceLine>
+      <Message>In class org.pescuma.buildhealth.ant.BuildHealthAntTask</Message>
+    </Class>
+    <Method classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" name="execute" signature="()V" isStatic="false" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" start="51" end="73" startBytecode="0" endBytecode="360" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java"/>
+      <Message>In method org.pescuma.buildhealth.ant.BuildHealthAntTask.execute()</Message>
+    </Method>
+    <Field classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" name="buildHealth" signature="Lorg/pescuma/buildhealth/core/BuildHealth;" isStatic="true" primary="true">
+      <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java">
+        <Message>In BuildHealthAntTask.java</Message>
+      </SourceLine>
+      <Message>Field org.pescuma.buildhealth.ant.BuildHealthAntTask.buildHealth</Message>
+    </Field>
+    <SourceLine classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" primary="true" start="51" end="51" startBytecode="15" endBytecode="15" sourcefile="BuildHealthAntTask.java" sourcepath="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" relSourcepath="src\org\pescuma\buildhealth\ant\BuildHealthAntTask.java">
+      <Message>At BuildHealthAntTask.java:[line 51]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugCategory category="STYLE">
+    <Description>Dodgy code</Description>
+  </BugCategory>
+  <BugCategory category="MALICIOUS_CODE">
+    <Description>Malicious code vulnerability</Description>
+  </BugCategory>
+  <BugPattern type="MS_PKGPROTECT" abbrev="MS" category="MALICIOUS_CODE">
+    <ShortDescription>Field should be package protected</ShortDescription>
+    <Details><![CDATA[
+
+  <p> A mutable static field could be changed by malicious code or
+   by accident.
+   The field could be made package protected to avoid
+   this vulnerability.</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" abbrev="ST" category="STYLE">
+    <ShortDescription>Write to static field from instance method</ShortDescription>
+    <Details><![CDATA[
+
+  <p> This instance method writes to a static field. This is tricky to get
+correct if multiple instances are being manipulated,
+and generally bad practice.
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugCode abbrev="ST">
+    <Description>Misuse of static fields</Description>
+  </BugCode>
+  <BugCode abbrev="MS" cweid="218">
+    <Description>Mutable static field</Description>
+  </BugCode>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Mon, 1 Apr 2013 14:52:59 +0100" total_classes="26" referenced_classes="97" total_bugs="2" total_size="257" num_packages="7" vm_version="20.14-b01" cpu_seconds="1.91" clock_seconds="1.62" peak_mbytes="45.11" alloc_mbytes="247.50" gc_seconds="0.15" priority_2="2">
+    <FileStats path="org/pescuma/buildhealth/ant/BaseBuildHealthAntSubTask.java" bugCount="0" size="24"/>
+    <FileStats path="org/pescuma/buildhealth/ant/BuildHealthAntTask.java" bugCount="2" size="39" bugHash="fe66e28aeb3ba406785664ec0b578ed4"/>
+    <FileStats path="org/pescuma/buildhealth/ant/DummyTest.java" bugCount="0" size="5"/>
+    <FileStats path="org/pescuma/buildhealth/ant/FileListBuildHealthAntSubTask.java" bugCount="0" size="42"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/CLOCExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/DiskUsageExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/coverage/DotCoverExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/coverage/EmmaExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/coverage/JacocoExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/staticanalysis/CPDExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/staticanalysis/FindBugsExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/staticanalysis/PMDExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/AUnitExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/BoostTestExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/CppTestExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/CppUnitExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/FPCUnitExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/JUnitExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/MNMLSTCUnitTestExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/MSTestExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/NUnitExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/PHPUnitExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/add/unittest/TusarExtractorAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/compute/LOCComputerAntTask.java" bugCount="0" size="7"/>
+    <FileStats path="org/pescuma/buildhealth/ant/tasks/compute/staticanalysis/TasksExtractorAntTask.java" bugCount="0" size="7"/>
+    <PackageStats package="org.pescuma.buildhealth.ant" total_bugs="2" total_types="5" total_size="110" priority_2="2">
+      <ClassStats class="org.pescuma.buildhealth.ant.BaseBuildHealthAntSubTask" sourceFile="BaseBuildHealthAntSubTask.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.BaseBuildHealthAntSubTask$1" sourceFile="BaseBuildHealthAntSubTask.java" interface="false" size="10" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.BuildHealthAntTask" sourceFile="BuildHealthAntTask.java" interface="false" size="39" bugs="2" priority_2="2"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.DummyTest" sourceFile="DummyTest.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.FileListBuildHealthAntSubTask" sourceFile="FileListBuildHealthAntSubTask.java" interface="false" size="42" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="org.pescuma.buildhealth.ant.tasks.add" total_bugs="0" total_types="2" total_size="14">
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.CLOCExtractorAntTask" sourceFile="CLOCExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.DiskUsageExtractorAntTask" sourceFile="DiskUsageExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="org.pescuma.buildhealth.ant.tasks.add.coverage" total_bugs="0" total_types="3" total_size="21">
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.coverage.DotCoverExtractorAntTask" sourceFile="DotCoverExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.coverage.EmmaExtractorAntTask" sourceFile="EmmaExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.coverage.JacocoExtractorAntTask" sourceFile="JacocoExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="org.pescuma.buildhealth.ant.tasks.add.staticanalysis" total_bugs="0" total_types="3" total_size="21">
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.CPDExtractorAntTask" sourceFile="CPDExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.FindBugsExtractorAntTask" sourceFile="FindBugsExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.PMDExtractorAntTask" sourceFile="PMDExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="org.pescuma.buildhealth.ant.tasks.add.unittest" total_bugs="0" total_types="11" total_size="77">
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.AUnitExtractorAntTask" sourceFile="AUnitExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.BoostTestExtractorAntTask" sourceFile="BoostTestExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.CppTestExtractorAntTask" sourceFile="CppTestExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.CppUnitExtractorAntTask" sourceFile="CppUnitExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.FPCUnitExtractorAntTask" sourceFile="FPCUnitExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.JUnitExtractorAntTask" sourceFile="JUnitExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.MNMLSTCUnitTestExtractorAntTask" sourceFile="MNMLSTCUnitTestExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.MSTestExtractorAntTask" sourceFile="MSTestExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.NUnitExtractorAntTask" sourceFile="NUnitExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.PHPUnitExtractorAntTask" sourceFile="PHPUnitExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.add.unittest.TusarExtractorAntTask" sourceFile="TusarExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="org.pescuma.buildhealth.ant.tasks.compute" total_bugs="0" total_types="1" total_size="7">
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.compute.LOCComputerAntTask" sourceFile="LOCComputerAntTask.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="org.pescuma.buildhealth.ant.tasks.compute.staticanalysis" total_bugs="0" total_types="1" total_size="7">
+      <ClassStats class="org.pescuma.buildhealth.ant.tasks.compute.staticanalysis.TasksExtractorAntTask" sourceFile="TasksExtractorAntTask.java" interface="false" size="7" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="359" invocations="554" avgMicrosecondsPerInvocation="649" maxMicrosecondsPerInvocation="1231" standardDeviationMircosecondsPerInvocation="313"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="174" invocations="551" avgMicrosecondsPerInvocation="316" maxMicrosecondsPerInvocation="12820" standardDeviationMircosecondsPerInvocation="836"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="64" invocations="97" avgMicrosecondsPerInvocation="667" maxMicrosecondsPerInvocation="7800" standardDeviationMircosecondsPerInvocation="1348"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="56" invocations="499" avgMicrosecondsPerInvocation="113" maxMicrosecondsPerInvocation="32454" standardDeviationMircosecondsPerInvocation="1452"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindUnrelatedTypesInGenericContainer" totalMilliseconds="43" invocations="26" avgMicrosecondsPerInvocation="1669" maxMicrosecondsPerInvocation="41728" standardDeviationMircosecondsPerInvocation="8011"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ValueNumberDataflowFactory" totalMilliseconds="37" invocations="63" avgMicrosecondsPerInvocation="594" maxMicrosecondsPerInvocation="12521" standardDeviationMircosecondsPerInvocation="1901"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="34" invocations="63" avgMicrosecondsPerInvocation="543" maxMicrosecondsPerInvocation="29305" standardDeviationMircosecondsPerInvocation="3654"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="32" invocations="131" avgMicrosecondsPerInvocation="250" maxMicrosecondsPerInvocation="10924" standardDeviationMircosecondsPerInvocation="1026"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="32" invocations="202" avgMicrosecondsPerInvocation="161" maxMicrosecondsPerInvocation="5716" standardDeviationMircosecondsPerInvocation="425"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="31" invocations="62" avgMicrosecondsPerInvocation="505" maxMicrosecondsPerInvocation="7245" standardDeviationMircosecondsPerInvocation="1250"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="28" invocations="97" avgMicrosecondsPerInvocation="296" maxMicrosecondsPerInvocation="4322" standardDeviationMircosecondsPerInvocation="722"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.TypeDataflowFactory" totalMilliseconds="28" invocations="62" avgMicrosecondsPerInvocation="462" maxMicrosecondsPerInvocation="10515" standardDeviationMircosecondsPerInvocation="1476"/>
+      <ClassProfile name="edu.umd.cs.findbugs.ba.npe.NullDerefAndRedundantComparisonFinder" totalMilliseconds="27" invocations="62" avgMicrosecondsPerInvocation="446" maxMicrosecondsPerInvocation="2672" standardDeviationMircosecondsPerInvocation="511"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.UnconditionalValueDerefDataflowFactory" totalMilliseconds="27" invocations="62" avgMicrosecondsPerInvocation="437" maxMicrosecondsPerInvocation="6011" standardDeviationMircosecondsPerInvocation="947"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.CFGFactory" totalMilliseconds="24" invocations="62" avgMicrosecondsPerInvocation="398" maxMicrosecondsPerInvocation="9302" standardDeviationMircosecondsPerInvocation="1168"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

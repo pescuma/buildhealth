@@ -42,6 +42,7 @@ public class PMDExtractor extends BaseXMLExtractor {
 		if (!ruleset.isEmpty())
 			rule = ruleset + "/" + rule;
 		
-		data.add(1, "Static analysis", detectLanguage(filename), "PMD", filename, line, rule, message, externalInfoUrl);
+		data.add(1, "Static analysis", detectLanguage(filename), "PMD", filename, line, rule, message, "",
+				externalInfoUrl);
 	}
 }

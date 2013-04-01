@@ -16,6 +16,7 @@
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 		<dependency org="commons-io" name="commons-io" rev="2.4" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
+		<dependency org="org.jsoup" name="jsoup" rev="1.7.2" />
 
 		<!-- Tests only -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" />
