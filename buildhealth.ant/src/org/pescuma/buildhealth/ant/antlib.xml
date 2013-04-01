@@ -22,6 +22,7 @@
 	<typedef name="add-dotCover" classname="org.pescuma.buildhealth.ant.tasks.add.coverage.DotCoverExtractorAntTask" />
 
 	<typedef name="add-pmd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.PMDExtractorAntTask" />
+	<typedef name="add-cpd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.CPDExtractorAntTask" />
 
 	<typedef name="compute-loc" classname="org.pescuma.buildhealth.ant.tasks.compute.LOCComputerAntTask" />
 	<typedef name="compute-tasks" classname="org.pescuma.buildhealth.ant.tasks.compute.staticanalysis.TasksExtractorAntTask" />

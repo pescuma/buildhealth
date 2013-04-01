@@ -12,7 +12,7 @@ import org.pescuma.buildhealth.extractor.staticanalysis.PMDExtractor;
 @Command(name = "pmd", description = "Add static code analysis from a PMD XML file")
 public class PMDExtractorCommand extends BuildHealthCliCommand {
 	
-	@Arguments(title = "file or folder", description = "File or folder with PMD xml output(s)", required = true)
+	@Arguments(title = "file or folder", description = "File or folder with PMD XML output(s)", required = true)
 	public File file;
 	
 	@Override

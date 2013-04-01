@@ -12,7 +12,7 @@ import org.pescuma.buildhealth.extractor.coverage.EmmaExtractor;
 @Command(name = "emma", description = "Add coverage information from an Emma XML file")
 public class EmmaExtractorCommand extends BuildHealthCliCommand {
 	
-	@Arguments(title = "file or folder", description = "File or folder with emma xml output(s)", required = true)
+	@Arguments(title = "file or folder", description = "File or folder with Emma XML output(s)", required = true)
 	public File file;
 	
 	@Override

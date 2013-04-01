@@ -27,6 +27,7 @@
 	<property name="reports.junit.dir" location="${reports.dir}/junit" />
 	<property name="reports.coverage.dir" location="${reports.dir}/coverage" />
 	<property name="reports.pmd.dir" location="${reports.dir}/pmd" />
+	<property name="reports.cpd.dir" location="${reports.dir}/cpd" />
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="tools.lib.dir" location="${basedir}/../buildhealth.build/lib" />
 
@@ -65,7 +66,7 @@
 		<path refid="libs.path" />
 	</path>
 
-	<target name="all" depends="init, clean, compile, test, pmd, pack, clean-tmp" description="Compile, test and pack">
+	<target name="all" depends="init, clean, compile, test, pmd, cpd, pack, clean-tmp" description="Compile, test and pack">
 	</target>
 
 	<target name="init">
@@ -184,6 +185,28 @@
 				<include name="**/*.java" />
 			</fileset>
 		</pmd>
+	</target>
+
+	<target name="cpd" depends="init" description="Run code duplication detector on sources">
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+			<classpath>
+				<fileset dir="${tools.lib.dir}/pmd">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+
+		<delete dir="${reports.cpd.dir}" quiet="true" />
+		<mkdir dir="${reports.cpd.dir}" />
+
+		<cpd minimumTokenCount="100" outputFile="${reports.cpd.dir}/cpd.txt">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${tests.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</cpd>
 	</target>
 
 	<target name="pack" depends="init" description="Create jar archives">

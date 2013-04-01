@@ -162,6 +162,11 @@
 					<include name="**/reports/pmd/*.xml" />
 				</fileset>
 			</add-pmd>
+			<add-cpd>
+				<fileset dir="${basedir}/..">
+					<include name="**/reports/cpd/*.txt" />
+				</fileset>
+			</add-cpd>
 			<add-diskusage dir="${build.dir}" />
 			<compute-tasks>
 				<fileset dir="${basedir}/..">

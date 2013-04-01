@@ -1,0 +1,454 @@
+=====================================================================
+Found a 121 line (629 tokens) duplication in the following files: 
+Starting at line 265 of /usr/local/java/src/java/nio/DirectCharBufferU.java
+Starting at line 265 of /usr/local/java/src/java/nio/DirectCharBufferS.java
+	    DirectCharBufferS sb = (DirectCharBufferS)src;
+
+	    int spos = sb.position();
+	    int slim = sb.limit();
+	    assert (spos <= slim);
+	    int srem = (spos <= slim ? slim - spos : 0);
+
+	    int pos = position();
+	    int lim = limit();
+	    assert (pos <= lim);
+	    int rem = (pos <= lim ? lim - pos : 0);
+
+	    if (srem > rem)
+		throw new BufferOverflowException();
+ 	    unsafe.copyMemory(sb.ix(spos), ix(pos), srem << 1);
+ 	    sb.position(spos + srem);
+ 	    position(pos + srem);
+	} else if (!src.isDirect()) {
+
+	    int spos = src.position();
+	    int slim = src.limit();
+	    assert (spos <= slim);
+	    int srem = (spos <= slim ? slim - spos : 0);
+
+	    put(src.hb, src.offset + spos, srem);
+	    src.position(spos + srem);
+
+	} else {
+	    super.put(src);
+	}
+	return this;
+
+
+
+    }
+
+    public CharBuffer put(char[] src, int offset, int length) {
+
+	if ((length << 1) > Bits.JNI_COPY_FROM_ARRAY_THRESHOLD) {
+	    checkBounds(offset, length, src.length);
+	    int pos = position();
+	    int lim = limit();
+	    assert (pos <= lim);
+	    int rem = (pos <= lim ? lim - pos : 0);
+	    if (length > rem)
+		throw new BufferOverflowException();
+
+	    if (order() != ByteOrder.nativeOrder()) 
+		Bits.copyFromCharArray(src, offset << 1,
+					    ix(pos), length << 1);
+	    else
+		Bits.copyFromByteArray(src, offset << 1,
+				       ix(pos), length << 1);
+	    position(pos + length);
+	} else {
+	    super.put(src, offset, length);
+	}
+	return this;
+
+
+
+    }
+    
+    public CharBuffer compact() {
+
+	int pos = position();
+	int lim = limit();
+	assert (pos <= lim);
+	int rem = (pos <= lim ? lim - pos : 0);
+
+ 	unsafe.copyMemory(ix(pos), ix(0), rem << 1);
+ 	position(rem);
+	limit(capacity());
+	return this;
+
+
+
+    }
+
+    public boolean isDirect() {
+	return true;
+    }
+
+    public boolean isReadOnly() {
+	return false;
+    }
+
+
+
+
+    public String toString(int start, int end) {
+	if ((end > limit()) || (start > end))
+	    throw new IndexOutOfBoundsException();
+	try {
+	    int len = end - start;
+	    char[] ca = new char[len];
+	    CharBuffer cb = CharBuffer.wrap(ca);
+	    CharBuffer db = this.duplicate();
+	    db.position(start);
+	    db.limit(end);
+	    cb.put(db);
+	    return new String(ca);
+	} catch (StringIndexOutOfBoundsException x) {
+	    throw new IndexOutOfBoundsException();
+	}
+    }
+
+
+    // --- Methods to support CharSequence ---
+
+    public CharSequence subSequence(int start, int end) {
+	int len = length();
+	int pos = position();
+	assert (pos <= len);
+	pos = (pos <= len ? pos : len);
+
+	if ((start < 0) || (end > len) || (start > end))
+	    throw new IndexOutOfBoundsException();
+	int sublen = end - start;
+ 	int off = (pos + start) << 1;
+	return new DirectCharBufferS(this, -1, 0, sublen, sublen, off);
+=====================================================================
+Found a 294 line (531 tokens) duplication in the following files: 
+Starting at line 486 of /usr/local/java/src/java/lang/StrictMath.java
+Starting at line 575 of /usr/local/java/src/java/lang/Math.java
+    public static int round(float a) {
+	return (int)floor(a + 0.5f);
+    }
+
+    /**
+     * Returns the closest <code>long</code> to the argument. The result 
+     * is rounded to an integer by adding 1/2, taking the floor of the 
+     * result, and casting the result to type <code>long</code>. In other 
+     * words, the result is equal to the value of the expression:
+     * <p><pre>(long)Math.floor(a + 0.5d)</pre>
+     * <p>
+     * Special cases:
+     * <ul><li>If the argument is NaN, the result is 0.
+     * <li>If the argument is negative infinity or any value less than or 
+     * equal to the value of <code>Long.MIN_VALUE</code>, the result is 
+     * equal to the value of <code>Long.MIN_VALUE</code>. 
+     * <li>If the argument is positive infinity or any value greater than or 
+     * equal to the value of <code>Long.MAX_VALUE</code>, the result is 
+     * equal to the value of <code>Long.MAX_VALUE</code>.</ul> 
+     *
+     * @param   a   a floating-point value to be rounded to a 
+     *		<code>long</code>.
+     * @return  the value of the argument rounded to the nearest
+     *          <code>long</code> value.
+     * @see     java.lang.Long#MAX_VALUE
+     * @see     java.lang.Long#MIN_VALUE
+     */
+    public static long round(double a) {
+	return (long)floor(a + 0.5d);
+    }
+
+    private static Random randomNumberGenerator;
+
+    private static synchronized void initRNG() {
+        if (randomNumberGenerator == null) 
+            randomNumberGenerator = new Random();
+    }
+
+    /**
+     * Returns a <code>double</code> value with a positive sign, greater 
+     * than or equal to <code>0.0</code> and less than <code>1.0</code>. 
+     * Returned values are chosen pseudorandomly with (approximately) 
+     * uniform distribution from that range. 
+     * <p>
+     * When this method is first called, it creates a single new 
+     * pseudorandom-number generator, exactly as if by the expression 
+     * <blockquote><pre>new java.util.Random</pre></blockquote>
+     * This new pseudorandom-number generator is used thereafter for all 
+     * calls to this method and is used nowhere else. 
+     * <p>
+     * This method is properly synchronized to allow correct use by more 
+     * than one thread. However, if many threads need to generate 
+     * pseudorandom numbers at a great rate, it may reduce contention for 
+     * each thread to have its own pseudorandom-number generator.
+     *  
+     * @return  a pseudorandom <code>double</code> greater than or equal 
+     * to <code>0.0</code> and less than <code>1.0</code>.
+     * @see     java.util.Random#nextDouble()
+     */
+    public static double random() {
+        if (randomNumberGenerator == null) initRNG();
+        return randomNumberGenerator.nextDouble();
+    }
+
+    /**
+     * Returns the absolute value of an <code>int</code> value.
+     * If the argument is not negative, the argument is returned.
+     * If the argument is negative, the negation of the argument is returned. 
+     * <p>
+     * Note that if the argument is equal to the value of 
+     * <code>Integer.MIN_VALUE</code>, the most negative representable 
+     * <code>int</code> value, the result is that same value, which is 
+     * negative. 
+     *
+     * @param   a   the argument whose absolute value is to be determined
+     * @return  the absolute value of the argument.
+     * @see     java.lang.Integer#MIN_VALUE
+     */
+    public static int abs(int a) {
+	return (a < 0) ? -a : a;
+    }
+
+    /**
+     * Returns the absolute value of a <code>long</code> value.
+     * If the argument is not negative, the argument is returned.
+     * If the argument is negative, the negation of the argument is returned. 
+     * <p>
+     * Note that if the argument is equal to the value of 
+     * <code>Long.MIN_VALUE</code>, the most negative representable 
+     * <code>long</code> value, the result is that same value, which is 
+     * negative. 
+     *
+     * @param   a   the argument whose absolute value is to be determined
+     * @return  the absolute value of the argument.
+     * @see     java.lang.Long#MIN_VALUE
+     */
+    public static long abs(long a) {
+	return (a < 0) ? -a : a;
+    }
+
+    /**
+     * Returns the absolute value of a <code>float</code> value.
+     * If the argument is not negative, the argument is returned.
+     * If the argument is negative, the negation of the argument is returned.
+     * Special cases:
+     * <ul><li>If the argument is positive zero or negative zero, the 
+     * result is positive zero. 
+     * <li>If the argument is infinite, the result is positive infinity. 
+     * <li>If the argument is NaN, the result is NaN.</ul>
+     * In other words, the result is the same as the value of the expression: 
+     * <p><pre>Float.intBitsToFloat(0x7fffffff & Float.floatToIntBits(a))</pre>
+     *
+     * @param   a   the argument whose absolute value is to be determined
+     * @return  the absolute value of the argument.
+     */
+    public static float abs(float a) {
+        return (a <= 0.0F) ? 0.0F - a : a;
+    }
+  
+    /**
+     * Returns the absolute value of a <code>double</code> value.
+     * If the argument is not negative, the argument is returned.
+     * If the argument is negative, the negation of the argument is returned.
+     * Special cases:
+     * <ul><li>If the argument is positive zero or negative zero, the result 
+     * is positive zero. 
+     * <li>If the argument is infinite, the result is positive infinity. 
+     * <li>If the argument is NaN, the result is NaN.</ul>
+     * In other words, the result is the same as the value of the expression: 
+     * <p><code>Double.longBitsToDouble((Double.doubleToLongBits(a)&lt;&lt;1)&gt;&gt;&gt;1)</code> 
+     *
+     * @param   a   the argument whose absolute value is to be determined
+     * @return  the absolute value of the argument.
+     */
+    public static double abs(double a) {
+        return (a <= 0.0D) ? 0.0D - a : a;
+    }
+
+    /**
+     * Returns the greater of two <code>int</code> values. That is, the 
+     * result is the argument closer to the value of 
+     * <code>Integer.MAX_VALUE</code>. If the arguments have the same value, 
+     * the result is that same value.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the larger of <code>a</code> and <code>b</code>.
+     * @see     java.lang.Long#MAX_VALUE
+     */
+    public static int max(int a, int b) {
+	return (a >= b) ? a : b;
+    }
+
+    /**
+     * Returns the greater of two <code>long</code> values. That is, the 
+     * result is the argument closer to the value of 
+     * <code>Long.MAX_VALUE</code>. If the arguments have the same value, 
+     * the result is that same value. 
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the larger of <code>a</code> and <code>b</code>.
+     * @see     java.lang.Long#MAX_VALUE
+     */
+    public static long max(long a, long b) {
+	return (a >= b) ? a : b;
+    }
+
+    private static long negativeZeroFloatBits = Float.floatToIntBits(-0.0f);
+    private static long negativeZeroDoubleBits = Double.doubleToLongBits(-0.0d);
+
+    /**
+     * Returns the greater of two <code>float</code> values.  That is,
+     * the result is the argument closer to positive infinity. If the
+     * arguments have the same value, the result is that same
+     * value. If either value is NaN, then the result is NaN.  Unlike
+     * the the numerical comparison operators, this method considers
+     * negative zero to be strictly smaller than positive zero. If one
+     * argument is positive zero and the other negative zero, the
+     * result is positive zero.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the larger of <code>a</code> and <code>b</code>.
+     */
+    public static float max(float a, float b) {
+        if (a != a) return a;	// a is NaN
+	if ((a == 0.0f) && (b == 0.0f)
+	    && (Float.floatToIntBits(a) == negativeZeroFloatBits)) {
+	    return b;
+	}
+	return (a >= b) ? a : b;
+    }
+
+    /**
+     * Returns the greater of two <code>double</code> values.  That
+     * is, the result is the argument closer to positive infinity. If
+     * the arguments have the same value, the result is that same
+     * value. If either value is NaN, then the result is NaN.  Unlike
+     * the the numerical comparison operators, this method considers
+     * negative zero to be strictly smaller than positive zero. If one
+     * argument is positive zero and the other negative zero, the
+     * result is positive zero.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the larger of <code>a</code> and <code>b</code>.
+     */
+    public static double max(double a, double b) {
+        if (a != a) return a;	// a is NaN
+	if ((a == 0.0d) && (b == 0.0d)
+	    && (Double.doubleToLongBits(a) == negativeZeroDoubleBits)) {
+	    return b;
+	}
+	return (a >= b) ? a : b;
+    }
+
+    /**
+     * Returns the smaller of two <code>int</code> values. That is,
+     * the result the argument closer to the value of
+     * <code>Integer.MIN_VALUE</code>.  If the arguments have the same
+     * value, the result is that same value.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the smaller of <code>a</code> and <code>b</code>.
+     * @see     java.lang.Long#MIN_VALUE
+     */
+    public static int min(int a, int b) {
+	return (a <= b) ? a : b;
+    }
+
+    /**
+     * Returns the smaller of two <code>long</code> values. That is,
+     * the result is the argument closer to the value of
+     * <code>Long.MIN_VALUE</code>. If the arguments have the same
+     * value, the result is that same value.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the smaller of <code>a</code> and <code>b</code>.
+     * @see     java.lang.Long#MIN_VALUE
+     */
+    public static long min(long a, long b) {
+	return (a <= b) ? a : b;
+    }
+
+    /**
+     * Returns the smaller of two <code>float</code> values.  That is,
+     * the result is the value closer to negative infinity. If the
+     * arguments have the same value, the result is that same
+     * value. If either value is NaN, then the result is NaN.  Unlike
+     * the the numerical comparison operators, this method considers
+     * negative zero to be strictly smaller than positive zero.  If
+     * one argument is positive zero and the other is negative zero,
+     * the result is negative zero.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the smaller of <code>a</code> and <code>b.</code>
+     */
+    public static float min(float a, float b) {
+        if (a != a) return a;	// a is NaN
+	if ((a == 0.0f) && (b == 0.0f)
+	    && (Float.floatToIntBits(b) == negativeZeroFloatBits)) {
+	    return b;
+	}
+	return (a <= b) ? a : b;
+    }
+
+    /**
+     * Returns the smaller of two <code>double</code> values.  That
+     * is, the result is the value closer to negative infinity. If the
+     * arguments have the same value, the result is that same
+     * value. If either value is NaN, then the result is NaN.  Unlike
+     * the the numerical comparison operators, this method considers
+     * negative zero to be strictly smaller than positive zero. If one
+     * argument is positive zero and the other is negative zero, the
+     * result is negative zero.
+     *
+     * @param   a   an argument.
+     * @param   b   another argument.
+     * @return  the smaller of <code>a</code> and <code>b</code>.
+     */
+    public static double min(double a, double b) {
+        if (a != a) return a;	// a is NaN
+	if ((a == 0.0d) && (b == 0.0d)
+	    && (Double.doubleToLongBits(b) == negativeZeroDoubleBits)) {
+	    return b;
+	}
+	return (a <= b) ? a : b;
+    }
+
+}
+=====================================================================
+Found a 27 line (523 tokens) duplication in the following files: 
+Starting at line 610 of /usr/local/java/src/java/util/BitSet.java
+Starting at line 2294 of /usr/local/java/src/java/math/BigInteger.java
+    final static byte trailingZeroTable[] = {
+      -25, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	7, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+	4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0};
+
+    /**
+     * Returns the number of bits in the two's complement representation
+     * of this BigInteger that differ from its sign bit.  This method is
+     * useful when implementing bit-vector style sets atop BigIntegers.
+     *
+     * @return number of bits in the two's complement representation
+     *         of this BigInteger that differ from its sign bit.
+     */
+    public int bitCount() {

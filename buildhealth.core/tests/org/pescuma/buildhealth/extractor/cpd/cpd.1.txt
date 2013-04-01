@@ -1,0 +1,42 @@
+Found a 38 line (168 tokens) duplication in the following files: 
+Starting at line 19 of buildhealth.core\src\org\pescuma\buildhealth\extractor\CSVExtractor.java
+Starting at line 25 of java\buildhealth\buildhealth.core\src\org\pescuma\buildhealth\extractor\loc\CLOCExtractor.java
+
+	public CSVExtractor(PseudoFiles files) {
+		this.files = files;
+	}
+	
+	@Override
+	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+		try {
+			
+			if (files.isStream()) {
+				extractStream(files.getStream(), data);
+				tracker.onStreamProcessed();
+				
+			} else {
+				for (File file : files.getFiles("csv")) {
+					extractFile(file, data);
+					tracker.onFileProcessed(file);
+				}
+			}
+			
+		} catch (IOException e) {
+			throw new BuildDataExtractorException(e);
+		}
+	}
+	
+	private void extractFile(File file, BuildData data) throws IOException {
+		InputStream stream = new FileInputStream(file);
+		try {
+			extractStream(stream, data);
+		} finally {
+			IOUtils.closeQuietly(stream);
+		}
+	}
+	
+	private void extractStream(InputStream stream, BuildData data) throws IOException {
+		@SuppressWarnings("resource")
+		CSVReader reader = new CSVReader(new InputStreamReader(stream));
+		
+		String[] line;

@@ -12,7 +12,7 @@ import org.pescuma.buildhealth.extractor.coverage.JacocoExtractor;
 @Command(name = "jacoco", description = "Add coverage information from an JaCoCo XML file")
 public class JacocoExtractorCommand extends BuildHealthCliCommand {
 	
-	@Arguments(title = "file or folder", description = "File or folder with JaCoCo xml output(s)", required = true)
+	@Arguments(title = "file or folder", description = "File or folder with JaCoCo XML output(s)", required = true)
 	public File file;
 	
 	@Override

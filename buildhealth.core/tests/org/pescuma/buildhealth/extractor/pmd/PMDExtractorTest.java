@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.extractor.staticanalysis;
+package org.pescuma.buildhealth.extractor.pmd;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
@@ -10,6 +10,7 @@ import java.io.InputStream;
 import org.junit.Test;
 import org.pescuma.buildhealth.extractor.BaseExtractorTest;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.extractor.staticanalysis.PMDExtractor;
 
 public class PMDExtractorTest extends BaseExtractorTest {
 	

@@ -14,6 +14,7 @@ import org.pescuma.buildhealth.cli.commands.add.DiskUsageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.DotCoverExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.EmmaExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.JacocoExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.staticanalysis.CPDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.AUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.BoostTestExtractorCommand;
@@ -48,7 +49,7 @@ public class BuildHealthCli {
 						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
 						TusarExtractorCommand.class, //
 						EmmaExtractorCommand.class, JacocoExtractorCommand.class, DotCoverExtractorCommand.class, //
-						PMDExtractorCommand.class, //
+						PMDExtractorCommand.class, CPDExtractorCommand.class, //
 						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")

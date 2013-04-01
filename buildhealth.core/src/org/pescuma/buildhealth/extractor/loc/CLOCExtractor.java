@@ -3,61 +3,26 @@ package org.pescuma.buildhealth.extractor.loc;
 import static java.lang.Integer.*;
 import static java.lang.Math.*;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.apache.commons.io.IOUtils;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.extractor.BuildDataExtractor;
-import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
-import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
+import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class CLOCExtractor implements BuildDataExtractor {
-	
-	private final PseudoFiles files;
+public class CLOCExtractor extends BaseBuildDataExtractor {
 	
 	public CLOCExtractor(PseudoFiles files) {
-		this.files = files;
+		super(files, "csv");
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
-		try {
-			
-			if (files.isStream()) {
-				extractStream(files.getStream(), data);
-				tracker.onStreamProcessed();
-				
-			} else {
-				for (File file : files.getFiles("csv")) {
-					extractFile(file, data);
-					tracker.onFileProcessed(file);
-				}
-			}
-			
-		} catch (IOException e) {
-			throw new BuildDataExtractorException(e);
-		}
-	}
-	
-	private void extractFile(File file, BuildData data) throws IOException {
-		InputStream stream = new FileInputStream(file);
-		try {
-			extractStream(stream, data);
-		} finally {
-			IOUtils.closeQuietly(stream);
-		}
-	}
-	
-	private void extractStream(InputStream stream, BuildData data) throws IOException {
+	protected void extract(String csvFilename, InputStream input, BuildData data) throws IOException {
 		@SuppressWarnings("resource")
-		CSVReader reader = new CSVReader(new InputStreamReader(stream));
+		CSVReader reader = new CSVReader(new InputStreamReader(input));
 		
 		String[] headers = null;
 		int languageCol = -1;
