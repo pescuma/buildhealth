@@ -4,6 +4,7 @@
 	</configurations>
 	<dependencies>
 		<dependency org="io.airlift" name="airline" rev="0.5" />
+		<dependency org="org.fusesource.jansi" name="jansi" rev="1.9" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 		<dependency org="junit" name="junit" rev="4.10" />
 	</dependencies>

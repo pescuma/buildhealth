@@ -48,6 +48,7 @@
 
 		<delete dir="${build.tmp.dir}/META-INF" includeemptydirs="true">
 			<exclude name="services/**" />
+			<exclude name="native/**" />
 			<exclude name="*.default" />
 		</delete>
 
@@ -73,6 +74,7 @@
 				
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			-keep class org.pescuma.buildhealth.ant.** {*;}
+			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
 			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
