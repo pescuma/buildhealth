@@ -27,18 +27,14 @@ public class FindBugsExtractorTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(
-				1,
-				table.get(
-						"Static analysis",
-						"Java",
-						"FindBugs",
-						"C:\\buildhealth.core\\src\\org\\pescuma\\buildhealth\\computer\\loc\\LOCComputer.java",
-						"86",
-						"Internationalization",
-						"Reliance on default encoding",
-						"Found reliance on default encoding in org.pescuma.buildhealth.computer.loc.LOCComputer.createFileList(): new java.io.FileWriter(File)\n"
-								+ "Found a call to a method which will perform a byte to String (or String to byte) conversion, and will assume that the default platform encoding is suitable. This will cause the application behaviour to vary between platforms. Use an alternative API and specify a charset name or Charset object explicitly."),
+		assertEquals(1, table.filter("Static analysis", "Java", "FindBugs").sum(),
+		// "C:\\buildhealth.core\\src\\org\\pescuma\\buildhealth\\computer\\loc\\LOCComputer.java",
+		// "86",
+		// "Internationalization",
+		// "Reliance on default encoding",
+		// "Found reliance on default encoding in org.pescuma.buildhealth.computer.loc.LOCComputer.createFileList(): new java.io.FileWriter(File)\n"
+		// +
+		// "Found a call to a method which will perform a byte to String (or String to byte) conversion, and will assume that the default platform encoding is suitable. This will cause the application behaviour to vary between platforms. Use an alternative API and specify a charset name or Charset object explicitly."),
 				0.0001);
 	}
 	
