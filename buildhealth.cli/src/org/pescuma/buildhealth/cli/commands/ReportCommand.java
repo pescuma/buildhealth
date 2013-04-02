@@ -30,15 +30,9 @@ public class ReportCommand extends BuildHealthCliCommand {
 		
 		Report report = buildHealth.generateReportSummary();
 		
-		ReportFormater reportFormater = new ReportFormater(new ReportFormater.Outputer() {
-			private Ansi ansi;
-			
-			@Override
-			public Outputer start() {
-				ansi = Ansi.ansi();
-				return this;
-			}
-			
+		final Ansi ansi = Ansi.ansi();
+		
+		new ReportFormater().format(report, new ReportFormater.Outputer() {
 			@Override
 			public Outputer append(String text, BuildStatus status) {
 				ansi.fg(toColor(status)).a(text).reset();
@@ -63,14 +57,9 @@ public class ReportCommand extends BuildHealthCliCommand {
 				ansi.a(text);
 				return this;
 			}
-			
-			@Override
-			public String toString() {
-				return ansi.toString();
-			}
 		});
 		
-		AnsiConsole.out.print(reportFormater.format(report));
+		AnsiConsole.out.print(ansi.toString());
+		AnsiConsole.out.flush();
 	}
-	
 }

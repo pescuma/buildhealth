@@ -5,9 +5,6 @@ import static org.pescuma.buildhealth.core.BuildStatus.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pescuma.buildhealth.core.BuildStatus;
-import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.ReportFormater;
 
 public class ReportFormaterTest {
 	
@@ -20,7 +17,7 @@ public class ReportFormaterTest {
 	
 	@Test
 	public void testNoData() {
-		assertEquals("No data to generate report", formater.format(null));
+		assertEquals("No data to generate report\n", formater.format(null));
 	}
 	
 	@Test
