@@ -20,6 +20,8 @@ import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 
+import com.google.common.base.Strings;
+
 public class BuildHealth {
 	
 	private static final String DEFAULT_FOLDER_NAME = ".buildhealth";
@@ -139,8 +141,12 @@ public class BuildHealth {
 		if (home != null)
 			return home;
 		
+		File result = searchForHomeFolderInEnvironmentVariables();
+		if (result != null)
+			return result;
+		
 		if (searchCurrentFolder) {
-			File result = searchForHomeFolder(new File("."));
+			result = searchForHomeFolderInCurrentPath(new File("."));
 			if (result != null)
 				return result;
 		}
@@ -148,7 +154,7 @@ public class BuildHealth {
 		return getDefaultHomeFolder();
 	}
 	
-	public static File searchForHomeFolder(File currentPath) {
+	public static File searchForHomeFolderInCurrentPath(File currentPath) {
 		currentPath = getCanonicalFile(currentPath);
 		
 		do {
@@ -159,6 +165,14 @@ public class BuildHealth {
 		} while (currentPath != null);
 		
 		return null;
+	}
+	
+	public static File searchForHomeFolderInEnvironmentVariables() {
+		String home = System.getenv("BUILDHEALTH_HOME");
+		if (Strings.isNullOrEmpty(home))
+			return null;
+		else
+			return new File(home);
 	}
 	
 	public static File getDefaultHomeFolder() {
