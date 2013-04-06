@@ -19,6 +19,10 @@ import org.pescuma.buildhealth.core.listener.BuildHealthListener;
 import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
+import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
+import org.pescuma.buildhealth.prefs.DiskPreferencesStore;
+import org.pescuma.buildhealth.prefs.PreferencesStore;
+import org.pescuma.buildhealth.prefs.PropertiesPreferencesStore;
 
 import com.google.common.base.Strings;
 
@@ -28,6 +32,7 @@ public class BuildHealth {
 	
 	private final File home;
 	private final BuildData table;
+	private final PreferencesStore store;
 	private final List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
 	private final CompositeBuildHealthListener listeners = new CompositeBuildHealthListener();
 	
@@ -35,18 +40,22 @@ public class BuildHealth {
 		this(null);
 	}
 	
-	public BuildHealth(File buildHealthHome) {
-		this.home = getCanonicalFile(buildHealthHome);
-		
-		if (home != null)
-			table = new DiskBuildData(new File(home, "data.csv"), new BuildDataTable());
-		else
-			table = new BuildDataTable();
+	public BuildHealth(File home) {
+		this(home, getDefaultBuildData(home), getDefaultPreferencesStore(home));
+	}
+	
+	public BuildHealth(File home, BuildData table, PreferencesStore store) {
+		this.home = getCanonicalFile(home);
+		this.table = table;
+		this.store = store;
 	}
 	
 	public void shutdown() {
 		if (table instanceof DiskBuildData)
 			((DiskBuildData) table).saveToDisk();
+		
+		if (store instanceof DiskPreferencesStore)
+			((DiskPreferencesStore) store).saveToDisk();
 	}
 	
 	public boolean addListener(BuildHealthListener listener) {
@@ -177,5 +186,23 @@ public class BuildHealth {
 	
 	public static File getDefaultHomeFolder() {
 		return new File(FileUtils.getUserDirectory(), DEFAULT_FOLDER_NAME);
+	}
+	
+	public static PreferencesStore getDefaultPreferencesStore(File home) {
+		home = getCanonicalFile(home);
+		
+		if (home != null)
+			return new PropertiesPreferencesStore(new File(home, "config"));
+		else
+			return new MemoryPreferencesStore();
+	}
+	
+	public static BuildData getDefaultBuildData(File home) {
+		home = getCanonicalFile(home);
+		
+		if (home != null)
+			return new DiskBuildData(new File(home, "data.csv"), new BuildDataTable());
+		else
+			return new BuildDataTable();
 	}
 }
