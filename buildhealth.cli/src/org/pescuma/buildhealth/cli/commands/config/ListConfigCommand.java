@@ -121,7 +121,7 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			public int compare(String[] o1, String[] o2) {
 				int size = min(o1.length, o2.length);
 				for (int i = 0; i < size; i++) {
-					int comp = o1[i].compareToIgnoreCase(o2[i]);
+					int comp = o1[i].compareTo(o2[i]);
 					if (comp != 0)
 						return comp;
 				}

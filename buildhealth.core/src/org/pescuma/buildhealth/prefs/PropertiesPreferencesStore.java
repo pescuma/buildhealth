@@ -89,7 +89,7 @@ public class PropertiesPreferencesStore implements DiskPreferencesStore {
 		for (Iterator<Object> it = props().keySet().iterator(); it.hasNext();) {
 			String candidate = (String) it.next();
 			if (key.length == 0 || candidate.equals(sk) || candidate.startsWith(sks))
-				result.add(candidate.split(SEPARATOR));
+				result.add(candidate.split("\\" + SEPARATOR));
 		}
 		
 		return Collections.unmodifiableList(result);
