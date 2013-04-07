@@ -6,6 +6,7 @@ import static org.pescuma.buildhealth.utils.FileHelper.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -93,6 +94,10 @@ public class BuildHealth {
 		analysers.add(analyser);
 	}
 	
+	public List<BuildHealthAnalyser> getAnalysers() {
+		return Collections.unmodifiableList(analysers);
+	}
+	
 	public void compute(final BuildDataComputer computer) {
 		File computedFolder = new File(home, "computed");
 		
@@ -141,7 +146,7 @@ public class BuildHealth {
 		List<Report> reports = new ArrayList<Report>();
 		
 		for (BuildHealthAnalyser analyser : analysers)
-			reports.addAll(analyser.computeSimpleReport(table));
+			reports.addAll(analyser.computeSimpleReport(table, null));
 		
 		if (reports.isEmpty())
 			return null;

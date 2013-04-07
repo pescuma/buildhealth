@@ -6,10 +6,11 @@ import static java.util.Arrays.*;
 import java.util.Collections;
 import java.util.List;
 
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
  * Expect the lines to be:
@@ -32,10 +33,10 @@ import org.pescuma.buildhealth.core.Report;
  * 0.01 | Unit test,Java,JUnit,time,package.TestWithMethodAndTimeInfo,testMethod1
  * </pre>
  */
-public class UnitTestAnalyser implements BuildHealthAnalyser {
+public class UnitTestAnalyser extends BaseBuildHealthAnalyser {
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data) {
+	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
 		data = data.filter("Unit test");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -69,4 +70,5 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 	private void append(StringBuilder out, int count, String name) {
 		append(out, count, name, name);
 	}
+	
 }

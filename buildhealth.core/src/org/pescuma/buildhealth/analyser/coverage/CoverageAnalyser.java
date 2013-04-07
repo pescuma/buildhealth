@@ -12,12 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
  * Expect the lines to be:
@@ -40,7 +41,7 @@ import org.pescuma.buildhealth.core.Report;
  * 2 | Coverage,Java,Emma,line,total,class,a,b,c,D
  * </pre>
  */
-public class CoverageAnalyser implements BuildHealthAnalyser {
+public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 	
 	private boolean showDetailsInDescription = false;
 	
@@ -49,7 +50,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data) {
+	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
 		data = data.filter("Coverage").filter(5, "all");
 		if (data.isEmpty())
 			return Collections.emptyList();

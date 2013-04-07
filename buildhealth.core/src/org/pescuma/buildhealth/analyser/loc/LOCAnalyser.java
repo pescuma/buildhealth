@@ -7,12 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
  * Expect the lines to be:
@@ -39,10 +40,10 @@ import org.pescuma.buildhealth.core.Report;
  * 
  * If not LOC information is found, it will try to get this information from coverage data.
  */
-public class LOCAnalyser implements BuildHealthAnalyser {
+public class LOCAnalyser extends BaseBuildHealthAnalyser {
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data) {
+	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
 		List<Report> result = computeFromLOC(data);
 		
 		if (result.isEmpty())

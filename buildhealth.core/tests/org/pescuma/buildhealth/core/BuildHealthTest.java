@@ -8,9 +8,10 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
+import org.pescuma.buildhealth.prefs.Preferences;
 
 public class BuildHealthTest {
 	
@@ -28,9 +29,9 @@ public class BuildHealthTest {
 	
 	@Test
 	public void testNoDataWithAnalyser() {
-		buildhealth.addAnalyser(new BuildHealthAnalyser() {
+		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeSimpleReport(BuildData data) {
+			public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
 				return asList(new Report(BuildStatus.Good, "", "", ""));
 			}
 		});
@@ -47,9 +48,9 @@ public class BuildHealthTest {
 			}
 		});
 		
-		buildhealth.addAnalyser(new BuildHealthAnalyser() {
+		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeSimpleReport(BuildData data) {
+			public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
 				return asList(new Report(BuildStatus.Good, "Unit tests", "100%", data.filter("Unit test").sum()
 						+ " passed"));
 			}

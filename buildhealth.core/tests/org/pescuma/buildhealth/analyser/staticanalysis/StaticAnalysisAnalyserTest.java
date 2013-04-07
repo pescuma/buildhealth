@@ -50,4 +50,56 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		assertEquals(new Report(Good, "Static analysis", "5", "CheckStyle: 1, PMD: 3, Task: 1"), report);
 	}
 	
+	@Test
+	public void testLimitGood() {
+		create("Task", 10);
+		prefs.child("staticanalysis").set("good", 20);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Static analysis", "10", "Task: 10"), report);
+	}
+	
+	@Test
+	public void testLimitGoodBorderline() {
+		create("Task", 10);
+		prefs.child("staticanalysis").set("good", 10);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Static analysis", "10", "Task: 10"), report);
+	}
+	
+	@Test
+	public void testLimitSoSo() {
+		create("Task", 10);
+		prefs.child("staticanalysis").set("good", 5);
+		prefs.child("staticanalysis").set("warn", 20);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
+	}
+	
+	@Test
+	public void testLimitSoSoBorderline() {
+		create("Task", 10);
+		prefs.child("staticanalysis").set("good", 5);
+		prefs.child("staticanalysis").set("warn", 10);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
+	}
+	
+	@Test
+	public void testLimitProblematic() {
+		create("Task", 10);
+		prefs.child("staticanalysis").set("good", 5);
+		prefs.child("staticanalysis").set("warn", 9);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Problematic, "Static analysis", "10", "Task: 10"), report);
+	}
 }

@@ -100,14 +100,14 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 	public void testUnknownType() {
 		data.add(10, "Coverage", "java", "emma", "all", "unknown", "all");
 		
-		assertEquals(0, analyser.computeSimpleReport(data).size());
+		assertEquals(0, analyser.computeSimpleReport(data, null).size());
 	}
 	
 	@Test
 	public void testOnlyCovered() {
 		data.add(10, "Coverage", "java", "emma", "all", "covered", "all");
 		
-		assertEquals(0, analyser.computeSimpleReport(data).size());
+		assertEquals(0, analyser.computeSimpleReport(data, null).size());
 	}
 	
 }

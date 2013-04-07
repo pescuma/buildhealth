@@ -6,10 +6,11 @@ import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 import java.util.Collections;
 import java.util.List;
 
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
  * Expect the lines to be:
@@ -28,10 +29,10 @@ import org.pescuma.buildhealth.core.Report;
  * 1024 | Disk usage,executable,/tmp/X
  * </pre>
  */
-public class DiskUsageAnalyser implements BuildHealthAnalyser {
+public class DiskUsageAnalyser extends BaseBuildHealthAnalyser {
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data) {
+	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
 		data = data.filter("Disk usage");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -40,4 +41,5 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 		
 		return asList(new Report(BuildStatus.Good, "Disk usage", formatBytes(total)));
 	}
+	
 }

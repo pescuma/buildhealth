@@ -1,15 +1,18 @@
 package org.pescuma.buildhealth.prefs;
 
+import static java.lang.Math.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MemoryPreferencesStore implements PreferencesStore {
 	
-	private final Map<String[], String> data = new HashMap<String[], String>();
+	private final Map<String[], String> data = new TreeMap<String[], String>(getKeyComparator());
 	
 	@Override
 	public void put(String value, String... key) {
@@ -59,4 +62,18 @@ public class MemoryPreferencesStore implements PreferencesStore {
 		return true;
 	}
 	
+	private static Comparator<? super String[]> getKeyComparator() {
+		return new Comparator<String[]>() {
+			@Override
+			public int compare(String[] o1, String[] o2) {
+				int size = min(o1.length, o2.length);
+				for (int i = 0; i < size; i++) {
+					int comp = o1[i].compareTo(o2[i]);
+					if (comp != 0)
+						return comp;
+				}
+				return o1.length - o2.length;
+			}
+		};
+	}
 }
