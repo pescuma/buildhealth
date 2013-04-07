@@ -6,9 +6,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 public class PropertiesPreferencesStore implements DiskPreferencesStore {
@@ -71,6 +75,21 @@ public class PropertiesPreferencesStore implements DiskPreferencesStore {
 	}
 	
 	@Override
+	public List<String[]> getKeys(String... key) {
+		List<String[]> result = new ArrayList<String[]>();
+		
+		String sk = toSimpleKey(key);
+		String sks = sk + SEPARATOR;
+		for (Iterator<Object> it = props().keySet().iterator(); it.hasNext();) {
+			String candidate = (String) it.next();
+			if (key.length == 0 || candidate.equals(sk) || candidate.startsWith(sks))
+				result.add(candidate.split(SEPARATOR));
+		}
+		
+		return Collections.unmodifiableList(result);
+	}
+	
+	@Override
 	public void saveToDisk() {
 		if (!changed)
 			return;
@@ -80,6 +99,9 @@ public class PropertiesPreferencesStore implements DiskPreferencesStore {
 	
 	private static Properties readFromFile(File file) {
 		Properties result = new Properties();
+		
+		if (!file.exists())
+			return result;
 		
 		Reader reader = null;
 		try {
@@ -101,11 +123,13 @@ public class PropertiesPreferencesStore implements DiskPreferencesStore {
 		Writer writer = null;
 		try {
 			
+			FileUtils.forceMkdir(file.getParentFile());
+			
 			writer = new FileWriter(file);
 			props.store(writer, null);
 			
 		} catch (IOException e) {
-			throw new PreferencesException("Error reading file " + file, e);
+			throw new PreferencesException("Error writing file " + file, e);
 			
 		} finally {
 			IOUtils.closeQuietly(writer);

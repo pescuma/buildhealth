@@ -30,6 +30,8 @@ import org.pescuma.buildhealth.cli.commands.add.unittest.PHPUnitExtractorCommand
 import org.pescuma.buildhealth.cli.commands.add.unittest.TusarExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.compute.LOCComputerCommand;
 import org.pescuma.buildhealth.cli.commands.compute.staticanalysis.TasksExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.config.ListConfigCommand;
+import org.pescuma.buildhealth.cli.commands.config.SetConfigCommand;
 
 public class BuildHealthCli {
 	
@@ -57,12 +59,18 @@ public class BuildHealthCli {
 				.withDefaultCommand(ComputeGroupHelp.class) //
 				.withCommands(LOCComputerCommand.class, TasksExtractorCommand.class);
 		
+		builder.withGroup("config").withDescription("Configure your report preferences")
+				.withDefaultCommand(ConfigGroupHelp.class) //
+				.withCommands(SetConfigCommand.class, ListConfigCommand.class);
+		
 		Cli<Runnable> parser = builder.build();
 		
 		Runnable command = null;
 		try {
 			
 			command = parser.parse(args);
+			
+			command.run();
 			
 		} catch (ParseException e) {
 			StringBuilder stringBuilder = new StringBuilder();
@@ -71,8 +79,6 @@ public class BuildHealthCli {
 			System.err.println(stringBuilder.toString());
 			System.exit(-1);
 		}
-		
-		command.run();
 	}
 	
 }

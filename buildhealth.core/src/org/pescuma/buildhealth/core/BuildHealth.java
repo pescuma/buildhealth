@@ -19,8 +19,9 @@ import org.pescuma.buildhealth.core.listener.BuildHealthListener;
 import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
-import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.DiskPreferencesStore;
+import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
+import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.prefs.PreferencesStore;
 import org.pescuma.buildhealth.prefs.PropertiesPreferencesStore;
 
@@ -33,6 +34,7 @@ public class BuildHealth {
 	private final File home;
 	private final BuildData table;
 	private final PreferencesStore store;
+	private final Preferences preferences;
 	private final List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
 	private final CompositeBuildHealthListener listeners = new CompositeBuildHealthListener();
 	
@@ -48,6 +50,7 @@ public class BuildHealth {
 		this.home = getCanonicalFile(home);
 		this.table = table;
 		this.store = store;
+		preferences = new Preferences(store);
 	}
 	
 	public void shutdown() {
@@ -56,6 +59,10 @@ public class BuildHealth {
 		
 		if (store instanceof DiskPreferencesStore)
 			((DiskPreferencesStore) store).saveToDisk();
+	}
+	
+	public Preferences getPreferences() {
+		return preferences;
 	}
 	
 	public boolean addListener(BuildHealthListener listener) {

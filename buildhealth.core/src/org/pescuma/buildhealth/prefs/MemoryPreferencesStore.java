@@ -1,7 +1,10 @@
 package org.pescuma.buildhealth.prefs;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class MemoryPreferencesStore implements PreferencesStore {
@@ -30,6 +33,19 @@ public class MemoryPreferencesStore implements PreferencesStore {
 			if (startsWith(candidate, key))
 				it.remove();
 		}
+	}
+	
+	@Override
+	public List<String[]> getKeys(String... key) {
+		List<String[]> result = new ArrayList<String[]>();
+		
+		for (Iterator<String[]> it = data.keySet().iterator(); it.hasNext();) {
+			String[] candidate = it.next();
+			if (startsWith(candidate, key))
+				result.add(candidate);
+		}
+		
+		return Collections.unmodifiableList(result);
 	}
 	
 	private boolean startsWith(String[] full, String[] start) {

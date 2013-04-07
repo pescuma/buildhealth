@@ -1,5 +1,7 @@
 package org.pescuma.buildhealth.prefs;
 
+import java.util.List;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.base.Strings;
@@ -26,11 +28,19 @@ public class Preferences {
 		return result;
 	}
 	
+	public void set(String key, String value) {
+		store.put(value, subkey(key));
+	}
+	
 	public int get(String key, int defVal) {
 		String result = store.get(subkey(key));
 		if (result == null)
 			return defVal;
 		return Integer.parseInt(result);
+	}
+	
+	public void set(String key, int value) {
+		store.put(Integer.toString(value), subkey(key));
 	}
 	
 	public long get(String key, long defVal) {
@@ -40,11 +50,8 @@ public class Preferences {
 		return Long.parseLong(result);
 	}
 	
-	public double get(String key, double defVal) {
-		String result = store.get(subkey(key));
-		if (result == null)
-			return defVal;
-		return Double.parseDouble(result);
+	public void set(String key, long value) {
+		store.put(Long.toString(value), subkey(key));
 	}
 	
 	public float get(String key, float defVal) {
@@ -52,6 +59,21 @@ public class Preferences {
 		if (result == null)
 			return defVal;
 		return Float.parseFloat(result);
+	}
+	
+	public void set(String key, float value) {
+		store.put(Float.toString(value), subkey(key));
+	}
+	
+	public double get(String key, double defVal) {
+		String result = store.get(subkey(key));
+		if (result == null)
+			return defVal;
+		return Double.parseDouble(result);
+	}
+	
+	public void set(String key, double value) {
+		store.put(Double.toString(value), subkey(key));
 	}
 	
 	public Preferences child(String key) {
@@ -63,6 +85,10 @@ public class Preferences {
 	
 	private String[] subkey(String second) {
 		return ArrayUtils.add(currentKey, second);
+	}
+	
+	public List<String[]> getKeys() {
+		return store.getKeys();
 	}
 	
 }
