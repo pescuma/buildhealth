@@ -17,7 +17,7 @@ import org.apache.commons.io.IOUtils;
 
 public class PropertiesPreferencesStore implements DiskPreferencesStore {
 	
-	private static final String SEPARATOR = " ";
+	private static final String SEPARATOR = ".";
 	
 	private final File file;
 	private Properties properties;
@@ -36,11 +36,17 @@ public class PropertiesPreferencesStore implements DiskPreferencesStore {
 	
 	private String toSimpleKey(String[] key) {
 		StringBuilder result = new StringBuilder();
+		
 		for (String k : key) {
+			if (k.indexOf(SEPARATOR) >= 0)
+				throw new IllegalArgumentException("Key can't contain '" + SEPARATOR + "': " + key);
+			
 			if (result.length() > 0)
 				result.append(SEPARATOR);
+			
 			result.append(k);
 		}
+		
 		return result.toString();
 	}
 	

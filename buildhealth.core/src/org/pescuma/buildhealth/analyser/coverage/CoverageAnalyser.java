@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
@@ -47,6 +48,23 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 	
 	public void setShowDetailsInDescription(boolean showDetailsInDescription) {
 		this.showDetailsInDescription = showDetailsInDescription;
+	}
+	
+	@Override
+	public String getName() {
+		return "Coverage";
+	}
+	
+	@Override
+	public List<BuildHealthAnalyserPreference> getPreferences() {
+		List<BuildHealthAnalyserPreference> result = new ArrayList<BuildHealthAnalyserPreference>();
+		
+		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
+				"good"));
+		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
+				"warn"));
+		
+		return Collections.unmodifiableList(result);
 	}
 	
 	@Override
@@ -90,7 +108,20 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 		if (defPercentage < 0)
 			return Collections.emptyList();
 		
-		return asList(new Report(BuildStatus.Good, "Coverage", defPercentage + "%", description.toString()));
+		prefs = prefs.child("coverage");
+		int good = prefs.get("good", 0);
+		int warn = prefs.get("warn", 0);
+		
+		return asList(new Report(computeStatus(defPercentage, good, warn), getName(), defPercentage + "%",
+				description.toString()));
+	}
+	
+	private BuildStatus computeStatus(int percentage, int good, int warn) {
+		if (percentage < warn)
+			return BuildStatus.Problematic;
+		if (percentage < good)
+			return BuildStatus.SoSo;
+		return BuildStatus.Good;
 	}
 	
 	private String format(double val) {

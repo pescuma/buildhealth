@@ -146,7 +146,7 @@ public class BuildHealth {
 		List<Report> reports = new ArrayList<Report>();
 		
 		for (BuildHealthAnalyser analyser : analysers)
-			reports.addAll(analyser.computeSimpleReport(table, null));
+			reports.addAll(analyser.computeSimpleReport(table, preferences));
 		
 		if (reports.isEmpty())
 			return null;

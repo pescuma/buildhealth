@@ -2,6 +2,8 @@
 <antlib>
 	<typedef name="buildhealth" classname="org.pescuma.buildhealth.ant.BuildHealthAntTask" />
 
+	<typedef name="config" classname="org.pescuma.buildhealth.ant.tasks.ConfigBuildHealthAntTask" />
+	
 	<typedef name="add-cloc" classname="org.pescuma.buildhealth.ant.tasks.add.CLOCExtractorAntTask" />
 	<typedef name="add-diskusage" classname="org.pescuma.buildhealth.ant.tasks.add.DiskUsageExtractorAntTask" />
 

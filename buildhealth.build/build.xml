@@ -88,6 +88,7 @@
 		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml" classpath="${build.dir}/buildhealth-${version}.jar" />
 
 		<buildhealth home="${reports.dir}/builhealth">
+			<config key="coverage good" value="70" />
 			<compute-loc>
 				<fileset dir="${basedir}/..">
 					<exclude name="**/build/**" />

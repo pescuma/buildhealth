@@ -100,14 +100,67 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 	public void testUnknownType() {
 		data.add(10, "Coverage", "java", "emma", "all", "unknown", "all");
 		
-		assertEquals(0, analyser.computeSimpleReport(data, null).size());
+		assertEquals(0, analyser.computeSimpleReport(data, prefs).size());
 	}
 	
 	@Test
 	public void testOnlyCovered() {
 		data.add(10, "Coverage", "java", "emma", "all", "covered", "all");
 		
-		assertEquals(0, analyser.computeSimpleReport(data, null).size());
+		assertEquals(0, analyser.computeSimpleReport(data, prefs).size());
+	}
+	
+	@Test
+	public void testLimitGood() {
+		create("line", 1, 2);
+		prefs.child("coverage").set("good", 20);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
+	}
+	
+	@Test
+	public void testLimitGoodBorderline() {
+		create("line", 1, 2);
+		prefs.child("coverage").set("good", 50);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
+	}
+	
+	@Test
+	public void testLimitSoSo() {
+		create("line", 1, 2);
+		prefs.child("coverage").set("good", 70);
+		prefs.child("coverage").set("warn", 20);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
+	}
+	
+	@Test
+	public void testLimitSoSoBorderline() {
+		create("line", 1, 2);
+		prefs.child("coverage").set("good", 70);
+		prefs.child("coverage").set("warn", 50);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
+	}
+	
+	@Test
+	public void testLimitProblematic() {
+		create("line", 1, 2);
+		prefs.child("coverage").set("good", 80);
+		prefs.child("coverage").set("warn", 70);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 }

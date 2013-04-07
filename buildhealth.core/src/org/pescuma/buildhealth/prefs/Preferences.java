@@ -29,7 +29,10 @@ public class Preferences {
 	}
 	
 	public void set(String key, String value) {
-		store.put(value, subkey(key));
+		if (Strings.isNullOrEmpty(value))
+			store.remove(subkey(key));
+		else
+			store.put(value, subkey(key));
 	}
 	
 	public int get(String key, int defVal) {
