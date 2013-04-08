@@ -79,15 +79,19 @@ public class Preferences {
 		store.put(Double.toString(value), subkey(key));
 	}
 	
-	public Preferences child(String key) {
-		if (Strings.isNullOrEmpty(key))
+	public Preferences child(String... key) {
+		if (key == null || key.length < 1)
 			throw new IllegalArgumentException();
+		
+		for (int i = 0; i < key.length; i++)
+			if (Strings.isNullOrEmpty(key[i]))
+				throw new IllegalArgumentException();
 		
 		return new Preferences(store, subkey(key));
 	}
 	
-	private String[] subkey(String second) {
-		return ArrayUtils.add(currentKey, second);
+	private String[] subkey(String... second) {
+		return ArrayUtils.addAll(currentKey, second);
 	}
 	
 	public List<String[]> getKeys() {

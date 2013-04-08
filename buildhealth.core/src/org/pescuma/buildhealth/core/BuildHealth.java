@@ -21,6 +21,8 @@ import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.prefs.DiskPreferencesStore;
+import org.pescuma.buildhealth.prefs.LowercaseDiskPreferencesStore;
+import org.pescuma.buildhealth.prefs.LowercasePreferencesStore;
 import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.prefs.PreferencesStore;
@@ -201,20 +203,24 @@ public class BuildHealth {
 	}
 	
 	public static PreferencesStore getDefaultPreferencesStore(File home) {
-		home = getCanonicalFile(home);
-		
 		if (home != null)
-			return new PropertiesPreferencesStore(new File(home, "config"));
+			return new LowercaseDiskPreferencesStore(new PropertiesPreferencesStore(getConfigFile(home)));
 		else
-			return new MemoryPreferencesStore();
+			return new LowercasePreferencesStore(new MemoryPreferencesStore());
+	}
+	
+	private static File getConfigFile(File home) {
+		return getCanonicalFile(new File(home, "config"));
 	}
 	
 	public static BuildData getDefaultBuildData(File home) {
-		home = getCanonicalFile(home);
-		
 		if (home != null)
-			return new DiskBuildData(new File(home, "data.csv"), new BuildDataTable());
+			return new DiskBuildData(getDataFile(home), new BuildDataTable());
 		else
 			return new BuildDataTable();
+	}
+	
+	private static File getDataFile(File home) {
+		return getCanonicalFile(new File(home, "data.csv"));
 	}
 }

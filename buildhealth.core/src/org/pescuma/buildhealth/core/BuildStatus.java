@@ -24,4 +24,8 @@ public enum BuildStatus {
 		
 		return Problematic;
 	}
+	
+	public BuildStatus mergeWith(BuildStatus other) {
+		return merge(this, other);
+	}
 }

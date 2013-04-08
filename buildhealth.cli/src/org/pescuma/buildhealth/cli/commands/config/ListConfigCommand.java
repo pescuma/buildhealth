@@ -2,9 +2,11 @@ package org.pescuma.buildhealth.cli.commands.config;
 
 import static com.google.common.base.Strings.*;
 import static java.lang.Math.*;
+import static org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference.*;
 import io.airlift.command.Command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -56,9 +58,11 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			}
 			
 			for (BuildHealthAnalyserPreference pref : ps) {
-				out.append(prefix);
-				append(out, prefs, pref.getKey(), pref.getDefVal(), pref.getDescription());
-				keys.remove(pref.getKey());
+				for (String[] key : findKeys(keys, pref.getKey())) {
+					out.append(prefix);
+					append(out, prefs, key, pref.getDefVal(), pref.getDescription());
+					keys.remove(key);
+				}
 			}
 		}
 		
@@ -72,6 +76,63 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			out.append("No preferences set");
 		
 		System.out.print(out.toString());
+	}
+	
+	private List<String[]> findKeys(Set<String[]> keys, String[] key) {
+		if (!hasAnyKeyEntry(key))
+			return Arrays.<String[]> asList(key);
+		
+		List<String[]> result = new ArrayList<String[]>();
+		
+		for (String[] candiate : keys) {
+			String[] match = match(candiate, key);
+			if (match != null)
+				result.add(match);
+		}
+		
+		String[] template = new String[key.length];
+		for (int i = 0; i < key.length; i++) {
+			String k = key[i];
+			
+			if (k.startsWith(ANY_VALUE_KEY_PREFIX))
+				template[i] = k.substring(ANY_VALUE_KEY_PREFIX.length());
+			else
+				template[i] = k;
+		}
+		result.add(template);
+		
+		return result;
+	}
+	
+	private String[] match(String[] candiate, String[] key) {
+		if (candiate.length != key.length)
+			return null;
+		
+		String[] template = new String[key.length];
+		
+		for (int i = 0; i < key.length; i++) {
+			String k = key[i];
+			String c = candiate[i];
+			
+			if (k.startsWith(ANY_VALUE_KEY_PREFIX)) {
+				template[i] = c;
+				
+			} else if (k.equals(c)) {
+				template[i] = k;
+				
+			} else {
+				return null;
+			}
+		}
+		
+		return template;
+	}
+	
+	private boolean hasAnyKeyEntry(String[] key) {
+		for (int i = 0; i < key.length; i++)
+			if (key[i].startsWith(ANY_VALUE_KEY_PREFIX))
+				return true;
+		return false;
 	}
 	
 	private void append(StringBuilder out, Preferences prefs, String[] key, String defVal, String description) {

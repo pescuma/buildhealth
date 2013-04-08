@@ -16,7 +16,11 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 	}
 	
 	private void create(String type, int count) {
-		data.add(count, "Static analysis", "Java", type);
+		create("Java", type, count);
+	}
+	
+	private void create(String language, String type, int count) {
+		data.add(count, "Static analysis", language, type);
 	}
 	
 	@Test
@@ -48,6 +52,17 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport();
 		
 		assertEquals(new Report(Good, "Static analysis", "5", "CheckStyle: 1, PMD: 3, Task: 1"), report);
+	}
+	
+	@Test
+	public void testMultipleLanguages() {
+		create("Java", "Task", 1);
+		create("C++", "CppLint", 3);
+		create("C++", "Task", 1);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -101,5 +116,47 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport();
 		
 		assertEquals(new Report(Problematic, "Static analysis", "10", "Task: 10"), report);
+	}
+	
+	@Test
+	public void testLimitLanguageSoSo() {
+		create("Java", "Task", 1);
+		create("C++", "CppLint", 3);
+		create("C++", "Task", 1);
+		
+		prefs.child("staticanalysis", "C++").set("good", 1);
+		prefs.child("staticanalysis", "C++").set("warn", 4);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+	}
+	
+	@Test
+	public void testLimitLanguageProblematic() {
+		create("Java", "Task", 1);
+		create("C++", "CppLint", 3);
+		create("C++", "Task", 1);
+		
+		prefs.child("staticanalysis", "C++").set("good", 1);
+		prefs.child("staticanalysis", "C++").set("warn", 3);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Problematic, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+	}
+	
+	@Test
+	public void testLimitFrameworkSoSo() {
+		create("Java", "Task", 1);
+		create("C++", "CppLint", 3);
+		create("C++", "Task", 1);
+		
+		prefs.child("staticanalysis", "C++", "CppLint").set("good", 1);
+		prefs.child("staticanalysis", "C++", "CppLint").set("warn", 3);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
 	}
 }
