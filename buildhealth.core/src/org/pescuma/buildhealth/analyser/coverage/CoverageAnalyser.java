@@ -3,6 +3,7 @@ package org.pescuma.buildhealth.analyser.coverage;
 import static com.google.common.base.Objects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
+import static org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ import org.pescuma.buildhealth.prefs.Preferences;
  */
 public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 	
+	private static final String DEFAULT_MAINTYPE = "instruction,line";
+	
 	private boolean showDetailsInDescription = false;
 	
 	public void setShowDetailsInDescription(boolean showDetailsInDescription) {
@@ -64,6 +67,15 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
 				"warn"));
 		
+		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
+				ANY_VALUE_KEY_PREFIX + "<type>", "good"));
+		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
+				ANY_VALUE_KEY_PREFIX + "<type>", "warn"));
+		
+		result.add(new BuildHealthAnalyserPreference(
+				"Which coverage type will represent the global coverage (can have more than one, separated by ',', with the most important first)",
+				DEFAULT_MAINTYPE, "coverage", "maintype"));
+		
 		return Collections.unmodifiableList(result);
 	}
 	
@@ -73,13 +85,17 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
+		prefs = prefs.child("coverage");
+		
 		StringBuilder description = new StringBuilder();
 		int defPercentage = -1;
 		int defType = -1;
+		BuildStatus status = null;
 		
 		List<String> prefered = new ArrayList<String>();
-		prefered.add("line");
-		prefered.add("instruction");
+		for (String type : prefs.get("maintype", DEFAULT_MAINTYPE).split(","))
+			prefered.add(type);
+		Collections.reverse(prefered);
 		
 		List<Type> types = groupTypes(data.sumDistinct(3, 4));
 		sort(types);
@@ -88,6 +104,8 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 				continue;
 			
 			int percentage = (int) round(100 * type.covered / type.total);
+			
+			status = BuildStatus.merge(status, computeStatus(prefs.child(type.name), percentage));
 			
 			if (description.length() > 0)
 				description.append(", ");
@@ -108,12 +126,15 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 		if (defPercentage < 0)
 			return Collections.emptyList();
 		
-		prefs = prefs.child("coverage");
+		status = BuildStatus.merge(status, computeStatus(prefs, defPercentage));
+		
+		return asList(new Report(status, getName(), defPercentage + "%", description.toString()));
+	}
+	
+	private BuildStatus computeStatus(Preferences prefs, int total) {
 		int good = prefs.get("good", 0);
 		int warn = prefs.get("warn", 0);
-		
-		return asList(new Report(computeStatus(defPercentage, good, warn), getName(), defPercentage + "%",
-				description.toString()));
+		return computeStatus(total, good, warn);
 	}
 	
 	private BuildStatus computeStatus(int percentage, int good, int warn) {

@@ -163,4 +163,72 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		assertEquals(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
+	@Test
+	public void testLimitSoSoType() {
+		create("line", 1, 2);
+		create("instruction", 1, 4);
+		prefs.child("coverage", "line").set("good", 60);
+		prefs.child("coverage", "line").set("warn", 30);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)"), report);
+	}
+	
+	@Test
+	public void testLimitProblematicType() {
+		create("line", 1, 2);
+		create("instruction", 3, 4);
+		prefs.child("coverage", "line").set("good", 70);
+		prefs.child("coverage", "line").set("warn", 60);
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+	}
+	
+	@Test
+	public void testMainType_Line_JustOne() {
+		create("line", 1, 2);
+		create("instruction", 3, 4);
+		prefs.child("coverage").set("maintype", "line");
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+	}
+	
+	@Test
+	public void testMainType_Instruction_JustOne() {
+		create("line", 1, 2);
+		create("instruction", 3, 4);
+		prefs.child("coverage").set("maintype", "instruction");
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+	}
+	
+	@Test
+	public void testMainType_Line_Multiple() {
+		create("line", 1, 2);
+		create("instruction", 3, 4);
+		prefs.child("coverage").set("maintype", "bla,line,instruction");
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+	}
+	
+	@Test
+	public void testMainType_Instruction_Multiple() {
+		create("line", 1, 2);
+		create("instruction", 3, 4);
+		prefs.child("coverage").set("maintype", "bla,instruction,line");
+		
+		Report report = createReport();
+		
+		assertEquals(new Report(Good, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+	}
+	
 }
