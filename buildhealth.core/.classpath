@@ -27,5 +27,11 @@
 	<classpathentry kind="lib" path="lib/auto/opencsv-2.3-jar.jar" sourcepath="lib/auto/opencsv-2.3-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/jsoup-1.7.2-jar.jar" sourcepath="lib/auto/jsoup-1.7.2-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/commons-lang3-3.1-jar.jar" sourcepath="lib/auto/commons-lang3-3.1-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/metainf-services-1.5-jar.jar" sourcepath="lib/auto/metainf-services-1.5-source.jar"/>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

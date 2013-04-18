@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import org.apache.commons.io.FileUtils;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
@@ -96,6 +98,12 @@ public class BuildHealth {
 		analysers.add(analyser);
 	}
 	
+	public void addAnalysersFromServices() {
+		ServiceLoader<BuildHealthAnalyser> locator = ServiceLoader.load(BuildHealthAnalyser.class);
+		for (BuildHealthAnalyser analyser : locator)
+			addAnalyser(analyser);
+	}
+	
 	public List<BuildHealthAnalyser> getAnalysers() {
 		return Collections.unmodifiableList(analysers);
 	}
@@ -145,7 +153,17 @@ public class BuildHealth {
 		if (table.isEmpty())
 			return null;
 		
+		if (analysers.isEmpty())
+			addAnalysersFromServices();
+		
 		List<Report> reports = new ArrayList<Report>();
+		
+		Collections.sort(analysers, new Comparator<BuildHealthAnalyser>() {
+			@Override
+			public int compare(BuildHealthAnalyser o1, BuildHealthAnalyser o2) {
+				return o1.getPriority() - o2.getPriority();
+			}
+		});
 		
 		for (BuildHealthAnalyser analyser : analysers)
 			reports.addAll(analyser.computeSimpleReport(table, preferences));

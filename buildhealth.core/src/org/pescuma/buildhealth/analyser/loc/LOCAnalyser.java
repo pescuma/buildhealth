@@ -7,7 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
+import org.kohsuke.MetaInfServices;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
@@ -40,7 +42,23 @@ import org.pescuma.buildhealth.prefs.Preferences;
  * 
  * If not LOC information is found, it will try to get this information from coverage data.
  */
-public class LOCAnalyser extends BaseBuildHealthAnalyser {
+@MetaInfServices
+public class LOCAnalyser implements BuildHealthAnalyser {
+	
+	@Override
+	public String getName() {
+		return "Lines of code";
+	}
+	
+	@Override
+	public int getPriority() {
+		return 400;
+	}
+	
+	@Override
+	public List<BuildHealthAnalyserPreference> getPreferences() {
+		return Collections.emptyList();
+	}
 	
 	@Override
 	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
@@ -61,7 +79,7 @@ public class LOCAnalyser extends BaseBuildHealthAnalyser {
 		if (lines < 1)
 			return Collections.emptyList();
 		
-		return asList(new Report(BuildStatus.Good, "Lines of code", format(lines), "from coverage"));
+		return asList(new Report(BuildStatus.Good, getName(), format(lines), "from coverage"));
 	}
 	
 	private List<Report> computeFromLOC(BuildData data) {

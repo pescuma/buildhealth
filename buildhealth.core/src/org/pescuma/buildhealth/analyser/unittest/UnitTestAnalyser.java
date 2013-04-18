@@ -6,7 +6,9 @@ import static java.util.Arrays.*;
 import java.util.Collections;
 import java.util.List;
 
-import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
+import org.kohsuke.MetaInfServices;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
@@ -33,7 +35,23 @@ import org.pescuma.buildhealth.prefs.Preferences;
  * 0.01 | Unit test,Java,JUnit,time,package.TestWithMethodAndTimeInfo,testMethod1
  * </pre>
  */
-public class UnitTestAnalyser extends BaseBuildHealthAnalyser {
+@MetaInfServices
+public class UnitTestAnalyser implements BuildHealthAnalyser {
+	
+	@Override
+	public String getName() {
+		return "Unit tests";
+	}
+	
+	@Override
+	public int getPriority() {
+		return 100;
+	}
+	
+	@Override
+	public List<BuildHealthAnalyserPreference> getPreferences() {
+		return Collections.emptyList();
+	}
 	
 	@Override
 	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
@@ -59,7 +77,7 @@ public class UnitTestAnalyser extends BaseBuildHealthAnalyser {
 		if (!time.isEmpty())
 			description.append(" (").append(String.format("%.1f", time.sum())).append(" s)");
 		
-		return asList(new Report(status, "Unit tests", passed == total ? "PASSED" : "FAILED", description.toString()));
+		return asList(new Report(status, getName(), passed == total ? "PASSED" : "FAILED", description.toString()));
 	}
 	
 	private void append(StringBuilder out, int count, String name, String namePlural) {

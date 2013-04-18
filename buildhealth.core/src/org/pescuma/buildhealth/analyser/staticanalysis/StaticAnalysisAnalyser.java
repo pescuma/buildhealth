@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
+import org.kohsuke.MetaInfServices;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
@@ -35,11 +36,17 @@ import org.pescuma.buildhealth.prefs.Preferences;
  * 10 | Static analysis,Java,Task,/a/c.java,,Type2
  * </pre>
  */
-public class StaticAnalysisAnalyser extends BaseBuildHealthAnalyser {
+@MetaInfServices
+public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	
 	@Override
 	public String getName() {
 		return "Static analysis";
+	}
+	
+	@Override
+	public int getPriority() {
+		return 300;
 	}
 	
 	@Override

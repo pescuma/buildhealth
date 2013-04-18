@@ -10,6 +10,8 @@ public interface BuildHealthAnalyser {
 	
 	String getName();
 	
+	int getPriority();
+	
 	List<BuildHealthAnalyserPreference> getPreferences();
 	
 	List<Report> computeSimpleReport(BuildData data, Preferences prefs);

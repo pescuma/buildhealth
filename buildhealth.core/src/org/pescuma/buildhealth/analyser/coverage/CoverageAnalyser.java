@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pescuma.buildhealth.analyser.BaseBuildHealthAnalyser;
+import org.kohsuke.MetaInfServices;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
@@ -43,7 +44,8 @@ import org.pescuma.buildhealth.prefs.Preferences;
  * 2 | Coverage,Java,Emma,line,total,class,a,b,c,D
  * </pre>
  */
-public class CoverageAnalyser extends BaseBuildHealthAnalyser {
+@MetaInfServices
+public class CoverageAnalyser implements BuildHealthAnalyser {
 	
 	private static final String DEFAULT_MAINTYPE = "instruction,line";
 	
@@ -56,6 +58,11 @@ public class CoverageAnalyser extends BaseBuildHealthAnalyser {
 	@Override
 	public String getName() {
 		return "Coverage";
+	}
+	
+	@Override
+	public int getPriority() {
+		return 200;
 	}
 	
 	@Override

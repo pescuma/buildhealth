@@ -72,6 +72,7 @@
 			-dontobfuscate
 			-dontwarn
 				
+			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			-keep class org.pescuma.buildhealth.ant.** {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}

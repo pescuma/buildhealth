@@ -18,6 +18,7 @@
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
 		<dependency org="org.jsoup" name="jsoup" rev="1.7.2" />
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.1" />
+		<dependency org="org.kohsuke.metainf-services" name="metainf-services" rev="1.5" />
 
 		<!-- Tests only -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" />
