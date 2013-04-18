@@ -99,7 +99,8 @@ public class BuildHealth {
 	}
 	
 	public void addAnalysersFromServices() {
-		ServiceLoader<BuildHealthAnalyser> locator = ServiceLoader.load(BuildHealthAnalyser.class);
+		ServiceLoader<BuildHealthAnalyser> locator = ServiceLoader.load(BuildHealthAnalyser.class, getClass()
+				.getClassLoader());
 		for (BuildHealthAnalyser analyser : locator)
 			addAnalyser(analyser);
 	}
@@ -168,12 +169,9 @@ public class BuildHealth {
 		for (BuildHealthAnalyser analyser : analysers)
 			reports.addAll(analyser.computeSimpleReport(table, preferences));
 		
-		if (reports.isEmpty())
-			return null;
-		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
-		return new Report(status, "Build", status.name(), null, reports);
+		return new Report(status, "Build", status.name(), reports.isEmpty() ? "no analysers configured" : null, reports);
 	}
 	
 	// Helper methods to find home

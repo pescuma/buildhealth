@@ -105,7 +105,7 @@ public class Report {
 	}
 	
 	public static BuildStatus mergeBuildStatus(List<Report> reports) {
-		BuildStatus status = null;
+		BuildStatus status = BuildStatus.Good;
 		for (Report report : reports)
 			status = BuildStatus.merge(status, report.getStatus());
 		return status;
