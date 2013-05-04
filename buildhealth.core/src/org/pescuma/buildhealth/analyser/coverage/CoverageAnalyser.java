@@ -4,6 +4,7 @@ import static com.google.common.base.Objects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference.*;
+import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		StringBuilder description = new StringBuilder();
 		int defPercentage = -1;
 		int defType = -1;
-		BuildStatus status = null;
+		BuildStatus status = BuildStatus.Good;
 		
 		List<String> prefered = new ArrayList<String>();
 		for (String type : prefs.get("maintype", DEFAULT_MAINTYPE).split(","))
@@ -112,7 +113,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			
 			int percentage = (int) round(100 * type.covered / type.total);
 			
-			status = BuildStatus.merge(status, computeStatus(prefs.child(type.name), percentage));
+			status = status.mergeWith(computeStatus(prefs.child(type.name), percentage, true));
 			
 			if (description.length() > 0)
 				description.append(", ");
@@ -133,23 +134,9 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		if (defPercentage < 0)
 			return Collections.emptyList();
 		
-		status = BuildStatus.merge(status, computeStatus(prefs, defPercentage));
+		status = status.mergeWith(computeStatus(prefs, defPercentage, true));
 		
 		return asList(new Report(status, getName(), defPercentage + "%", description.toString()));
-	}
-	
-	private BuildStatus computeStatus(Preferences prefs, int total) {
-		int good = prefs.get("good", 0);
-		int warn = prefs.get("warn", 0);
-		return computeStatus(total, good, warn);
-	}
-	
-	private BuildStatus computeStatus(int percentage, int good, int warn) {
-		if (percentage < warn)
-			return BuildStatus.Problematic;
-		if (percentage < good)
-			return BuildStatus.SoSo;
-		return BuildStatus.Good;
 	}
 	
 	private String format(double val) {

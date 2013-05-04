@@ -10,7 +10,7 @@ public class NumbersFormater {
 		final String[] units = new String[] { "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi" };
 		final int scale = 1024;
 		
-		return format(total, "B", units, scale);
+		return format(total, "B", null, units, scale);
 	}
 	
 	public static String format1000(double total) {
@@ -19,24 +19,39 @@ public class NumbersFormater {
 	
 	public static String format1000(double total, String baseUnit) {
 		// http://en.wikipedia.org/wiki/Kilobyte
-		final String[] units = new String[] { "k", "M", "G", "T", "P", "E", "Z", "Yi" };
+		final String[] unitsBig = new String[] { "k", "M", "G", "T", "P", "E", "Z", "Yi" };
+		final String[] unitsSmall = new String[] { "m", "µ", "n", "p" };
 		final int scale = 1000;
 		
-		return format(total, baseUnit, units, scale);
+		return format(total, baseUnit, unitsSmall, unitsBig, scale);
 	}
 	
-	private static String format(double total, String baseUnit, final String[] units, final int scale) {
+	private static String format(double total, String baseUnit, final String[] unitsSmall, final String[] unitsBig,
+			final int scale) {
 		String unit = "";
-		for (int i = 0; i < units.length && total >= scale; i++) {
-			total /= scale;
-			unit = units[i];
+		
+		double sign = signum(total);
+		total = abs(total);
+		
+		if (total < 1 && unitsSmall != null) {
+			for (int i = 0; i < unitsSmall.length && total < 1; i++) {
+				total *= scale;
+				unit = unitsSmall[i];
+			}
+			
+		} else {
+			for (int i = 0; i < unitsBig.length && total >= scale; i++) {
+				total /= scale;
+				unit = unitsBig[i];
+			}
 		}
 		
 		int decimals = detectDecimals(total);
 		if (!unit.isEmpty())
 			decimals = min(decimals, 1);
 		
-		return String.format("%." + decimals + "f%s%s%s", total, isNullOrEmpty(baseUnit) ? "" : " ", unit, baseUnit);
+		return String.format("%." + decimals + "f%s%s%s", sign * total, isNullOrEmpty(baseUnit) ? "" : " ", unit,
+				baseUnit);
 	}
 	
 	private static int detectDecimals(double total) {
