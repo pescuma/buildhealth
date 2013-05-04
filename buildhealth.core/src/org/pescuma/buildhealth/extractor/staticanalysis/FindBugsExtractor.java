@@ -40,23 +40,43 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 			if (categoryFullName.containsKey(category))
 				category = categoryFullName.get(category);
 			
-			for (Element sourceline : bug.getChildren("SourceLine")) {
-				String path = sourceline.getAttributeValue("sourcepath", "");
-				String startLine = sourceline.getAttributeValue("start", "");
-				String endLine = sourceline.getAttributeValue("end", "");
-				
-				path = findRealSource(path, sourceDirs);
-				
-				String line;
-				if (startLine.equals(endLine))
-					line = startLine;
-				else
-					line = startLine + ":0:" + endLine + ":999";
-				
-				data.add(1, "Static analysis", "Java", "FindBugs", path, line, category, shortMessage, longMessage
-						+ "\n" + details);
-			}
+			Element sourceline = findSourceLine(bug);
+			String path = sourceline.getAttributeValue("sourcepath", "");
+			String startLine = sourceline.getAttributeValue("start", "");
+			String endLine = sourceline.getAttributeValue("end", "");
+			
+			path = findRealSource(path, sourceDirs);
+			
+			String line;
+			if (startLine.equals(endLine))
+				line = startLine;
+			else
+				line = startLine + ":0:" + endLine + ":999";
+			
+			StringBuilder desc = new StringBuilder();
+			desc.append(longMessage);
+			for (Element message : findElementsXPath(bug, "*/Message"))
+				desc.append("\n").append(message.getTextTrim());
+			desc.append("\n\n").append(details);
+			
+			data.add(1, "Static analysis", "Java", "FindBugs", path, line, category, shortMessage, longMessage + "\n"
+					+ details);
 		}
+	}
+	
+	private Element findSourceLine(Element bug) {
+		List<Element> sls = bug.getChildren("SourceLine");
+		if (sls.size() == 1)
+			return sls.get(0);
+		
+		List<Element> tmp;
+		
+		tmp = bug.getChildren("Field");
+		if (tmp.size() == 1)
+			return tmp.get(0).getChild("SourceLine");
+		
+		// What to do here?
+		return sls.get(0);
 	}
 	
 	private String findRealSource(String relativePath, List<String> roots) {
