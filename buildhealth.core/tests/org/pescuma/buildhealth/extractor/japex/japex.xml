@@ -1,0 +1,37 @@
+<testSuiteReport name="ObjectReflecionGroup Performace tests" xmlns="http://www.sun.com/japex/testSuiteReport">
+  <chartType>barchart</chartType>
+  <configFile>japex-config.xml</configFile>
+  <dateTime>22 Mar 2013/00:06:46 GMT</dateTime>
+  <numberOfCpus>8</numberOfCpus>
+  <numberOfThreads>1</numberOfThreads>
+  <osArchitecture>x86</osArchitecture>
+  <osName>Windows</osName>
+  <plotDrivers>false</plotDrivers>
+  <plotGroupSize>5</plotGroupSize>
+  <resultAxis>normal</resultAxis>
+  <resultAxisX>normal</resultAxisX>
+  <resultUnit>ms</resultUnit>
+  <runIterations>2000</runIterations>
+  <runsPerDriver>1</runsPerDriver>
+  <version>1.1.0</version>
+  <vmInfo>Sun Microsystems Inc. 20.14-b01</vmInfo>
+  <warmupIterations>20</warmupIterations>
+  <warmupsPerDriver>0</warmupsPerDriver>
+  <driver name="Driver1">
+    <driverClass>org.pescuma.Driver1</driverClass>
+    <resultAritMean>0.245</resultAritMean>
+    <resultGeomMean>0.235</resultGeomMean>
+    <resultHarmMean>0.225</resultHarmMean>
+    <description xmlns="">Driver1 Driver</description>
+    <testCase name="TestSub">
+      <resultIterations>2000.000</resultIterations>
+      <resultTime>0.350</resultTime>
+      <resultValue>0.175</resultValue>
+    </testCase>
+    <testCase name="TestClass">
+      <resultIterations>2000.000</resultIterations>
+      <resultTime>0.629</resultTime>
+      <resultValue>0.315</resultValue>
+    </testCase>
+  </driver>
+</testSuiteReport>
