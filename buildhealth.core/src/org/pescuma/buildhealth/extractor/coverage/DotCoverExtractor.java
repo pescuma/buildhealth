@@ -19,7 +19,7 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 	
 	@Override
 	protected void extractDocument(String filename, Document doc, BuildData data) {
-		checkRoot(doc, "Root");
+		checkRoot(doc, "Root", filename);
 		
 		List<String> place = new ArrayList<String>();
 		extract(data, doc.getRootElement(), "all", place);

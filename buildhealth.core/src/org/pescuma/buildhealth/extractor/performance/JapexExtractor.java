@@ -16,7 +16,7 @@ public class JapexExtractor extends BaseXMLExtractor {
 	
 	@Override
 	protected void extractDocument(String filename, Document doc, BuildData data) {
-		checkRoot(doc, "testSuiteReport");
+		checkRoot(doc, "testSuiteReport", filename);
 		
 		extractSuite(filename, doc.getRootElement(), data);
 	}

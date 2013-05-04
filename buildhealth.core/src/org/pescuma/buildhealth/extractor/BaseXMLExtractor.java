@@ -1,5 +1,7 @@
 package org.pescuma.buildhealth.extractor;
 
+import static com.google.common.base.Objects.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -31,9 +33,10 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	
 	protected abstract void extractDocument(String filename, Document doc, BuildData data);
 	
-	protected void checkRoot(Document doc, String name) {
+	protected void checkRoot(Document doc, String name, String filename) {
 		if (!doc.getRootElement().getName().equals(name))
-			throw new BuildDataExtractorException("Invalid file format: top node must be " + name);
+			throw new BuildDataExtractorException("Invalid file format: top node must be " + name + " (in "
+					+ firstNonNull(filename, "<stream>") + ")");
 	}
 	
 	protected List<Element> findElementsXPath(Document doc, String xpath) {

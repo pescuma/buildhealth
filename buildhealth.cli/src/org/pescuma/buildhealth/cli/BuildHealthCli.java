@@ -14,6 +14,7 @@ import org.pescuma.buildhealth.cli.commands.add.DiskUsageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.DotCoverExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.EmmaExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.JacocoExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.japex.JapexExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.CPDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FindBugsExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
@@ -53,6 +54,7 @@ public class BuildHealthCli {
 						TusarExtractorCommand.class, //
 						EmmaExtractorCommand.class, JacocoExtractorCommand.class, DotCoverExtractorCommand.class, //
 						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class, //
+						JapexExtractorCommand.class, //
 						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")

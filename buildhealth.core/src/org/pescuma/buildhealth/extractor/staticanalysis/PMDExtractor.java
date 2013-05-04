@@ -16,7 +16,7 @@ public class PMDExtractor extends BaseXMLExtractor {
 	
 	@Override
 	protected void extractDocument(String filename, Document doc, BuildData data) {
-		checkRoot(doc, "pmd");
+		checkRoot(doc, "pmd", filename);
 		
 		for (Element file : doc.getRootElement().getChildren("file"))
 			extractFile(file, data);

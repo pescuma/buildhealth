@@ -20,7 +20,7 @@ public class JacocoExtractor extends BaseXMLExtractor {
 	
 	@Override
 	protected void extractDocument(String filename, Document doc, BuildData data) {
-		checkRoot(doc, "report");
+		checkRoot(doc, "report", filename);
 		
 		List<String> place = new ArrayList<String>();
 		extract(data, doc.getRootElement(), "all", place);
