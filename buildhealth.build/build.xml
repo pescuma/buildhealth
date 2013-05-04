@@ -51,6 +51,7 @@
 			<exclude name="native/**" />
 			<exclude name="*.default" />
 		</delete>
+		<delete file="${build.tmp.dir}/META-INF/services/javax.annotation.processing.Processor" />
 
 		<delete dir="${build.dir}/buildhealth*.jar" quiet="true" />
 
@@ -78,8 +79,10 @@
 			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
+			-keep class net.sf.saxon.TransformerFactoryImpl {*;}
 			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
 			-keep class net.sf.saxon.event.MessageEmitter {*;}
+			-keep class com.thalesgroup.dtkit.junit.* {*;}
 			
 			-dontnote **
 		</proguard>
