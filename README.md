@@ -161,7 +161,7 @@ Some other features that I think could be useful (but aren't implemented yet):
 Thanks
 ------
 
- - Kohsuke Kawaguchi for creating [Jenkins](http://jenkins-ci.org/), from which I copied a lot of code
+ - Kohsuke Kawaguchi for creating [Jenkins](http://jenkins-ci.org/), from which I copied a lot of ideas and code to parse JUnit reports
  - Gregory Boissinot who created the [xUnit Jenkins plugin](https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin) and a library to parse most unit test results handled
  - Ulli Hafner who created the [Task Scanner Jenkins plugin](https://wiki.jenkins-ci.org/display/JENKINS/Task+Scanner+Plugin), from which I copied the code to parse tasks
 
