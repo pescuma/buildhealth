@@ -6,6 +6,7 @@ import com.thalesgroup.dtkit.junit.CppUnit;
 import com.thalesgroup.dtkit.metrics.model.InputMetric;
 import com.thalesgroup.dtkit.metrics.model.InputMetricFactory;
 
+// http://sourceforge.net/projects/cppunit/
 public class CppUnitExtractor extends XUnitExtractor {
 	
 	public CppUnitExtractor(PseudoFiles files) {

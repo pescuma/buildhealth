@@ -8,6 +8,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+// http://pmd.sourceforge.net/
 public class PMDExtractor extends BaseXMLExtractor {
 	
 	public PMDExtractor(PseudoFiles files) {

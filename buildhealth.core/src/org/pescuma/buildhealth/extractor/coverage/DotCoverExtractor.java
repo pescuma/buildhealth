@@ -11,6 +11,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+// http://www.jetbrains.com/dotcover/
 public class DotCoverExtractor extends BaseXMLExtractor {
 	
 	public DotCoverExtractor(PseudoFiles files) {

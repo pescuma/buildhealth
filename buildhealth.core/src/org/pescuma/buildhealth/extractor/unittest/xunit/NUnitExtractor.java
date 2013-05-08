@@ -6,6 +6,7 @@ import com.thalesgroup.dtkit.junit.NUnit;
 import com.thalesgroup.dtkit.metrics.model.InputMetric;
 import com.thalesgroup.dtkit.metrics.model.InputMetricFactory;
 
+// http://www.nunit.org/
 public class NUnitExtractor extends XUnitExtractor {
 	
 	public NUnitExtractor(PseudoFiles files) {

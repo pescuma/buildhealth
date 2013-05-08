@@ -13,6 +13,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+// http://emma.sourceforge.net/
 public class EmmaExtractor extends BaseXMLExtractor {
 	
 	// TODO private static final Logger log = LoggerFactory.getLogger(EmmaExtractor.class);

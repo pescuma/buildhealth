@@ -6,6 +6,7 @@ import com.thalesgroup.dtkit.junit.AUnit;
 import com.thalesgroup.dtkit.metrics.model.InputMetric;
 import com.thalesgroup.dtkit.metrics.model.InputMetricFactory;
 
+// http://libre.adacore.com/tools/aunit/
 public class AUnitExtractor extends XUnitExtractor {
 	
 	public AUnitExtractor(PseudoFiles files) {

@@ -16,6 +16,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+// http://findbugs.sourceforge.net/
 public class FindBugsExtractor extends BaseXMLExtractor {
 	
 	public FindBugsExtractor(PseudoFiles files) {

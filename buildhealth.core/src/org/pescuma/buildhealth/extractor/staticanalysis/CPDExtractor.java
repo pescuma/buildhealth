@@ -13,6 +13,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+// http://pmd.sourceforge.net/snapshot/cpd-usage.html
 // TODO Maybe create a Code duplication analyser?
 public class CPDExtractor extends BaseBuildDataExtractor {
 	

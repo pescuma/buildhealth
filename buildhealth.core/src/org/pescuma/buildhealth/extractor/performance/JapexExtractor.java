@@ -8,6 +8,7 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 import com.google.common.base.Strings;
 
+// http://japex.java.net/
 public class JapexExtractor extends BaseXMLExtractor {
 	
 	public JapexExtractor(PseudoFiles files) {

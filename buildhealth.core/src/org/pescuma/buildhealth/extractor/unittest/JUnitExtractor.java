@@ -14,6 +14,7 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 /**
  * Based on hudson.tasks.junit.SuiteResult by Kohsuke Kawaguchi
  */
+// http://junit.org/
 public class JUnitExtractor extends BaseXMLExtractor {
 	
 	private final String language;

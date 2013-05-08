@@ -12,6 +12,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+// http://www.eclemma.org/jacoco/
 public class JacocoExtractor extends BaseXMLExtractor {
 	
 	public JacocoExtractor(PseudoFiles files) {
