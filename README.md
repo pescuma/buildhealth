@@ -1,7 +1,7 @@
 buildhealth
 ===========
 
-[Download buildhealth-0.1.jar](http://dl.bintray.com/content/pescuma/buildhealth/buildhealth-0.1.jar?direct)
+[Download buildhealth-0.1.jar](http://dl.bintray.com/pescuma/buildhealth/buildhealth-0.1.jar?direct)
 
 [![Build Status](https://travis-ci.org/pescuma/buildhealth.png?branch=master)](https://travis-ci.org/pescuma/buildhealth) (you can see the buildhealth results of buldhealth at the end of the console logs) 
 
