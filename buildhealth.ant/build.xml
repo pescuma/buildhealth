@@ -1,7 +1,7 @@
 <project name="buildhealth.ant" default="all">
 
 	<property name="project" value="buildhealth.ant" />
-	<property name="project.deps" value="buildhealth.core" />
+	<property name="project.deps" value="buildhealth.core,buildhealth.extractors" />
 
 	<import file="../buildhealth.build/ivy.xml" />
 	<import file="../buildhealth.build/project.xml" />

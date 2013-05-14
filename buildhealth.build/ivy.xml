@@ -6,9 +6,9 @@
 
 	<target name="deps" depends="install-ivy" description="Download dependencies needed to build">
 		<property name="ivy.dep.file" value="${lib.dir}/ivy.xml" />
-		<ivy:retrieve sync="true" pattern="${lib.auto.dir}/[artifact]-[revision]-[type].[ext]" />
+		<ivy:retrieve sync="true" pattern="${lib.auto.dir}/[conf]/[artifact]-[revision]-[type].[ext]" />
 	</target>
-
+		
 	<!-- ========================= IVY ========================= -->
 
 	<property name="ivy.install.version" value="2.3.0" />
@@ -17,8 +17,7 @@
 
 	<target name="download-ivy">
 		<mkdir dir="${ivy.jar.dir}" />
-		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
-			dest="${ivy.jar.file}" usetimestamp="true" />
+		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
 
 	<target name="install-ivy" depends="download-ivy">

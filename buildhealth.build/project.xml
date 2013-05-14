@@ -1,4 +1,4 @@
-<project xmlns:jacoco="antlib:org.jacoco.ant">
+<project xmlns:jacoco="antlib:org.jacoco.ant" xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<property name="project" value="MISSING_NAME" />
 	<property name="project.deps" value="" />
@@ -30,31 +30,27 @@
 	<property name="reports.cpd.dir" location="${reports.dir}/cpd" />
 	<property name="reports.findbugs.dir" location="${reports.dir}/findbugs" />
 	<property name="dist.dir" location="${build.dir}/dist" />
-	<property name="tools.lib.dir" location="${basedir}/../buildhealth.build/lib" />
+	<property name="tools.dir" location="${basedir}/../buildhealth.build" />
+	<property name="tools.lib.dir" location="${tools.dir}/lib" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
 
-	<if>
-		<equals arg1="${project.deps}" arg2="" />
-		<then>
-			<path id="project.deps.path">
-			</path>
-		</then>
-		<else>
-			<filelist id="project.deps.dirs" dir=".." files="${project.deps}" />
-
-			<pathconvert refid="project.deps.dirs" property="project.deps.prop">
-				<regexpmapper from="(.*)" to="\1/build/dist" />
-			</pathconvert>
-
-			<path id="project.deps.path">
-				<fileset dir="${project.deps.prop}">
-					<include name="**/*.jar" />
-					<exclude name="**/*-source.jar" />
-				</fileset>
-			</path>
-		</else>
-	</if>
+	<var name="project.deps.path.joined" value="" />
+	<for list="${project.deps}" param="d">
+		<sequential>
+			<var name="full" value="../@{d}/build/dist/@{d}-${version}.jar" />
+			<if>
+				<equals arg1="${project.deps.path.joined}" arg2="" />
+				<then>
+					<var name="project.deps.path.joined" value="${full}" />
+				</then>
+				<else>
+					<var name="project.deps.path.joined" value="${project.deps.path.joined};${full}" />
+				</else>
+			</if>
+		</sequential>
+	</for>
+	<path id="project.deps.path" path="${project.deps.path.joined}" />
 
 	<path id="libs.path">
 		<fileset dir="${lib.dir}">
@@ -235,6 +231,48 @@
 			</fileset>
 		</jar>
 		<jar jarfile="${dist.dir}/${project}-${version}-source.jar" basedir="${src.dir}" />
+	</target>
+
+	<!-- Ivy -->
+
+	<import file="ivy.xml" />
+
+	<target name="mvn-generate-pom" depends="install-ivy" description="Generate POM for maven">
+		<delete dir="${dist.dir}/maven" quiet="true" />
+		<mkdir dir="${dist.dir}/maven" />
+
+		<property name="ivy.pom.version" value="${version}" />
+		<ivy:settings file="${tools.dir}/ivysettings.xml" />
+		<ivy:resolve file="${lib.dir}/ivy.xml" revision="${version}" />
+		<if>
+			<equals arg1="${project}" arg2="buildhealth.core" />
+			<then>
+				<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime" />
+			</then>
+			<elseif>
+				<equals arg1="${project}" arg2="buildhealth.extractors" />
+				<then>
+					<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime">
+						<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" scope="compile" />
+					</ivy:makepom>
+				</then>
+			</elseif>
+			<else>
+				<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime">
+					<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" scope="compile" />
+					<dependency group="org.pecuma" artifact="buildhealth.extractors" version="${version}" scope="compile" />
+				</ivy:makepom>
+			</else>
+		</if>
+	</target>
+
+	<target name="mvn-publish" depends="install-ivy,mvn-generate-pom" description="Publish to maven repo at bintray">
+		<copy file="${dist.dir}/${project}-${version}.jar" tofile="${dist.dir}/maven/${project}.jar" />
+		<copy file="${dist.dir}/${project}-${version}-source.jar" tofile="${dist.dir}/maven/${project}-sources.jar" />
+
+		<ivy:publish resolver="bintray-publish" pubrevision="${version}" overwrite="true" publishivy="false">
+			<artifacts pattern="${dist.dir}/maven/[artifact](-[classifier]).[ext]" />
+		</ivy:publish>
 	</target>
 
 </project>

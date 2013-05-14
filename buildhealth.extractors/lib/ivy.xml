@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+	<info organisation="org.pescuma" module="buildhealth.extractors" />
+
+	<configurations defaultconfmapping="compile->default,sources;runtime->default">
+		<conf name="compile" />
+		<conf name="runtime" />
+	</configurations>
+
+	<publications>
+		<artifact name="buildhealth.extractors" type="jar" />
+		<artifact name="buildhealth.extractors" type="pom" />
+		<artifact name="buildhealth.extractors" type="jar" e:classifier="sources" />
+	</publications>
+
+	<dependencies>
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-default-junit" rev="0.14" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-junit-model" rev="0.12" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-metrics-model" rev="0.11" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-metrics-util" rev="0.11" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-tusar-model" rev="0.11" />
+		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-processor" rev="0.1" />
+		<dependency org="net.sf.opencsv" name="opencsv" rev="2.3" />
+		<dependency org="org.jdom" name="jdom2" rev="2.0.4" />
+		<dependency org="jaxen" name="jaxen" rev="1.1.4" />
+		<dependency org="net.sourceforge.saxon" name="saxon" rev="9.1.0.8" />
+		<dependency org="com.google.guava" name="guava" rev="14.0" />
+		<dependency org="commons-io" name="commons-io" rev="2.2" />
+		<dependency org="org.jsoup" name="jsoup" rev="1.7.2" />
+
+		<!-- Tests only -->
+		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="compile" />
+		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
+
+		<!-- Excluded -->
+		<exclude org="com.google.code.guice" module="guice" />
+		<exclude org="net.sourceforge.saxon" module="saxon" />
+	</dependencies>
+</ivy-module>

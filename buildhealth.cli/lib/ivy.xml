@@ -1,11 +1,22 @@
-<ivy-module version="2.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.cli" />
-	<configurations defaultconfmapping="default->default,sources">
+
+	<configurations defaultconfmapping="compile->default,sources;runtime->default">
+		<conf name="compile" />
+		<conf name="runtime" />
 	</configurations>
+
+	<publications>
+		<artifact name="buildhealth.cli" type="jar" />
+		<artifact name="buildhealth.cli" type="pom" />
+		<artifact name="buildhealth.cli" type="jar" e:classifier="sources" />
+	</publications>
+
 	<dependencies>
 		<dependency org="io.airlift" name="airline" rev="0.5" />
 		<dependency org="org.fusesource.jansi" name="jansi" rev="1.9" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
-		<dependency org="junit" name="junit" rev="4.10" />
+		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
 	</dependencies>
 </ivy-module>
