@@ -63,7 +63,7 @@
 		<path refid="libs.path" />
 	</path>
 
-	<target name="all" depends="init, clean, compile, test, pmd, cpd, findbugs, pack, clean-tmp" description="Compile, test and pack">
+	<target name="all" depends="init, clean, deps, compile, test, pmd, cpd, findbugs, pack, clean-tmp" description="Compile, test and pack">
 	</target>
 
 	<target name="init">
