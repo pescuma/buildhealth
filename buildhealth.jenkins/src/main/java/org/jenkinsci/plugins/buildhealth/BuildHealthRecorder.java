@@ -5,6 +5,7 @@ import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.BuildListener;
+import hudson.model.Result;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
@@ -22,6 +23,9 @@ import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+import org.pescuma.buildhealth.core.BuildHealth;
+import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.ReportFormater;
 
 public class BuildHealthRecorder extends Recorder {
 	
@@ -61,6 +65,19 @@ public class BuildHealthRecorder extends Recorder {
 			listener.getLogger().println(
 					"Nothing to do: no files in buildhealth home folder '" + homeRelativeFolder + "'");
 			return true;
+		}
+		
+		BuildHealth buildhealth = new BuildHealth(localHome);
+		Report report = buildhealth.generateReportSummary();
+		listener.getLogger().println(new ReportFormater().format(report));
+		
+		switch (report.getStatus()) {
+			case SoSo:
+				build.setResult(Result.UNSTABLE);
+				break;
+			case Problematic:
+				build.setResult(Result.FAILURE);
+				break;
 		}
 		
 		return true;

@@ -25,4 +25,12 @@
       <url>http://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>org.pescuma</groupId>
+  		<artifactId>buildhealth.core</artifactId>
+  		<version>0.1</version>
+  	</dependency>
+  </dependencies>
 </project>
