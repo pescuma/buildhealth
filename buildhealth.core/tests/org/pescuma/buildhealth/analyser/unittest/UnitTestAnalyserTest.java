@@ -38,7 +38,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Unit tests", "PASSED", "10 tests, 10 passed"), report);
+		assertReport(new Report(Good, "Unit tests", "PASSED", "10 tests, 10 passed"), report);
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Unit tests", "PASSED", "5 tests, 5 passed (12.0 s)"), report);
+		assertReport(new Report(Good, "Unit tests", "PASSED", "5 tests, 5 passed (12.01 s)"), report);
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure"), report);
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure"), report);
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Unit tests", "FAILED", "1 test, 1 failure"), report);
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "1 test, 1 failure"), report);
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 2 failures"), report);
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 2 failures"), report);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Unit tests", "FAILED", "1 test, 1 error"), report);
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "1 test, 1 error"), report);
 	}
 	
 	@Test
@@ -96,7 +96,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 2 errors"), report);
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 2 errors"), report);
 	}
 	
 	@Test
@@ -110,8 +110,15 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(
-				new Report(Problematic, "Unit tests", "FAILED", "18 tests, 6 passed, 6 errors, 6 failures (6.0 s)"),
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "18 tests, 6 passed, 6 errors, 6 failures (6 s)"),
 				report);
+	}
+	
+	private void assertReport(Report expected, Report actual) {
+		assertEquals(expected.getStatus(), actual.getStatus());
+		assertEquals(expected.getName(), actual.getName());
+		assertEquals(expected.getValue(), actual.getValue());
+		assertEquals(expected.getDescription(), actual.getDescription());
+		assertEquals(0, actual.getChildren().size());
 	}
 }

@@ -62,22 +62,15 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		int passed = (int) round(data.filter(3, "passed").sum());
 		int errors = (int) round(data.filter(3, "error").sum());
 		int failures = (int) round(data.filter(3, "failed").sum());
-		int total = passed + errors + failures;
 		
 		BuildStatus status = (errors + failures > 0) ? BuildStatus.Problematic : BuildStatus.Good;
 		
-		StringBuilder description = new StringBuilder();
-		description.append(total).append(" ").append(total == 1 ? "test" : "tests");
-		
-		append(description, passed, "passed");
-		append(description, errors, "error", "errors");
-		append(description, failures, "failure", "failures");
-		
 		BuildData time = data.filter(3, "time");
+		Double dt = null;
 		if (!time.isEmpty())
-			description.append(" (").append(String.format("%.1f", time.sum())).append(" s)");
+			dt = time.sum();
 		
-		return asList(new Report(status, getName(), passed == total ? "PASSED" : "FAILED", description.toString()));
+		return asList((Report) new UnitTestReport(status, getName(), passed, errors, failures, dt));
 	}
 	
 	private void append(StringBuilder out, int count, String name, String namePlural) {
