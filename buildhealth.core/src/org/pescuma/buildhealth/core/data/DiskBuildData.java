@@ -3,7 +3,6 @@ package org.pescuma.buildhealth.core.data;
 import static java.lang.System.*;
 import static java.util.Arrays.*;
 import static org.apache.commons.io.FileUtils.*;
-import static org.apache.commons.io.IOUtils.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,6 +15,8 @@ import org.pescuma.buildhealth.core.BuildData;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+
+import com.google.common.io.Closer;
 
 public class DiskBuildData implements BuildData {
 	
@@ -33,31 +34,34 @@ public class DiskBuildData implements BuildData {
 		if (!wroteData)
 			return;
 		
-		FileWriter writer = null;
-		CSVWriter csv = null;
+		Closer closer = Closer.create();
 		try {
-			forceMkdir(file.getParentFile());
-			
-			writer = new FileWriter(file, !loadedFromDisk);
-			csv = new CSVWriter(writer);
-			
-			for (Line line : data.getLines()) {
-				String[] cols = line.getColumns();
+			try {
+				forceMkdir(file.getParentFile());
 				
-				String[] toWrite = new String[cols.length + 1];
-				toWrite[0] = Double.toString(line.getValue());
-				arraycopy(cols, 0, toWrite, 1, cols.length);
+				FileWriter writer = closer.register(new FileWriter(file, !loadedFromDisk));
+				CSVWriter csv = closer.register(new CSVWriter(writer));
 				
-				csv.writeNext(toWrite);
+				for (Line line : data.getLines()) {
+					String[] cols = line.getColumns();
+					
+					String[] toWrite = new String[cols.length + 1];
+					toWrite[0] = Double.toString(line.getValue());
+					arraycopy(cols, 0, toWrite, 1, cols.length);
+					
+					csv.writeNext(toWrite);
+				}
+				
+			} catch (IOException e) {
+				throw closer.rethrow(e);
+				
+			} finally {
+				closer.close();
 			}
-			
 		} catch (IOException e) {
 			throw new RuntimeException("Error writing csv: " + file, e);
-			
-		} finally {
-			closeQuietly(csv);
-			closeQuietly(writer);
 		}
+		
 	}
 	
 	private void loadFromDisk() {
@@ -68,25 +72,28 @@ public class DiskBuildData implements BuildData {
 		if (!file.exists())
 			return;
 		
-		FileReader reader = null;
-		CSVReader csv = null;
+		Closer closer = Closer.create();
 		try {
-			reader = new FileReader(file);
-			csv = new CSVReader(reader);
-			
-			String[] line;
-			while ((line = csv.readNext()) != null) {
-				double val = Double.parseDouble(line[0]);
-				String[] info = copyOfRange(line, 1, line.length);
-				data.add(val, info);
+			try {
+				
+				FileReader reader = closer.register(new FileReader(file));
+				CSVReader csv = closer.register(new CSVReader(reader));
+				
+				String[] line;
+				while ((line = csv.readNext()) != null) {
+					double val = Double.parseDouble(line[0]);
+					String[] info = copyOfRange(line, 1, line.length);
+					data.add(val, info);
+				}
+				
+			} catch (IOException e) {
+				throw closer.rethrow(e);
+				
+			} finally {
+				closer.close();
 			}
-			
 		} catch (IOException e) {
 			throw new RuntimeException("Error reading csv: " + file, e);
-			
-		} finally {
-			closeQuietly(csv);
-			closeQuietly(reader);
 		}
 	}
 	
