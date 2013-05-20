@@ -29,6 +29,7 @@
 	<property name="reports.pmd.dir" location="${reports.dir}/pmd" />
 	<property name="reports.cpd.dir" location="${reports.dir}/cpd" />
 	<property name="reports.findbugs.dir" location="${reports.dir}/findbugs" />
+	<property name="reports.tattletale.dir" location="${reports.dir}/tattletale" />
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="tools.dir" location="${basedir}/../buildhealth.build" />
 	<property name="tools.lib.dir" location="${tools.dir}/lib" />
@@ -63,7 +64,7 @@
 		<path refid="libs.path" />
 	</path>
 
-	<target name="all" depends="init, clean, deps, compile, test, pmd, cpd, findbugs, pack, clean-tmp" description="Compile, test and pack">
+	<target name="all" depends="init, clean, deps, compile, test, pmd, cpd, findbugs, tattletale, pack, clean-tmp" description="Compile, test and pack">
 	</target>
 
 	<target name="init">
@@ -219,6 +220,20 @@
 			<class location="${build.tests.dir}" />
 			<auxClasspath refid="compile.path" />
 		</findbugs>
+	</target>
+
+	<target name="tattletale" depends="init" description="Run tattletale on sources">
+		<taskdef name="tattletale" classname="org.jboss.tattletale.ant.ReportTask">
+			<classpath>
+				<fileset dir="${tools.lib.dir}/tattletale">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+
+		<delete dir="${reports.tattletale.dir}" quiet="true" />
+
+		<tattletale source="${project.dir}" destination="${reports.tattletale.dir}" excludes="**/maven/**" />
 	</target>
 
 	<target name="pack" depends="init" description="Create jar archives">
