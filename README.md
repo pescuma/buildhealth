@@ -52,7 +52,7 @@ File processed: /path/th/xmls/coverage.xml
 ##### Compute tasks
 Tasks are `TODO`/`FIXME`/`HACK`/`XXX` comments on your code
 ```
-> java -jar buildhealth-0.1.jar add jacoco /path/to/sources
+> java -jar buildhealth-0.1.jar compute tasks /path/to/sources
 File computed: /home/pescuma/.buildhealth/computed/tasks.csv
 File processed: /home/pescuma/.buildhealth/computed/tasks.csv
 ```
