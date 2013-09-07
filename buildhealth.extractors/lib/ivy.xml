@@ -26,6 +26,7 @@
 		<dependency org="net.sourceforge.saxon" name="saxon" rev="9.1.0.8" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 		<dependency org="commons-io" name="commons-io" rev="2.2" />
+		<dependency org="commons-lang" name="commons-lang" rev="2.6" />
 		<dependency org="org.jsoup" name="jsoup" rev="1.7.2" />
 
 		<!-- Tests only -->

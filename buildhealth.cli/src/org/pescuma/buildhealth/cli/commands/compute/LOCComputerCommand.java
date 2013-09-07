@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.computer.loc.LOCComputer;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
-@Command(name = "loc", description = "Compute lines of code, using cloc (needs perl in path)")
+@Command(name = "loc", description = "Compute lines of code, using cloc")
 public class LOCComputerCommand extends BuildHealthCliCommand {
 	
 	@Arguments(title = "file or folder", description = "File or folder with source files", required = true)
