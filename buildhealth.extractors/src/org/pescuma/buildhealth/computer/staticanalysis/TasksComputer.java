@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +68,7 @@ public class TasksComputer implements BuildDataComputer {
 	
 	@Override
 	public BuildDataExtractor compute(File folder, BuildDataComputerTracker tracker) {
-		File outputFile = new File(folder, "tasks.csv");
+		File outputFile = new File(folder, "tasks-" + new Random().nextInt() + ".csv");
 		
 		FileWriter writer = null;
 		CSVWriter out = null;

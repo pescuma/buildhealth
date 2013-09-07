@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 import java.util.zip.ZipInputStream;
 
 import org.pescuma.buildhealth.computer.BuildDataComputer;
@@ -39,7 +40,7 @@ public class LOCComputer implements BuildDataComputer {
 			
 			cloc = extractCLOCToTmp();
 			fileList = createFileList();
-			out = new File(folder, "cloc.csv");
+			out = new File(folder, "cloc-" + new Random().nextInt() + ".csv");
 			
 			run("perl", toPath(cloc), "--by-file", "--csv", "--list-file=" + toPath(fileList), "--out=" + toPath(out));
 			
