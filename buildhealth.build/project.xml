@@ -33,6 +33,7 @@
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="tools.dir" location="${basedir}/../buildhealth.build" />
 	<property name="tools.lib.dir" location="${tools.dir}/lib" />
+	<property name="javac.target" value="1.6" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
 
@@ -83,7 +84,7 @@
 		<delete dir="${build.javac.dir}" quiet="true" />
 		<mkdir dir="${build.javac.dir}" />
 
-		<javac destdir="${build.javac.dir}" debug="true" includeantruntime="false">
+		<javac destdir="${build.javac.dir}" debug="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
 			<src path="${src.dir}" />
 			<classpath refid="compile.path" />
 		</javac>
@@ -97,7 +98,7 @@
 		<delete dir="${build.tests.dir}" quiet="true" />
 		<mkdir dir="${build.tests.dir}" />
 
-		<javac destdir="${build.tests.dir}" debug="true" includeantruntime="false">
+		<javac destdir="${build.tests.dir}" debug="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
 			<src path="${tests.dir}" />
 			<classpath refid="compile.path" />
 			<classpath>
