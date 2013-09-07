@@ -80,7 +80,18 @@ public class BuildHealthRecorder extends Recorder {
 				break;
 		}
 		
+		build.addAction(new UnitTestResultAction(build, new UnitTestResult(10, 2, 1, 10), listener));
+		
+		for (Report child : report.getChildren()) {
+			if ("Unit tests".equals(child.getName()))
+				addUnitTestReport(build, report, listener);
+		}
+		
 		return true;
+	}
+	
+	private void addUnitTestReport(AbstractBuild<?, ?> build, Report report, BuildListener listener) {
+		
 	}
 	
 	@Extension
@@ -102,8 +113,8 @@ public class BuildHealthRecorder extends Recorder {
 			return new BuildHealthRecorder(folder);
 		}
 		
-		public FormValidation doCheckFolder(@AncestorInPath AbstractProject project, @QueryParameter String value)
-				throws IOException {
+		public FormValidation doCheckFolder(@SuppressWarnings("rawtypes") @AncestorInPath AbstractProject project,
+				@QueryParameter String value) throws IOException {
 			if (value.trim().isEmpty())
 				return FormValidation.error("A home folder is required");
 			
@@ -114,7 +125,7 @@ public class BuildHealthRecorder extends Recorder {
 			return ws.validateRelativeDirectory(value);
 		}
 		
-		public boolean isApplicable(Class<? extends AbstractProject> jobType) {
+		public boolean isApplicable(@SuppressWarnings("rawtypes") Class<? extends AbstractProject> jobType) {
 			return true;
 		}
 	}
