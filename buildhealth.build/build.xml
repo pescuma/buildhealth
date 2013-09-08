@@ -113,7 +113,11 @@
 		</proguard>
 	</target>
 
-	<target name="wrap.cli">
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+
+	<target name="wrap.cli" if="isWindows">
 		<taskdef name="launch4j"
 		         classname="net.sf.launch4j.ant.Launch4jTask"
 		         classpath="${basedir}/lib/launch4j/launch4j.jar:${basedir}/lib/launch4j/lib/xstream.jar" />
