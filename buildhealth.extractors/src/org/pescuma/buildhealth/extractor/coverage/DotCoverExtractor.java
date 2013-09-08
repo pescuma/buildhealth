@@ -36,32 +36,15 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 		
 		addCoverage(data, el, placeType, place);
 		
-		for (Element pkg : el.getChildren("Assembly"))
-			extract(data, pkg, "library", place);
-		
-		for (Element pkg : el.getChildren("Namespace"))
-			extract(data, pkg, "package", place);
-		
-		for (Element cls : el.getChildren("Type"))
-			extract(data, cls, "class", place);
-		
-		for (Element method : el.getChildren("Property"))
-			extract(data, method, "property", place);
-		
-		for (Element method : el.getChildren("Event"))
-			extract(data, method, "event", place);
-		
-		for (Element method : el.getChildren("Member"))
-			extract(data, method, "method", place);
-		
-		for (Element method : el.getChildren("Constructor"))
-			extract(data, method, "method", place);
-		
-		for (Element method : el.getChildren("Method"))
-			extract(data, method, "method", place);
-		
-		for (Element method : el.getChildren("AnonymousMethod"))
-			extract(data, method, "method", place);
+		extractChildren(data, el, place, "Assembly", "library");
+		extractChildren(data, el, place, "Namespace", "package");
+		extractChildren(data, el, place, "Type", "class");
+		extractChildren(data, el, place, "Property", "property");
+		extractChildren(data, el, place, "Event", "event");
+		extractChildren(data, el, place, "Member", "method");
+		extractChildren(data, el, place, "Constructor", "method");
+		extractChildren(data, el, place, "Method", "method");
+		extractChildren(data, el, place, "AnonymousMethod", "method");
 		
 		for (Element method : el.getChildren("OwnCoverage")) {
 			place.add("OwnCoverage");
@@ -71,6 +54,11 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 		
 		if (!isNullOrEmpty(name))
 			place.remove(place.size() - 1);
+	}
+	
+	private void extractChildren(BuildData data, Element el, List<String> place, String xmlTag, String placeType) {
+		for (Element e : el.getChildren(xmlTag))
+			extract(data, e, placeType, place);
 	}
 	
 	private static void addCoverage(BuildData data, Element el, String placeType, List<String> place) {
