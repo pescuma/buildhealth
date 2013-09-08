@@ -22,7 +22,7 @@
 		<antcall target="report" />
 	</target>
 
-	<target name="pack">
+	<target name="onejar.group">
 		<delete dir="${build.tmp.dir}" quiet="true" />
 		<mkdir dir="${build.tmp.dir}" />
 
@@ -62,7 +62,9 @@
 		</jar>
 
 		<delete dir="${build.tmp.dir}" />
+	</target>
 
+	<target name="onejar.all">
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
@@ -71,9 +73,10 @@
 			-dontobfuscate
 			-dontwarn
 				
-			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			-keep class org.pescuma.buildhealth.ant.** {*;}
+
+			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
@@ -86,8 +89,59 @@
 		</proguard>
 	</target>
 
+	<target name="onejar.cli">
+		<proguard>
+			-libraryjars "${java.home}/lib/rt.jar"
+			-injars      "${build.dir}/buildhealth.full-${version}.jar"
+			-outjars     "${build.dir}/buildhealth.cli-${version}.jar"
+			-dontoptimize
+			-dontobfuscate
+			-dontwarn
+				
+			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
+			
+			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
+			-keep class org.fusesource.jansi.internal.** {*;}
+			-keep class com.google.common.base.FinalizableReference {*;}
+			-keep class org.jaxen.saxpath.base.XPathReader {*;}
+			-keep class net.sf.saxon.TransformerFactoryImpl {*;}
+			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
+			-keep class net.sf.saxon.event.MessageEmitter {*;}
+			-keep class com.thalesgroup.dtkit.junit.* {*;}
+			
+			-dontnote **
+		</proguard>
+	</target>
+
+	<target name="wrap.cli">
+		<taskdef name="launch4j"
+		         classname="net.sf.launch4j.ant.Launch4jTask"
+		         classpath="${basedir}/lib/launch4j/launch4j.jar:${basedir}/lib/launch4j/lib/xstream.jar" />
+
+		<launch4j>
+			<config headerType="console"
+			        jarPath="${build.dir}\buildhealth-${version}.jar"
+			        outfile="${build.dir}\buildhealth-${version}.exe">
+				<jre minVersion="1.6.0" />
+				<versionInfo fileVersion="${version}.0.0"
+				             txtFileVersion="${version}"
+				             fileDescription="buildhealth cli"
+				             copyright="Ricardo Pescuma Domenecci"
+				             productVersion="${version}.0.0"
+				             txtProductVersion="${version}"
+				             productName="buildhealth"
+				             internalName="buildhealth"
+				             originalFilename="buildhealth.exe" />
+			</config>
+		</launch4j>
+	</target>
+
+	<target name="pack" depends="onejar.group,onejar.all,onejar.cli,wrap.cli">
+	</target>
+
 	<target name="report">
-		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml" classpath="${build.dir}/buildhealth-${version}.jar" />
+		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml"
+		         classpath="${build.dir}/buildhealth-${version}.jar" />
 
 		<buildhealth home="${reports.dir}/builhealth">
 			<config key="coverage good" value="65" />
