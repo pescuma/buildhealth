@@ -16,6 +16,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import com.google.common.base.Predicate;
 import com.google.common.io.Closer;
 
 public class DiskBuildData implements BuildData {
@@ -128,6 +129,12 @@ public class DiskBuildData implements BuildData {
 	}
 	
 	@Override
+	public Collection<String[]> getDistinct(int... columns) {
+		loadFromDisk();
+		return data.getDistinct(columns);
+	}
+	
+	@Override
 	public Map<String, Value> sumDistinct(int columns) {
 		loadFromDisk();
 		return data.sumDistinct(columns);
@@ -146,9 +153,21 @@ public class DiskBuildData implements BuildData {
 	}
 	
 	@Override
-	public BuildData filter(int column, String name) {
+	public BuildData filter(int column, String value) {
 		loadFromDisk();
-		return data.filter(column, name);
+		return data.filter(column, value);
+	}
+	
+	@Override
+	public BuildData filter(Predicate<Line> predicate) {
+		loadFromDisk();
+		return data.filter(predicate);
+	}
+	
+	@Override
+	public BuildData filter(int column, Predicate<String> predicate) {
+		loadFromDisk();
+		return data.filter(column, predicate);
 	}
 	
 	@Override
@@ -161,6 +180,18 @@ public class DiskBuildData implements BuildData {
 	public int size() {
 		loadFromDisk();
 		return data.size();
+	}
+	
+	@Override
+	public Collection<String> getColumn(int column) {
+		loadFromDisk();
+		return data.getColumn(column);
+	}
+	
+	@Override
+	public Collection<String[]> getColumns(int... columns) {
+		loadFromDisk();
+		return data.getColumns(columns);
 	}
 	
 }

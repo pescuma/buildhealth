@@ -61,7 +61,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
+	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
 		List<Report> result = computeFromLOC(data);
 		
 		if (result.isEmpty())

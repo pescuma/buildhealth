@@ -88,7 +88,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
+	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
 		data = data.filter("Coverage").filter(5, "all");
 		if (data.isEmpty())
 			return Collections.emptyList();

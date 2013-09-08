@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 import org.pescuma.buildhealth.core.BuildData;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
@@ -52,6 +53,37 @@ public class BuildDataTable implements BuildData {
 	}
 	
 	@Override
+	public Collection<String[]> getDistinct(int... columns) {
+		// By default sort by the columns text
+		Set<String[]> result = new TreeSet<String[]>(getLinesComparator());
+		for (Line line : lines) {
+			String[] info = line.getColumns(columns);
+			result.add(info);
+		}
+		return Collections.unmodifiableCollection(result);
+	}
+	
+	@Override
+	public Map<String, Value> sumDistinct(int columns) {
+		// By default sort by the columns text
+		Map<String, Value> result = new TreeMap<String, Value>();
+		
+		for (Line line : lines) {
+			String key = line.getColumn(columns);
+			
+			Value value = result.get(key);
+			if (value == null) {
+				value = new Value();
+				result.put(key, value);
+			}
+			
+			value.value += line.getValue();
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public Map<String[], Value> sumDistinct(int... columns) {
 		// By default sort by the columns text
 		Map<String[], Value> result = new TreeMap<String[], Value>(getLinesComparator());
@@ -83,26 +115,6 @@ public class BuildDataTable implements BuildData {
 				return 0;
 			}
 		};
-	}
-	
-	@Override
-	public Map<String, Value> sumDistinct(int columns) {
-		// By default sort by the columns text
-		Map<String, Value> result = new TreeMap<String, Value>();
-		
-		for (Line line : lines) {
-			String key = line.getColumn(columns);
-			
-			Value value = result.get(key);
-			if (value == null) {
-				value = new Value();
-				result.put(key, value);
-			}
-			
-			value.value += line.getValue();
-		}
-		
-		return result;
 	}
 	
 	@Override
@@ -173,11 +185,33 @@ public class BuildDataTable implements BuildData {
 	}
 	
 	@Override
-	public BuildData filter(final int column, final String name) {
+	public BuildData filter(final int column, final String value) {
 		Collection<LineImpl> filtered = Collections2.filter(lines, new Predicate<LineImpl>() {
 			@Override
 			public boolean apply(LineImpl input) {
-				return input.hasInfo(column, name);
+				return input.hasInfo(column, value);
+			}
+		});
+		return new BuildDataTable(filtered);
+	}
+	
+	@Override
+	public BuildData filter(final Predicate<Line> predicate) {
+		Collection<LineImpl> filtered = Collections2.filter(lines, new Predicate<LineImpl>() {
+			@Override
+			public boolean apply(LineImpl input) {
+				return predicate.apply(input);
+			}
+		});
+		return new BuildDataTable(filtered);
+	}
+	
+	@Override
+	public BuildData filter(final int column, final Predicate<String> predicate) {
+		Collection<LineImpl> filtered = Collections2.filter(lines, new Predicate<LineImpl>() {
+			@Override
+			public boolean apply(LineImpl input) {
+				return predicate.apply(input.getColumn(column));
 			}
 		});
 		return new BuildDataTable(filtered);
@@ -194,6 +228,26 @@ public class BuildDataTable implements BuildData {
 	@Override
 	public int size() {
 		return lines.size();
+	}
+	
+	@Override
+	public Collection<String> getColumn(final int column) {
+		return Collections2.transform(lines, new Function<Line, String>() {
+			@Override
+			public String apply(Line input) {
+				return input.getColumn(column);
+			}
+		});
+	}
+	
+	@Override
+	public Collection<String[]> getColumns(final int... columns) {
+		return Collections2.transform(lines, new Function<Line, String[]>() {
+			@Override
+			public String[] apply(Line input) {
+				return input.getColumns(columns);
+			}
+		});
 	}
 	
 	private static class LineImpl implements Line {
@@ -252,4 +306,5 @@ public class BuildDataTable implements BuildData {
 			return "LineImpl [" + value + " " + Arrays.toString(info) + "]";
 		}
 	}
+	
 }

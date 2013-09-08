@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.core;
 
 import static org.apache.commons.io.FileUtils.*;
+import static org.pescuma.buildhealth.analyser.BuildHealthAnalyser.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
@@ -167,7 +168,7 @@ public class BuildHealth {
 		});
 		
 		for (BuildHealthAnalyser analyser : analysers)
-			reports.addAll(analyser.computeSimpleReport(table, preferences));
+			reports.addAll(analyser.computeReport(table, preferences, SummaryOnly));
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		

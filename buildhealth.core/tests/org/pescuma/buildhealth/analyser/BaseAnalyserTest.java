@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.analyser;
 
 import static org.junit.Assert.*;
+import static org.pescuma.buildhealth.analyser.BuildHealthAnalyser.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -34,14 +35,18 @@ public abstract class BaseAnalyserTest {
 	}
 	
 	protected Report createReport() {
-		List<Report> report = analyser.computeSimpleReport(data, prefs);
+		return createReport(SummaryOnly);
+	}
+	
+	protected Report createReport(int opts) {
+		List<Report> report = analyser.computeReport(data, prefs, opts);
 		assertEquals(1, report.size());
 		return report.get(0);
 	}
 	
 	@Test
 	public void testNoData() {
-		assertEquals(0, analyser.computeSimpleReport(data, prefs).size());
+		assertEquals(0, analyser.computeReport(data, prefs, SummaryOnly).size());
 	}
 	
 }

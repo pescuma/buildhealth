@@ -31,7 +31,7 @@ public class BuildHealthTest {
 	public void testNoDataWithAnalyser() {
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
+			public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "", "", ""));
 			}
 		});
@@ -50,7 +50,7 @@ public class BuildHealthTest {
 		
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
+			public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "Unit tests", "100%", data.filter("Unit test").sum()
 						+ " passed"));
 			}

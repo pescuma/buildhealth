@@ -14,5 +14,9 @@ public interface BuildHealthAnalyser {
 	
 	List<BuildHealthAnalyserPreference> getPreferences();
 	
-	List<Report> computeSimpleReport(BuildData data, Preferences prefs);
+	List<Report> computeReport(BuildData data, Preferences prefs, int opts);
+	
+	static final int FullReport = 0;
+	static final int SummaryOnly = 1;
+	static final int HighlightProblems = 2;
 }

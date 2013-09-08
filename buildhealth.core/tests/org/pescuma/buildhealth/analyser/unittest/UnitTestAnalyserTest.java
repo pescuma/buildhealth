@@ -1,7 +1,10 @@
 package org.pescuma.buildhealth.analyser.unittest;
 
 import static org.junit.Assert.*;
+import static org.pescuma.buildhealth.analyser.BuildHealthAnalyser.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -114,11 +117,135 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 				report);
 	}
 	
+	@Test
+	public void testSummaryHighlightProblems() {
+		createPassed(1);
+		createFailed(1);
+		
+		Report report = createReport(SummaryOnly | HighlightProblems);
+		
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure", //
+						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure", //
+								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFull() {
+		createPassed(1);
+		createFailed(1);
+		
+		Report report = createReport(FullReport);
+		
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+				new Report(Problematic, "java - junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure") //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testHighlightProblems() {
+		createPassed(1);
+		createFailed(1);
+		
+		Report report = createReport(HighlightProblems);
+		
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure", //
+						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure", //
+								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
+						) //
+				), //
+				new Report(Good, "Passed", "PASSED", "1 test, 1 passed", //
+						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed", //
+								new Report(Good, "No suite name", "PASSED", "1 test, 1 passed") //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testHighlightProblemsWithTimeForSuite() {
+		createPassed(1);
+		createFailed(1);
+		createTime(1);
+		
+		Report report = createReport(HighlightProblems);
+		
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (1 s)", //
+						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure (1 s)", //
+								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure (1 s)") //
+						) //
+				), //
+				new Report(Good, "Passed", "PASSED", "1 test, 1 passed (1 s)", //
+						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed (1 s)", //
+								new Report(Good, "No suite name", "PASSED", "1 test, 1 passed (1 s)") //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testHighlightProblemsWithTimeForTests() {
+		data.add(1, "Unit test", "java", "junit", "passed", "Suite", "Test 1");
+		data.add(0.8, "Unit test", "java", "junit", "time", "Suite", "Test 1");
+		data.add(1, "Unit test", "java", "junit", "failed", "Suite", "Test 2");
+		data.add(0.2, "Unit test", "java", "junit", "time", "Suite", "Test 2");
+		
+		Report report = createReport(HighlightProblems);
+		
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (200 ms)", //
+						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure (200 ms)", //
+								new Report(Problematic, "Suite", "FAILED", "1 test, 1 failure (200 ms)", //
+										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+								) //
+						) //
+				), //
+				new Report(Good, "Passed", "PASSED", "1 test, 1 passed (800 ms)", //
+						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed (800 ms)", //
+								new Report(Good, "Suite", "PASSED", "1 test, 1 passed (800 ms)", //
+										new Report(Good, "Test 1", "PASSED", "Executed in 800 ms") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFullWithTimeForTests() {
+		data.add(1, "Unit test", "java", "junit", "passed", "Suite", "Test 1");
+		data.add(0.8, "Unit test", "java", "junit", "time", "Suite", "Test 1");
+		data.add(1, "Unit test", "java", "junit", "failed", "Suite", "Test 2");
+		data.add(0.2, "Unit test", "java", "junit", "time", "Suite", "Test 2");
+		
+		Report report = createReport(FullReport);
+		
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+				new Report(Problematic, "java - junit", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+						new Report(Problematic, "Suite", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+								new Report(Good, "Test 1", "PASSED", "Executed in 800 ms"), //
+								new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+						) //
+				) //
+				), report);
+	}
+	
 	private void assertReport(Report expected, Report actual) {
 		assertEquals(expected.getStatus(), actual.getStatus());
 		assertEquals(expected.getName(), actual.getName());
 		assertEquals(expected.getValue(), actual.getValue());
 		assertEquals(expected.getDescription(), actual.getDescription());
-		assertEquals(0, actual.getChildren().size());
+		
+		List<Report> expectedChildren = expected.getChildren();
+		List<Report> actualChildren = actual.getChildren();
+		assertEquals(expectedChildren.size(), actualChildren.size());
+		for (int i = 0; i < expectedChildren.size(); i++)
+			assertReport(expectedChildren.get(i), actualChildren.get(i));
 	}
 }

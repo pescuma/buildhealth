@@ -72,7 +72,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeSimpleReport(BuildData data, Preferences prefs) {
+	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
 		data = data.filter("Static analysis");
 		if (data.isEmpty())
 			return Collections.emptyList();

@@ -6,6 +6,7 @@ import static org.pescuma.buildhealth.core.BuildStatus.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.pescuma.buildhealth.analyser.BaseAnalyserTest;
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.Report;
 
 public class CoverageAnalyserTest extends BaseAnalyserTest {
@@ -100,14 +101,14 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 	public void testUnknownType() {
 		data.add(10, "Coverage", "java", "emma", "all", "unknown", "all");
 		
-		assertEquals(0, analyser.computeSimpleReport(data, prefs).size());
+		assertEquals(0, analyser.computeReport(data, prefs, BuildHealthAnalyser.SummaryOnly).size());
 	}
 	
 	@Test
 	public void testOnlyCovered() {
 		data.add(10, "Coverage", "java", "emma", "all", "covered", "all");
 		
-		assertEquals(0, analyser.computeSimpleReport(data, prefs).size());
+		assertEquals(0, analyser.computeReport(data, prefs, BuildHealthAnalyser.SummaryOnly).size());
 	}
 	
 	@Test
