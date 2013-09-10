@@ -87,7 +87,7 @@ public class JUnitExtractor extends BaseXMLExtractor {
 		
 		double time = parseTime(testcase.getAttributeValue("time", ""));
 		if (time >= 0)
-			data.add(time, "Unit test", language, "junit", "time", classname, name);
+			data.add(time, "Unit test", language, tool, "time", classname, name);
 		
 		if (extractTestType(classname, name, testcase.getChild("skipped"), "skipped", data))
 			return;

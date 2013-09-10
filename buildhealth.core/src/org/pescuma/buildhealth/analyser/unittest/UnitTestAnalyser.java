@@ -51,6 +51,10 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 	private static final int COLUMN_SUITE = 4;
 	private static final int COLUMN_TEST = 5;
 	
+	private static final String TYPE_ERROR = "error";
+	private static final String TYPE_FAILED = "failed";
+	private static final String TYPE_PASSED = "passed";
+	
 	@Override
 	public String getName() {
 		return "Unit tests";
@@ -77,16 +81,19 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		boolean highlighProblems = (opts & HighlightProblems) != 0;
 		boolean summaryOnly = (opts & SummaryOnly) != 0;
 		
+		if (highlighProblems && !hasProblems(data))
+			highlighProblems = false;
+		
 		if (highlighProblems) {
 			children = new ArrayList<UnitTestReport>();
 			
-			List<UnitTestReport> failed = createLanguageFrameworkReports(data.filter(filterTestsByType(data, "failed",
-					"error")));
+			List<UnitTestReport> failed = createLanguageFrameworkReports(data.filter(filterTestsByType(data,
+					TYPE_FAILED, TYPE_ERROR)));
 			children.add(toUnitTestReport("Failed", new Stats(failed), failed));
 			
 			if (!summaryOnly) {
 				List<UnitTestReport> passed = createLanguageFrameworkReports(data.filter(filterTestsByType(data,
-						"passed")));
+						TYPE_PASSED)));
 				children.add(toUnitTestReport("Passed", new Stats(passed), passed));
 			}
 			
@@ -98,11 +105,15 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		return asList((Report) toUnitTestReport(getName(), new Stats(data), children));
 	}
 	
+	private boolean hasProblems(BuildData data) {
+		return !data.filter(COLUMN_RESULT, TYPE_FAILED).isEmpty() || !data.filter(COLUMN_RESULT, TYPE_ERROR).isEmpty();
+	}
+	
 	private Predicate<Line> filterTestsByType(BuildData data, String... types) {
 		final Set<String> allTypes = new HashSet<String>();
-		allTypes.add("passed");
-		allTypes.add("failed");
-		allTypes.add("error");
+		allTypes.add(TYPE_PASSED);
+		allTypes.add(TYPE_FAILED);
+		allTypes.add(TYPE_ERROR);
 		
 		final Set<String> toFilter = new HashSet<String>(asList(types));
 		
@@ -209,9 +220,9 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		Double dt;
 		
 		Stats(BuildData data) {
-			passed = toInt(sumIfExists(data, COLUMN_RESULT, "passed"));
-			errors = toInt(sumIfExists(data, COLUMN_RESULT, "error"));
-			failures = toInt(sumIfExists(data, COLUMN_RESULT, "failed"));
+			passed = toInt(sumIfExists(data, COLUMN_RESULT, TYPE_PASSED));
+			errors = toInt(sumIfExists(data, COLUMN_RESULT, TYPE_ERROR));
+			failures = toInt(sumIfExists(data, COLUMN_RESULT, TYPE_FAILED));
 			dt = sumIfExists(data, COLUMN_RESULT, "time");
 		}
 		

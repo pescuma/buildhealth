@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.cli.commands;
 
 import io.airlift.command.Arguments;
 import io.airlift.command.Command;
+import io.airlift.command.Option;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
@@ -16,16 +17,15 @@ import org.pescuma.buildhealth.core.ReportFormater.Outputer;
 @Command(name = "report", description = "Report the status of the current build")
 public class ReportCommand extends BuildHealthCliCommand {
 	
+	@Option(name = { "-h", "--highlight-problems" }, title = "Highlight problems", description = "Show problems first, and show then always")
+	public boolean highlightProblems;
+	
 	@Arguments(title = "category", description = "Category to provide a detailed report")
 	public String category;
 	
 	@Override
 	public void execute() {
-		Report report;
-		if (category == null || category.isEmpty())
-			report = buildHealth.generateReport(ReportFlags.SummaryOnly);
-		else
-			report = buildHealth.generateReport(category, ReportFlags.Full);
+		Report report = createReport();
 		
 		final Ansi ansi = Ansi.ansi();
 		
@@ -58,5 +58,14 @@ public class ReportCommand extends BuildHealthCliCommand {
 		
 		AnsiConsole.out.print(ansi.toString());
 		AnsiConsole.out.flush();
+	}
+	
+	private Report createReport() {
+		int hp = highlightProblems ? ReportFlags.HighlightProblems : 0;
+		
+		if (category == null || category.isEmpty())
+			return buildHealth.generateReport(ReportFlags.SummaryOnly | hp);
+		else
+			return buildHealth.generateReport(category, ReportFlags.Full | hp);
 	}
 }
