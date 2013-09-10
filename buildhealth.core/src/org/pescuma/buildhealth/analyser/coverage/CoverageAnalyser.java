@@ -121,7 +121,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			description.append(type.name).append(": ").append(percentage).append("%");
 			
 			if (showDetailsInDescription)
-				description.append(" (").append(format(type.covered)).append("/").append(format1000(type.total, ""))
+				description.append(" (").append(format(type.covered)).append("/").append(format1000(type.total))
 						.append(")");
 			
 			int typeIndex = prefered.indexOf(type.name);
@@ -129,6 +129,13 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				defPercentage = percentage;
 				defType = typeIndex;
 			}
+		}
+		
+		if (!showDetailsInDescription) {
+			long lines = round(data.filter(3, "line").filter(4, "total").sum());
+			if (lines > 0)
+				description.append(", over ").append(format1000(lines)).append(" ")
+						.append(lines > 1 ? "lines" : "line");
 		}
 		
 		if (defPercentage < 0)

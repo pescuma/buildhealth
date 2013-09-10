@@ -41,7 +41,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50%"), report);
+		assertEquals(new Report(Good, "Coverage", "50%", "line: 50%, over 2 lines"), report);
 	}
 	
 	@Test
