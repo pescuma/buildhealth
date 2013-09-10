@@ -1,7 +1,5 @@
 package org.pescuma.buildhealth.analyser.unittest;
 
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
-
 import java.util.List;
 
 import org.pescuma.buildhealth.core.BuildStatus;
@@ -19,13 +17,8 @@ public class UnitTestReport extends Report {
 		this(status, name, passed, errors, failures, time, message, null);
 	}
 	
-	public UnitTestReport(BuildStatus status, String name, int passed, int errors, int failures, Double time,
-			List<UnitTestReport> children) {
-		this(status, name, passed, errors, failures, time, computeDescription(passed, errors, failures, time), children);
-	}
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private UnitTestReport(BuildStatus status, String name, int passed, int errors, int failures, Double time,
+	public UnitTestReport(BuildStatus status, String name, int passed, int errors, int failures, Double time,
 			String message, List<UnitTestReport> children) {
 		super(status, name, status == BuildStatus.Good ? "PASSED" : "FAILED", message, (List) children);
 		
@@ -33,31 +26,6 @@ public class UnitTestReport extends Report {
 		this.errors = errors;
 		this.failures = failures;
 		this.time = time;
-	}
-	
-	private static String computeDescription(int passed, int errors, int failures, Double time) {
-		StringBuilder description = new StringBuilder();
-		append(description, passed + errors + failures, "test", "tests");
-		append(description, passed, "passed");
-		append(description, errors, "error", "errors");
-		append(description, failures, "failure", "failures");
-		
-		if (time != null)
-			description.append(" (").append(format1000(time, "s")).append(")");
-		
-		return description.toString();
-	}
-	
-	private static void append(StringBuilder out, int count, String name) {
-		append(out, count, name, name);
-	}
-	
-	private static void append(StringBuilder out, int count, String name, String namePlural) {
-		if (count <= 0)
-			return;
-		if (out.length() > 0)
-			out.append(", ");
-		out.append(count).append(" ").append(count == 1 ? name : namePlural);
 	}
 	
 	public int getTotal() {

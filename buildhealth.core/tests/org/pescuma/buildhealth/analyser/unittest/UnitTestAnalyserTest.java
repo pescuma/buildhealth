@@ -174,14 +174,14 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(HighlightProblems);
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (1 s)", //
-						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure (1 s)", //
-								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure (1 s)") //
+				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (500 ms)", //
+						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure (500 ms)", //
+								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure (500 ms)") //
 						) //
 				), //
-				new Report(Good, "Passed", "PASSED", "1 test, 1 passed (1 s)", //
-						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed (1 s)", //
-								new Report(Good, "No suite name", "PASSED", "1 test, 1 passed (1 s)") //
+				new Report(Good, "Passed", "PASSED", "1 test, 1 passed (500 ms)", //
+						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed (500 ms)", //
+								new Report(Good, "No suite name", "PASSED", "1 test, 1 passed (500 ms)") //
 						) //
 				) //
 				), report);

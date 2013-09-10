@@ -1,16 +1,12 @@
 package org.pescuma.buildhealth.analyser.unittest;
 
-import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
@@ -20,8 +16,6 @@ import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.prefs.Preferences;
-
-import com.google.common.base.Predicate;
 
 /**
  * Expect the lines to be:
@@ -47,13 +41,18 @@ import com.google.common.base.Predicate;
 @MetaInfServices
 public class UnitTestAnalyser implements BuildHealthAnalyser {
 	
-	private static final int COLUMN_RESULT = 3;
+	private static final int COLUMN_LANGUAGE = 1;
+	private static final int COLUMN_FRAMEWORK = 2;
+	static final int COLUMN_TYPE = 3;
 	private static final int COLUMN_SUITE = 4;
 	private static final int COLUMN_TEST = 5;
+	private static final int COLUMN_MESSAGE = 6;
+	private static final int COLUMN_STACK = 7;
 	
-	private static final String TYPE_ERROR = "error";
-	private static final String TYPE_FAILED = "failed";
-	private static final String TYPE_PASSED = "passed";
+	static final String TYPE_ERROR = "error";
+	static final String TYPE_FAILED = "failed";
+	static final String TYPE_PASSED = "passed";
+	static final String TYPE_TIME = "time";
 	
 	@Override
 	public String getName() {
@@ -76,215 +75,210 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
-		List<UnitTestReport> children = null;
-		
 		boolean highlighProblems = (opts & HighlightProblems) != 0;
 		boolean summaryOnly = (opts & SummaryOnly) != 0;
 		
 		if (highlighProblems && !hasProblems(data))
 			highlighProblems = false;
 		
-		if (highlighProblems) {
-			children = new ArrayList<UnitTestReport>();
+		List<UnitTestReport> children = null;
+		if (highlighProblems || !summaryOnly) {
+			Tree tree = toTree(data);
 			
-			List<UnitTestReport> failed = createLanguageFrameworkReports(data.filter(filterTestsByType(data,
-					TYPE_FAILED, TYPE_ERROR)));
-			children.add(toUnitTestReport("Failed", new Stats(failed), failed));
-			
-			if (!summaryOnly) {
-				List<UnitTestReport> passed = createLanguageFrameworkReports(data.filter(filterTestsByType(data,
-						TYPE_PASSED)));
-				children.add(toUnitTestReport("Passed", new Stats(passed), passed));
+			if (highlighProblems) {
+				Trees trees = splitTree(tree);
+				
+				children = new ArrayList<UnitTestReport>();
+				children.add(toReport("Failed", trees.failed.getStats(), createChildren(trees.failed)));
+				
+				if (!summaryOnly)
+					children.add(toReport("Passed", trees.passed.getStats(), createChildren(trees.passed)));
+				
+			} else {
+				children = createChildren(tree);
 			}
-			
-		} else {
-			if (!summaryOnly)
-				children = createLanguageFrameworkReports(data);
 		}
 		
-		return asList((Report) toUnitTestReport(getName(), new Stats(data), children));
+		return asList((Report) toReport(getName(), new Stats(data), children));
 	}
 	
-	private boolean hasProblems(BuildData data) {
-		return !data.filter(COLUMN_RESULT, TYPE_FAILED).isEmpty() || !data.filter(COLUMN_RESULT, TYPE_ERROR).isEmpty();
-	}
-	
-	private Predicate<Line> filterTestsByType(BuildData data, String... types) {
-		final Set<String> allTypes = new HashSet<String>();
-		allTypes.add(TYPE_PASSED);
-		allTypes.add(TYPE_FAILED);
-		allTypes.add(TYPE_ERROR);
+	private Trees splitTree(Tree tree) {
+		final Trees result = new Trees();
+		result.failed = new Tree();
+		result.passed = new Tree();
 		
-		final Set<String> toFilter = new HashSet<String>(asList(types));
-		
-		final Collection<String[]> tests = data.filter(COLUMN_RESULT, new Predicate<String>() {
+		tree.visit(new TreeVisitor() {
+			private Language lang;
+			private Framework fw;
+			private Suite s;
+			
 			@Override
-			public boolean apply(String input) {
-				return toFilter.contains(input);
+			void visitLanguage(Language language) {
+				lang = language;
 			}
-		}).getDistinct(COLUMN_SUITE, COLUMN_TEST);
-		
-		return new Predicate<Line>() {
+			
 			@Override
-			public boolean apply(Line input) {
-				String result = input.getColumn(COLUMN_RESULT);
-				if (allTypes.contains(result))
-					return toFilter.contains(result);
-				else
-					// We need to keep other types of meta info
-					return tests.contains(new String[] { input.getColumn(COLUMN_SUITE), input.getColumn(COLUMN_TEST) });
+			void visitFramework(Framework framework) {
+				fw = framework;
 			}
-		};
-	}
-	
-	private List<UnitTestReport> createLanguageFrameworkReports(BuildData data) {
-		List<UnitTestReport> children = new ArrayList<UnitTestReport>();
-		for (String[] type : data.getDistinct(1, 2))
-			children.add(createLanguageFrameworkReport(data, type[0], type[1]));
-		return children;
-	}
-	
-	private UnitTestReport createLanguageFrameworkReport(BuildData data, String language, String framework) {
-		data = data.filter("Unit test", language, framework);
-		
-		List<UnitTestReport> children = new ArrayList<UnitTestReport>();
-		for (String suite : data.getDistinct(COLUMN_SUITE))
-			children.add(createTestSuiteReport(data.filter(COLUMN_SUITE, suite), suite));
-		
-		return toUnitTestReport(language + " - " + framework, new Stats(children), children);
-	}
-	
-	private UnitTestReport createTestSuiteReport(BuildData data, String suite) {
-		List<UnitTestReport> children = new ArrayList<UnitTestReport>();
-		boolean hasToComputeStats = false;
-		for (String test : data.getDistinct(COLUMN_TEST)) {
-			UnitTestReport testReport = createTestReport(data.filter(COLUMN_TEST, test), test);
-			if (testReport != null)
-				children.add(testReport);
-			else
-				hasToComputeStats = true;
-		}
-		
-		if (suite.isEmpty())
-			suite = "No suite name";
-		
-		Stats stats = (hasToComputeStats ? new Stats(data) : new Stats(children));
-		return toUnitTestReport(suite, stats, children);
-	}
-	
-	private UnitTestReport createTestReport(BuildData data, String test) {
-		Stats stats = new Stats(data);
-		
-		StringBuilder msg = new StringBuilder();
-		for (String[] line : data.getColumns(6, 7)) {
-			if (msg.length() > 0)
-				msg.append("\n");
 			
-			if (!line[0].isEmpty())
-				msg.append(line[0]).append("\n");
-			
-			if (!line[1].isEmpty())
-				msg.append(line[1]).append("\n");
-		}
-		
-		if (test.isEmpty() && msg.length() < 1)
-			// no name and no message means no useful info
-			return null;
-		
-		if (stats.dt != null) {
-			if (msg.length() > 0)
-				msg.append("\n");
-			msg.append("Executed in ").append(format1000(stats.dt, "s"));
-		}
-		
-		if (test.isEmpty())
-			test = "No test name";
-		
-		return toUnitTestReport(test, stats, msg.toString());
-	}
-	
-	private UnitTestReport toUnitTestReport(String name, Stats stats, List<UnitTestReport> children) {
-		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
-				stats.dt, children);
-	}
-	
-	private UnitTestReport toUnitTestReport(String name, Stats stats, String message) {
-		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
-				stats.dt, message);
-	}
-	
-	private class Stats {
-		Integer passed;
-		Integer errors;
-		Integer failures;
-		Double dt;
-		
-		Stats(BuildData data) {
-			passed = toInt(sumIfExists(data, COLUMN_RESULT, TYPE_PASSED));
-			errors = toInt(sumIfExists(data, COLUMN_RESULT, TYPE_ERROR));
-			failures = toInt(sumIfExists(data, COLUMN_RESULT, TYPE_FAILED));
-			dt = sumIfExists(data, COLUMN_RESULT, "time");
-		}
-		
-		Stats(List<UnitTestReport> children) {
-			int passed = 0;
-			int errors = 0;
-			int failures = 0;
-			double dt = 0;
-			boolean hasDt = false;
-			for (UnitTestReport utr : children) {
-				passed += utr.getPassed();
-				errors += utr.getErrors();
-				failures += utr.getFailures();
-				Double utrDt = utr.getTime();
-				if (utrDt != null) {
-					hasDt = true;
-					dt += utrDt;
+			@Override
+			void visitSuite(Suite suite) {
+				s = suite;
+				
+				Stats old = suite.statsWithoutTests;
+				
+				int total = old.getTotal();
+				if (total < 1)
+					return;
+				
+				int errors = old.getErrors();
+				int failures = old.getFailures();
+				int problematic = errors + failures;
+				Double time = old.getTime();
+				
+				if (problematic > 0 && total != problematic) {
+					// Split
+					
+					Stats passed = result.passed.getLanguage(lang.name).getFramework(fw.name).getSuite(s.name).statsWithoutTests;
+					passed.set(old);
+					passed.types.remove(TYPE_ERROR);
+					passed.types.remove(TYPE_FAILED);
+					
+					Stats failed = result.failed.getLanguage(lang.name).getFramework(fw.name).getSuite(s.name).statsWithoutTests;
+					failed.add(TYPE_ERROR, errors);
+					failed.add(TYPE_FAILED, failures);
+					
+					// Messages will get duplicated
+					failed.message.append(old.message);
+					
+					if (time != null) {
+						double passedTime = time * (total - problematic) / total;
+						passed.types.get(TYPE_TIME).value = passedTime;
+						failed.add(TYPE_TIME, time - passedTime);
+					}
+					
+				} else {
+					Tree other;
+					if (problematic > 0)
+						other = result.failed;
+					else
+						other = result.passed;
+					
+					other.getLanguage(lang.name).getFramework(fw.name).getSuite(s.name).statsWithoutTests.set(old);
 				}
 			}
 			
-			this.passed = passed;
-			this.errors = errors;
-			this.failures = failures;
-			if (hasDt)
-				this.dt = dt;
+			@Override
+			void visitTest(Test test) {
+				Stats old = test.stats;
+				
+				Tree other;
+				if (old.getStatus() == BuildStatus.Good)
+					other = result.passed;
+				else
+					other = result.failed;
+				
+				other.getLanguage(lang.name).getFramework(fw.name).getSuite(s.name).getTest(test.name).stats.set(old);
+			}
+		});
+		
+		return result;
+	}
+	
+	private boolean hasProblems(BuildData data) {
+		return !data.filter(COLUMN_TYPE, TYPE_FAILED).isEmpty() || !data.filter(COLUMN_TYPE, TYPE_ERROR).isEmpty();
+	}
+	
+	private List<UnitTestReport> createChildren(Tree tree) {
+		List<UnitTestReport> result = new ArrayList<UnitTestReport>();
+		
+		for (Language language : tree.getLanguages())
+			for (Framework framework : language.getFrameworks())
+				result.add(toReport(language.name + " - " + framework.name, framework.getStats(),
+						createChildren(framework)));
+		
+		return result;
+	}
+	
+	private List<UnitTestReport> createChildren(Framework framework) {
+		List<UnitTestReport> result = new ArrayList<UnitTestReport>();
+		
+		for (Suite suite : framework.getSuites())
+			result.add(toReport(suite.name, suite.getStats(), createChildren(suite)));
+		
+		return result;
+	}
+	
+	private List<UnitTestReport> createChildren(Suite suite) {
+		if (suite.getTests().isEmpty())
+			return null;
+		
+		List<UnitTestReport> result = new ArrayList<UnitTestReport>();
+		
+		for (Test test : suite.getTests())
+			result.add(toTestReport(test.name, test.getStats()));
+		
+		return result;
+	}
+	
+	private UnitTestReport toReport(String name, Stats stats, List<UnitTestReport> children) {
+		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
+				stats.getTime(), stats.computeDescription(), children);
+	}
+	
+	private UnitTestReport toTestReport(String name, Stats stats) {
+		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
+				stats.getTime(), stats.message.toString());
+	}
+	
+	private Tree toTree(BuildData data) {
+		Tree tree = new Tree();
+		
+		for (Line line : data.getLines()) {
+			Framework framework = tree.getLanguage(line.getColumn(COLUMN_LANGUAGE))//
+					.getFramework(line.getColumn(COLUMN_FRAMEWORK));
+			
+			String suiteName = line.getColumn(COLUMN_SUITE);
+			if (suiteName.isEmpty())
+				suiteName = "No suite name";
+			
+			Suite suite = framework.getSuite(suiteName);
+			
+			String testName = line.getColumn(COLUMN_TEST);
+			
+			Stats stats = (testName.isEmpty() ? suite.statsWithoutTests : suite.getTest(testName).stats);
+			
+			stats.add(line.getColumn(COLUMN_TYPE), line.getValue());
+			
+			String message = line.getColumn(COLUMN_MESSAGE);
+			String stack = line.getColumn(COLUMN_STACK);
+			if (!message.isEmpty() || !stack.isEmpty()) {
+				if (stats.message.length() > 0)
+					stats.message.append("\n");
+				if (!message.isEmpty())
+					stats.message.append(message).append("\n");
+				if (!stack.isEmpty())
+					stats.message.append(stack).append("\n");
+			}
 		}
 		
-		Integer getPassed() {
-			if (passed == null)
-				return 0;
-			return passed;
-		}
-		
-		Integer getErrors() {
-			if (errors == null)
-				return 0;
-			return errors;
-		}
-		
-		Integer getFailures() {
-			if (failures == null)
-				return 0;
-			return failures;
-		}
-		
-		BuildStatus getStatus() {
-			return getErrors() + getFailures() > 0 ? BuildStatus.Problematic : BuildStatus.Good;
-		}
-		
-		private Double sumIfExists(BuildData data, int column, String value) {
-			data = data.filter(column, value);
-			if (data.isEmpty())
-				return null;
-			else
-				return data.sum();
-		}
-		
-		private Integer toInt(Double val) {
-			if (val == null)
-				return null;
-			else
-				return (int) round(val.doubleValue());
-		}
+		tree.visit(new TreeVisitor() {
+			@Override
+			void visitTest(Test test) {
+				Double time = test.stats.getTime();
+				if (time != null) {
+					if (test.stats.message.length() > 0)
+						test.stats.message.append("\n");
+					test.stats.message.append("Executed in ").append(format1000(time, "s"));
+				}
+			}
+		});
+		return tree;
+	}
+	
+	private static class Trees {
+		Tree passed;
+		Tree failed;
 	}
 }
