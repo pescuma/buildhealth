@@ -39,7 +39,7 @@ public class CLOCExtractorTest extends BaseExtractorTest {
 		assertTable(61, 61, table.filter("LOC").filter(2, "files"));
 		assertTable(55, 55, table.filter("LOC", "Java", "files"));
 		assertTable(55, 609, table.filter("LOC", "Java", "blank"));
-		assertTable(55, 89, table.filter("LOC", "Java", "comment"));
+		assertTable(9, 89, table.filter("LOC", "Java", "comment"));
 		assertTable(55, 1795, table.filter("LOC", "Java", "code"));
 	}
 	

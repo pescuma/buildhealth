@@ -52,10 +52,13 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 			String language = line[languageCol];
 			String filename = (filenameCol < 0 ? "" : line[filenameCol]);
 			
-			if (filenameCol >= 0)
+			if (filenameCol >= 0) {
 				data.add(1, "LOC", language, "files", filename);
-			else
-				data.add(parseInt(line[filesCol]), "LOC", language, "files");
+			} else {
+				int files = parseInt(line[filesCol]);
+				if (files > 0)
+					data.add(files, "LOC", language, "files");
+			}
 			
 			int length = min(line.length, headers.length);
 			for (int i = 0; i < length; i++) {
@@ -63,7 +66,8 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 					continue;
 				
 				int val = parseInt(line[i]);
-				data.add(val, "LOC", language, headers[i], filename);
+				if (val > 0)
+					data.add(val, "LOC", language, headers[i], filename);
 			}
 		}
 	}
