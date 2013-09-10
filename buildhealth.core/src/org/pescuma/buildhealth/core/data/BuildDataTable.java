@@ -66,7 +66,7 @@ public class BuildDataTable implements BuildData {
 	@Override
 	public Map<String, Value> sumDistinct(int columns) {
 		// By default sort by the columns text
-		Map<String, Value> result = new TreeMap<String, Value>();
+		Map<String, Value> result = new TreeMap<String, Value>(String.CASE_INSENSITIVE_ORDER);
 		
 		for (Line line : lines) {
 			String key = line.getColumn(columns);
@@ -108,7 +108,7 @@ public class BuildDataTable implements BuildData {
 			@Override
 			public int compare(String[] o1, String[] o2) {
 				for (int i = 0; i < o1.length; i++) {
-					int comp = o1[i].compareTo(o2[i]);
+					int comp = o1[i].compareToIgnoreCase(o2[i]);
 					if (comp != 0)
 						return comp;
 				}

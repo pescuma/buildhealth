@@ -51,6 +51,10 @@ public interface BuildData {
 	
 	public static class Value {
 		public double value;
+		
+		@Override
+		public String toString() {
+			return Double.toString(value);
+		}
 	}
-	
 }

@@ -1,7 +1,6 @@
 package org.pescuma.buildhealth.core;
 
 import static org.apache.commons.io.FileUtils.*;
-import static org.pescuma.buildhealth.analyser.BuildHealthAnalyser.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
@@ -152,6 +151,13 @@ public class BuildHealth {
 	}
 	
 	public Report generateReportSummary() {
+		return generateReport(ReportFlags.SummaryOnly);
+	}
+	
+	/**
+	 * @param opts Flags from BuildHealth.ReportFlags
+	 */
+	public Report generateReport(int opts) {
 		if (table.isEmpty())
 			return null;
 		
@@ -168,11 +174,45 @@ public class BuildHealth {
 		});
 		
 		for (BuildHealthAnalyser analyser : analysers)
-			reports.addAll(analyser.computeReport(table, preferences, SummaryOnly));
+			reports.addAll(analyser.computeReport(table, preferences, opts));
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
 		return new Report(status, "Build", status.name(), reports.isEmpty() ? "no analysers configured" : null, reports);
+	}
+	
+	/**
+	 * @param opts Flags from BuildHealth.ReportFlags
+	 */
+	public Report generateReport(String category, int opts) {
+		if (table.isEmpty())
+			return null;
+		
+		BuildHealthAnalyser analyser = findAnalyser(category);
+		if (analyser == null)
+			return null;
+		
+		List<Report> reports = analyser.computeReport(table, preferences, opts);
+		if (reports.isEmpty())
+			return null;
+		
+		if (reports.size() == 1)
+			return reports.get(0);
+		
+		BuildStatus status = Report.mergeBuildStatus(reports);
+		
+		return new Report(status, analyser.getName(), status.name(), reports);
+	}
+	
+	private BuildHealthAnalyser findAnalyser(String category) {
+		if (analysers.isEmpty())
+			addAnalysersFromServices();
+		
+		for (BuildHealthAnalyser analyser : analysers)
+			if (analyser.getName().equalsIgnoreCase(category))
+				return analyser;
+		
+		return null;
 	}
 	
 	// Helper methods to find home
@@ -239,5 +279,11 @@ public class BuildHealth {
 	
 	private static File getDataFile(File home) {
 		return getCanonicalFile(new File(home, "data.csv"));
+	}
+	
+	public static abstract class ReportFlags {
+		public static final int Full = 0;
+		public static final int SummaryOnly = 1;
+		public static final int HighlightProblems = 2;
 	}
 }

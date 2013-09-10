@@ -25,6 +25,10 @@ public class Report {
 		this(status, name, value, description, asList(children));
 	}
 	
+	public Report(BuildStatus status, String name, String value, List<Report> children) {
+		this(status, name, value, null, children);
+	}
+	
 	public Report(BuildStatus status, String name, String value, String description, List<Report> children) {
 		if (status == null)
 			throw new IllegalArgumentException();

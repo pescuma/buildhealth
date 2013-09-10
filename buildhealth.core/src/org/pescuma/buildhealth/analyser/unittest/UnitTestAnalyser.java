@@ -3,6 +3,7 @@ package org.pescuma.buildhealth.analyser.unittest;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

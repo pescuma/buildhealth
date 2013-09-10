@@ -1,10 +1,7 @@
 package org.pescuma.buildhealth.analyser.unittest;
 
-import static org.junit.Assert.*;
-import static org.pescuma.buildhealth.analyser.BuildHealthAnalyser.*;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
-
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -138,7 +135,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		createPassed(1);
 		createFailed(1);
 		
-		Report report = createReport(FullReport);
+		Report report = createReport(Full);
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
 				new Report(Problematic, "java - junit", "FAILED", "2 tests, 1 passed, 1 failure", //
@@ -224,7 +221,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		data.add(1, "Unit test", "java", "junit", "failed", "Suite", "Test 2");
 		data.add(0.2, "Unit test", "java", "junit", "time", "Suite", "Test 2");
 		
-		Report report = createReport(FullReport);
+		Report report = createReport(Full);
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
 				new Report(Problematic, "java - junit", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
@@ -234,18 +231,5 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 						) //
 				) //
 				), report);
-	}
-	
-	private void assertReport(Report expected, Report actual) {
-		assertEquals(expected.getStatus(), actual.getStatus());
-		assertEquals(expected.getName(), actual.getName());
-		assertEquals(expected.getValue(), actual.getValue());
-		assertEquals(expected.getDescription(), actual.getDescription());
-		
-		List<Report> expectedChildren = expected.getChildren();
-		List<Report> actualChildren = actual.getChildren();
-		assertEquals(expectedChildren.size(), actualChildren.size());
-		for (int i = 0; i < expectedChildren.size(); i++)
-			assertReport(expectedChildren.get(i), actualChildren.get(i));
 	}
 }

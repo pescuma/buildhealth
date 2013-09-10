@@ -47,6 +47,10 @@ public class NumbersFormater {
 		}
 		
 		int decimals = detectDecimals(total);
+		
+		if (decimals == 0 && round(total) == 0)
+			unit = "";
+		
 		if (!unit.isEmpty())
 			decimals = min(decimals, 1);
 		

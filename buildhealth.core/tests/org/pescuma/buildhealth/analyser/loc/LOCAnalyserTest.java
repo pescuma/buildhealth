@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.analyser.loc;
 
-import static org.junit.Assert.*;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
 
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createUnknown(10);
 		createUnknown(20);
 		
-		assertEquals(new Report(Good, "Lines of code", "30"), createReport());
+		assertReport(new Report(Good, "Lines of code", "30"), createReport());
 	}
 	
 	@Test
@@ -48,7 +48,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createUnknown(10);
 		createFiles(20);
 		
-		assertEquals(new Report(Good, "Lines of code", "10", "in 20 files"), createReport());
+		assertReport(new Report(Good, "Lines of code", "10", "in 20 files"), createReport());
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createUnknown(1);
 		createFiles(1);
 		
-		assertEquals(new Report(Good, "Lines of code", "1", "in 1 file"), createReport());
+		assertReport(new Report(Good, "Lines of code", "1", "in 1 file"), createReport());
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createUnknown(12 * 1000);
 		createFiles(1 * 1000 * 1000);
 		
-		assertEquals(new Report(Good, "Lines of code", "12k", "in 1M files"), createReport());
+		assertReport(new Report(Good, "Lines of code", "12k", "in 1M files"), createReport());
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createBlank(12);
 		createComment(1234567);
 		
-		assertEquals(new Report(Good, "Lines of code", "1.2M", "12 blank, 1.2M comment, 123 source"), createReport());
+		assertReport(new Report(Good, "Lines of code", "1.2M", "12 blank, 1.2M comment, 123 source"), createReport());
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createComment(1234567);
 		createFiles(1);
 		
-		assertEquals(new Report(Good, "Lines of code", "1.2M", "12 blank, 1.2M comment, 123 source, in 1 file"),
+		assertReport(new Report(Good, "Lines of code", "1.2M", "12 blank, 1.2M comment, 123 source, in 1 file"),
 				createReport());
 	}
 	
@@ -95,9 +95,27 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		createUnknown(66);
 		createFiles(1);
 		
-		assertEquals(
+		assertReport(
 				new Report(Good, "Lines of code", "207", "12 blank, 6 comment, 123 source, 66 unknown, in 1 file"),
 				createReport());
+	}
+	
+	@Test
+	public void testFull() {
+		createSource(123);
+		createComment(6);
+		createUnknown(66);
+		createFiles(1);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Good, "Lines of code", "195", "6 comment, 123 source, 66 unknown, in 1 file", //
+				new Report(Good, "java", "195", //
+						new Report(Good, "Comment", "6"), //
+						new Report(Good, "Source", "123"), //
+						new Report(Good, "Unknown", "66"), //
+						new Report(Good, "Files", "1")) //
+				), report);
 	}
 	
 }
