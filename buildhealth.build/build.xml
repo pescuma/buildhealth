@@ -124,7 +124,7 @@
 
 		<launch4j>
 			<config headerType="console"
-			        jarPath="${build.dir}\buildhealth-${version}.jar"
+			        jarPath="${build.dir}\buildhealth.cli-${version}.jar"
 			        outfile="${build.dir}\buildhealth-${version}.exe">
 				<jre minVersion="1.6.0" />
 				<versionInfo fileVersion="${version}.0.0"
@@ -141,6 +141,8 @@
 	</target>
 
 	<target name="pack" depends="onejar.group,onejar.all,onejar.cli,wrap.cli">
+		<delete file="${build.dir}/buildhealth.cli-${version}.jar" quiet="true" />
+		<delete file="${build.dir}/buildhealth.full-${version}.jar" quiet="true" />
 	</target>
 
 	<target name="report">
