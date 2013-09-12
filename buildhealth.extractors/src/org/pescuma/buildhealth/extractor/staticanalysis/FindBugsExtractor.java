@@ -36,6 +36,8 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 			String shortMessage = firstNonNull(bug.getChildTextTrim("ShortMessage"), "");
 			String longMessage = firstNonNull(bug.getChildTextTrim("LongMessage"), "");
 			String details = firstNonNull(bugDetails.get(type), "");
+			String rank = toFindBugsRank(bug.getAttributeValue("rank", ""));
+			String confidence = toFindBugsConfidence(bug.getAttributeValue("priority", ""));
 			
 			String category = bug.getAttributeValue("category", "");
 			if (categoryFullName.containsKey(category))
@@ -58,10 +60,64 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 			desc.append(longMessage);
 			for (Element message : findElementsXPath(bug, "*/Message"))
 				desc.append("\n").append(message.getTextTrim());
+			if (!rank.isEmpty())
+				desc.append("\nRank: ").append(rank);
+			if (!confidence.isEmpty())
+				desc.append("\nConfidence: ").append(confidence);
 			desc.append("\n\n").append(details);
 			
-			data.add(1, "Static analysis", "Java", "FindBugs", path, line, category, shortMessage, longMessage + "\n"
-					+ details);
+			data.add(1, "Static analysis", "Java", "FindBugs", path, line, category, shortMessage,
+					toBuildHealthSeverity(rank), desc.toString());
+		}
+	}
+	
+	private String toFindBugsRank(String rank) {
+		try {
+			
+			int r = Integer.parseInt(rank);
+			if (r <= 4)
+				return "scariest";
+			if (r <= 9)
+				return "scary";
+			if (r <= 14)
+				return "troubling";
+			if (r <= 20)
+				return "concern";
+			return rank;
+			
+		} catch (NumberFormatException e) {
+			return rank;
+		}
+	}
+	
+	private String toBuildHealthSeverity(String rank) {
+		if ("scariest".equals(rank))
+			return "High";
+		if ("scary".equals(rank))
+			return "High";
+		if ("troubling".equals(rank))
+			return "Medium";
+		if ("concern".equals(rank))
+			return "Low";
+		return rank;
+	}
+	
+	private String toFindBugsConfidence(String confidence) {
+		try {
+			
+			int p = Integer.parseInt(confidence);
+			if (p >= 1)
+				return "high";
+			if (p == 2)
+				return "normal";
+			if (p == 3)
+				return "low";
+			if (p == 4)
+				return "experimental";
+			return "ignore";
+			
+		} catch (NumberFormatException e) {
+			return confidence;
 		}
 	}
 	

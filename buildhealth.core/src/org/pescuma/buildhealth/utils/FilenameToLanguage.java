@@ -3,11 +3,12 @@ package org.pescuma.buildhealth.utils;
 import static org.apache.commons.io.FilenameUtils.*;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class FilenameToLanguage {
 	
-	// Copied from cloc
+	// Copied from cloc.pl : Copyright (C) 2006-2013 Northrop Grumman Corporation
 	
 	private static final Map<String, String> extensions = new HashMap<String, String>();
 	static {
@@ -32,11 +33,11 @@ public class FilenameToLanguage {
 		extensions.put("aspx", "ASP.Net");
 		extensions.put("master", "ASP.Net");
 		extensions.put("sitemap", "ASP.Net");
+		extensions.put("cshtml", "Razor");
 		extensions.put("awk", "awk");
-		extensions.put("bash", "BourneAgainShell");
-		extensions.put("bas", "VisualBasic");
-		extensions.put("bat", "DOSBatch");
-		extensions.put("BAT", "DOSBatch");
+		extensions.put("bash", "Bourne Again Shell");
+		extensions.put("bas", "Visual Basic");
+		extensions.put("bat", "DOS Batch");
 		extensions.put("build.xml", "Ant");
 		extensions.put("cbl", "COBOL");
 		extensions.put("CBL", "COBOL");
@@ -44,54 +45,50 @@ public class FilenameToLanguage {
 		extensions.put("C", "C++");
 		extensions.put("cc", "C++");
 		extensions.put("ccs", "CCS");
-		extensions.put("cfc", "ColdFusionCFScript");
+		extensions.put("cfc", "ColdFusion CFScript");
 		extensions.put("cfm", "ColdFusion");
 		extensions.put("cl", "Lisp/OpenCL");
 		extensions.put("clj", "Clojure");
 		extensions.put("cljs", "ClojureScript");
-		extensions.put("cls", "VisualBasic");
-		extensions.put("CMakeLists.txt", "CMake");
+		extensions.put("cls", "Visual Basic");
+		extensions.put("cmakelists.txt", "CMake");
+		extensions.put("cmake", "CMake");
 		extensions.put("cob", "COBOL");
-		extensions.put("COB", "COBOL");
 		extensions.put("coffee", "CoffeeScript");
+		extensions.put("component", "Visualforce Component");
 		extensions.put("config", "ASP.Net");
 		extensions.put("cpp", "C++");
 		extensions.put("cs", "C#");
-		extensions.put("csh", "CShell");
+		extensions.put("csh", "C Shell");
 		extensions.put("css", "CSS");
-		extensions.put("ctl", "VisualBasic");
+		extensions.put("ctl", "Visual Basic");
 		extensions.put("cxx", "C++");
 		extensions.put("d", "D");
 		extensions.put("da", "DAL");
 		extensions.put("dart", "Dart");
-		extensions.put("def", "Teamcenterdef");
-		extensions.put("dmap", "NASTRANDMAP");
+		extensions.put("def", "Teamcenter def");
+		extensions.put("dmap", "NASTRAN DMAP");
 		extensions.put("dpr", "Pascal");
-		extensions.put("dsr", "VisualBasic");
+		extensions.put("dsr", "Visual Basic");
 		extensions.put("dtd", "DTD");
 		extensions.put("ec", "C");
 		extensions.put("el", "Lisp");
 		extensions.put("erl", "Erlang");
 		extensions.put("exp", "Expect");
-		extensions.put("f77", "Fortran77");
-		extensions.put("F77", "Fortran77");
-		extensions.put("f90", "Fortran90");
-		extensions.put("F90", "Fortran90");
-		extensions.put("f95", "Fortran95");
-		extensions.put("F95", "Fortran95");
-		extensions.put("f", "Fortran77");
-		extensions.put("F", "Fortran77");
-		extensions.put("fmt", "OracleForms");
+		extensions.put("f77", "Fortran 77");
+		extensions.put("f90", "Fortran 90");
+		extensions.put("f95", "Fortran 95");
+		extensions.put("f", "Fortran 77");
+		extensions.put("fmt", "Oracle Forms");
 		extensions.put("focexec", "Focus");
-		extensions.put("frm", "VisualBasic");
+		extensions.put("frm", "Visual Basic");
 		extensions.put("gnumakefile", "make");
-		extensions.put("Gnumakefile", "make");
 		extensions.put("go", "Go");
 		extensions.put("groovy", "Groovy");
-		extensions.put("h", "C/C++Header");
-		extensions.put("H", "C/C++Header");
-		extensions.put("hh", "C/C++Header");
-		extensions.put("hpp", "C/C++Header");
+		extensions.put("gant", "Groovy");
+		extensions.put("h", "C/C++ Header");
+		extensions.put("hh", "C/C++ Header");
+		extensions.put("hpp", "C/C++ Header");
 		extensions.put("hrl", "Erlang");
 		extensions.put("hs", "Haskell");
 		extensions.put("htm", "HTML");
@@ -103,19 +100,22 @@ public class FilenameToLanguage {
 		extensions.put("ig", "Modula3");
 		extensions.put("il", "SKILL");
 		extensions.put("ils", "SKILL++");
-		extensions.put("inc", "PHP/Pascal");
-		extensions.put("ino", "ArduinoSketch");
-		extensions.put("pde", "ArduinoSketch");
+		extensions.put("inc", "PHP or Pascal");
+		extensions.put("ino", "Arduino Sketch");
+		extensions.put("pde", "Arduino Sketch");
 		extensions.put("itk", "Tcl/Tk");
 		extensions.put("java", "Java");
 		extensions.put("jcl", "JCL");
 		extensions.put("jl", "Lisp");
 		extensions.put("js", "Javascript");
+		extensions.put("jsf", "JavaServer Faces");
+		extensions.put("xhtml", "JavaServer Faces");
 		extensions.put("jsp", "JSP");
 		extensions.put("ksc", "Kermit");
-		extensions.put("ksh", "KornShell");
+		extensions.put("ksh", "Korn Shell");
 		extensions.put("lhs", "Haskell");
 		extensions.put("l", "lex");
+		extensions.put("less", "LESS");
 		extensions.put("lsp", "Lisp");
 		extensions.put("lisp", "Lisp");
 		extensions.put("lua", "Lua");
@@ -123,7 +123,7 @@ public class FilenameToLanguage {
 		extensions.put("m4", "m4");
 		extensions.put("makefile", "make");
 		extensions.put("Makefile", "make");
-		extensions.put("met", "Teamcentermet");
+		extensions.put("met", "Teamcenter met");
 		extensions.put("mg", "Modula3");
 		extensions.put("mli", "ML");
 		extensions.put("ml", "ML");
@@ -131,23 +131,25 @@ public class FilenameToLanguage {
 		extensions.put("mli", "OCaml");
 		extensions.put("mly", "OCaml");
 		extensions.put("mll", "OCaml");
-		extensions.put("m", "MATLAB/ObjectiveC/MUMPS");
-		extensions.put("mm", "ObjectiveC++");
-		extensions.put("wdproj", "MSBuildscripts");
-		extensions.put("csproj", "MSBuildscripts");
+		extensions.put("m", "MATLAB/Objective C/MUMPS");
+		extensions.put("mm", "Objective C++");
+		extensions.put("wdproj", "MSBuild scripts");
+		extensions.put("csproj", "MSBuild scripts");
 		extensions.put("mps", "MUMPS");
-		extensions.put("mth", "Teamcentermth");
-		extensions.put("oscript", "LiveLinkOScript");
+		extensions.put("mth", "Teamcenter mth");
+		extensions.put("oscript", "LiveLink OScript");
 		extensions.put("pad", "Ada");
+		extensions.put("page", "Visualforce Page");
 		extensions.put("pas", "Pascal");
 		extensions.put("pcc", "C++");
 		extensions.put("perl", "Perl");
-		extensions.put("pfo", "Fortran77");
+		extensions.put("pfo", "Fortran 77");
 		extensions.put("pgc", "C");
 		extensions.put("php3", "PHP");
 		extensions.put("php4", "PHP");
 		extensions.put("php5", "PHP");
 		extensions.put("php", "PHP");
+		extensions.put("pig", "Pig Latin");
 		extensions.put("plh", "Perl");
 		extensions.put("pl", "Perl");
 		extensions.put("PL", "Perl");
@@ -163,60 +165,57 @@ public class FilenameToLanguage {
 		extensions.put("qml", "QML");
 		extensions.put("rb", "Ruby");
 		extensions.put("resx", "ASP.Net");
-		extensions.put("rex", "OracleReports");
+		extensions.put("rex", "Oracle Reports");
 		extensions.put("rexx", "Rexx");
-		extensions.put("rhtml", "RubyHTML");
+		extensions.put("rhtml", "Ruby HTML");
 		extensions.put("rs", "Rust");
 		extensions.put("s", "Assembly");
 		extensions.put("S", "Assembly");
 		extensions.put("scala", "Scala");
-		extensions.put("sbl", "SoftbridgeBasic");
-		extensions.put("SBL", "SoftbridgeBasic");
+		extensions.put("sbl", "Softbridge Basic");
+		extensions.put("SBL", "Softbridge Basic");
 		extensions.put("sc", "Lisp");
 		extensions.put("scm", "Lisp");
 		extensions.put("sed", "sed");
-		extensions.put("ses", "PatranCommandLanguage");
-		extensions.put("pcl", "PatranCommandLanguage");
+		extensions.put("ses", "Patran Command Language");
+		extensions.put("pcl", "Patran Command Language");
 		extensions.put("ps1", "PowerShell");
-		extensions.put("sh", "BourneShell");
+		extensions.put("sass", "SASS");
+		extensions.put("scss", "SASS");
+		extensions.put("sh", "Bourne Shell");
 		extensions.put("smarty", "Smarty");
 		extensions.put("sql", "SQL");
-		extensions.put("SQL", "SQL");
-		extensions.put("sproc.sql", "SQLStoredProcedure");
-		extensions.put("spoc.sql", "SQLStoredProcedure");
-		extensions.put("spc.sql", "SQLStoredProcedure");
-		extensions.put("udf.sql", "SQLStoredProcedure");
-		extensions.put("data.sql", "SQLData");
+		extensions.put("sproc.sql", "SQL Stored Procedure");
+		extensions.put("spoc.sql", "SQL Stored Procedure");
+		extensions.put("spc.sql", "SQL Stored Procedure");
+		extensions.put("udf.sql", "SQL Stored Procedure");
+		extensions.put("data.sql", "SQL Data");
+		extensions.put("v", "Verilog-SystemVerilog");
+		extensions.put("sv", "Verilog-SystemVerilog");
+		extensions.put("svh", "Verilog-SystemVerilog");
 		extensions.put("tcl", "Tcl/Tk");
-		extensions.put("tcsh", "CShell");
+		extensions.put("tcsh", "C Shell");
 		extensions.put("tk", "Tcl/Tk");
 		extensions.put("tpl", "Smarty");
+		extensions.put("trigger", "Apex Trigger");
 		extensions.put("vala", "Vala");
+		extensions.put("vapi", "Vala Header");
 		extensions.put("vhd", "VHDL");
-		extensions.put("VHD", "VHDL");
 		extensions.put("vhdl", "VHDL");
-		extensions.put("VHDL", "VHDL");
-		extensions.put("vba", "VisualBasic");
-		extensions.put("VBA", "VisualBasic");
-		extensions.put("vbp", "VisualBasic");
-		extensions.put("vb", "VisualBasic");
-		extensions.put("VB", "VisualBasic");
-		extensions.put("vbw", "VisualBasic");
-		extensions.put("vbs", "VisualBasic");
-		extensions.put("VBS", "VisualBasic");
+		extensions.put("vba", "Visual Basic");
+		extensions.put("vbp", "Visual Basic");
+		extensions.put("vb", "Visual Basic");
+		extensions.put("vbw", "Visual Basic");
+		extensions.put("vbs", "Visual Basic");
 		extensions.put("webinfo", "ASP.Net");
 		extensions.put("xml", "XML");
-		extensions.put("XML", "XML");
 		extensions.put("mxml", "MXML");
-		extensions.put("build", "NAntscripts");
-		extensions.put("vim", "vimscript");
+		extensions.put("build", "NAnt scripts");
+		extensions.put("vim", "vim script");
 		extensions.put("xaml", "XAML");
 		extensions.put("xsd", "XSD");
-		extensions.put("XSD", "XSD");
 		extensions.put("xslt", "XSLT");
-		extensions.put("XSLT", "XSLT");
 		extensions.put("xsl", "XSLT");
-		extensions.put("XSL", "XSLT");
 		extensions.put("y", "yacc");
 		extensions.put("yaml", "YAML");
 		extensions.put("yml", "YAML");
@@ -224,11 +223,9 @@ public class FilenameToLanguage {
 	
 	private static final Map<String, String> filenames = new HashMap<String, String>();
 	static {
-		filenames.put("Makefile", "make");
 		filenames.put("makefile", "make");
 		filenames.put("gnumakefile", "make");
-		filenames.put("Gnumakefile", "make");
-		filenames.put("CMakeLists.txt", "CMake");
+		filenames.put("cmakelists.txt", "CMake");
 		filenames.put("build.xml", "Ant/XML");
 		filenames.put("pom.xml", "Maven/XML");
 	};
@@ -237,15 +234,31 @@ public class FilenameToLanguage {
 		if (filename == null)
 			return "";
 		
-		String result = filenames.get(getName(filename));
+		String result = filenames.get(getName(filename).toLowerCase(Locale.ENGLISH));
 		if (result != null)
 			return result;
 		
-		result = extensions.get(getExtension(filename));
+		result = extensions.get(getDoubleExtension(filename).toLowerCase(Locale.ENGLISH));
+		if (result != null)
+			return result;
+		
+		result = extensions.get(getExtension(filename).toLowerCase(Locale.ENGLISH));
 		if (result != null)
 			return result;
 		
 		return "";
+	}
+	
+	private static String getDoubleExtension(String filename) {
+		int pos = filename.lastIndexOf('.');
+		if (pos < 0)
+			return "";
+		
+		pos = filename.lastIndexOf('.', pos);
+		if (pos < 0)
+			return "";
+		
+		return filename.substring(pos + 1);
 	}
 	
 	public static boolean isKnownFileType(String filename) {

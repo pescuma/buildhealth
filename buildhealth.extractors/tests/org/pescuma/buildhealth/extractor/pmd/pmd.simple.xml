@@ -6,7 +6,7 @@ Fields should be declared at the top of the class, before any method declaration
 </violation>
 </file>
 <file name="org\pescuma\buildhealth\ant\DummyTest.java">
-<violation beginline="11" endline="12" begincolumn="28" endcolumn="9" rule="UncommentedEmptyMethod" ruleset="Design" package="org.pescuma.buildhealth.ant" class="DummyTest" method="test" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.2/rules/java/design.html#UncommentedEmptyMethod" priority="3">
+<violation beginline="11" endline="12" begincolumn="28" endcolumn="9" rule="UncommentedEmptyMethod" ruleset="Design" package="org.pescuma.buildhealth.ant" class="DummyTest" method="test" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.0.2/rules/java/design.html#UncommentedEmptyMethod" priority="1">
 Document empty method
 </violation>
 <violation beginline="10" endline="10" begincolumn="1" endcolumn="2" rule="UncommentedEmptyMethod">

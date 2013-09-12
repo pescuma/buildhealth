@@ -23,7 +23,7 @@ import org.pescuma.buildhealth.prefs.Preferences;
  * Expect the lines to be:
  * 
  * <pre>
- * Static analysis,language,framework,filename,line or beginLine:beginColumn:endLine:endColumn,category,description,details,URL with details
+ * Static analysis,language,framework,filename,line or line:column or beginLine:beginColumn:endLine:endColumn,category,description,severity (Low or Medium or High),details,URL with details
  * </pre>
  * 
  * The number is the number of violations in that place. Empty line means all file.
