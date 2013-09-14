@@ -1,7 +1,7 @@
 <project name="buildhealth.cli" default="all">
 
 	<property name="project" value="buildhealth.cli" />
-	<property name="project.deps" value="buildhealth.core,buildhealth.extractors" />
+	<property name="project.deps" value="buildhealth.core,buildhealth.extractors,buildhealth.notifiers" />
 
 	<import file="../buildhealth.build/ivy.xml" />
 	<import file="../buildhealth.build/project.xml" />

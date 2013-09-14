@@ -2,7 +2,7 @@ package org.pescuma.buildhealth.cli.commands.config;
 
 import static com.google.common.base.Strings.*;
 import static java.lang.Math.*;
-import static org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference.*;
+import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 import io.airlift.command.Command;
 
 import java.util.ArrayList;
@@ -14,8 +14,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
+import org.pescuma.buildhealth.notifiers.BuildHealthNotifier;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 @Command(name = "list", description = "List report preferences")
@@ -34,37 +35,15 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 		Set<String[]> keys = new TreeSet<String[]>(getKeyComparator());
 		keys.addAll(prefs.getKeys());
 		
-		List<BuildHealthAnalyser> analysers = buildHealth.getAnalysers();
-		analysers = sortAnalysers(analysers);
-		
 		StringBuilder out = new StringBuilder();
 		
 		boolean needNewLine = false;
-		for (BuildHealthAnalyser analyser : analysers) {
-			List<BuildHealthAnalyserPreference> ps = analyser.getPreferences();
-			if (ps.isEmpty())
-				continue;
-			
-			boolean hasName = !isNullOrEmpty(analyser.getName());
-			
-			if (needNewLine)
-				out.append("\n");
-			needNewLine = hasName;
-			
-			String prefix = "";
-			if (hasName) {
-				out.append(prefix).append(analyser.getName()).append(":\n");
-				prefix = PREFIX;
-			}
-			
-			for (BuildHealthAnalyserPreference pref : ps) {
-				for (String[] key : findKeys(keys, pref.getKey())) {
-					out.append(prefix);
-					append(out, prefs, key, pref.getDefVal(), pref.getDescription());
-					keys.remove(key);
-				}
-			}
-		}
+		
+		for (BuildHealthAnalyser analyser : getSortedAnalysers())
+			needNewLine = append(out, analyser.getName(), analyser.getPreferences(), needNewLine, keys, prefs);
+		
+		for (BuildHealthNotifier notifier : getSortedNotifiers())
+			needNewLine = append(out, notifier.getName(), notifier.getPreferences(), needNewLine, keys, prefs);
 		
 		if (needNewLine && !keys.isEmpty())
 			out.append("\n");
@@ -76,6 +55,35 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			out.append("No preferences set");
 		
 		System.out.print(out.toString());
+	}
+	
+	private boolean append(StringBuilder out, String name, List<BuildHealthPreference> ps, boolean needNewLine,
+			Set<String[]> keys, Preferences prefs) {
+		
+		if (ps.isEmpty())
+			return needNewLine;
+		
+		boolean hasName = !isNullOrEmpty(name);
+		
+		if (needNewLine)
+			out.append("\n");
+		needNewLine = hasName;
+		
+		String prefix = "";
+		if (hasName) {
+			out.append(prefix).append(name).append(":\n");
+			prefix = PREFIX;
+		}
+		
+		for (BuildHealthPreference pref : ps) {
+			for (String[] key : findKeys(keys, pref.getKey())) {
+				out.append(prefix);
+				append(out, prefs, key, pref.getDefVal(), pref.getDescription());
+				keys.remove(key);
+			}
+		}
+		
+		return needNewLine;
 	}
 	
 	private List<String[]> findKeys(Set<String[]> keys, String[] key) {
@@ -148,6 +156,12 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 		out.append("\n");
 	}
 	
+	private List<BuildHealthAnalyser> getSortedAnalysers() {
+		List<BuildHealthAnalyser> analysers = buildHealth.getAnalysers();
+		analysers = sortAnalysers(analysers);
+		return analysers;
+	}
+	
 	private List<BuildHealthAnalyser> sortAnalysers(List<BuildHealthAnalyser> analysers) {
 		analysers = new ArrayList<BuildHealthAnalyser>(analysers);
 		
@@ -167,6 +181,33 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 		});
 		
 		return analysers;
+	}
+	
+	private List<BuildHealthNotifier> getSortedNotifiers() {
+		List<BuildHealthNotifier> notifiers = buildHealth.getNotifiers();
+		notifiers = sortNotifier(notifiers);
+		return notifiers;
+	}
+	
+	private List<BuildHealthNotifier> sortNotifier(List<BuildHealthNotifier> notifiers) {
+		notifiers = new ArrayList<BuildHealthNotifier>(notifiers);
+		
+		Collections.sort(notifiers, new Comparator<BuildHealthNotifier>() {
+			@Override
+			public int compare(BuildHealthNotifier o1, BuildHealthNotifier o2) {
+				String n1 = nullToEmpty(o1.getName());
+				String n2 = nullToEmpty(o2.getName());
+				if (n1.equals(n2))
+					return 0;
+				if (n1.isEmpty())
+					return 1;
+				if (n2.isEmpty())
+					return -1;
+				return n1.compareToIgnoreCase(n2);
+			}
+		});
+		
+		return notifiers;
 	}
 	
 	private String get(Preferences prefs, String[] key, String defVal) {

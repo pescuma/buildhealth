@@ -10,9 +10,9 @@ import java.util.List;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -53,20 +53,20 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthAnalyserPreference> getPreferences() {
-		List<BuildHealthAnalyserPreference> result = new ArrayList<BuildHealthAnalyserPreference>();
+	public List<BuildHealthPreference> getPreferences() {
+		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
-		result.add(new BuildHealthAnalyserPreference("Minimun runs per second for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>",
 				"performace", "runsPerS", "good"));
-		result.add(new BuildHealthAnalyserPreference("Minimun runs per second for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>",
 				"performace", "runsPerS", "warn"));
 		
-		result.add(new BuildHealthAnalyserPreference("Maximun run time (ms) for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>",
 				"performace", "ms", "good"));
-		result.add(new BuildHealthAnalyserPreference("Maximun run time (ms) for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>",
 				"performace", "ms", "warn"));
 		
-		result.add(new BuildHealthAnalyserPreference("How to show the agregated results (runsPerS or ms)",
+		result.add(new BuildHealthPreference("How to show the agregated results (runsPerS or ms)",
 				"<ms if both available, else what is available>", "performace", "report"));
 		
 		return Collections.unmodifiableList(result);

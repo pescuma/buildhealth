@@ -9,6 +9,7 @@ import io.airlift.command.ParseCommandUnrecognizedException;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
+import org.pescuma.buildhealth.cli.commands.NotifyCommand;
 import org.pescuma.buildhealth.cli.commands.ReportCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
 import org.pescuma.buildhealth.cli.commands.add.CLOCExtractorCommand;
@@ -40,10 +41,12 @@ public class BuildHealthCli {
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		CliBuilder<Runnable> builder = Cli.<Runnable> builder("buildhealth") //
-				.withDescription("check the quality of your builds") //
-				.withDefaultCommand(Help.class) //
-				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class);
+		CliBuilder<Runnable> builder = Cli
+				.<Runnable> builder("buildhealth")
+				.withDescription("check the quality of your builds")
+				.withDefaultCommand(Help.class)
+				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class,
+						NotifyCommand.class);
 		
 		builder.withGroup("add").withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)

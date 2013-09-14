@@ -22,6 +22,8 @@ import org.pescuma.buildhealth.core.listener.BuildHealthListener;
 import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
+import org.pescuma.buildhealth.notifiers.BuildHealthNotifier;
+import org.pescuma.buildhealth.notifiers.BuildHealthNotifierTracker;
 import org.pescuma.buildhealth.prefs.DiskPreferencesStore;
 import org.pescuma.buildhealth.prefs.LowercaseDiskPreferencesStore;
 import org.pescuma.buildhealth.prefs.LowercasePreferencesStore;
@@ -41,6 +43,7 @@ public class BuildHealth {
 	private final PreferencesStore store;
 	private final Preferences preferences;
 	private final List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
+	private final List<BuildHealthNotifier> notifiers = new ArrayList<BuildHealthNotifier>();
 	private final CompositeBuildHealthListener listeners = new CompositeBuildHealthListener();
 	
 	public BuildHealth() {
@@ -101,12 +104,19 @@ public class BuildHealth {
 	public void addAnalysersFromServices() {
 		ServiceLoader<BuildHealthAnalyser> locator = ServiceLoader.load(BuildHealthAnalyser.class, getClass()
 				.getClassLoader());
+		
 		for (BuildHealthAnalyser analyser : locator)
 			addAnalyser(analyser);
 	}
 	
 	public List<BuildHealthAnalyser> getAnalysers() {
+		loadAnalysersIfNeeded();
 		return Collections.unmodifiableList(analysers);
+	}
+	
+	private void loadAnalysersIfNeeded() {
+		if (analysers.isEmpty())
+			addAnalysersFromServices();
 	}
 	
 	public void compute(final BuildDataComputer computer) {
@@ -161,8 +171,7 @@ public class BuildHealth {
 		if (table.isEmpty())
 			return null;
 		
-		if (analysers.isEmpty())
-			addAnalysersFromServices();
+		loadAnalysersIfNeeded();
 		
 		List<Report> reports = new ArrayList<Report>();
 		
@@ -205,8 +214,7 @@ public class BuildHealth {
 	}
 	
 	private BuildHealthAnalyser findAnalyser(String category) {
-		if (analysers.isEmpty())
-			addAnalysersFromServices();
+		loadAnalysersIfNeeded();
 		
 		for (BuildHealthAnalyser analyser : analysers)
 			if (analyser.getName().equalsIgnoreCase(category))
@@ -279,6 +287,47 @@ public class BuildHealth {
 	
 	private static File getDataFile(File home) {
 		return getCanonicalFile(new File(home, "data.csv"));
+	}
+	
+	public void addNotifier(BuildHealthNotifier notifier) {
+		notifiers.add(notifier);
+	}
+	
+	public void addNotifiersFromServices() {
+		ServiceLoader<BuildHealthNotifier> locator = ServiceLoader.load(BuildHealthNotifier.class, getClass()
+				.getClassLoader());
+		for (BuildHealthNotifier notifier : locator)
+			addNotifier(notifier);
+	}
+	
+	public List<BuildHealthNotifier> getNotifiers() {
+		loadNotifiersIfNeeded();
+		
+		return Collections.unmodifiableList(notifiers);
+	}
+	
+	private void loadNotifiersIfNeeded() {
+		if (notifiers.isEmpty())
+			addNotifiersFromServices();
+	}
+	
+	public void sendNotifications(BuildHealthNotifierTracker tracker) {
+		loadNotifiersIfNeeded();
+		
+		if (notifiers.isEmpty())
+			return;
+		
+		Collections.sort(notifiers, new Comparator<BuildHealthNotifier>() {
+			@Override
+			public int compare(BuildHealthNotifier o1, BuildHealthNotifier o2) {
+				return o1.getPriority() - o2.getPriority();
+			}
+		});
+		
+		Report report = generateReport(ReportFlags.SummaryOnly);
+		
+		for (BuildHealthNotifier notifier : notifiers)
+			notifier.sendNotification(report, preferences, tracker);
 	}
 	
 	public static abstract class ReportFlags {

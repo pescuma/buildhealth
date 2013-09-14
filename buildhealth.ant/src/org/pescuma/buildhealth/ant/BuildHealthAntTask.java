@@ -11,12 +11,15 @@ import org.pescuma.buildhealth.core.BuildHealth;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.ReportFormater;
+import org.pescuma.buildhealth.notifiers.BuildHealthNotifierTracker;
 
 public class BuildHealthAntTask extends Task implements TaskContainer {
 	
 	private final List<Task> tasks = new ArrayList<Task>();
 	private File home;
 	private boolean failOnError = true;
+	private boolean report = true;
+	private boolean notify = false;
 	
 	public File getHome() {
 		return home;
@@ -32,6 +35,22 @@ public class BuildHealthAntTask extends Task implements TaskContainer {
 	
 	public void setFailOnError(boolean failOnError) {
 		this.failOnError = failOnError;
+	}
+	
+	public boolean isReport() {
+		return report;
+	}
+	
+	public void setReport(boolean report) {
+		this.report = report;
+	}
+	
+	public boolean isNotify() {
+		return notify;
+	}
+	
+	public void setNotify(boolean notify) {
+		this.notify = notify;
 	}
 	
 	@Override
@@ -50,14 +69,24 @@ public class BuildHealthAntTask extends Task implements TaskContainer {
 		for (Task task : tasks)
 			task.perform();
 		
-		Report report = buildHealth.generateReportSummary();
-		log(new ReportFormater().format(report).trim());
+		Report buildReport = buildHealth.generateReportSummary();
+		
+		if (report)
+			log(new ReportFormater().format(buildReport).trim());
+		
+		if (notify)
+			buildHealth.sendNotifications(new BuildHealthNotifierTracker() {
+				@Override
+				public void reportNotified(String message) {
+					log(message);
+				}
+			});
 		
 		buildHealth.shutdown();
 		buildHealth = null;
 		
-		if (failOnError && (report == null || report.getStatus() != BuildStatus.Good))
-			throw new BuildException(new ReportFormater().createSummaryLine(report), getLocation());
+		if (failOnError && (buildReport == null || buildReport.getStatus() != BuildStatus.Good))
+			throw new BuildException(new ReportFormater().createSummaryLine(buildReport), getLocation());
 	}
 	
 }

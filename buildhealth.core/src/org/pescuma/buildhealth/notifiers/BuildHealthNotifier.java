@@ -1,13 +1,12 @@
-package org.pescuma.buildhealth.analyser;
+package org.pescuma.buildhealth.notifiers;
 
 import java.util.List;
 
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 
-public interface BuildHealthAnalyser {
+public interface BuildHealthNotifier {
 	
 	/**
 	 * @return Can't be null
@@ -24,8 +23,6 @@ public interface BuildHealthAnalyser {
 	 */
 	List<BuildHealthPreference> getPreferences();
 	
-	/**
-	 * @param opts Flags from BuildHealth.ReportFlags
-	 */
-	List<Report> computeReport(BuildData data, Preferences prefs, int opts);
+	void sendNotification(Report report, Preferences prefs, BuildHealthNotifierTracker tracker);
+	
 }

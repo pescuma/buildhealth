@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
@@ -45,7 +45,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthAnalyserPreference> getPreferences() {
+	public List<BuildHealthPreference> getPreferences() {
 		return Collections.emptyList();
 	}
 	

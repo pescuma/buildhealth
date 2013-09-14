@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
@@ -20,7 +21,7 @@ public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthAnalyserPreference> getPreferences() {
+	public List<BuildHealthPreference> getPreferences() {
 		return Collections.emptyList();
 	}
 	

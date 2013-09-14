@@ -7,6 +7,13 @@ public class ReportFormater {
 	private static final String NO_DATA = "No data to generate report";
 	private static final String PREFIX = "    ";
 	
+	private boolean showDescriptions = true;
+	
+	public ReportFormater hideDescriptions() {
+		showDescriptions = false;
+		return this;
+	}
+	
 	public String createSummaryLine(Report report) {
 		StringOutputer out = new StringOutputer();
 		createSummaryLine(report, out);
@@ -28,7 +35,7 @@ public class ReportFormater {
 			out.append(report.getName()).append(": ").append(report.getValue(), report.getStatus());
 		
 		String description = report.getDescription();
-		if (!description.isEmpty())
+		if (showDescriptions && !description.isEmpty())
 			out.append(" [").append(description).append("]");
 	}
 	
@@ -61,7 +68,7 @@ public class ReportFormater {
 		}
 	}
 	
-	private String createTitle(BuildStatus status) {
+	public static String createTitle(BuildStatus status) {
 		switch (status) {
 			case Good:
 				return "GOOD";

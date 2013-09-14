@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/auto/compile/hamcrest-core-1.1-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/junit-4.10-jar.jar" sourcepath="lib/auto/compile/junit-4.10-source.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.extractors"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.notifiers"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

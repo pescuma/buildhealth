@@ -14,11 +14,11 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.prefs.Preferences;
 
@@ -67,7 +67,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthAnalyserPreference> getPreferences() {
+	public List<BuildHealthPreference> getPreferences() {
 		return Collections.emptyList();
 	}
 	

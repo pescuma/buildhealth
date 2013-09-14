@@ -1,6 +1,6 @@
-package org.pescuma.buildhealth.analyser;
+package org.pescuma.buildhealth.core.prefs;
 
-public class BuildHealthAnalyserPreference {
+public class BuildHealthPreference {
 	
 	public static final String ANY_VALUE_KEY_PREFIX = "*|";
 	
@@ -8,7 +8,7 @@ public class BuildHealthAnalyserPreference {
 	private final String[] key;
 	private final String defVal;
 	
-	public BuildHealthAnalyserPreference(String description, String defVal, String... key) {
+	public BuildHealthPreference(String description, String defVal, String... key) {
 		this.description = description;
 		this.key = key;
 		this.defVal = defVal;

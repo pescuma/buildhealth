@@ -75,6 +75,13 @@ public class Preferences {
 		return Double.parseDouble(result);
 	}
 	
+	public boolean get(String key, boolean defVal) {
+		String result = store.get(subkey(key));
+		if (result == null)
+			return defVal;
+		return Boolean.parseBoolean(result);
+	}
+	
 	public void set(String key, double value) {
 		store.put(Double.toString(value), subkey(key));
 	}

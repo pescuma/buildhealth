@@ -3,9 +3,9 @@ package org.pescuma.buildhealth.analyser.coverage;
 import static com.google.common.base.Objects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
-import static org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference.*;
 import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,10 +16,10 @@ import java.util.Map;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -67,20 +67,20 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthAnalyserPreference> getPreferences() {
-		List<BuildHealthAnalyserPreference> result = new ArrayList<BuildHealthAnalyserPreference>();
+	public List<BuildHealthPreference> getPreferences() {
+		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
-		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
+		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
 				"good"));
-		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
+		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
 				"warn"));
 		
-		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
+		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
 				ANY_VALUE_KEY_PREFIX + "<type>", "good"));
-		result.add(new BuildHealthAnalyserPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
+		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
 				ANY_VALUE_KEY_PREFIX + "<type>", "warn"));
 		
-		result.add(new BuildHealthAnalyserPreference(
+		result.add(new BuildHealthPreference(
 				"Which coverage type will represent the global coverage (can have more than one, separated by ',', with the most important first)",
 				DEFAULT_MAINTYPE, "coverage", "maintype"));
 		

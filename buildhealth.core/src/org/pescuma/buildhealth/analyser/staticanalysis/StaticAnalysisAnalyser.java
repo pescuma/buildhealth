@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.analyser.staticanalysis;
 
 import static java.util.Arrays.*;
-import static org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,9 +12,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.BuildHealthAnalyserPreference;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -50,22 +50,22 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthAnalyserPreference> getPreferences() {
-		List<BuildHealthAnalyserPreference> result = new ArrayList<BuildHealthAnalyserPreference>();
+	public List<BuildHealthPreference> getPreferences() {
+		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
-		result.add(new BuildHealthAnalyserPreference("Maximun munber of violations for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun munber of violations for a Good build", "<no limit>",
 				"staticanalysis", "good"));
-		result.add(new BuildHealthAnalyserPreference("Maximun munber of violations for a So So build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun munber of violations for a So So build", "<no limit>",
 				"staticanalysis", "warn"));
 		
-		result.add(new BuildHealthAnalyserPreference("Maximun munber of violations for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun munber of violations for a Good build", "<no limit>",
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", "good"));
-		result.add(new BuildHealthAnalyserPreference("Maximun munber of violations for a So So build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun munber of violations for a So So build", "<no limit>",
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", "warn"));
 		
-		result.add(new BuildHealthAnalyserPreference("Maximun munber of violations for a Good build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun munber of violations for a Good build", "<no limit>",
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", "good"));
-		result.add(new BuildHealthAnalyserPreference("Maximun munber of violations for a So So build", "<no limit>",
+		result.add(new BuildHealthPreference("Maximun munber of violations for a So So build", "<no limit>",
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", "warn"));
 		
 		return Collections.unmodifiableList(result);

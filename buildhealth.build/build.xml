@@ -1,6 +1,7 @@
 <project name="buildhealth.build" default="all">
 
-	<property name="projs" value="buildhealth.core,buildhealth.extractors,buildhealth.cli,buildhealth.ant" />
+	<property name="projs"
+	          value="buildhealth.core,buildhealth.extractors,buildhealth.notifiers,buildhealth.cli,buildhealth.ant" />
 	<property name="version" value="0.1" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
@@ -77,6 +78,7 @@
 			-keep class org.pescuma.buildhealth.ant.** {*;}
 
 			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
+			-keep class * implements org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
@@ -101,6 +103,7 @@
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			
 			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
+			-keep class * implements org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
@@ -149,7 +152,7 @@
 		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml"
 		         classpath="${build.dir}/buildhealth-${version}.jar" />
 
-		<buildhealth home="${reports.dir}/builhealth">
+		<buildhealth home="${reports.dir}/builhealth" report="true" notify="true">
 			<config key="coverage good" value="65" />
 			<compute-loc>
 				<fileset dir="${basedir}/..">
