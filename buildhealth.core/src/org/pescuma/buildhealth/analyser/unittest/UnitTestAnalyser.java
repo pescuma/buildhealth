@@ -194,9 +194,16 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		List<UnitTestReport> result = new ArrayList<UnitTestReport>();
 		
 		for (Language language : tree.getLanguages())
-			for (Framework framework : language.getFrameworks())
-				result.add(toReport(language.name + " - " + framework.name, framework.getStats(),
-						createChildren(framework)));
+			result.add(toReport(language.name, language.getStats(), createChildren(language)));
+		
+		return result;
+	}
+	
+	private List<UnitTestReport> createChildren(Language language) {
+		List<UnitTestReport> result = new ArrayList<UnitTestReport>();
+		
+		for (Framework framework : language.getFrameworks())
+			result.add(toReport(framework.name, framework.getStats(), createChildren(framework)));
 		
 		return result;
 	}

@@ -1,6 +1,5 @@
 package org.pescuma.buildhealth.analyser.performance;
 
-import static org.junit.Assert.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
 
@@ -34,7 +33,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "2 ms"), report);
+		assertReport(new Report(Good, "Performance", "2 ms"), report);
 	}
 	
 	@Test
@@ -44,7 +43,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "10.1 s"), report);
+		assertReport(new Report(Good, "Performance", "10.1 s"), report);
 	}
 	
 	@Test
@@ -54,7 +53,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "11 runs per second"), report);
+		assertReport(new Report(Good, "Performance", "11 runs per second"), report);
 	}
 	
 	@Test
@@ -65,7 +64,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "130 ms"), report);
+		assertReport(new Report(Good, "Performance", "130 ms"), report);
 	}
 	
 	@Test
@@ -76,7 +75,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "200 ms"), report);
+		assertReport(new Report(Good, "Performance", "200 ms"), report);
 	}
 	
 	@Test
@@ -88,7 +87,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Performance", "200 ms"), report);
+		assertReport(new Report(SoSo, "Performance", "200 ms"), report);
 	}
 	
 	@Test
@@ -99,7 +98,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Performance", "200 ms"), report);
+		assertReport(new Report(Problematic, "Performance", "200 ms"), report);
 	}
 	
 	@Test
@@ -110,7 +109,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "200 ms"), report);
+		assertReport(new Report(Good, "Performance", "200 ms"), report);
 	}
 	
 	@Test
@@ -122,7 +121,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Performance", "200 ms"), report);
+		assertReport(new Report(SoSo, "Performance", "200 ms"), report);
 	}
 	
 	@Test
@@ -133,7 +132,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Performance", "200 ms"), report);
+		assertReport(new Report(Problematic, "Performance", "200 ms"), report);
 	}
 	
 	@Test
@@ -143,7 +142,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "100 ms"), report);
+		assertReport(new Report(Good, "Performance", "100 ms"), report);
 	}
 	
 	@Test
@@ -153,7 +152,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Performance", "10 runs per second"), report);
+		assertReport(new Report(Good, "Performance", "10 runs per second"), report);
 	}
 	
 	@Test
@@ -162,7 +161,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertEquals(new Report(Good, "Performance", "10 ms", //
+		assertReport(new Report(Good, "Performance", "10 ms", //
 				new Report(Good, "Java", "10 ms", //
 						new Report(Good, "Japex", "10 ms", //
 								new Report(Good, "A", "10 ms", //
@@ -181,7 +180,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertEquals(new Report(Good, "Performance", "130 ms", //
+		assertReport(new Report(Good, "Performance", "130 ms", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "A", "30 ms", //
@@ -206,7 +205,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertEquals(new Report(SoSo, "Performance", "130 ms", //
+		assertReport(new Report(SoSo, "Performance", "130 ms", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "A", "30 ms", //
@@ -232,7 +231,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertEquals(new Report(Problematic, "Performance", "130 ms", //
+		assertReport(new Report(Problematic, "Performance", "130 ms", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "A", "30 ms", //
@@ -258,7 +257,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertEquals(new Report(Problematic, "Performance", "130 ms", //
+		assertReport(new Report(Problematic, "Performance", "130 ms", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "A", "30 ms", //
@@ -284,7 +283,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full | HighlightProblems);
 		
-		assertEquals(new Report(Problematic, "Performance", "130 ms", //
+		assertReport(new Report(Problematic, "Performance", "130 ms", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "X", "10 runs per second", //
@@ -309,7 +308,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(SummaryOnly | HighlightProblems);
 		
-		assertEquals(new Report(SoSo, "Performance", "130 ms", //
+		assertReport(new Report(SoSo, "Performance", "130 ms", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "A", "30 ms", //

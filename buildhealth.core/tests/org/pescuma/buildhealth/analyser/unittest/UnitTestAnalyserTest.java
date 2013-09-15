@@ -123,8 +123,10 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
 				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure", //
-						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure", //
-								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
+						new Report(Problematic, "java", "FAILED", "1 test, 1 failure", //
+								new Report(Problematic, "junit", "FAILED", "1 test, 1 failure", //
+										new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
+								) //
 						) //
 				) //
 				), report);
@@ -138,8 +140,10 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full);
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
-				new Report(Problematic, "java - junit", "FAILED", "2 tests, 1 passed, 1 failure", //
-						new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure") //
+				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+								new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure") //
+						) //
 				) //
 				), report);
 	}
@@ -153,13 +157,17 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
 				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure", //
-						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure", //
-								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
+						new Report(Problematic, "java", "FAILED", "1 test, 1 failure", //
+								new Report(Problematic, "junit", "FAILED", "1 test, 1 failure", //
+										new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
+								) //
 						) //
 				), //
 				new Report(Good, "Passed", "PASSED", "1 test, 1 passed", //
-						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed", //
-								new Report(Good, "No suite name", "PASSED", "1 test, 1 passed") //
+						new Report(Good, "java", "PASSED", "1 test, 1 passed", //
+								new Report(Good, "junit", "PASSED", "1 test, 1 passed", //
+										new Report(Good, "No suite name", "PASSED", "1 test, 1 passed") //
+								) //
 						) //
 				) //
 				), report);
@@ -173,17 +181,24 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(HighlightProblems);
 		
-		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (500 ms)", //
-						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure (500 ms)", //
-								new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure (500 ms)") //
+		assertReport(
+				new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+						new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (500 ms)", //
+								new Report(Problematic, "java", "FAILED", "1 test, 1 failure (500 ms)", //
+										new Report(Problematic, "junit", "FAILED", "1 test, 1 failure (500 ms)", //
+												new Report(Problematic, "No suite name", "FAILED",
+														"1 test, 1 failure (500 ms)") //
+										) //
+								) //
+						), //
+						new Report(Good, "Passed", "PASSED", "1 test, 1 passed (500 ms)", //
+								new Report(Good, "java", "PASSED", "1 test, 1 passed (500 ms)", //
+										new Report(Good, "junit", "PASSED", "1 test, 1 passed (500 ms)", //
+												new Report(Good, "No suite name", "PASSED", //
+														"1 test, 1 passed (500 ms)") //
+										) //
+								) //
 						) //
-				), //
-				new Report(Good, "Passed", "PASSED", "1 test, 1 passed (500 ms)", //
-						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed (500 ms)", //
-								new Report(Good, "No suite name", "PASSED", "1 test, 1 passed (500 ms)") //
-						) //
-				) //
 				), report);
 	}
 	
@@ -198,16 +213,20 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
 				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure (200 ms)", //
-						new Report(Problematic, "java - junit", "FAILED", "1 test, 1 failure (200 ms)", //
-								new Report(Problematic, "Suite", "FAILED", "1 test, 1 failure (200 ms)", //
-										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+						new Report(Problematic, "java", "FAILED", "1 test, 1 failure (200 ms)", //
+								new Report(Problematic, "junit", "FAILED", "1 test, 1 failure (200 ms)", //
+										new Report(Problematic, "Suite", "FAILED", "1 test, 1 failure (200 ms)", //
+												new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+										) //
 								) //
 						) //
 				), //
 				new Report(Good, "Passed", "PASSED", "1 test, 1 passed (800 ms)", //
-						new Report(Good, "java - junit", "PASSED", "1 test, 1 passed (800 ms)", //
-								new Report(Good, "Suite", "PASSED", "1 test, 1 passed (800 ms)", //
-										new Report(Good, "Test 1", "PASSED", "Executed in 800 ms") //
+						new Report(Good, "java", "PASSED", "1 test, 1 passed (800 ms)", //
+								new Report(Good, "junit", "PASSED", "1 test, 1 passed (800 ms)", //
+										new Report(Good, "Suite", "PASSED", "1 test, 1 passed (800 ms)", //
+												new Report(Good, "Test 1", "PASSED", "Executed in 800 ms") //
+										) //
 								) //
 						) //
 				) //
@@ -224,10 +243,12 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full);
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-				new Report(Problematic, "java - junit", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-						new Report(Problematic, "Suite", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-								new Report(Good, "Test 1", "PASSED", "Executed in 800 ms"), //
-								new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+								new Report(Problematic, "Suite", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+										new Report(Good, "Test 1", "PASSED", "Executed in 800 ms"), //
+										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+								) //
 						) //
 				) //
 				), report);
