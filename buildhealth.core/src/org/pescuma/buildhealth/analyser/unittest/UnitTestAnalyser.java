@@ -12,9 +12,9 @@ import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
-import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
@@ -41,18 +41,18 @@ import org.pescuma.buildhealth.prefs.Preferences;
 @MetaInfServices
 public class UnitTestAnalyser implements BuildHealthAnalyser {
 	
-	private static final int COLUMN_LANGUAGE = 1;
-	private static final int COLUMN_FRAMEWORK = 2;
-	static final int COLUMN_TYPE = 3;
-	private static final int COLUMN_SUITE = 4;
-	private static final int COLUMN_TEST = 5;
-	private static final int COLUMN_MESSAGE = 6;
-	private static final int COLUMN_STACK = 7;
+	public static final int COLUMN_LANGUAGE = 1;
+	public static final int COLUMN_FRAMEWORK = 2;
+	public static final int COLUMN_TYPE = 3;
+	public static final int COLUMN_SUITE = 4;
+	public static final int COLUMN_TEST = 5;
+	public static final int COLUMN_MESSAGE = 6;
+	public static final int COLUMN_STACK = 7;
 	
-	static final String TYPE_ERROR = "error";
-	static final String TYPE_FAILED = "failed";
-	static final String TYPE_PASSED = "passed";
-	static final String TYPE_TIME = "time";
+	public static final String TYPE_ERROR = "error";
+	public static final String TYPE_FAILED = "failed";
+	public static final String TYPE_PASSED = "passed";
+	public static final String TYPE_TIME = "time";
 	
 	@Override
 	public String getName() {

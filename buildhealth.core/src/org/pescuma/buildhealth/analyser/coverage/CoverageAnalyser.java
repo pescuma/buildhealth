@@ -113,7 +113,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			
 			int percentage = (int) round(100 * type.covered / type.total);
 			
-			status = status.mergeWith(computeStatus(prefs.child(type.name), percentage, true));
+			status = status.mergeWith(computeStatusFromThreshold(prefs.child(type.name), percentage, true));
 			
 			if (description.length() > 0)
 				description.append(", ");
@@ -141,7 +141,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		if (defPercentage < 0)
 			return Collections.emptyList();
 		
-		status = status.mergeWith(computeStatus(prefs, defPercentage, true));
+		status = status.mergeWith(computeStatusFromThreshold(prefs, defPercentage, true));
 		
 		return asList(new Report(status, getName(), defPercentage + "%", description.toString()));
 	}
