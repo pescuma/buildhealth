@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.analyser.performance;
+package org.pescuma.buildhealth.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,6 +37,21 @@ public class SimpleTree<T> {
 	
 	public void visit(Visitor<T> visitor) {
 		root.visit(visitor);
+	}
+	
+	public Node getNode(String... names) {
+		return root.getChild(names);
+	}
+	
+	public boolean hasNode(String... names) {
+		Node node = root;
+		for (String name : names) {
+			if (!node.hasChild(name))
+				return false;
+			
+			node = node.getChild(name);
+		}
+		return true;
 	}
 	
 	public class Node {
@@ -84,6 +99,17 @@ public class SimpleTree<T> {
 			return children.values().iterator();
 		}
 		
+		public boolean hasChild(String name) {
+			return children.containsKey(name);
+		}
+		
+		public Node getChild(String... names) {
+			Node result = this;
+			for (String name : names)
+				result = result.getChild(name);
+			return result;
+		}
+		
 		public Node getChild(String name) {
 			if (name == null)
 				throw new IllegalArgumentException();
@@ -121,4 +147,5 @@ public class SimpleTree<T> {
 		public void posVisitNode(SimpleTree<T>.Node node) {
 		}
 	}
+	
 }
