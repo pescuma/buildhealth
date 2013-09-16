@@ -135,7 +135,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 				node = node.getChild(testName);
 			
 			Stats stats = node.getData();
-			
+			stats.isFromData = true;
 			stats.isTest = !testName.isEmpty();
 			
 			stats.add(line.getColumn(COLUMN_TYPE), line.getValue());
@@ -189,7 +189,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 			public void preVisitNode(SimpleTree<Stats>.Node node) {
 				Stats stats = node.getData();
 				
-				if (node.isRoot() || !node.getChildren().isEmpty())
+				if (!stats.isFromData)
 					return;
 				
 				int total = stats.getTotal();
@@ -241,10 +241,13 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 			public void posVisitNode(SimpleTree<Stats>.Node node) {
 				stack.pop();
 				
-				Stats stats = node.getData();
+				if (stack.isEmpty())
+					return;
 				
-				if (!stack.isEmpty())
-					stack.peek().add(stats);
+				Stats stats = node.getData();
+				Stats parent = stack.peek();
+				if (!parent.isFromData)
+					parent.add(stats);
 			}
 		});
 	}
@@ -266,6 +269,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		final String[] name;
 		final Map<String, Value> types = new HashMap<String, Value>();
 		final StringBuilder message = new StringBuilder();
+		boolean isFromData;
 		boolean isTest;
 		
 		Stats(String[] name) {
@@ -372,6 +376,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		}
 		
 		void set(Stats other) {
+			isFromData = other.isFromData;
 			isTest = other.isTest;
 			
 			types.clear();
