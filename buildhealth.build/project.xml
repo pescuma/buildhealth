@@ -66,7 +66,9 @@
 		<path refid="libs.path" />
 	</path>
 
-	<target name="all" depends="init, clean, deps, compile, test, pmd, cpd, findbugs, tattletale, pack, clean-tmp" description="Compile, test and pack">
+	<target name="all"
+	        depends="init, clean, deps, compile, test, pmd, cpd, findbugs, pack, clean-tmp, tattletale"
+	        description="Compile, test and pack">
 	</target>
 
 	<target name="init">
@@ -85,7 +87,11 @@
 		<delete dir="${build.javac.dir}" quiet="true" />
 		<mkdir dir="${build.javac.dir}" />
 
-		<javac destdir="${build.javac.dir}" debug="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
+		<javac destdir="${build.javac.dir}"
+		       debug="true"
+		       includeantruntime="false"
+		       target="${javac.target}"
+		       source="${javac.target}">
 			<src path="${src.dir}" />
 			<classpath refid="compile.path" />
 		</javac>
@@ -99,7 +105,11 @@
 		<delete dir="${build.tests.dir}" quiet="true" />
 		<mkdir dir="${build.tests.dir}" />
 
-		<javac destdir="${build.tests.dir}" debug="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
+		<javac destdir="${build.tests.dir}"
+		       debug="true"
+		       includeantruntime="false"
+		       target="${javac.target}"
+		       source="${javac.target}">
 			<src path="${tests.dir}" />
 			<classpath refid="compile.path" />
 			<classpath>
@@ -119,7 +129,9 @@
 		<delete dir="${reports.coverage.dir}" quiet="true" />
 		<mkdir dir="${reports.coverage.dir}" />
 
-		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml" classpath="${tools.lib.dir}/jacocoant.jar" />
+		<taskdef uri="antlib:org.jacoco.ant"
+		         resource="org/jacoco/ant/antlib.xml"
+		         classpath="${tools.lib.dir}/jacocoant.jar" />
 
 		<jacoco:coverage destfile="${reports.coverage.dir}/jacoco.exec">
 			<junit printsummary="yes" fork="yes" forkmode="once">
@@ -209,7 +221,9 @@
 	</target>
 
 	<target name="findbugs" depends="init" description="Run FindBugs on sources">
-		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${tools.lib.dir}/findbugs/lib/findbugs-ant.jar" />
+		<taskdef name="findbugs"
+		         classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+		         classpath="${tools.lib.dir}/findbugs/lib/findbugs-ant.jar" />
 		<property name="findbugs.home" value="${tools.lib.dir}/findbugs" />
 
 		<delete dir="${reports.findbugs.dir}" quiet="true" />
@@ -248,6 +262,12 @@
 			</fileset>
 		</jar>
 		<jar jarfile="${dist.dir}/${project}-${version}-source.jar" basedir="${src.dir}" />
+		<if>
+			<istrue value="${tests.present}" />
+			<then>
+				<jar jarfile="${dist.dir}/${project}-${version}-tests.jar" basedir="${build.tests.dir}" />
+			</then>
+		</if>
 	</target>
 
 	<!-- Ivy -->
@@ -270,14 +290,20 @@
 				<equals arg1="${project}" arg2="buildhealth.extractors" />
 				<then>
 					<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime">
-						<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" scope="compile" />
+						<dependency group="org.pecuma"
+						            artifact="buildhealth.core"
+						            version="${version}"
+						            scope="compile" />
 					</ivy:makepom>
 				</then>
 			</elseif>
 			<else>
 				<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime">
 					<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" scope="compile" />
-					<dependency group="org.pecuma" artifact="buildhealth.extractors" version="${version}" scope="compile" />
+					<dependency group="org.pecuma"
+					            artifact="buildhealth.extractors"
+					            version="${version}"
+					            scope="compile" />
 				</ivy:makepom>
 			</else>
 		</if>

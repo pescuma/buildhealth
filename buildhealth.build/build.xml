@@ -33,6 +33,7 @@
 					<fileset dir="../@{proj}/build/dist">
 						<include name="**/*.jar" />
 						<exclude name="**/*-source.jar" />
+						<exclude name="**/*-tests.jar" />
 					</fileset>
 					<fileset dir="../@{proj}/lib">
 						<include name="**/*.jar" />
