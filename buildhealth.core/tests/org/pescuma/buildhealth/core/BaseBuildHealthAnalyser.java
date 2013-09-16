@@ -1,8 +1,9 @@
-package org.pescuma.buildhealth.analyser;
+package org.pescuma.buildhealth.core;
 
 import java.util.Collections;
 import java.util.List;
 
+import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;

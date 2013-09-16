@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="org.pescuma" module="buildhealth.core" />
+	<info organisation="org.pescuma" module="buildhealth.analysers" />
 
 	<configurations defaultconfmapping="compile->default,sources;runtime->default">
 		<conf name="compile" />
@@ -8,16 +8,15 @@
 	</configurations>
 
 	<publications>
-		<artifact name="buildhealth.core" type="jar" />
-		<artifact name="buildhealth.core" type="pom" />
-		<artifact name="buildhealth.core" type="jar" e:classifier="sources" />
+		<artifact name="buildhealth.analysers" type="jar" />
+		<artifact name="buildhealth.analysers" type="pom" />
+		<artifact name="buildhealth.analysers" type="jar" e:classifier="sources" />
 	</publications>
 
 	<dependencies>
-		<dependency org="net.sf.opencsv" name="opencsv" rev="2.3" />
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
-		<dependency org="commons-io" name="commons-io" rev="2.2" />
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.1" />
+		<dependency org="org.kohsuke.metainf-services" name="metainf-services" rev="1.5" conf="compile" />
 
 		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
 	</dependencies>
