@@ -30,7 +30,7 @@ public class BuildStatusHelper {
 	}
 	
 	public static String[] splitCategory(String category) {
-		String regex = "[/\\.|:]";
+		String regex = "[/\\\\.|:]";
 		category = category.replaceAll("^" + regex + "+", "");
 		category = category.replaceAll(regex + "+$", "");
 		if (category.isEmpty())

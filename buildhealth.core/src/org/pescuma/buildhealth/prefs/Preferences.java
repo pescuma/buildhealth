@@ -75,6 +75,10 @@ public class Preferences {
 		return Double.parseDouble(result);
 	}
 	
+	public void set(String key, double value) {
+		store.put(Double.toString(value), subkey(key));
+	}
+	
 	public boolean get(String key, boolean defVal) {
 		String result = store.get(subkey(key));
 		if (result == null)
@@ -82,8 +86,8 @@ public class Preferences {
 		return Boolean.parseBoolean(result);
 	}
 	
-	public void set(String key, double value) {
-		store.put(Double.toString(value), subkey(key));
+	public void set(String key, boolean value) {
+		store.put(Boolean.toString(value), subkey(key));
 	}
 	
 	public Preferences child(String... key) {

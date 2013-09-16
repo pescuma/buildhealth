@@ -4,6 +4,7 @@ import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
+import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -80,6 +81,16 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 				TYPE_MS, "good"));
 		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>", "performace",
 				TYPE_MS, "warn"));
+		
+		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>", "performace",
+				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_RUNS_PER_S, "good"));
+		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>", "performace",
+				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_RUNS_PER_S, "warn"));
+		
+		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>", "performace",
+				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_MS, "good"));
+		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>", "performace",
+				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_MS, "warn"));
 		
 		result.add(new BuildHealthPreference("How to show the agregated results (runsPerS or ms)",
 				"<ms if both available, else what is available>", "performace", "report"));
