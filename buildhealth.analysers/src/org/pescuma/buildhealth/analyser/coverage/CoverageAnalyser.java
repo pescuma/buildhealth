@@ -390,9 +390,6 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		boolean hasTotal = false;
 		double total = 0;
 		
-		double sumCovered = 0;
-		double sumTotal = 0;
-		
 		CoverageTypeStats(String type) {
 			super(type);
 		}
@@ -404,16 +401,9 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		void addChild(CoverageTypeStats other) {
 			if (!hasCovered)
 				covered += other.covered;
-			sumCovered += other.covered;
 			
 			if (!hasTotal)
 				total += other.total;
-			sumTotal += other.total;
-			
-			if (other.hasCovered && abs(other.covered - other.sumCovered) > 0.1)
-				System.out.println("covered " + getName());
-			if (other.hasTotal && abs(other.total - other.sumTotal) > 0.1)
-				System.out.println("total " + getName());
 			
 			mergeChildStatus(other);
 		}
