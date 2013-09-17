@@ -11,6 +11,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
+import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVReader;
 
 // http://cloc.sourceforge.net/
@@ -23,7 +24,8 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 	@Override
 	protected void extract(String csvFilename, InputStream input, BuildData data) throws IOException {
 		@SuppressWarnings("resource")
-		CSVReader reader = new CSVReader(new InputStreamReader(input));
+		CSVReader reader = new CSVReader(new InputStreamReader(input), CSVParser.DEFAULT_SEPARATOR,
+				CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.NULL_CHARACTER);
 		
 		String[] headers = null;
 		int languageCol = -1;
