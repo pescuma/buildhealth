@@ -226,16 +226,15 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		}
 		
 		private BuildStatus statusFromThreshold(Preferences pref, String type, double total, boolean biggerIsBetter) {
-			BuildStatus result;
-			if (name.length < 1)
-				result = computeStatusFromThreshold(pref.child(type), total, biggerIsBetter);
-			else
-				result = computeStatusFromThreshold(pref.child(name).child(type), total, biggerIsBetter);
+			BuildStatus result = computeStatusFromThresholdIfExists(pref.child(getNames()).child(type), total,
+					biggerIsBetter);
 			
 			for (String originalName : originalNames)
 				if (!originalName.isEmpty())
-					result = result.mergeWith(computeStatusFromThreshold(pref.child(originalName).child(type), total,
-							biggerIsBetter));
+					result = BuildStatus.merge(
+							result,
+							computeStatusFromThresholdIfExists(pref.child(originalName).child(type), total,
+									biggerIsBetter));
 			
 			return result;
 		}

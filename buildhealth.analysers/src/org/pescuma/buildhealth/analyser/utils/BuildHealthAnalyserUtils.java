@@ -79,17 +79,17 @@ public class BuildHealthAnalyserUtils {
 	
 	public static class TreeStats {
 		
-		protected final String[] name;
+		private final String[] names;
 		private boolean hasOwnStatus = false;
 		private BuildStatus ownStatus = BuildStatus.Good;
 		private BuildStatus statusWithChildren = BuildStatus.Good;
 		
-		protected TreeStats(String... name) {
-			this.name = name;
+		protected TreeStats(String... names) {
+			this.names = names;
 		}
 		
-		public String[] getName() {
-			return name;
+		public String[] getNames() {
+			return names;
 		}
 		
 		public BuildStatus getOwnStatus() {

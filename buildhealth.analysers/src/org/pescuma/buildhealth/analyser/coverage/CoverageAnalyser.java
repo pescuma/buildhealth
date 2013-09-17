@@ -218,11 +218,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	private void computeBuildStatus(Stats stats, Preferences prefs, List<String> preferredCoverageTypes) {
 		CoverageTypeStats prefCoverage = findPrefered(stats, preferredCoverageTypes);
 		if (prefCoverage != null)
-			computeBuildStatus(stats, prefCoverage, prefs.child(stats.getName()));
+			computeBuildStatus(stats, prefCoverage, prefs.child(stats.getNames()));
 		
 		for (String coverageType : stats.coverages.keySet()) {
 			CoverageTypeStats coverage = stats.getCoverage(coverageType);
-			computeBuildStatus(stats, coverage, prefs.child(stats.getName()).child(coverageType));
+			computeBuildStatus(stats, coverage, prefs.child(stats.getNames()).child(coverageType));
 		}
 		
 		for (CoverageTypeStats coverage : stats.coverages.values())
@@ -282,7 +282,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			if (!coverage.hasData())
 				continue;
 			
-			coverageMetrics.add(new CoverageMetric(coverage.getName()[0], coverage.covered, coverage.total));
+			coverageMetrics.add(new CoverageMetric(coverage.getName(), coverage.covered, coverage.total));
 		}
 		
 		return coverageMetrics;
@@ -302,8 +302,8 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		Collections.sort(result, new Comparator<CoverageTypeStats>() {
 			@Override
 			public int compare(CoverageTypeStats o1, CoverageTypeStats o2) {
-				String n1 = o1.getName()[0];
-				String n2 = o2.getName()[0];
+				String n1 = o1.getName();
+				String n2 = o2.getName();
 				
 				int t1 = firstNonNull(fixed.get(n1), fixed.size());
 				int t2 = firstNonNull(fixed.get(n2), fixed.size());
@@ -397,6 +397,10 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			super(type);
 		}
 		
+		String getName() {
+			return getNames()[0];
+		}
+		
 		void addChild(CoverageTypeStats other) {
 			if (!hasCovered)
 				covered += other.covered;
@@ -407,9 +411,9 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			sumTotal += other.total;
 			
 			if (other.hasCovered && abs(other.covered - other.sumCovered) > 0.1)
-				System.out.println("covered " + name[0]);
+				System.out.println("covered " + getName());
 			if (other.hasTotal && abs(other.total - other.sumTotal) > 0.1)
-				System.out.println("total " + name[0]);
+				System.out.println("total " + getName());
 			
 			mergeChildStatus(other);
 		}

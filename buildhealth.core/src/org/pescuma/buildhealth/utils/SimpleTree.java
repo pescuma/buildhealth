@@ -44,14 +44,7 @@ public class SimpleTree<T> {
 	}
 	
 	public boolean hasNode(String... names) {
-		Node node = root;
-		for (String name : names) {
-			if (!node.hasChild(name))
-				return false;
-			
-			node = node.getChild(name);
-		}
-		return true;
+		return root.hasChild(names);
 	}
 	
 	public class Node {
@@ -97,6 +90,17 @@ public class SimpleTree<T> {
 		
 		public Iterator<Node> getChildrenIterator() {
 			return children.values().iterator();
+		}
+		
+		public boolean hasChild(String... names) {
+			Node node = this;
+			for (String name : names) {
+				if (!node.hasChild(name))
+					return false;
+				
+				node = node.getChild(name);
+			}
+			return true;
 		}
 		
 		public boolean hasChild(String name) {

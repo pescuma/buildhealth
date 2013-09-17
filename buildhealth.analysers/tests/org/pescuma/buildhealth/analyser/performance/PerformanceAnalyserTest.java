@@ -232,13 +232,13 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full);
 		
 		assertReport(new Report(Problematic, "Performance", "130 ms", //
-				new Report(Good, "Java", "130 ms", //
-						new Report(Good, "Japex", "130 ms", //
-								new Report(Good, "A", "30 ms", //
+				new Report(Problematic, "Java", "130 ms", //
+						new Report(Problematic, "Japex", "130 ms", //
+								new Report(SoSo, "A", "30 ms", //
 										new Report(SoSo, "B", "10 ms"), //
 										new Report(Good, "C", "20 ms") //
 								), //
-								new Report(Good, "X", "10 runs per second", //
+								new Report(Problematic, "X", "10 runs per second", //
 										new Report(Problematic, "Y", "10 runs per second") //
 								) //
 						) //
@@ -258,14 +258,40 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full);
 		
 		assertReport(new Report(Problematic, "Performance", "130 ms", //
-				new Report(Good, "Java", "130 ms", //
-						new Report(Good, "Japex", "130 ms", //
-								new Report(Good, "A", "30 ms", //
+				new Report(Problematic, "Java", "130 ms", //
+						new Report(Problematic, "Japex", "130 ms", //
+								new Report(SoSo, "A", "30 ms", //
 										new Report(SoSo, "B", "10 ms"), //
 										new Report(Good, "C", "20 ms") //
 								), //
-								new Report(Good, "X", "10 runs per second", //
+								new Report(Problematic, "X", "10 runs per second", //
 										new Report(Problematic, "Y", "10 runs per second") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testReport_Full_NodesDifferentStatusParentOverridesChild() {
+		create("A/B", "ms", 10);
+		create("A/C", "ms", 20);
+		create("X/Y", "runsPerS", 10);
+		
+		prefs.child("performance", "Java", "Japex", "A", "ms").set("good", 5);
+		prefs.child("performance", "Java", "Japex", "A", "B", "ms").set("warn", 5);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Problematic, "Performance", "130 ms", //
+				new Report(SoSo, "Java", "130 ms", //
+						new Report(SoSo, "Japex", "130 ms", //
+								new Report(SoSo, "A", "30 ms", //
+										new Report(Problematic, "B", "10 ms"), //
+										new Report(Good, "C", "20 ms") //
+								), //
+								new Report(Good, "X", "10 runs per second", //
+										new Report(Good, "Y", "10 runs per second") //
 								) //
 						) //
 				) //
@@ -284,12 +310,12 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full | HighlightProblems);
 		
 		assertReport(new Report(Problematic, "Performance", "130 ms", //
-				new Report(Good, "Java", "130 ms", //
-						new Report(Good, "Japex", "130 ms", //
-								new Report(Good, "X", "10 runs per second", //
+				new Report(Problematic, "Java", "130 ms", //
+						new Report(Problematic, "Japex", "130 ms", //
+								new Report(Problematic, "X", "10 runs per second", //
 										new Report(Problematic, "Y", "10 runs per second") //
 								), //
-								new Report(Good, "A", "30 ms", //
+								new Report(SoSo, "A", "30 ms", //
 										new Report(SoSo, "C", "20 ms"), //
 										new Report(Good, "B", "10 ms") //
 								) //
@@ -309,9 +335,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(SummaryOnly | HighlightProblems);
 		
 		assertReport(new Report(SoSo, "Performance", "130 ms", //
-				new Report(Good, "Java", "130 ms", //
-						new Report(Good, "Japex", "130 ms", //
-								new Report(Good, "A", "30 ms", //
+				new Report(SoSo, "Java", "130 ms", //
+						new Report(SoSo, "Japex", "130 ms", //
+								new Report(SoSo, "A", "30 ms", //
 										new Report(SoSo, "C", "20 ms") //
 								) //
 						) //
