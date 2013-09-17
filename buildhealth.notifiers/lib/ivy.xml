@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="org.pescuma" module="buildhealth.ant" />
+	<info organisation="org.pescuma" module="buildhealth.notifiers" />
 
 	<configurations defaultconfmapping="compile->default,sources;runtime->default">
 		<conf name="compile" />
@@ -8,9 +8,9 @@
 	</configurations>
 
 	<publications>
-		<artifact name="buildhealth.notify" type="jar" />
-		<artifact name="buildhealth.notify" type="pom" />
-		<artifact name="buildhealth.notify" type="jar" e:classifier="sources" />
+		<artifact name="buildhealth.notifiers" type="jar" />
+		<artifact name="buildhealth.notifiers" type="pom" />
+		<artifact name="buildhealth.notifiers" type="jar" e:classifier="sources" />
 	</publications>
 
 	<dependencies>
