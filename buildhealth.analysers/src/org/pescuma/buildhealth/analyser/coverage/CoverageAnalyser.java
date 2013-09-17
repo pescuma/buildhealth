@@ -22,8 +22,8 @@ import java.util.Map;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
@@ -37,7 +37,7 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Coverage,language,framework,{type:line,block,method,class},{covered,total},{place type:all,group,file,package,class,method},place
+ * Coverage,language,framework,{what:covered,total,type},{type:line,block,method,class},place,place,place
  * </pre>
  * 
  * The value is the number for covered or total entries. For all entries you must have both.
@@ -48,10 +48,11 @@ import com.google.common.base.Function;
  * Example:
  * 
  * <pre>
- * 10 | Coverage,Java,Emma,line,covered,all
- * 15 | Coverage,Java,Emma,line,total,all
- * 1 | Coverage,Java,Emma,line,covered,class,a,b,c,D
- * 2 | Coverage,Java,Emma,line,total,class,a,b,c,D
+ * 10 | Coverage,Java,Emma,covered,line
+ * 15 | Coverage,Java,Emma,total,line
+ * 0 | Coverage,Java,Emma,type,class,a,b,c,D
+ * 1 | Coverage,Java,Emma,covered,line,a,b,c,D
+ * 2 | Coverage,Java,Emma,total,line,a,b,c,D
  * </pre>
  */
 @MetaInfServices
@@ -59,13 +60,13 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	
 	public static final int COLUMN_LANGUAGE = 1;
 	public static final int COLUMN_FRAMEWORK = 2;
-	public static final int COLUMN_COVERAGE_TYPE = 3;
-	public static final int COLUMN_COVERED_OR_TOTAL = 4;
-	public static final int COLUMN_PLACE_TYPE = 5;
-	public static final int COLUMN_PLACE_START = 6;
+	public static final int COLUMN_WHAT = 3;
+	public static final int COLUMN_TYPE = 4;
+	public static final int COLUMN_PLACE_START = 5;
 	
 	public static final String COVERED = "covered";
 	public static final String TOTAL = "total";
+	public static final String TYPE = "type";
 	
 	private static final String DEFAULT_MAINTYPE = "instruction,line";
 	
@@ -157,20 +158,24 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				node = node.getChild(columns[i]);
 			
 			Stats stats = node.getData();
-			stats.placeType = line.getColumn(COLUMN_PLACE_TYPE);
 			
-			String coveredOrTotal = line.getColumn(COLUMN_COVERED_OR_TOTAL);
-			boolean covered;
-			if (COVERED.equals(coveredOrTotal))
-				covered = true;
-			else if (TOTAL.equals(coveredOrTotal))
-				covered = false;
-			else
-				// Ignore line
+			String type = line.getColumn(COLUMN_TYPE);
+			if (type.isEmpty())
 				continue;
 			
-			String type = line.getColumn(COLUMN_COVERAGE_TYPE);
-			if (type.isEmpty())
+			String what = line.getColumn(COLUMN_WHAT);
+			
+			if (TYPE.equals(what)) {
+				stats.placeType = type;
+				continue;
+			}
+			
+			boolean covered = true;
+			if (COVERED.equals(what))
+				covered = true;
+			else if (TOTAL.equals(what))
+				covered = false;
+			else
 				continue;
 			
 			CoverageTypeStats coverage = stats.getCoverage(type);

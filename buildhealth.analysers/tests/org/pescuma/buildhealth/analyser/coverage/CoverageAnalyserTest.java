@@ -30,14 +30,12 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		columns.add("Coverage");
 		columns.add("java");
 		columns.add("emma");
-		columns.add(type);
 		columns.add("covered");
-		columns.add("all");
+		columns.add(type);
 		columns.addAll(asList(place));
-		
 		data.add(covered, columns.toArray(new String[columns.size()]));
 		
-		columns.set(4, "total");
+		columns.set(3, "total");
 		data.add(total, columns.toArray(new String[columns.size()]));
 	}
 	

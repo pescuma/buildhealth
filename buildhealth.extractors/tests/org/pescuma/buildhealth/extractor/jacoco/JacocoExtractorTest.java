@@ -25,26 +25,25 @@ public class JacocoExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(60, table.size());
-		assertEquals(60, table.filter("Coverage", "Java", "JaCoCo").size());
+		assertEquals(23, table.size());
+		assertEquals(23, table.filter("Coverage", "Java", "JaCoCo").size());
 		
-		assertEquals(38, table.get("Coverage", "Java", "JaCoCo", "class", "covered", "all", "report_name"), 0.0001);
-		assertEquals(38 + 18, table.get("Coverage", "Java", "JaCoCo", "class", "total", "all", "report_name"), 0.0001);
-		assertEquals(180, table.get("Coverage", "Java", "JaCoCo", "method", "covered", "all", "report_name"), 0.0001);
-		assertEquals(180 + 90, table.get("Coverage", "Java", "JaCoCo", "method", "total", "all", "report_name"), 0.0001);
-		assertEquals(289, table.get("Coverage", "Java", "JaCoCo", "line", "covered", "all", "report_name"), 0.0001);
-		assertEquals(289 + 2, table.get("Coverage", "Java", "JaCoCo", "line", "total", "all", "report_name"), 0.0001);
-		assertEquals(253, table.get("Coverage", "Java", "JaCoCo", "complexity", "covered", "all", "report_name"),
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org", "pescuma"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org", "pescuma", "buildhealth"),
 				0.0001);
-		assertEquals(253 + 204, table.get("Coverage", "Java", "JaCoCo", "complexity", "total", "all", "report_name"),
+		assertEquals(
+				0,
+				table.get("Coverage", "Java", "JaCoCo", "type", "package", "org", "pescuma", "buildhealth", "analyser"),
 				0.0001);
-		assertEquals(201, table.get("Coverage", "Java", "JaCoCo", "branch", "covered", "all", "report_name"), 0.0001);
-		assertEquals(201 + 171, table.get("Coverage", "Java", "JaCoCo", "branch", "total", "all", "report_name"),
-				0.0001);
-		assertEquals(4372, table.get("Coverage", "Java", "JaCoCo", "instruction", "covered", "all", "report_name"),
-				0.0001);
-		assertEquals(4372 + 1901,
-				table.get("Coverage", "Java", "JaCoCo", "instruction", "total", "all", "report_name"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "class", "org", "pescuma", "buildhealth",
+				"analyser", "BaseAnalyserTest"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "method", "org", "pescuma", "buildhealth",
+				"analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
+		assertEquals(3, table.get("Coverage", "Java", "JaCoCo", "covered", "instruction", "org", "pescuma",
+				"buildhealth", "analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
+		assertEquals(3, table.get("Coverage", "Java", "JaCoCo", "total", "instruction", "org", "pescuma",
+				"buildhealth", "analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
 	}
 	
 }
