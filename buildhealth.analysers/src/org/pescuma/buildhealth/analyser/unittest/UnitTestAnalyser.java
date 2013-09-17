@@ -96,17 +96,8 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		
 		computeParentStats(tree);
 		
-		if (summaryOnly) {
-			tree.getRoot().removeChildIf(new Predicate<SimpleTree<Stats>.Node>() {
-				@Override
-				public boolean apply(SimpleTree<Stats>.Node input) {
-					if (highlighProblems)
-						return !"Failed".equals(input.getName());
-					else
-						return true;
-				}
-			});
-		}
+		if (summaryOnly)
+			removeNonSummaryNodes(highlighProblems, tree);
 		
 		return asList((Report) toReport(tree.getRoot(), getName()));
 	}
@@ -248,6 +239,18 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 				Stats parent = stack.peek();
 				if (!parent.isFromData)
 					parent.add(stats);
+			}
+		});
+	}
+	
+	private void removeNonSummaryNodes(final boolean highlighProblems, SimpleTree<Stats> tree) {
+		tree.getRoot().removeChildIf(new Predicate<SimpleTree<Stats>.Node>() {
+			@Override
+			public boolean apply(SimpleTree<Stats>.Node input) {
+				if (highlighProblems)
+					return !"Failed".equals(input.getName());
+				else
+					return true;
 			}
 		});
 	}

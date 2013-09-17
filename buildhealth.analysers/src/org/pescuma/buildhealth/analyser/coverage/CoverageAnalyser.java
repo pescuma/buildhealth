@@ -3,26 +3,35 @@ package org.pescuma.buildhealth.analyser.coverage;
 import static com.google.common.base.Objects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.NumbersFormater;
+import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildData.Value;
-import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
+import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.utils.SimpleTree;
+
+import com.google.common.base.Function;
 
 /**
  * Expect the lines to be:
@@ -48,6 +57,16 @@ import org.pescuma.buildhealth.prefs.Preferences;
 @MetaInfServices
 public class CoverageAnalyser implements BuildHealthAnalyser {
 	
+	public static final int COLUMN_LANGUAGE = 1;
+	public static final int COLUMN_FRAMEWORK = 2;
+	public static final int COLUMN_COVERAGE_TYPE = 3;
+	public static final int COLUMN_COVERED_OR_TOTAL = 4;
+	public static final int COLUMN_PLACE_TYPE = 5;
+	public static final int COLUMN_PLACE_START = 6;
+	
+	public static final String COVERED = "covered";
+	public static final String TOTAL = "total";
+	
 	private static final String DEFAULT_MAINTYPE = "instruction,line";
 	
 	private boolean showDetailsInDescription = false;
@@ -70,10 +89,8 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	public List<BuildHealthPreference> getPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
-		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
-				"good"));
-		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
-				"warn"));
+		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage", "good"));
+		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage", "warn"));
 		
 		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
 				ANY_VALUE_KEY_PREFIX + "<type>", "good"));
@@ -89,68 +106,189 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	
 	@Override
 	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
-		data = data.filter("Coverage").filter(5, "all");
+		data = data.filter("Coverage");
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
 		prefs = prefs.child("coverage");
 		
-		StringBuilder description = new StringBuilder();
-		int defPercentage = -1;
-		int defType = -1;
-		BuildStatus status = BuildStatus.Good;
+		boolean highlighProblems = (opts & HighlightProblems) != 0;
+		boolean summaryOnly = (opts & SummaryOnly) != 0;
+		List<String> preferredCoverageTypes = getPreferredCoverageTypes(prefs);
 		
-		List<String> prefered = new ArrayList<String>();
+		SimpleTree<Stats> tree = toTree(data);
+		
+		sumChildStatsAndComputeBuildStatuses(tree, prefs, preferredCoverageTypes);
+		
+		if (summaryOnly)
+			removeNonSummaryNodes(tree, highlighProblems);
+		
+		CoverageReport result = toReport(tree.getRoot(), getName(), prefs, highlighProblems, preferredCoverageTypes);
+		if (result == null)
+			return emptyList();
+		else
+			return asList((Report) result);
+	}
+	
+	private List<String> getPreferredCoverageTypes(Preferences prefs) {
+		List<String> preferredCoverageTypes = new ArrayList<String>();
+		
 		for (String type : prefs.get("maintype", DEFAULT_MAINTYPE).split(","))
-			prefered.add(type);
-		Collections.reverse(prefered);
+			preferredCoverageTypes.add(type);
 		
-		List<Type> types = groupTypes(data.sumDistinct(3, 4));
-		sort(types);
-		for (Type type : types) {
-			if (type.covered < 0 || type.total < 0)
+		Collections.reverse(preferredCoverageTypes);
+		
+		return preferredCoverageTypes;
+	}
+	
+	private SimpleTree<Stats> toTree(BuildData data) {
+		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
+			@Override
+			public Stats apply(String[] name) {
+				return new Stats(name);
+			}
+		});
+		
+		for (Line line : data.getLines()) {
+			SimpleTree<Stats>.Node node = tree.getRoot();
+			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
+			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
+			
+			String[] columns = line.getColumns();
+			for (int i = COLUMN_PLACE_START; i < columns.length; i++)
+				node = node.getChild(columns[i]);
+			
+			Stats stats = node.getData();
+			stats.placeType = line.getColumn(COLUMN_PLACE_TYPE);
+			
+			String coveredOrTotal = line.getColumn(COLUMN_COVERED_OR_TOTAL);
+			boolean covered;
+			if (COVERED.equals(coveredOrTotal))
+				covered = true;
+			else if (TOTAL.equals(coveredOrTotal))
+				covered = false;
+			else
+				// Ignore line
 				continue;
 			
-			int percentage = (int) round(100 * type.covered / type.total);
+			String type = line.getColumn(COLUMN_COVERAGE_TYPE);
+			if (type.isEmpty())
+				continue;
 			
-			status = status.mergeWith(computeStatusFromThreshold(prefs.child(type.name), percentage, true));
+			CoverageTypeStats coverage = stats.getCoverage(type);
+			if (covered)
+				coverage.addCovered(line.getValue());
+			else
+				coverage.addTotal(line.getValue());
+		}
+		
+		return tree;
+	}
+	
+	private void sumChildStatsAndComputeBuildStatuses(SimpleTree<Stats> tree, final Preferences prefs,
+			final List<String> preferredCoverageTypes) {
+		
+		tree.visit(new SimpleTree.Visitor<Stats>() {
+			Deque<Stats> stack = new ArrayDeque<Stats>();
 			
-			if (description.length() > 0)
-				description.append(", ");
-			
-			description.append(type.name).append(": ").append(percentage).append("%");
-			
-			if (showDetailsInDescription)
-				description.append(" (").append(format(type.covered)).append("/").append(format1000(type.total))
-						.append(")");
-			
-			int typeIndex = prefered.indexOf(type.name);
-			if (defType < 0 || defType < typeIndex) {
-				defPercentage = percentage;
-				defType = typeIndex;
+			@Override
+			public void preVisitNode(SimpleTree<Stats>.Node node) {
+				stack.push(node.getData());
 			}
-		}
-		
-		if (!showDetailsInDescription) {
-			long lines = round(data.filter(3, "line").filter(4, "total").sum());
-			if (lines > 0)
-				description.append(", over ").append(format1000(lines)).append(" ")
-						.append(lines > 1 ? "lines" : "line");
-		}
-		
-		if (defPercentage < 0)
-			return Collections.emptyList();
-		
-		status = status.mergeWith(computeStatusFromThreshold(prefs, defPercentage, true));
-		
-		return asList(new Report(status, getName(), defPercentage + "%", description.toString()));
+			
+			@Override
+			public void posVisitNode(SimpleTree<Stats>.Node node) {
+				stack.pop();
+				
+				Stats stats = node.getData();
+				
+				computeBuildStatus(stats, prefs, preferredCoverageTypes);
+				
+				if (stack.isEmpty())
+					return;
+				
+				Stats parent = stack.peek();
+				
+				for (String type : stats.coverages.keySet())
+					parent.getCoverage(type).addChild(stats.getCoverage(type));
+			}
+		});
 	}
 	
-	private String format(double val) {
-		return NumbersFormater.format1000(val, "");
+	private void computeBuildStatus(Stats stats, Preferences prefs, List<String> preferredCoverageTypes) {
+		CoverageTypeStats prefCoverage = findPrefered(stats, preferredCoverageTypes);
+		if (prefCoverage != null)
+			computeBuildStatus(stats, prefCoverage, prefs.child(stats.getName()));
+		
+		for (String coverageType : stats.coverages.keySet()) {
+			CoverageTypeStats coverage = stats.getCoverage(coverageType);
+			computeBuildStatus(stats, coverage, prefs.child(stats.getName()).child(coverageType));
+		}
+		
+		for (CoverageTypeStats coverage : stats.coverages.values())
+			stats.mergeChildStatus(coverage);
 	}
 	
-	private void sort(List<Type> types) {
+	private CoverageTypeStats findPrefered(Stats stats, List<String> preferredCoverageTypes) {
+		for (String coverageType : preferredCoverageTypes)
+			if (stats.hasCoverage(coverageType))
+				return stats.getCoverage(coverageType);
+		
+		return null;
+	}
+	
+	private void computeBuildStatus(Stats stats, CoverageTypeStats coverage, Preferences prefs) {
+		if (!coverage.hasData())
+			// not enough data
+			return;
+		
+		BuildStatus status = computeStatusFromThresholdIfExists(prefs, coverage.getPercentage(), true);
+		
+		if (status != null) {
+			coverage.setOwnStatus(status);
+			stats.setOwnStatus(status);
+		}
+	}
+	
+	private CoverageReport toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs,
+			boolean highlighProblems, List<String> preferredCoverageTypes) {
+		
+		Stats stats = node.getData();
+		
+		List<CoverageMetric> coverageMetrics = getCoverageMetrics(stats);
+		
+		if (coverageMetrics.size() < 1)
+			return null;
+		
+		String description = getDescription(stats, coverageMetrics);
+		
+		CoverageMetric defCoverage = getDefaultCoverage(coverageMetrics, preferredCoverageTypes);
+		
+		List<CoverageReport> children = new ArrayList<CoverageReport>();
+		for (SimpleTree<Stats>.Node child : sort(node.getChildren(), highlighProblems)) {
+			CoverageReport report = toReport(child, child.getName(), prefs, highlighProblems, preferredCoverageTypes);
+			if (report != null)
+				children.add(report);
+		}
+		
+		return new CoverageReport(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
+				defCoverage.getPercentage() + "%", description, coverageMetrics, stats.placeType, children);
+	}
+	
+	private List<CoverageMetric> getCoverageMetrics(Stats stats) {
+		List<CoverageMetric> coverageMetrics = new ArrayList<CoverageMetric>();
+		
+		for (CoverageTypeStats coverage : sortCoverageTypes(stats.coverages.values())) {
+			if (!coverage.hasData())
+				continue;
+			
+			coverageMetrics.add(new CoverageMetric(coverage.getName()[0], coverage.covered, coverage.total));
+		}
+		
+		return coverageMetrics;
+	}
+	
+	private Collection<CoverageTypeStats> sortCoverageTypes(Collection<CoverageTypeStats> coverages) {
 		final Map<String, Integer> fixed = new HashMap<String, Integer>();
 		fixed.put("class", 0);
 		fixed.put("method", 1);
@@ -159,50 +297,139 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		fixed.put("branch", 4);
 		fixed.put("instruction", 5);
 		
-		Collections.sort(types, new Comparator<Type>() {
+		List<CoverageTypeStats> result = new ArrayList<CoverageTypeStats>(coverages);
+		
+		Collections.sort(result, new Comparator<CoverageTypeStats>() {
 			@Override
-			public int compare(Type o1, Type o2) {
-				int t1 = firstNonNull(fixed.get(o1.name), fixed.size());
-				int t2 = firstNonNull(fixed.get(o2.name), fixed.size());
+			public int compare(CoverageTypeStats o1, CoverageTypeStats o2) {
+				String n1 = o1.getName()[0];
+				String n2 = o2.getName()[0];
+				
+				int t1 = firstNonNull(fixed.get(n1), fixed.size());
+				int t2 = firstNonNull(fixed.get(n2), fixed.size());
 				if (t1 != t2)
 					return t1 - t2;
 				
-				return o1.name.compareTo(o2.name);
+				return n1.compareToIgnoreCase(n2);
 			}
 		});
+		
+		return result;
 	}
 	
-	private List<Type> groupTypes(Map<String[], Value> sums) {
-		Map<String, Type> types = new HashMap<String, Type>();
+	private String getDescription(Stats stats, List<CoverageMetric> coverageMetrics) {
+		StringBuilder description = new StringBuilder();
 		
-		for (Map.Entry<String[], Value> entry : sums.entrySet()) {
-			String[] keys = entry.getKey();
-			double value = entry.getValue().value;
+		for (CoverageMetric coverage : coverageMetrics) {
+			if (description.length() > 0)
+				description.append(", ");
 			
-			Type type = types.get(keys[0]);
-			if (type == null) {
-				type = new Type(keys[0]);
-				types.put(keys[0], type);
-			}
+			description.append(coverage.getName()).append(": ").append(coverage.getPercentage()).append("%");
 			
-			if ("total".equals(keys[1])) {
-				type.total = value;
-				
-			} else if ("covered".equals(keys[1])) {
-				type.covered = value;
+			if (showDetailsInDescription)
+				description.append(" (").append(format1000(coverage.getCovered())).append("/")
+						.append(format1000(coverage.getTotal())).append(")");
+			
+		}
+		
+		if (!showDetailsInDescription && stats.hasCoverage("line")) {
+			long lines = round(stats.getCoverage("line").total);
+			if (lines > 0)
+				description.append(", over ").append(format1000(lines)).append(" ")
+						.append(lines > 1 ? "lines" : "line");
+		}
+		
+		return description.toString();
+	}
+	
+	private CoverageMetric getDefaultCoverage(List<CoverageMetric> coverageMetrics, List<String> preferredCoverageTypes) {
+		CoverageMetric defCoverage = null;
+		int defType = -1;
+		
+		for (CoverageMetric coverage : coverageMetrics) {
+			int typeIndex = preferredCoverageTypes.indexOf(coverage.getName());
+			if (defType < 0 || defType < typeIndex) {
+				defCoverage = coverage;
+				defType = typeIndex;
 			}
 		}
 		
-		return new ArrayList<Type>(types.values());
+		if (defCoverage == null)
+			defCoverage = coverageMetrics.get(0);
+		
+		return defCoverage;
 	}
 	
-	private static class Type {
-		final String name;
-		double covered = -1;
-		double total = -1;
+	private static class Stats extends TreeStats {
 		
-		Type(String name) {
-			this.name = name;
+		String placeType;
+		final Map<String, CoverageTypeStats> coverages = new HashMap<String, CoverageTypeStats>();
+		
+		Stats(String[] name) {
+			super(name);
+		}
+		
+		boolean hasCoverage(String type) {
+			return coverages.containsKey(type);
+		}
+		
+		CoverageTypeStats getCoverage(String type) {
+			CoverageTypeStats result = coverages.get(type);
+			if (result == null) {
+				result = new CoverageTypeStats(type);
+				coverages.put(type, result);
+			}
+			return result;
+		}
+	}
+	
+	private static class CoverageTypeStats extends TreeStats {
+		
+		boolean hasCovered = false;
+		double covered = 0;
+		boolean hasTotal = false;
+		double total = 0;
+		
+		double sumCovered = 0;
+		double sumTotal = 0;
+		
+		CoverageTypeStats(String type) {
+			super(type);
+		}
+		
+		void addChild(CoverageTypeStats other) {
+			if (!hasCovered)
+				covered += other.covered;
+			sumCovered += other.covered;
+			
+			if (!hasTotal)
+				total += other.total;
+			sumTotal += other.total;
+			
+			if (other.hasCovered && abs(other.covered - other.sumCovered) > 0.1)
+				System.out.println("covered " + name[0]);
+			if (other.hasTotal && abs(other.total - other.sumTotal) > 0.1)
+				System.out.println("total " + name[0]);
+			
+			mergeChildStatus(other);
+		}
+		
+		void addCovered(double value) {
+			hasCovered = true;
+			covered += value;
+		}
+		
+		void addTotal(double value) {
+			hasTotal = true;
+			total += value;
+		}
+		
+		int getPercentage() {
+			return (int) round(100 * covered / total);
+		}
+		
+		boolean hasData() {
+			return total > 0.0001;
 		}
 	}
 }

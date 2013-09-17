@@ -91,8 +91,10 @@ public class Preferences {
 	}
 	
 	public Preferences child(String... key) {
-		if (key == null || key.length < 1)
+		if (key == null)
 			throw new IllegalArgumentException();
+		if (key.length < 1)
+			return this;
 		
 		for (int i = 0; i < key.length; i++)
 			if (Strings.isNullOrEmpty(key[i]))

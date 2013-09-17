@@ -3,14 +3,13 @@ package org.pescuma.buildhealth.analyser.performance;
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.Set;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
+import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
@@ -25,10 +25,8 @@ import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.utils.SimpleTree;
-import org.pescuma.buildhealth.utils.SimpleTree.Visitor;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 
 /**
  * Expect the lines to be:
@@ -111,10 +109,10 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		
 		SimpleTree<Stats> tree = buildTree(data);
 		
-		sumChildStatsAndComputeStatus(tree, prefs);
+		sumChildStatsAndComputeBuildStatuses(tree, prefs);
 		
 		if (summaryOnly)
-			stripToSummary(tree, highlighProblems);
+			removeNonSummaryNodes(tree, highlighProblems);
 		
 		return asList(toReport(tree.getRoot(), getName(), prefs, highlighProblems));
 	}
@@ -154,7 +152,7 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		return tree;
 	}
 	
-	private void sumChildStatsAndComputeStatus(SimpleTree<Stats> tree, final Preferences prefs) {
+	private void sumChildStatsAndComputeBuildStatuses(SimpleTree<Stats> tree, final Preferences prefs) {
 		tree.visit(new SimpleTree.Visitor<Stats>() {
 			Deque<Stats> parents = new ArrayDeque<Stats>();
 			
@@ -177,29 +175,6 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		});
 	}
 	
-	private void stripToSummary(SimpleTree<Stats> tree, boolean highlighProblems) {
-		if (!highlighProblems)
-			tree.getRoot().removeChildIf(new Predicate<SimpleTree<Stats>.Node>() {
-				@Override
-				public boolean apply(SimpleTree<Stats>.Node input) {
-					return true;
-				}
-			});
-		
-		else
-			tree.visit(new Visitor<Stats>() {
-				@Override
-				public void preVisitNode(SimpleTree<Stats>.Node node) {
-					node.removeChildIf(new Predicate<SimpleTree<Stats>.Node>() {
-						@Override
-						public boolean apply(SimpleTree<Stats>.Node input) {
-							return input.getData().statusWithChildren == BuildStatus.Good;
-						}
-					});
-				}
-			});
-	}
-	
 	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs, boolean highlighProblems) {
 		List<Report> children = new ArrayList<Report>();
 		
@@ -208,53 +183,19 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		
 		Stats stats = node.getData();
 		
-		return new Report(node.isRoot() ? stats.statusWithChildren : stats.status, name, stats.toText(prefs), children);
+		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
+				stats.toText(prefs), children);
 	}
 	
-	private Collection<SimpleTree<Stats>.Node> sort(Collection<SimpleTree<Stats>.Node> nodes, boolean highlighProblems) {
-		if (!highlighProblems)
-			return nodes;
+	private static class Stats extends TreeStats {
 		
-		List<SimpleTree<Stats>.Node> result = new ArrayList<SimpleTree<Stats>.Node>(nodes);
-		
-		Collections.sort(result, new Comparator<SimpleTree<Stats>.Node>() {
-			@Override
-			public int compare(SimpleTree<Stats>.Node o1, SimpleTree<Stats>.Node o2) {
-				int cmp = precedence(o1.getData().statusWithChildren) - precedence(o2.getData().statusWithChildren);
-				if (cmp != 0)
-					return cmp;
-				
-				return o1.getName().compareToIgnoreCase(o2.getName());
-			}
-			
-			private int precedence(BuildStatus status) {
-				switch (status) {
-					case Good:
-						return 2;
-					case SoSo:
-						return 1;
-					case Problematic:
-						return 0;
-					default:
-						throw new IllegalStateException();
-				}
-			}
-		});
-		
-		return result;
-	}
-	
-	private static class Stats {
-		final String[] name;
 		final Set<String> originalNames = new HashSet<String>();
 		int msCount = 0;
 		double msTotal = 0;
 		double runsPerSTotal = 0;
-		BuildStatus status;
-		BuildStatus statusWithChildren = BuildStatus.Good;
 		
 		Stats(String[] name) {
-			this.name = name;
+			super(name);
 		}
 		
 		void addMs(double value) {
@@ -272,14 +213,16 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 			msCount += stats.msCount;
 			msTotal += stats.msTotal;
 			runsPerSTotal += stats.runsPerSTotal;
-			statusWithChildren = statusWithChildren.mergeWith(stats.statusWithChildren);
+			
+			mergeChildStatus(stats);
 		}
 		
 		void computeStatus(Preferences prefs) {
-			status = statusFromThreshold(prefs, TYPE_RUNS_PER_S, runsPerSTotal, true) //
-					.mergeWith(statusFromThreshold(prefs, TYPE_MS, msTotal, false));
+			BuildStatus status = BuildStatus.merge(statusFromThreshold(prefs, TYPE_RUNS_PER_S, runsPerSTotal, true),
+					statusFromThreshold(prefs, TYPE_MS, msTotal, false));
 			
-			statusWithChildren = statusWithChildren.mergeWith(status);
+			if (status != null)
+				setOwnStatus(status);
 		}
 		
 		private BuildStatus statusFromThreshold(Preferences pref, String type, double total, boolean biggerIsBetter) {

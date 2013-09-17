@@ -1,12 +1,17 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
+import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.pescuma.buildhealth.analyser.BaseAnalyserTest;
+import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.core.Report;
 
 public class CoverageAnalyserTest extends BaseAnalyserTest {
@@ -20,9 +25,20 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		super.setUp(analyser);
 	}
 	
-	private void create(String type, int covered, int total) {
-		data.add(covered, "Coverage", "java", "emma", type, "covered", "all");
-		data.add(total, "Coverage", "java", "emma", type, "total", "all");
+	private void create(String type, int covered, int total, String... place) {
+		List<String> columns = new ArrayList<String>();
+		columns.add("Coverage");
+		columns.add("java");
+		columns.add("emma");
+		columns.add(type);
+		columns.add("covered");
+		columns.add("all");
+		columns.addAll(asList(place));
+		
+		data.add(covered, columns.toArray(new String[columns.size()]));
+		
+		columns.set(4, "total");
+		data.add(total, columns.toArray(new String[columns.size()]));
 	}
 	
 	@Test
@@ -31,7 +47,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 	@Test
@@ -41,7 +57,38 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50%, over 2 lines"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50%, over 2 lines"), report);
+	}
+	
+	@Test
+	public void testNoLinesNoDetail() {
+		create("instruction", 1, 2);
+		analyser.setShowDetailsInDescription(false);
+		
+		Report report = createReport();
+		
+		assertReport(new Report(Good, "Coverage", "50%", "instruction: 50%"), report);
+	}
+	
+	@Test
+	public void test0LinesNoDetail() {
+		create("instruction", 1, 2);
+		create("line", 0, 0);
+		analyser.setShowDetailsInDescription(false);
+		
+		Report report = createReport();
+		
+		assertReport(new Report(Good, "Coverage", "50%", "instruction: 50%"), report);
+	}
+	
+	@Test
+	public void test1LineNoDetail() {
+		create("line", 1, 1);
+		analyser.setShowDetailsInDescription(false);
+		
+		Report report = createReport();
+		
+		assertReport(new Report(Good, "Coverage", "100%", "line: 100%, over 1 line"), report);
 	}
 	
 	@Test
@@ -52,7 +99,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (4/8), a: 75% (3/4), b: 100% (4/4)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (4/8), a: 75% (3/4), b: 100% (4/4)"), report);
 	}
 	
 	@Test
@@ -62,7 +109,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 25% (1/4), instruction: 50% (2/4)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 25% (1/4), instruction: 50% (2/4)"), report);
 	}
 	
 	@Test
@@ -72,7 +119,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 25% (1/4), instruction: 50% (2/4)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 25% (1/4), instruction: 50% (2/4)"), report);
 	}
 	
 	@Test
@@ -83,7 +130,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 25% (2/8), instruction: 50% (2/4)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 25% (2/8), instruction: 50% (2/4)"), report);
 	}
 	
 	@Test
@@ -94,21 +141,25 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 25% (1/4), instruction: 50% (4/8)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 25% (1/4), instruction: 50% (4/8)"), report);
 	}
 	
 	@Test
 	public void testUnknownType() {
 		data.add(10, "Coverage", "java", "emma", "all", "unknown", "all");
 		
-		assertEquals(0, analyser.computeReport(data, prefs, SummaryOnly).size());
+		List<Report> reports = analyser.computeReport(data, prefs, SummaryOnly);
+		
+		assertEquals(0, reports.size());
 	}
 	
 	@Test
 	public void testOnlyCovered() {
 		data.add(10, "Coverage", "java", "emma", "all", "covered", "all");
 		
-		assertEquals(0, analyser.computeReport(data, prefs, SummaryOnly).size());
+		List<Report> reports = analyser.computeReport(data, prefs, SummaryOnly);
+		
+		assertEquals(0, reports.size());
 	}
 	
 	@Test
@@ -118,7 +169,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 	@Test
@@ -128,7 +179,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 	@Test
@@ -139,7 +190,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 	@Test
@@ -150,7 +201,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 	@Test
@@ -161,7 +212,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)"), report);
 	}
 	
 	@Test
@@ -173,7 +224,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)"), report);
+		assertReport(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)"), report);
 	}
 	
 	@Test
@@ -185,7 +236,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+		assertReport(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
 	}
 	
 	@Test
@@ -196,7 +247,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
 	}
 	
 	@Test
@@ -207,7 +258,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+		assertReport(new Report(Good, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
 	}
 	
 	@Test
@@ -218,7 +269,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "50%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
 	}
 	
 	@Test
@@ -229,7 +280,140 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+		assertReport(new Report(Good, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
 	}
 	
+	@Test
+	public void testFull_OneLine() {
+		create("line", 1, 2, "a", "b");
+		
+		Report report = createReport(ReportFlags.Full);
+		
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (1/2)", //
+				new Report(Good, "java", "50%", "line: 50% (1/2)", //
+						new Report(Good, "emma", "50%", "line: 50% (1/2)", //
+								new Report(Good, "a", "50%", "line: 50% (1/2)", //
+										new Report(Good, "b", "50%", "line: 50% (1/2)") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFull_2Lines() {
+		create("line", 1, 2, "a", "b");
+		create("line", 2, 4, "a", "c");
+		
+		Report report = createReport(ReportFlags.Full);
+		
+		assertReport(new Report(Good, "Coverage", "50%", "line: 50% (3/6)", //
+				new Report(Good, "java", "50%", "line: 50% (3/6)", //
+						new Report(Good, "emma", "50%", "line: 50% (3/6)", //
+								new Report(Good, "a", "50%", "line: 50% (3/6)", //
+										new Report(Good, "b", "50%", "line: 50% (1/2)"), //
+										new Report(Good, "c", "50%", "line: 50% (2/4)") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFull_ParentOverwriteChild() {
+		create("line", 1, 2, "a", "b");
+		create("line", 2, 4, "a", "c");
+		create("line", 4, 10, "a");
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Good, "Coverage", "40%", "line: 40% (4/10)", //
+				new Report(Good, "java", "40%", "line: 40% (4/10)", //
+						new Report(Good, "emma", "40%", "line: 40% (4/10)", //
+								new Report(Good, "a", "40%", "line: 40% (4/10)", //
+										new Report(Good, "b", "50%", "line: 50% (1/2)"), //
+										new Report(Good, "c", "50%", "line: 50% (2/4)") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFull_LimitChild() {
+		create("line", 1, 2, "a", "b");
+		create("line", 2, 4, "a", "c");
+		prefs.child("coverage", "java", "emma", "a", "b", "line").set("good", 70);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
+				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
+						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
+										new Report(SoSo, "b", "50%", "line: 50% (1/2)"), //
+										new Report(Good, "c", "50%", "line: 50% (2/4)") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFull_LimitChildAndParent() {
+		create("line", 1, 2, "a", "b");
+		create("line", 2, 4, "a", "c");
+		prefs.child("coverage", "java", "emma", "a", "c", "line").set("warn", 70);
+		prefs.child("coverage", "java", "emma", "a", "line").set("good", 70);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (3/6)", //
+				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
+						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
+										new Report(Good, "b", "50%", "line: 50% (1/2)"), //
+										new Report(Problematic, "c", "50%", "line: 50% (2/4)") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testFullHighligh_LimitChild() {
+		create("line", 1, 2, "a", "b");
+		create("line", 2, 4, "a", "c");
+		prefs.child("coverage", "java", "emma", "a", "c", "line").set("good", 70);
+		
+		Report report = createReport(Full | HighlightProblems);
+		
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
+				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
+						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
+										new Report(SoSo, "c", "50%", "line: 50% (2/4)"), //
+										new Report(Good, "b", "50%", "line: 50% (1/2)") //
+								) //
+						) //
+				) //
+				), report);
+	}
+	
+	@Test
+	public void testHighligh_LimitChild() {
+		create("line", 1, 2, "a", "b");
+		create("line", 2, 4, "a", "c");
+		prefs.child("coverage", "java", "emma", "a", "line").set("good", 70);
+		
+		Report report = createReport(SummaryOnly | HighlightProblems);
+		
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
+				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
+						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)") //
+						) //
+				) //
+				), report);
+	}
 }
