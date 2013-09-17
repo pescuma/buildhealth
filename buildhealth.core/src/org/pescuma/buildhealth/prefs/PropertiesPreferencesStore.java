@@ -17,7 +17,7 @@ import org.apache.commons.io.IOUtils;
 
 public class PropertiesPreferencesStore implements DiskPreferencesStore {
 	
-	private static final String SEPARATOR = ".";
+	private static final char SEPARATOR = '\n';
 	
 	private final File file;
 	private Properties properties;

@@ -54,7 +54,7 @@ public class GrowlNotifier implements BuildHealthNotifier {
 		if (!prefs.get("enabled", true))
 			return;
 		
-		String reportText = new ReportFormater().hideDescriptions().format(report).trim();
+		String reportText = new ReportFormater().hideDescriptions().writeBuildStatuses().format(report).trim();
 		
 		GrowlConnector growl = new GrowlConnector(prefs.get("server", "localhost"), prefs.get("port", 23053));
 		

@@ -72,7 +72,7 @@ public class BuildHealthAntTask extends Task implements TaskContainer {
 		Report buildReport = buildHealth.generateReportSummary();
 		
 		if (report)
-			log(new ReportFormater().format(buildReport).trim());
+			log(new ReportFormater().writeBuildStatuses().format(buildReport).trim());
 		
 		if (notify)
 			buildHealth.sendNotifications(new BuildHealthNotifierTracker() {

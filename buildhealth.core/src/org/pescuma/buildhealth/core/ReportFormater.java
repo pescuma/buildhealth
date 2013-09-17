@@ -8,9 +8,15 @@ public class ReportFormater {
 	private static final String PREFIX = "    ";
 	
 	private boolean showDescriptions = true;
+	private boolean writeStatuses = false;
 	
 	public ReportFormater hideDescriptions() {
 		showDescriptions = false;
+		return this;
+	}
+	
+	public ReportFormater writeBuildStatuses() {
+		writeStatuses = true;
 		return this;
 	}
 	
@@ -29,10 +35,16 @@ public class ReportFormater {
 	}
 	
 	private void appendSummaryLine(Report report, Outputer out) {
-		if (report.getName().equals("Build"))
+		if (report.getName().equals("Build")) {
 			out.append("Your build is ").append(createTitle(report.getStatus()), report.getStatus());
-		else
-			out.append(report.getName()).append(": ").append(report.getValue(), report.getStatus());
+		} else {
+			out.append(report.getName()).append(": ");
+			
+			if (writeStatuses && report.getStatus() != BuildStatus.Good)
+				out.append(report.getValue() + " (" + createTitle(report.getStatus()) + ")", report.getStatus());
+			else
+				out.append(report.getValue(), report.getStatus());
+		}
 		
 		String description = report.getDescription();
 		if (showDescriptions && !description.isEmpty())
