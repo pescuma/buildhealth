@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/auto/compile/jansi-1.9-jar.jar" sourcepath="lib/auto/compile/jansi-1.9-source.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.extractors"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.notifiers"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.analysers"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

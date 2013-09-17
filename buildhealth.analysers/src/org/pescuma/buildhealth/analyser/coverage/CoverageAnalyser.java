@@ -136,8 +136,6 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		for (String type : prefs.get("maintype", DEFAULT_MAINTYPE).split(","))
 			preferredCoverageTypes.add(type);
 		
-		Collections.reverse(preferredCoverageTypes);
-		
 		return preferredCoverageTypes;
 	}
 	
@@ -230,9 +228,13 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	private CoverageTypeStats findPrefered(Stats stats, List<String> preferredCoverageTypes) {
-		for (String coverageType : preferredCoverageTypes)
-			if (stats.hasCoverage(coverageType))
-				return stats.getCoverage(coverageType);
+		for (String coverageType : preferredCoverageTypes) {
+			if (stats.hasCoverage(coverageType)) {
+				CoverageTypeStats result = stats.getCoverage(coverageType);
+				if (result.hasData())
+					return result;
+			}
+		}
 		
 		return null;
 	}
@@ -343,21 +345,24 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	private CoverageMetric getDefaultCoverage(List<CoverageMetric> coverageMetrics, List<String> preferredCoverageTypes) {
-		CoverageMetric defCoverage = null;
-		int defType = -1;
+		CoverageMetric result = null;
+		int resultIndex = Integer.MAX_VALUE;
 		
 		for (CoverageMetric coverage : coverageMetrics) {
-			int typeIndex = preferredCoverageTypes.indexOf(coverage.getName());
-			if (defType < 0 || defType < typeIndex) {
-				defCoverage = coverage;
-				defType = typeIndex;
+			int index = preferredCoverageTypes.indexOf(coverage.getName());
+			if (index == -1)
+				index = Integer.MAX_VALUE;
+			
+			if (index <= resultIndex) {
+				result = coverage;
+				resultIndex = index;
 			}
 		}
 		
-		if (defCoverage == null)
-			defCoverage = coverageMetrics.get(0);
+		if (result == null)
+			result = coverageMetrics.get(0);
 		
-		return defCoverage;
+		return result;
 	}
 	
 	private static class Stats extends TreeStats {
