@@ -152,4 +152,13 @@ public class SimpleTree<T> {
 		}
 	}
 	
+	public void removeNodesIf(final Predicate<Node> predicate) {
+		visit(new Visitor<T>() {
+			@Override
+			public void posVisitNode(SimpleTree<T>.Node node) {
+				node.removeChildIf(predicate);
+			}
+		});
+	}
+	
 }

@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.utils.SimpleTree;
-import org.pescuma.buildhealth.utils.SimpleTree.Visitor;
 
 import com.google.common.base.Predicate;
 
@@ -64,15 +63,12 @@ public class BuildHealthAnalyserUtils {
 			});
 		
 		else
-			tree.visit(new Visitor<T>() {
+			tree.removeNodesIf(new Predicate<SimpleTree<T>.Node>() {
 				@Override
-				public void preVisitNode(SimpleTree<T>.Node node) {
-					node.removeChildIf(new Predicate<SimpleTree<T>.Node>() {
-						@Override
-						public boolean apply(SimpleTree<T>.Node input) {
-							return input.getData().getStatusWithChildren() == BuildStatus.Good;
-						}
-					});
+				public boolean apply(SimpleTree<T>.Node node) {
+					T data = node.getData();
+					return data.getStatusWithChildren() == BuildStatus.Good
+							|| (!node.isRoot() && !data.hasOwnStatus() && node.getChildren().isEmpty());
 				}
 			});
 	}

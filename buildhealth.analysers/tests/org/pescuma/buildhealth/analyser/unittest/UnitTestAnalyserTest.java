@@ -122,11 +122,9 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(SummaryOnly | HighlightProblems);
 		
 		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
-				new Report(Problematic, "Failed", "FAILED", "1 test, 1 failure", //
-						new Report(Problematic, "java", "FAILED", "1 test, 1 failure", //
-								new Report(Problematic, "junit", "FAILED", "1 test, 1 failure", //
-										new Report(Problematic, "No suite name", "FAILED", "1 test, 1 failure") //
-								) //
+				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+								new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure") //
 						) //
 				) //
 				), report);
