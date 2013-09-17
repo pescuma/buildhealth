@@ -10,7 +10,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.utils.FilenameToLanguage;
+import org.pescuma.buildhealth.extractor.utils.FilenameToLanguage;
 
 // http://www.mono-project.com/Gendarme
 public class GendarmeExtractor extends BaseXMLExtractor {

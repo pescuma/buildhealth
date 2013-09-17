@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.utils;
+package org.pescuma.buildhealth.extractor.utils;
 
 import static org.apache.commons.io.FilenameUtils.*;
 

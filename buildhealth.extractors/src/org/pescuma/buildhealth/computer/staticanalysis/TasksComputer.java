@@ -2,7 +2,7 @@ package org.pescuma.buildhealth.computer.staticanalysis;
 
 import static com.google.common.base.Objects.*;
 import static org.apache.commons.io.IOUtils.*;
-import static org.pescuma.buildhealth.utils.FilenameToLanguage.*;
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
 import java.io.File;
 import java.io.FileReader;

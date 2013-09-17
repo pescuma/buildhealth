@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static org.pescuma.buildhealth.utils.FilenameToLanguage.*;
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;

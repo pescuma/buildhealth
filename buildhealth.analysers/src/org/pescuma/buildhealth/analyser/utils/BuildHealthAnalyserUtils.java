@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.pescuma.buildhealth.core.BuildStatus;
-import org.pescuma.buildhealth.utils.SimpleTree;
 
 import com.google.common.base.Predicate;
 
