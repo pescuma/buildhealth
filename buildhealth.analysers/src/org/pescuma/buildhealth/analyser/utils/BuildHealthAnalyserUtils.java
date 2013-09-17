@@ -28,7 +28,8 @@ public class BuildHealthAnalyserUtils {
 		Collections.sort(result, new Comparator<SimpleTree<T>.Node>() {
 			@Override
 			public int compare(SimpleTree<T>.Node o1, SimpleTree<T>.Node o2) {
-				int cmp = precedence(o1.getData().statusWithChildren) - precedence(o2.getData().statusWithChildren);
+				int cmp = precedence(o1.getData().getStatusWithChildren())
+						- precedence(o2.getData().getStatusWithChildren());
 				if (cmp != 0)
 					return cmp;
 				
