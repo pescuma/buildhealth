@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.buildhealth.utils.CSV;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -41,7 +42,7 @@ public class DiskBuildData implements BuildData {
 				forceMkdir(file.getParentFile());
 				
 				FileWriter writer = closer.register(new FileWriter(file, !loadedFromDisk));
-				CSVWriter csv = closer.register(new CSVWriter(writer));
+				CSVWriter csv = closer.register(CSV.newWriter(writer));
 				
 				for (Line line : data.getLines()) {
 					String[] cols = line.getColumns();
@@ -78,7 +79,7 @@ public class DiskBuildData implements BuildData {
 			try {
 				
 				FileReader reader = closer.register(new FileReader(file));
-				CSVReader csv = closer.register(new CSVReader(reader));
+				CSVReader csv = closer.register(CSV.newReader(reader));
 				
 				String[] line;
 				while ((line = csv.readNext()) != null) {

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.buildhealth.utils.CSV;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -17,8 +18,7 @@ public class CSVExtractor extends BaseBuildDataExtractor {
 	
 	@Override
 	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		@SuppressWarnings("resource")
-		CSVReader reader = new CSVReader(new InputStreamReader(input));
+		CSVReader reader = CSV.newReader(new InputStreamReader(input));
 		
 		String[] line;
 		while ((line = reader.readNext()) != null) {

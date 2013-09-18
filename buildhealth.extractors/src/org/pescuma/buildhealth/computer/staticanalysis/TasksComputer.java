@@ -23,8 +23,8 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.CSVExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.CSV;
 
-import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVWriter;
 
 // Based on https://github.com/jenkinsci/tasks-plugin/blob/master/src/main/java/hudson/plugins/tasks/parser/TaskScanner.java by Ulli Hafner
@@ -75,8 +75,7 @@ public class TasksComputer implements BuildDataComputer {
 		try {
 			
 			writer = new FileWriter(outputFile);
-			out = new CSVWriter(writer, CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER,
-					CSVParser.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+			out = CSV.newWriter(writer);
 			
 			extractTo(out, tracker);
 			
