@@ -34,8 +34,6 @@ public class Report {
 			throw new IllegalArgumentException();
 		if (Strings.isNullOrEmpty(name))
 			throw new IllegalArgumentException();
-		if (Strings.isNullOrEmpty(value))
-			throw new IllegalArgumentException();
 		
 		this.status = status;
 		this.name = name;

@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.analyser.staticanalysis;
 
-import static org.junit.Assert.*;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.BuildStatus.*;
 
 import org.junit.Before;
@@ -29,7 +29,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Static analysis", "1", "Task: 1"), report);
+		assertReport(new Report(Good, "Static analysis", "1", "Task: 1"), report);
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Static analysis", "5", "Task: 5"), report);
+		assertReport(new Report(Good, "Static analysis", "5", "Task: 5"), report);
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Static analysis", "5", "CheckStyle: 1, PMD: 3, Task: 1"), report);
+		assertReport(new Report(Good, "Static analysis", "5", "CheckStyle: 1, PMD: 3, Task: 1"), report);
 	}
 	
 	@Test
@@ -62,7 +62,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(Good, "Static analysis", "10", "Task: 10"), report);
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Good, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(Good, "Static analysis", "10", "Task: 10"), report);
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
 	}
 	
 	@Test
@@ -115,7 +115,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(Problematic, "Static analysis", "10", "Task: 10"), report);
 	}
 	
 	@Test
@@ -129,7 +129,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(Problematic, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(Problematic, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -157,6 +157,25 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertEquals(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+	}
+	
+	@Test
+	public void testFull() {
+		create("Java", "Task", 1);
+		create("C++", "CppLint", 3);
+		create("C++", "Task", 1);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1", //
+				new Report(Good, "C++", "4", "CppLint: 3, Task: 1", //
+						new Report(Good, "CppLint", "3"), //
+						new Report(Good, "Task", "1") //
+				), //
+				new Report(Good, "Java", "1", "Task: 1", //
+						new Report(Good, "Task", "1") //
+				)//
+				), report);
 	}
 }

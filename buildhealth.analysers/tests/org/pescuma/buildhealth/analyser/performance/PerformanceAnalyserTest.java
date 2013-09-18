@@ -22,9 +22,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		data.add(val, "Performance", "Java", "Japex", type);
 	}
 	
-	private void create(String name, String type, double val) {
-		data.add(val, "Performance", "Java", "Japex", type, name);
-	}
+	// private void create(String name, String type, double val) {
+	// data.add(val, "Performance", "Java", "Japex", type, name);
+	// }
 	
 	private void create(String name1, String name2, String type, double val) {
 		data.add(val, "Performance", "Java", "Japex", type, name1, name2);

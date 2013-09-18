@@ -37,13 +37,15 @@ public class ReportFormater {
 	private void appendSummaryLine(Report report, Outputer out) {
 		if (report.getName().equals("Build")) {
 			out.append("Your build is ").append(createTitle(report.getStatus()), report.getStatus());
+			
 		} else {
-			out.append(report.getName()).append(": ");
+			out.append(report.getName());
+			
+			if (!report.getValue().isEmpty())
+				out.append(": ").append(report.getValue(), report.getStatus());
 			
 			if (writeStatuses && report.getStatus() != BuildStatus.Good)
-				out.append(report.getValue() + " (" + createTitle(report.getStatus()) + ")", report.getStatus());
-			else
-				out.append(report.getValue(), report.getStatus());
+				out.append(" (").append(createTitle(report.getStatus()), report.getStatus()).append(")");
 		}
 		
 		String description = report.getDescription();
