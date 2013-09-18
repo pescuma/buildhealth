@@ -25,23 +25,21 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(10, table.size());
-		assertEquals(10, table.filter("Coverage", "C#", "dotCover").size());
+		assertEquals(11, table.size());
+		assertEquals(11, table.filter("Coverage", "C#", "dotCover").size());
 		
 		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "library", "Assembly.Name"), 0.0001);
-		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace"),
+		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace.Name"),
 				0.0001);
 		assertEquals(0,
-				table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace", "Name"),
+				table.get("Coverage", "C#", "dotCover", "type", "class", "Assembly.Name", "Namespace.Name", "MyClass"),
 				0.0001);
-		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "class", "Assembly.Name", "Namespace", "Name",
-				"MyClass"), 0.0001);
-		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "method", "Assembly.Name", "Namespace", "Name",
+		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "method", "Assembly.Name", "Namespace.Name",
 				"MyClass", ".ctor"), 0.0001);
-		assertEquals(4, table.get("Coverage", "C#", "dotCover", "total", "line", "Assembly.Name", "Namespace", "Name",
+		assertEquals(4, table.get("Coverage", "C#", "dotCover", "total", "line", "Assembly.Name", "Namespace.Name",
 				"MyClass", ".ctor"), 0.0001);
-		assertEquals(1, table.get("Coverage", "C#", "dotCover", "covered", "line", "Assembly.Name", "Namespace",
-				"Name", "MyClass", ".ctor"), 0.0001);
+		assertEquals(1, table.get("Coverage", "C#", "dotCover", "covered", "line", "Assembly.Name", "Namespace.Name",
+				"MyClass", ".ctor"), 0.0001);
 	}
 	
 	@Test
@@ -55,23 +53,21 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(36, table.size());
-		assertEquals(36, table.filter("Coverage", "C#", "dotCover").size());
+		assertEquals(37, table.size());
+		assertEquals(37, table.filter("Coverage", "C#", "dotCover").size());
 		
 		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "library", "Assembly.Name"), 0.0001);
-		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace"),
+		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace.Name"),
 				0.0001);
 		assertEquals(0,
-				table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace", "Name"),
+				table.get("Coverage", "C#", "dotCover", "type", "class", "Assembly.Name", "Namespace.Name", "MyClass"),
 				0.0001);
-		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "class", "Assembly.Name", "Namespace", "Name",
-				"MyClass"), 0.0001);
-		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "method", "Assembly.Name", "Namespace", "Name",
+		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "method", "Assembly.Name", "Namespace.Name",
 				"MyClass", "MyClass()"), 0.0001);
-		assertEquals(4, table.get("Coverage", "C#", "dotCover", "total", "line", "Assembly.Name", "Namespace", "Name",
+		assertEquals(4, table.get("Coverage", "C#", "dotCover", "total", "line", "Assembly.Name", "Namespace.Name",
 				"MyClass", "MyClass()"), 0.0001);
-		assertEquals(1, table.get("Coverage", "C#", "dotCover", "covered", "line", "Assembly.Name", "Namespace",
-				"Name", "MyClass", "MyClass()"), 0.0001);
+		assertEquals(1, table.get("Coverage", "C#", "dotCover", "covered", "line", "Assembly.Name", "Namespace.Name",
+				"MyClass", "MyClass()"), 0.0001);
 	}
 	
 }

@@ -25,25 +25,19 @@ public class JacocoExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(23, table.size());
-		assertEquals(23, table.filter("Coverage", "Java", "JaCoCo").size());
+		assertEquals(40, table.size());
+		assertEquals(40, table.filter("Coverage", "Java", "JaCoCo").size());
 		
-		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org"), 0.0001);
-		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org", "pescuma"), 0.0001);
-		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org", "pescuma", "buildhealth"),
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org.pescuma.buildhealth.analyser"),
 				0.0001);
-		assertEquals(
-				0,
-				table.get("Coverage", "Java", "JaCoCo", "type", "package", "org", "pescuma", "buildhealth", "analyser"),
-				0.0001);
-		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "class", "org", "pescuma", "buildhealth",
-				"analyser", "BaseAnalyserTest"), 0.0001);
-		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "method", "org", "pescuma", "buildhealth",
-				"analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
-		assertEquals(3, table.get("Coverage", "Java", "JaCoCo", "covered", "instruction", "org", "pescuma",
-				"buildhealth", "analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
-		assertEquals(3, table.get("Coverage", "Java", "JaCoCo", "total", "instruction", "org", "pescuma",
-				"buildhealth", "analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "class", "org.pescuma.buildhealth.analyser",
+				"BaseAnalyserTest"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "method", "org.pescuma.buildhealth.analyser",
+				"BaseAnalyserTest", "<init> ()V"), 0.0001);
+		assertEquals(3, table.get("Coverage", "Java", "JaCoCo", "covered", "instruction",
+				"org.pescuma.buildhealth.analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
+		assertEquals(3, table.get("Coverage", "Java", "JaCoCo", "total", "instruction",
+				"org.pescuma.buildhealth.analyser", "BaseAnalyserTest", "<init> ()V"), 0.0001);
 	}
 	
 }

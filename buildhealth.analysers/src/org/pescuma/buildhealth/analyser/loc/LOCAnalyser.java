@@ -15,11 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.NumbersFormater;
+import org.pescuma.buildhealth.analyser.coverage.CoverageAnalyser;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
-import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 /**
@@ -84,7 +85,8 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	}
 	
 	private List<Report> computeFromCoverage(BuildData data, boolean summaryOnly) {
-		data = data.filter("Coverage").filter(5, "all").filter(3, "line").filter(4, "total");
+		data = data.filter("Coverage").filter(CoverageAnalyser.COLUMN_PLACE_START, "")
+				.filter(CoverageAnalyser.COLUMN_TYPE, "line").filter(CoverageAnalyser.COLUMN_WHAT, "total");
 		if (data.isEmpty())
 			return Collections.emptyList();
 		

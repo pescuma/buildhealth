@@ -28,14 +28,14 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		assertEquals(8, table.size());
 		assertEquals(8, table.filter("Coverage", "Java", "Emma").size());
 		
-		assertEquals(85, table.get("Coverage", "Java", "Emma", "class", "covered", "all"), 0.0001);
-		assertEquals(85, table.get("Coverage", "Java", "Emma", "class", "total", "all"), 0.0001);
-		assertEquals(345, table.get("Coverage", "Java", "Emma", "method", "covered", "all"), 0.0001);
-		assertEquals(61, table.get("Coverage", "Java", "Emma", "method", "total", "all"), 0.0001);
-		assertEquals(4997, table.get("Coverage", "Java", "Emma", "block", "covered", "all"), 0.0001);
-		assertEquals(4846, table.get("Coverage", "Java", "Emma", "block", "total", "all"), 0.0001);
-		assertEquals(346.3, table.get("Coverage", "Java", "Emma", "line", "covered", "all"), 0.0001);
-		assertEquals(3135, table.get("Coverage", "Java", "Emma", "line", "total", "all"), 0.0001);
+		assertEquals(85, table.get("Coverage", "Java", "Emma", "covered", "class"), 0.0001);
+		assertEquals(85, table.get("Coverage", "Java", "Emma", "total", "class"), 0.0001);
+		assertEquals(345, table.get("Coverage", "Java", "Emma", "covered", "method"), 0.0001);
+		assertEquals(61, table.get("Coverage", "Java", "Emma", "total", "method"), 0.0001);
+		assertEquals(4997, table.get("Coverage", "Java", "Emma", "covered", "block"), 0.0001);
+		assertEquals(4846, table.get("Coverage", "Java", "Emma", "total", "block"), 0.0001);
+		assertEquals(346.3, table.get("Coverage", "Java", "Emma", "covered", "line"), 0.0001);
+		assertEquals(3135, table.get("Coverage", "Java", "Emma", "total", "line"), 0.0001);
 	}
 	
 	@Test
@@ -49,12 +49,19 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(50, table.size());
-		assertTable(8, 145100.3, table.filter("Coverage", "Java", "Emma").filter(5, "all"));
-		assertTable(8, 10496, table.filter("Coverage", "Java", "Emma").filter(5, "package"));
-		assertTable(8, 3020, table.filter("Coverage", "Java", "Emma").filter(5, "sourceFile"));
-		assertTable(8, 3019, table.filter("Coverage", "Java", "Emma").filter(5, "class"));
-		assertTable(18, 3018, table.filter("Coverage", "Java", "Emma").filter(5, "method"));
+		assertEquals(39, table.size());
+		assertEquals(39, table.filter("Coverage", "Java", "Emma").size());
+		
+		assertEquals(0, table.get("Coverage", "Java", "Emma", "type", "package", "com.sun.tools.javac.v8.resources"),
+				0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "Emma", "type", "class", "com.sun.tools.javac.v8.resources",
+				"compiler_ja"), 0.0001);
+		assertEquals(0, table.get("Coverage", "Java", "Emma", "type", "method", "com.sun.tools.javac.v8.resources",
+				"compiler_ja", "<static initializer>"), 0.0001);
+		assertEquals(1, table.get("Coverage", "Java", "Emma", "covered", "block", "com.sun.tools.javac.v8.resources",
+				"compiler_ja", "<static initializer>"), 0.0001);
+		assertEquals(1234, table.get("Coverage", "Java", "Emma", "total", "block", "com.sun.tools.javac.v8.resources",
+				"compiler_ja", "<static initializer>"), 0.0001);
 	}
 	
 }

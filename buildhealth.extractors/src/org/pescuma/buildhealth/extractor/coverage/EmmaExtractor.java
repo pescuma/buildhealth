@@ -2,11 +2,10 @@ package org.pescuma.buildhealth.extractor.coverage;
 
 import static com.google.common.base.Strings.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -24,101 +23,66 @@ public class EmmaExtractor extends BaseXMLExtractor {
 		super(files);
 	}
 	
-	private static class NodeInfo {
-		final String emma;
-		final String type;
-		final boolean skipForPlace;
-		
-		public NodeInfo(String emma, String type, boolean skipForPlace) {
-			this.emma = emma;
-			this.type = type;
-			this.skipForPlace = skipForPlace;
-		}
-	}
-	
 	@Override
 	protected void extractDocument(String filename, Document doc, BuildData data) {
 		checkRoot(doc, "report", filename);
 		
-		addAll(data, doc.getRootElement().getChild("data").getChild("all"));
+		PlacesTracker place = new PlacesTracker(data, "Java", "Emma");
+		extract(doc.getRootElement().getChild("data").getChild("all"), "all", place);
 	}
 	
-	private static void addAll(BuildData data, Element all) {
-		addCoverage(data, all, "all", null);
-		
-		NodeInfo[] nodes = new NodeInfo[] { new NodeInfo("package", "package", false), //
-				new NodeInfo("srcfile", "sourceFile", true), //
-				new NodeInfo("class", "class", false), //
-				new NodeInfo("method", "method", false), //
-		};
-		
-		List<String> place = new ArrayList<String>();
-		
-		addChildren(data, all, nodes, 0, place);
-	}
-	
-	private static void addChildren(BuildData data, Element el, NodeInfo[] nodes, int i, List<String> place) {
-		if (i >= nodes.length)
-			return;
-		
-		for (Element child : el.getChildren(nodes[i].emma))
-			add(data, child, nodes, i, place);
-	}
-	
-	private static void add(BuildData data, Element el, NodeInfo[] nodes, int i, List<String> place) {
-		NodeInfo node = nodes[i];
+	private static void extract(Element el, String placeType, PlacesTracker place) {
+		int bookmark = place.getBookmark();
 		
 		String name = el.getAttributeValue("name");
-		if (isNullOrEmpty(name)) {
-			// TODO log.info("Ignoring " + node.emma + " because of missing name");
-			return;
+		if (!isNullOrEmpty(name)) {
+			if (!"all".equals(placeType) && !"sourceFile".equals(placeType))
+				place.goInto(placeType, name);
 		}
 		
-		place.add(name);
+		// Emma does some strange stuff while counting so we always need to keep the lines
+		// Always add "all" so it can be used for LOC
+		if ("method".equals(placeType) || "all".equals(placeType)) {
+			addCoverage(el, placeType, place);
+			
+		} else if ("class".equals(placeType)) {
+			addCoverage(el, placeType, place, "line", "method", "class");
+			
+		} else if ("package".equals(placeType)) {
+			addCoverage(el, placeType, place, "line");
+		}
 		
-		addCoverage(data, el, node.type, place);
+		extractChildren(el, place, "package", "package");
+		extractChildren(el, place, "srcfile", "sourceFile");
+		extractChildren(el, place, "class", "class");
+		extractChildren(el, place, "method", "method");
 		
-		if (node.skipForPlace)
-			place.remove(place.size() - 1);
-		
-		addChildren(data, el, nodes, i + 1, place);
-		
-		if (!node.skipForPlace)
-			place.remove(place.size() - 1);
+		place.goBackTo(bookmark);
 	}
 	
-	private static void addCoverage(BuildData data, Element el, String placeType, List<String> place) {
+	private static void extractChildren(Element el, PlacesTracker place, String xmlTag, String placeType) {
+		for (Element e : el.getChildren(xmlTag))
+			extract(e, placeType, place);
+	}
+	
+	private static void addCoverage(Element el, String placeType, PlacesTracker place, String... typeFilter) {
 		for (Element coverage : el.getChildren("coverage")) {
 			String type = emmaTypeToCoverageType(coverage.getAttributeValue("type"));
-			if (type == null) {
-				// TODO log.info("Ignoring coverage of " + placeType + " because of unknown type: " + type);
+			if (type == null)
 				continue;
-			}
+			if (typeFilter.length > 0 && ArrayUtils.indexOf(typeFilter, type) < 0)
+				continue;
 			
 			String value = coverage.getAttributeValue("value");
 			Matcher m = VALUE_PATTERN.matcher(value);
-			if (!m.matches()) {
-				// TODO log.info("Ignoring coverage of " + placeType + " because of unknown value: " + value);
+			if (!m.matches())
 				continue;
-			}
 			
 			double covered = Double.parseDouble(m.group(2));
 			double total = Double.parseDouble(m.group(3));
 			
-			List<String> infos = new ArrayList<String>();
-			infos.add("Coverage");
-			infos.add("Java");
-			infos.add("Emma");
-			infos.add(type);
-			infos.add("covered");
-			infos.add(placeType);
-			if (place != null)
-				infos.addAll(place);
-			
-			data.add(covered, infos.toArray(new String[infos.size()]));
-			
-			infos.set(4, "total");
-			data.add(total, infos.toArray(new String[infos.size()]));
+			place.addToData(covered, type, "covered");
+			place.addToData(total, type, "total");
 		}
 	}
 	

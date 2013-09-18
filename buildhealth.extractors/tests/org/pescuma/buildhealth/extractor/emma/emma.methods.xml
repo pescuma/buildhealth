@@ -28,7 +28,7 @@
 
             <method name="&lt;static initializer&gt;">
               <coverage type="method, %" value="0%   (0/1)"/>
-              <coverage type="block, %" value="0%   (0/3007)"/>
+              <coverage type="block, %" value="0%   (1/1234)"/>
               <coverage type="line, %" value="0%   (0/1)"/>
             </method>
             <method name="compiler_ja (): void">

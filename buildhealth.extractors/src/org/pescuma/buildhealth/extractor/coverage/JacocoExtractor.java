@@ -3,13 +3,12 @@ package org.pescuma.buildhealth.extractor.coverage;
 import static com.google.common.base.Objects.*;
 import static com.google.common.base.Strings.*;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-
-import com.google.common.base.Predicate;
 
 // http://www.eclemma.org/jacoco/
 public class JacocoExtractor extends BaseXMLExtractor {
@@ -23,17 +22,17 @@ public class JacocoExtractor extends BaseXMLExtractor {
 		checkRoot(doc, "report", filename);
 		
 		PlacesTracker place = new PlacesTracker(data, "Java", "JaCoCo");
-		extract(data, doc.getRootElement(), "all", place);
+		extract(doc.getRootElement(), "all", place);
 	}
 	
-	private static void extract(BuildData data, Element el, String placeType, PlacesTracker place) {
+	private static void extract(Element el, String placeType, PlacesTracker place) {
 		int bookmark = place.getBookmark();
 		
 		String name = getFullName(el);
 		
 		if (!isNullOrEmpty(name)) {
 			if ("package".equals(placeType)) {
-				place.goInto(placeType, name.split("/"));
+				place.goInto(placeType, name.replace('/', '.'));
 				
 			} else if ("class".equals(placeType)) {
 				String[] path = name.split("/");
@@ -44,47 +43,30 @@ public class JacocoExtractor extends BaseXMLExtractor {
 			}
 		}
 		
-		if ("method".equals(placeType)) {
-			addCoverage(data, el, placeType, place, new Predicate<String>() {
-				@Override
-				public boolean apply(String input) {
-					return !"method".equals(input) && !"class".equals(input);
-				}
-			});
+		// Always add "all" so it can be used for LOC
+		// Line is strange. Always add line
+		if ("method".equals(placeType) || "all".equals(placeType)) {
+			addCoverage(el, placeType, place);
 			
 		} else if ("class".equals(placeType)) {
-			addCoverage(data, el, placeType, place, new Predicate<String>() {
-				@Override
-				public boolean apply(String input) {
-					return "method".equals(input);
-				}
-			});
+			addCoverage(el, placeType, place, "line", "method", "class");
 			
-		} else if ("package".equals(placeType)) {
-			addCoverage(data, el, placeType, place, new Predicate<String>() {
-				@Override
-				public boolean apply(String input) {
-					return "class".equals(input);
-				}
-			});
+		} else {
+			addCoverage(el, placeType, place, "line");
 		}
 		
-		for (Element pkg : el.getChildren("package"))
-			extract(data, pkg, "package", place);
-		
-		for (Element group : el.getChildren("group"))
-			extract(data, group, "group", place);
-		
-		for (Element cls : el.getChildren("class"))
-			extract(data, cls, "class", place);
-		
-		for (Element method : el.getChildren("method"))
-			extract(data, method, "method", place);
-		
-		// for (Element source : el.getChildren("sourcefile"))
-		// extract(data, source, "sourceFile", place);
+		extractChildren(el, place, "package", "package");
+		extractChildren(el, place, "group", "group");
+		extractChildren(el, place, "class", "class");
+		extractChildren(el, place, "method", "method");
+		// extractChildren(el, place, "sourcefile", "sourceFile");
 		
 		place.goBackTo(bookmark);
+	}
+	
+	private static void extractChildren(Element el, PlacesTracker place, String xmlTag, String placeType) {
+		for (Element e : el.getChildren(xmlTag))
+			extract(e, placeType, place);
 	}
 	
 	private static String getFullName(Element el) {
@@ -93,16 +75,16 @@ public class JacocoExtractor extends BaseXMLExtractor {
 		String desc = el.getAttributeValue("desc");
 		if (!isNullOrEmpty(desc))
 			name = firstNonNull(name, "") + " " + desc;
+		
 		return name;
 	}
 	
-	private static void addCoverage(BuildData data, Element el, String placeType, PlacesTracker place,
-			Predicate<String> typeFilter) {
+	private static void addCoverage(Element el, String placeType, PlacesTracker place, String... typeFilter) {
 		for (Element coverage : el.getChildren("counter")) {
 			String type = jacocoTypeToCoverageType(coverage.getAttributeValue("type"));
 			if (type == null)
 				continue;
-			if (!typeFilter.apply(type))
+			if (typeFilter.length > 0 && ArrayUtils.indexOf(typeFilter, type) < 0)
 				continue;
 			
 			double missed = Double.parseDouble(coverage.getAttributeValue("missed"));
