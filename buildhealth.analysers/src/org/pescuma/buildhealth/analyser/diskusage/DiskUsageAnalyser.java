@@ -116,7 +116,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 				node = node.getChild(tag);
 			}
 			
-			String[] path = line.getColumn(COLUMN_PATH).split("(?<=[\\\\\\\\/])");
+			String[] path = line.getColumn(COLUMN_PATH).split("(?<=[\\\\/])");
 			for (String p : path)
 				if (!p.isEmpty())
 					node = node.getChild(p);
