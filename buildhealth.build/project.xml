@@ -185,7 +185,7 @@
 		<delete dir="${reports.pmd.dir}" quiet="true" />
 		<mkdir dir="${reports.pmd.dir}" />
 
-		<pmd shortFilenames="true">
+		<pmd>
 			<ruleset>rulesets/java/design.xml</ruleset>
 			<ruleset>java-basic</ruleset>
 			<formatter type="xml" toFile="${reports.pmd.dir}/pmd_report.xml" />

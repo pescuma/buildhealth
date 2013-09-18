@@ -193,7 +193,7 @@
 			<compute-tasks>
 				<fileset dir="${basedir}/..">
 					<include name="**/*.java" />
-					<exclude name="**/TasksExtractor*.java" />
+					<exclude name="**/TasksComputer*.java" />
 				</fileset>
 			</compute-tasks>
 		</buildhealth>
