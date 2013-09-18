@@ -38,7 +38,7 @@ import com.google.common.base.Function;
  * 
  * The number is the number of violations in that place. Empty line means all file.
  * 
- * To be able to use the details (anything after filename) at least the message is required.
+ * To be able to use the details (anything after filename) at least the filename is required.
  * 
  * Example:
  * 
@@ -281,7 +281,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		void add(Line line) {
 			getFramework(line.getColumn(COLUMN_LANGUAGE), line.getColumn(COLUMN_FRAMEWORK)).total += line.getValue();
 			
-			if (!line.getColumn(COLUMN_MESSAGE).isEmpty())
+			if (!line.getColumn(COLUMN_FILE).isEmpty())
 				violations.add(line);
 		}
 		
