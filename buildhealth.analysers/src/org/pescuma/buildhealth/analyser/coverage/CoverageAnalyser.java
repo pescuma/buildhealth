@@ -37,7 +37,7 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Coverage,language,framework,{what:covered,total,type},{type:line,block,method,class},place,place,place
+ * Coverage,language,framework,{what:covered,total,type},{type:line,block,method,class},place,place,place,...
  * </pre>
  * 
  * The value is the number for covered or total entries. For all entries you must have both.

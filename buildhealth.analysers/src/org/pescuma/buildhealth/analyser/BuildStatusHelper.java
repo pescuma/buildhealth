@@ -36,13 +36,4 @@ public class BuildStatusHelper {
 		}
 	}
 	
-	public static String[] splitCategory(String category) {
-		String regex = "[/\\\\.|:]";
-		category = category.replaceAll("^" + regex + "+", "");
-		category = category.replaceAll(regex + "+$", "");
-		if (category.isEmpty())
-			return new String[0];
-		return category.split(regex);
-	}
-	
 }

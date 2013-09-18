@@ -26,6 +26,10 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		data.add(val, "Performance", "Java", "Japex", type, name);
 	}
 	
+	private void create(String name1, String name2, String type, double val) {
+		data.add(val, "Performance", "Java", "Japex", type, name1, name2);
+	}
+	
 	@Test
 	public void testOnlyMs() {
 		create("ms", 1);
@@ -157,7 +161,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testReport_Full_OneEntry() {
-		create("A/B", "ms", 10);
+		create("A", "B", "ms", 10);
 		
 		Report report = createReport(Full);
 		
@@ -174,9 +178,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testReport_Full_FewEntries() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
+		create("A", "B", "ms", 10);
+		create("A", "C", "ms", 20);
+		create("X", "Y", "runsPerS", 10);
 		
 		Report report = createReport(Full);
 		
@@ -197,9 +201,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testReport_Full_RootSoSo() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
+		create("A", "B", "ms", 10);
+		create("A", "C", "ms", 20);
+		create("X", "Y", "runsPerS", 10);
 		
 		prefs.child("performance").child("ms").set("good", 5);
 		
@@ -221,36 +225,10 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	}
 	
 	@Test
-	public void testReport_Full_NodesDifferentStatusByFullName() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
-		
-		prefs.child("performance", "A/B", "ms").set("good", 5);
-		prefs.child("performance", "X/Y", "ms").set("warn", 30);
-		
-		Report report = createReport(Full);
-		
-		assertReport(new Report(Problematic, "Performance", "130 ms", //
-				new Report(Problematic, "Java", "130 ms", //
-						new Report(Problematic, "Japex", "130 ms", //
-								new Report(SoSo, "A", "30 ms", //
-										new Report(SoSo, "B", "10 ms"), //
-										new Report(Good, "C", "20 ms") //
-								), //
-								new Report(Problematic, "X", "10 runs per second", //
-										new Report(Problematic, "Y", "10 runs per second") //
-								) //
-						) //
-				) //
-				), report);
-	}
-	
-	@Test
-	public void testReport_Full_NodesDifferentStatusByNameSplit() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
+	public void testReport_Full_NodesDifferentStatus() {
+		create("A", "B", "ms", 10);
+		create("A", "C", "ms", 20);
+		create("X", "Y", "runsPerS", 10);
 		
 		prefs.child("performance", "Java", "Japex", "A", "B", "ms").set("good", 5);
 		prefs.child("performance", "Java", "Japex", "X", "Y", "ms").set("warn", 30);
@@ -274,9 +252,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testReport_Full_NodesDifferentStatusParentOverridesChild() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
+		create("A", "B", "ms", 10);
+		create("A", "C", "ms", 20);
+		create("X", "Y", "runsPerS", 10);
 		
 		prefs.child("performance", "Java", "Japex", "A", "ms").set("good", 5);
 		prefs.child("performance", "Java", "Japex", "A", "B", "ms").set("warn", 5);
@@ -300,9 +278,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testReport_FullHighlightProblems_NodesDifferentStatusByNameSplit() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
+		create("A", "B", "ms", 10);
+		create("A", "C", "ms", 20);
+		create("X", "Y", "runsPerS", 10);
 		
 		prefs.child("performance", "Java", "Japex", "A", "C", "ms").set("good", 5);
 		prefs.child("performance", "Java", "Japex", "X", "Y", "ms").set("warn", 30);
@@ -326,9 +304,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testReport_SummaryOnlyHighlightProblems_NodesDifferentStatusByNameSplit() {
-		create("A/B", "ms", 10);
-		create("A/C", "ms", 20);
-		create("X/Y", "runsPerS", 10);
+		create("A", "B", "ms", 10);
+		create("A", "C", "ms", 20);
+		create("X", "Y", "runsPerS", 10);
 		
 		prefs.child("performance", "Java", "Japex", "A", "C", "ms").set("good", 5);
 		

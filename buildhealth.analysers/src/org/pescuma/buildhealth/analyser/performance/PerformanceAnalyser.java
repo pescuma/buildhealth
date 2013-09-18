@@ -5,20 +5,17 @@ import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
-import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
@@ -32,17 +29,17 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Performance,language,framework,{type:ms,runsPerS},test
+ * Performance,language,framework,{type:ms,runsPerS},test,test,test,...
  * </pre>
  * 
  * Example:
  * 
  * <pre>
- * 10 | Performance,Java,Japex,ms,SerializaionA.small
- * 15 | Performance,Java,Japex,ms,SerializaionA.big
- * 7 | Performance,Java,Japex,ms,SerializaionB.small
- * 12 | Performance,Java,Japex,ms,SerializaionA.big
- * 10 | Performance,Java,Japex,runsPerS,Timers/Serializaion.big
+ * 10 | Performance,Java,Japex,ms,SerializaionA,small
+ * 15 | Performance,Java,Japex,ms,SerializaionA,big
+ * 7 | Performance,Java,Japex,ms,SerializaionB,small
+ * 12 | Performance,Java,Japex,ms,SerializaionA,big
+ * 10 | Performance,Java,Japex,runsPerS,Timers,Serializaion,big
  * </pre>
  */
 @MetaInfServices
@@ -51,7 +48,7 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	public static final int COLUMN_LANGUAGE = 1;
 	public static final int COLUMN_FRAMEWORK = 2;
 	public static final int COLUMN_TYPE = 3;
-	public static final int COLUMN_TEST = 4;
+	public static final int COLUMN_TEST_START = 4;
 	
 	public static final String TYPE_MS = "ms";
 	public static final String TYPE_RUNS_PER_S = "runsPerS";
@@ -79,16 +76,6 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 				TYPE_MS, "good"));
 		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>", "performace",
 				TYPE_MS, "warn"));
-		
-		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>", "performace",
-				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_RUNS_PER_S, "good"));
-		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>", "performace",
-				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_RUNS_PER_S, "warn"));
-		
-		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>", "performace",
-				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_MS, "good"));
-		result.add(new BuildHealthPreference("Maximun run time (ms) for a Good build", "<no limit>", "performace",
-				ANY_VALUE_KEY_PREFIX + "<test>", TYPE_MS, "warn"));
 		
 		result.add(new BuildHealthPreference("How to show the agregated results (runsPerS or ms)",
 				"<ms if both available, else what is available>", "performace", "report"));
@@ -136,12 +123,11 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
 			
-			String test = line.getColumn(COLUMN_TEST);
-			for (String piece : splitCategory(test))
-				node = node.getChild(piece);
+			String[] columns = line.getColumns();
+			for (int i = COLUMN_TEST_START; i < columns.length; i++)
+				node = node.getChild(columns[i]);
 			
 			Stats stats = node.getData();
-			stats.originalNames.add(test);
 			
 			if (TYPE_MS.equals(type))
 				stats.addMs(line.getValue());
@@ -189,7 +175,6 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	
 	private static class Stats extends TreeStats {
 		
-		final Set<String> originalNames = new HashSet<String>();
 		int msCount = 0;
 		double msTotal = 0;
 		double runsPerSTotal = 0;
@@ -226,17 +211,7 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		}
 		
 		private BuildStatus statusFromThreshold(Preferences pref, String type, double total, boolean biggerIsBetter) {
-			BuildStatus result = computeStatusFromThresholdIfExists(pref.child(getNames()).child(type), total,
-					biggerIsBetter);
-			
-			for (String originalName : originalNames)
-				if (!originalName.isEmpty())
-					result = BuildStatus.merge(
-							result,
-							computeStatusFromThresholdIfExists(pref.child(originalName).child(type), total,
-									biggerIsBetter));
-			
-			return result;
+			return computeStatusFromThresholdIfExists(pref.child(getNames()).child(type), total, biggerIsBetter);
 		}
 		
 		String toText(Preferences prefs) {

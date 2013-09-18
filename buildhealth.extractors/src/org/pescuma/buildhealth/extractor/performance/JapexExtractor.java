@@ -55,6 +55,6 @@ public class JapexExtractor extends BaseXMLExtractor {
 		String name = testCase.getAttributeValue("name", "<no name>");
 		double val = Double.parseDouble(testCase.getChildTextTrim("resultValue", testCase.getNamespace()));
 		
-		data.add(val, "Performance", "Java", "Japex", type, driver + "/" + name);
+		data.add(val, "Performance", "Java", "Japex", type, driver, name);
 	}
 }
