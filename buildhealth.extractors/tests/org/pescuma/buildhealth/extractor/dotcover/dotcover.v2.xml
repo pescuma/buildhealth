@@ -3,7 +3,7 @@
 	<Assembly Name="Assembly.Name" CoveredStatements="14" TotalStatements="32" CoveragePercent="44">
 		<Namespace Name="Namespace.Name" CoveredStatements="14" TotalStatements="32" CoveragePercent="44">
 			<Type Name="MyClass" CoveredStatements="14" TotalStatements="32" CoveragePercent="44">
-				<Constructor Name="MyClass()" CoveredStatements="0" TotalStatements="5" CoveragePercent="0" />
+				<Constructor Name="MyClass()" CoveredStatements="1" TotalStatements="4" CoveragePercent="0" />
 				<Method Name="Method1" CoveredStatements="0" TotalStatements="9" CoveragePercent="0" />
 				<Property Name="Prop1" CoveredStatements="0" TotalStatements="0" CoveragePercent="0">
 					<Method Name="set" CoveredStatements="0" TotalStatements="0" CoveragePercent="0" />

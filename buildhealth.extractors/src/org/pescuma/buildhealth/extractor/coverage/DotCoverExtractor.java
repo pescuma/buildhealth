@@ -2,9 +2,6 @@ package org.pescuma.buildhealth.extractor.coverage;
 
 import static com.google.common.base.Strings.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -22,19 +19,25 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 	protected void extractDocument(String filename, Document doc, BuildData data) {
 		checkRoot(doc, "Root", filename);
 		
-		List<String> place = new ArrayList<String>();
+		PlacesTracker place = new PlacesTracker(data, "C#", "dotCover");
 		extract(data, doc.getRootElement(), "all", place);
 	}
 	
-	private void extract(BuildData data, Element el, String placeType, List<String> place) {
+	private void extract(BuildData data, Element el, String placeType, PlacesTracker place) {
+		int bookmark = place.getBookmark();
+		
 		String name = el.getAttributeValue("Name");
-		if ("Root".equals(el.getName()) && "Root".equals(name))
-			name = null;
+		if (!isNullOrEmpty(name)) {
+			if ("package".equals(placeType)) {
+				place.goInto(placeType, name.split("\\."));
+				
+			} else if (!"all".equals(placeType)) {
+				place.goInto(placeType, name);
+			}
+		}
 		
-		if (!isNullOrEmpty(name))
-			place.add(name);
-		
-		addCoverage(data, el, placeType, place);
+		if ("method".equals(placeType))
+			addCoverage(data, el, placeType, place);
 		
 		extractChildren(data, el, place, "Assembly", "library");
 		extractChildren(data, el, place, "Namespace", "package");
@@ -47,38 +50,28 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 		extractChildren(data, el, place, "AnonymousMethod", "method");
 		
 		for (Element method : el.getChildren("OwnCoverage")) {
-			place.add("OwnCoverage");
+			int bookmark2 = place.getBookmark();
+			place.goInto("method", "OwnCoverage");
+			
 			extract(data, method, "method", place);
-			place.remove(place.size() - 1);
+			
+			place.goBackTo(bookmark2);
 		}
 		
-		if (!isNullOrEmpty(name))
-			place.remove(place.size() - 1);
+		place.goBackTo(bookmark);
 	}
 	
-	private void extractChildren(BuildData data, Element el, List<String> place, String xmlTag, String placeType) {
+	private void extractChildren(BuildData data, Element el, PlacesTracker place, String xmlTag, String placeType) {
 		for (Element e : el.getChildren(xmlTag))
 			extract(data, e, placeType, place);
 	}
 	
-	private static void addCoverage(BuildData data, Element el, String placeType, List<String> place) {
+	private static void addCoverage(BuildData data, Element el, String placeType, PlacesTracker place) {
 		double total = Double.parseDouble(el.getAttributeValue("TotalStatements"));
 		double covered = Double.parseDouble(el.getAttributeValue("CoveredStatements"));
 		
-		List<String> infos = new ArrayList<String>();
-		infos.add("Coverage");
-		infos.add("C#");
-		infos.add("dotCover");
-		infos.add("line");
-		infos.add("covered");
-		infos.add(placeType);
-		if (place != null)
-			infos.addAll(place);
-		
-		data.add(covered, infos.toArray(new String[infos.size()]));
-		
-		infos.set(4, "total");
-		data.add(total, infos.toArray(new String[infos.size()]));
+		place.addToData(covered, "line", "covered");
+		place.addToData(total, "line", "total");
 	}
 	
 }

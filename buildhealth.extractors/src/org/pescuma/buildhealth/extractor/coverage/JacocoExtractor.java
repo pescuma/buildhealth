@@ -3,12 +3,6 @@ package org.pescuma.buildhealth.extractor.coverage;
 import static com.google.common.base.Objects.*;
 import static com.google.common.base.Strings.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -28,7 +22,7 @@ public class JacocoExtractor extends BaseXMLExtractor {
 	protected void extractDocument(String filename, Document doc, BuildData data) {
 		checkRoot(doc, "report", filename);
 		
-		PlacesTracker place = new PlacesTracker(data);
+		PlacesTracker place = new PlacesTracker(data, "Java", "JaCoCo");
 		extract(data, doc.getRootElement(), "all", place);
 	}
 	
@@ -115,8 +109,8 @@ public class JacocoExtractor extends BaseXMLExtractor {
 			double covered = Double.parseDouble(coverage.getAttributeValue("covered"));
 			double total = covered + missed;
 			
-			addToData(data, covered, type, "covered", place.current);
-			addToData(data, total, type, "total", place.current);
+			place.addToData(covered, type, "covered");
+			place.addToData(total, type, "total");
 		}
 	}
 	
@@ -135,48 +129,5 @@ public class JacocoExtractor extends BaseXMLExtractor {
 			return "class";
 		else
 			return null;
-	}
-	
-	private static void addToData(BuildData data, double value, String type, String what, List<String> place) {
-		List<String> infos = new ArrayList<String>();
-		infos.add("Coverage");
-		infos.add("Java");
-		infos.add("JaCoCo");
-		infos.add(what);
-		infos.add(type);
-		infos.addAll(place);
-		data.add(value, infos.toArray(new String[infos.size()]));
-	}
-	
-	private class PlacesTracker {
-		
-		final BuildData data;
-		List<String> current = new ArrayList<String>();
-		Set<String> added = new HashSet<String>();
-		
-		PlacesTracker(BuildData data) {
-			this.data = data;
-		}
-		
-		void goInto(String placeType, String... names) {
-			for (String name : names) {
-				current.add(name);
-				
-				String full = StringUtils.join(current, "\n");
-				if (!added.contains(full)) {
-					added.add(full);
-					addToData(data, 0, placeType, "type", current);
-				}
-			}
-		}
-		
-		int getBookmark() {
-			return current.size();
-		}
-		
-		void goBackTo(int bookmark) {
-			while (current.size() > bookmark)
-				current.remove(current.size() - 1);
-		}
 	}
 }
