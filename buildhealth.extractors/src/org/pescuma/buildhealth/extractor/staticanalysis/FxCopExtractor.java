@@ -34,8 +34,9 @@ public class FxCopExtractor extends BaseXMLExtractor {
 		extractMessages(data, el, target, rules);
 		
 		processChildren(data, el, "Target", "", rules);
-		processChildren(data, el, "Namespace", "", rules);
+		processChildren(data, el, "Resource", "", rules);
 		processChildren(data, el, "Module", "", rules);
+		processChildren(data, el, "Namespace", "", rules);
 		processChildren(data, el, "Type", target + ".", rules);
 		processChildren(data, el, "Member", target + " ", rules);
 		processChildren(data, el, "Accessor", target + " ", rules);
