@@ -5,13 +5,13 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.utils.FilenameToLanguage;
 
 // https://stylecop.codeplex.com/
 // Based on Jenkins Violations plugin: https://github.com/jenkinsci/violations-plugin
 public class StyleCopExtractor extends BaseXMLExtractor {
 	
-	private static final String[] RULE_PREFIXES = new String[] { "Microsoft.SourceAnalysis.", "Microsoft.StyleCop." };
+	private static final String[] RULE_PREFIXES = new String[] { "Microsoft.SourceAnalysis.CSharp.",
+			"Microsoft.StyleCop.CSharp." };
 	
 	public StyleCopExtractor(PseudoFiles files) {
 		super(files);
@@ -45,10 +45,6 @@ public class StyleCopExtractor extends BaseXMLExtractor {
 				category += '/';
 			category += rule;
 			
-			String language = FilenameToLanguage.detectLanguage(source);
-			if (language.isEmpty())
-				language = "C#"; // guess
-				
 			String url;
 			if (!ruleId.isEmpty())
 				url = "http://www.stylecop.com/docs/" + ruleId + ".html";
@@ -61,8 +57,8 @@ public class StyleCopExtractor extends BaseXMLExtractor {
 			else
 				description = "";
 			
-			data.add(1, "Static analysis", language, "StyleCop", source, lineNumber, category, message, "",
-					description, url);
+			data.add(1, "Static analysis", "C#", "StyleCop", source, lineNumber, category, message, "", description,
+					url);
 		}
 	}
 }

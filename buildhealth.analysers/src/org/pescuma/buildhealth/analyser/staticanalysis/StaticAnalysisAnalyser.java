@@ -243,11 +243,19 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				if (cmp != 0)
 					return cmp;
 				
-				cmp = o1.getLine().compareToIgnoreCase(o2.getLine());
+				cmp = toInt(o1.getLine()) - toInt(o2.getLine());
 				if (cmp != 0)
 					return cmp;
 				
 				return o1.getMessage().compareToIgnoreCase(o2.getMessage());
+			}
+			
+			private int toInt(String line) {
+				try {
+					return Integer.parseInt(line);
+				} catch (NumberFormatException e) {
+					return 0;
+				}
 			}
 		});
 		
