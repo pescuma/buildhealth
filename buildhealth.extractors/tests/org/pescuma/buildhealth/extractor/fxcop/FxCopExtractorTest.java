@@ -35,7 +35,7 @@ public class FxCopExtractorTest extends BaseExtractorTest {
 						"FxCop",
 						"Namespace.Name",
 						"",
-						"Microsoft/Design/Avoid namespaces with few types",
+						"Design/Avoid namespaces with few types",
 						"Consider merging the types defined in 'Namespace.Name' with another namespace.",
 						"Medium",
 						"Level: Warning\n" //
@@ -60,7 +60,7 @@ public class FxCopExtractorTest extends BaseExtractorTest {
 						"FxCop",
 						"c:\\devel\\asd\\FcType1.cs",
 						"21",
-						"Microsoft/Design/Do not raise exceptions in unexpected locations",
+						"Design/Do not raise exceptions in unexpected locations",
 						"'FcType1.MyProperty.get()' creates an exception of type 'NotImplementedException', an exception type that should not be raised in a property. If this exception instance might be raised, use a different exception type, convert this property into a method, or change this property's logic so that it no longer raises an exception.",
 						"High",
 						"Level: Error\n" //

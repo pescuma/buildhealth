@@ -23,6 +23,7 @@ import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FindBugsExtractor
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FxCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.GendarmeExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.staticanalysis.StyleCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.AUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.BoostTestExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.CppTestExtractorCommand;
@@ -61,7 +62,7 @@ public class BuildHealthCli {
 						TusarExtractorCommand.class, //
 						EmmaExtractorCommand.class, JacocoExtractorCommand.class, DotCoverExtractorCommand.class, //
 						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class, //
-						GendarmeExtractorCommand.class, FxCopExtractorCommand.class, //
+						GendarmeExtractorCommand.class, FxCopExtractorCommand.class, StyleCopExtractorCommand.class, //
 						JapexExtractorCommand.class, //
 						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class);
 		

@@ -28,6 +28,7 @@
 	<typedef name="add-findbugs" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.FindBugsExtractorAntTask" />
 	<typedef name="add-gendarme" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.GendarmeExtractorAntTask" />
 	<typedef name="add-fxcop" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.FxCopExtractorAntTask" />
+	<typedef name="add-stylecop" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.StyleCopExtractorAntTask" />
 
 	<typedef name="add-japex" classname="org.pescuma.buildhealth.ant.tasks.add.performance.JapexExtractorAntTask" />
 

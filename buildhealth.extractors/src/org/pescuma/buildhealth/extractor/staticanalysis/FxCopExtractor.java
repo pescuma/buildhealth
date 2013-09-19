@@ -17,6 +17,8 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 // http://msdn.microsoft.com/en-us/library/bb429476%28v=vs.80%29.aspx
 public class FxCopExtractor extends BaseXMLExtractor {
 	
+	private static final String RULE_PREFIX = "Microsoft.";
+	
 	public FxCopExtractor(PseudoFiles files) {
 		super(files);
 	}
@@ -213,9 +215,12 @@ public class FxCopExtractor extends BaseXMLExtractor {
 	private String toBuildHealthCategory(String category, String typeName, String name) {
 		StringBuilder result = new StringBuilder();
 		
-		if (!category.isEmpty())
+		if (!category.isEmpty()) {
+			if (category.startsWith(RULE_PREFIX))
+				category = category.substring(RULE_PREFIX.length());
+			
 			result.append(category.replace('.', '/')).append('/');
-		
+		}
 		if (!name.isEmpty())
 			result.append(name);
 		else

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -37,6 +38,17 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 		if (!doc.getRootElement().getName().equals(name))
 			throw new BuildDataExtractorException("Invalid file format: top node must be " + name + " (in "
 					+ firstNonNull(filename, "<stream>") + ")");
+	}
+	
+	protected void checkRoot(Document doc, String[] names, String filename) {
+		boolean found = false;
+		for (String name : names) {
+			if (doc.getRootElement().getName().equals(name))
+				found = true;
+		}
+		if (!found)
+			throw new BuildDataExtractorException("Invalid file format: top node must be one of "
+					+ StringUtils.join(names, " or ") + " (in " + firstNonNull(filename, "<stream>") + ")");
 	}
 	
 	protected List<Element> findElementsXPath(Document doc, String xpath) {
