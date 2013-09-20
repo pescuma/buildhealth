@@ -19,6 +19,7 @@
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.2.3" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.2.3" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.2.3" />
 
 		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
 	</dependencies>

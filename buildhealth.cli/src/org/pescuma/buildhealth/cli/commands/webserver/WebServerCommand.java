@@ -11,22 +11,26 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 public class WebServerCommand extends BuildHealthCliCommand {
 	
 	@Arguments(title = "port", description = "The port to bind the webserver (default: 80190)", required = false)
-	public int port = 80190;
+	public int port = 8190;
 	
 	@Override
 	public void execute() {
-		BuildHealthWebServer server = new BuildHealthWebServer(null, port);
+		BuildHealthWebServer server = new BuildHealthWebServer(buildHealth, null, port);
 		
 		try {
 			server.start();
 		} catch (IOException e) {
-			System.err.println("Couldn't start server:\n");
+			System.err.println("Couldn't start server:");
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		
-		System.out.println("Web server started at http://localhost:" + port + "\n");
-		System.out.println("Hit Enter to stop...\n");
+		String url = "http://localhost:" + port;
+		System.out.println("Web server started at " + url);
+		System.out.println("Available urls:");
+		System.out.println("  " + url + "/report.json => Report in JSON format");
+		System.out.println();
+		System.out.println("Hit Enter to stop...");
 		
 		try {
 			System.in.read();

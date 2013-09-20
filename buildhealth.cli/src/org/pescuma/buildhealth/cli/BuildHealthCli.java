@@ -39,6 +39,7 @@ import org.pescuma.buildhealth.cli.commands.compute.LOCComputerCommand;
 import org.pescuma.buildhealth.cli.commands.compute.staticanalysis.TasksExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.config.ListConfigCommand;
 import org.pescuma.buildhealth.cli.commands.config.SetConfigCommand;
+import org.pescuma.buildhealth.cli.commands.webserver.WebServerCommand;
 
 public class BuildHealthCli {
 	
@@ -49,7 +50,7 @@ public class BuildHealthCli {
 				.withDescription("check the quality of your builds")
 				.withDefaultCommand(Help.class)
 				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class,
-						NotifyCommand.class);
+						NotifyCommand.class, WebServerCommand.class);
 		
 		builder.withGroup("add").withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)

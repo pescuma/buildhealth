@@ -15,5 +15,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.analysers"/>
 	<classpathentry kind="lib" path="lib/auto/compile/jackson-core-2.2.3-jar.jar" sourcepath="lib/auto/compile/jackson-core-2.2.3-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/jackson-databind-2.2.3-jar.jar" sourcepath="lib/auto/compile/jackson-databind-2.2.3-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/jackson-annotations-2.2.3-jar.jar" sourcepath="lib/auto/compile/jackson-annotations-2.2.3-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

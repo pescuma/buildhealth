@@ -154,7 +154,7 @@
 		         classpath="${build.dir}/buildhealth-${version}.jar" />
 
 		<buildhealth home="${reports.dir}/builhealth" report="true" notify="true">
-			<config key="coverage good" value="70" />
+			<config key="coverage good" value="65" />
 			<compute-loc>
 				<fileset dir="${basedir}/..">
 					<exclude name="**/bin/**" />
