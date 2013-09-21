@@ -284,26 +284,39 @@
 		<if>
 			<equals arg1="${project}" arg2="buildhealth.core" />
 			<then>
-				<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime" />
+				<ivy:makepom ivyfile="${lib.dir}/ivy.xml"
+				             pomfile="${dist.dir}/maven/${project}.pom"
+				             conf="default,runtime">
+					<mapping conf="default" scope="compile" />
+					<mapping conf="runtime" scope="runtime" />
+				</ivy:makepom>
 			</then>
 			<elseif>
-				<equals arg1="${project}" arg2="buildhealth.extractors" />
+				<or>
+					<equals arg1="${project}" arg2="buildhealth.extractors" />
+					<equals arg1="${project}" arg2="buildhealth.analysers" />
+					<equals arg1="${project}" arg2="buildhealth.notifiers" />
+				</or>
 				<then>
-					<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime">
-						<dependency group="org.pecuma"
-						            artifact="buildhealth.core"
-						            version="${version}"
-						            scope="compile" />
+					<ivy:makepom ivyfile="${lib.dir}/ivy.xml"
+					             pomfile="${dist.dir}/maven/${project}.pom"
+					             conf="default,runtime">
+						<mapping conf="default" scope="compile" />
+						<mapping conf="runtime" scope="runtime" />
+						<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" />
 					</ivy:makepom>
 				</then>
 			</elseif>
 			<else>
-				<ivy:makepom ivyfile="${lib.dir}/ivy.xml" pomfile="${dist.dir}/maven/${project}.pom" conf="runtime">
-					<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" scope="compile" />
-					<dependency group="org.pecuma"
-					            artifact="buildhealth.extractors"
-					            version="${version}"
-					            scope="compile" />
+				<ivy:makepom ivyfile="${lib.dir}/ivy.xml"
+				             pomfile="${dist.dir}/maven/${project}.pom"
+				             conf="default,runtime">
+					<mapping conf="default" scope="compile" />
+					<mapping conf="runtime" scope="runtime" />
+					<dependency group="org.pecuma" artifact="buildhealth.core" version="${version}" />
+					<dependency group="org.pecuma" artifact="buildhealth.extractors" version="${version}" />
+					<dependency group="org.pecuma" artifact="buildhealth.analysers" version="${version}" />
+					<dependency group="org.pecuma" artifact="buildhealth.notifiers" version="${version}" />
 				</ivy:makepom>
 			</else>
 		</if>

@@ -129,7 +129,8 @@
 		<launch4j>
 			<config headerType="console"
 			        jarPath="${build.dir}\buildhealth.cli-${version}.jar"
-			        outfile="${build.dir}\buildhealth-${version}.exe">
+			        outfile="${build.dir}\buildhealth-${version}.exe"
+					icon="${basedir}\..\icons\bh.ico">
 				<jre minVersion="1.6.0" />
 				<versionInfo fileVersion="${version}.0.0"
 				             txtFileVersion="${version}"
