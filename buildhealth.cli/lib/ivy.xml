@@ -21,6 +21,7 @@
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.2.3" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.2.3" />
 		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-xml" rev="2.2.3" />
+		<dependency org="org.codehaus.woodstox" name="woodstox-core-asl" rev="4.2.0" />
 
 		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
 	</dependencies>

@@ -1,11 +1,13 @@
 package org.pescuma.buildhealth.cli.commands.webserver;
 
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import io.airlift.command.Arguments;
 import io.airlift.command.Command;
 
 import java.io.IOException;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
+import org.pescuma.buildhealth.core.Report;
 
 @Command(name = "webserver", description = "Serve the results using a embeded webserver")
 public class WebServerCommand extends BuildHealthCliCommand {
@@ -15,7 +17,9 @@ public class WebServerCommand extends BuildHealthCliCommand {
 	
 	@Override
 	public void execute() {
-		BuildHealthWebServer server = new BuildHealthWebServer(buildHealth, null, port);
+		Report report = buildHealth.generateReport(Full);
+		
+		BuildHealthWebServer server = new BuildHealthWebServer(report, null, port);
 		
 		try {
 			server.start();

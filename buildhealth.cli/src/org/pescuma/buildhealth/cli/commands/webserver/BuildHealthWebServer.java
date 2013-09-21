@@ -1,14 +1,11 @@
 package org.pescuma.buildhealth.cli.commands.webserver;
 
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-import org.pescuma.buildhealth.core.BuildHealth;
 import org.pescuma.buildhealth.core.Report;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -32,23 +29,31 @@ import fi.iki.elonen.NanoHTTPD;
 
 public class BuildHealthWebServer extends NanoHTTPD {
 	
-	private final BuildHealth buildHealth;
+	private final Report report;
 	
-	public BuildHealthWebServer(BuildHealth buildHealth, String hostname, int port) {
+	public BuildHealthWebServer(Report report, String hostname, int port) {
 		super(hostname, port);
 		
-		this.buildHealth = buildHealth;
+		this.report = report;
 	}
 	
 	@Override
 	public Response serve(HTTPSession session) {
-		log(session);
-		
-		if ("/report.json".equals(session.getUri()))
-			return reportJson();
-		
-		else if ("/report.xml".equals(session.getUri()))
-			return reportXml();
+		try {
+			
+			log(session);
+			
+			if ("/report.json".equals(session.getUri()))
+				return reportJson();
+			
+			else if ("/report.xml".equals(session.getUri()))
+				return reportXml();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Response(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT,
+					"Exception while processing page:\n" + e);
+		}
 		
 		return super.serve(session);
 	}
@@ -59,46 +64,29 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		System.out.println(log.toString());
 	}
 	
-	private Response reportJson() {
-		Report report = buildHealth.generateReport(Full);
+	private Response reportJson() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
 		
-		try {
-			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
-			
-			mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-			mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
-			
-			StringWriter result = new StringWriter();
-			mapper.writeValue(result, report);
-			return new Response(Response.Status.OK, "application/json", result.toString());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new Response(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, e.getMessage());
-		}
+		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+		mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
+		
+		StringWriter result = new StringWriter();
+		mapper.writeValue(result, report);
+		return new Response(Response.Status.OK, "application/json", result.toString());
 	}
 	
-	private Response reportXml() {
-		Report report = buildHealth.generateReport(Full);
+	private Response reportXml() throws IOException {
+		XmlMapper mapper = new XmlMapper();
+		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
+		AnnotationIntrospector first = new SimpleTypesAsAttributesAnnotationIntrospector();
+		AnnotationIntrospector second = new JacksonXmlAnnotationIntrospector(false);
+		mapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(first, second));
 		
-		try {
-			
-			XmlMapper mapper = new XmlMapper();
-			mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
-			AnnotationIntrospector first = new SimpleTypesAsAttributesAnnotationIntrospector();
-			AnnotationIntrospector second = new JacksonXmlAnnotationIntrospector(false);
-			mapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(first, second));
-			
-			StringWriter result = new StringWriter();
-			mapper.writeValue(result, report);
-			return new Response(Response.Status.OK, "application/xml", result.toString());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new Response(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, e.getMessage());
-		}
+		StringWriter result = new StringWriter();
+		mapper.writeValue(result, report);
+		return new Response(Response.Status.OK, "application/xml", result.toString());
+		
 	}
 	
 	private static class SimpleTypesAsAttributesAnnotationIntrospector extends AnnotationIntrospector implements

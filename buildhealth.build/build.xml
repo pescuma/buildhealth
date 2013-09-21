@@ -6,6 +6,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
 	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/lib/proguard-4.9.jar" />
+	<taskdef resource="org/pescuma/mergeservices/antlib.xml" classpath="${basedir}/lib/merge-services.jar" />
 
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="build.tmp.dir" value="${build.dir}/tmp" />
@@ -47,10 +48,28 @@
 		</for>
 
 		<delete dir="${build.tmp.dir}/META-INF" includeemptydirs="true">
-			<exclude name="services/**" />
 			<exclude name="native/**" />
 			<exclude name="*.default" />
 		</delete>
+
+		<for list="${projs}" param="proj">
+			<sequential>
+				<merge-services dest="${build.tmp.dir}">
+					<fileset dir="../@{proj}/build/dist">
+						<include name="**/*.jar" />
+						<exclude name="**/*-source.jar" />
+						<exclude name="**/*-tests.jar" />
+					</fileset>
+					<fileset dir="../@{proj}/lib">
+						<include name="**/*.jar" />
+						<exclude name="**/*-source.jar" />
+						<exclude name="**/ivy-*.jar" />
+						<exclude name="**/ant-*.jar" />
+						<exclude name="auto/compile/**/*" />
+					</fileset>
+				</merge-services>
+			</sequential>
+		</for>
 		<delete file="${build.tmp.dir}/META-INF/services/javax.annotation.processing.Processor" />
 
 		<delete dir="${build.dir}/buildhealth*.jar" quiet="true" />
@@ -67,6 +86,8 @@
 	</target>
 
 	<target name="onejar.all">
+		<delete file="${build.dir}/${build.dir}/buildhealth-${version}.jar" quiet="true" />
+
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
@@ -78,6 +99,8 @@
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			-keep class org.pescuma.buildhealth.ant.** {*;}
 
+			-keep class org.pescuma.buildhealth.core.Report {*;}
+			-keep class * extends org.pescuma.buildhealth.core.Report {*;}
 			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class * implements org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
@@ -87,22 +110,31 @@
 			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
 			-keep class net.sf.saxon.event.MessageEmitter {*;}
 			-keep class com.thalesgroup.dtkit.junit.* {*;}
+			-keep class com.ctc.wstx.stax.WstxInputFactory {*;}
+			-keep class com.ctc.wstx.stax.WstxOutputFactory {*;}
+			-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature {*;}
+			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
+			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
 			
 			-dontnote **
 		</proguard>
 	</target>
 
 	<target name="onejar.cli">
+		<delete file="${build.dir}/buildhealth.cli-${version}.jar" quiet="true" />
+
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
-			-outjars     "${build.dir}/buildhealth.cli-${version}.jar"
+			-outjars     "${build.dir}/buildhealth.cli-${version}.jar" 
 			-dontoptimize
 			-dontobfuscate
 			-dontwarn
-				
+			
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			
+			-keep class org.pescuma.buildhealth.core.Report {*;}
+			-keep class * extends org.pescuma.buildhealth.core.Report {*;}
 			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class * implements org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
@@ -112,6 +144,11 @@
 			-keep class net.sf.saxon.dom.DOMObjectModel {*;}
 			-keep class net.sf.saxon.event.MessageEmitter {*;}
 			-keep class com.thalesgroup.dtkit.junit.* {*;}
+			-keep class com.ctc.wstx.stax.WstxInputFactory {*;}
+			-keep class com.ctc.wstx.stax.WstxOutputFactory {*;}
+			-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature {*;}
+			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
+			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
 			
 			-dontnote **
 		</proguard>
@@ -130,7 +167,7 @@
 			<config headerType="console"
 			        jarPath="${build.dir}\buildhealth.cli-${version}.jar"
 			        outfile="${build.dir}\buildhealth-${version}.exe"
-					icon="${basedir}\..\icons\bh.ico">
+			        icon="${basedir}\..\icons\bh.ico">
 				<jre minVersion="1.6.0" />
 				<versionInfo fileVersion="${version}.0.0"
 				             txtFileVersion="${version}"
