@@ -111,7 +111,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		if (summaryOnly)
 			removeNonSummaryNodes(tree, highlighProblems);
 		
-		return asList(toReport(tree.getRoot(), getName(), prefs, highlighProblems, 2));
+		return asList(toReport(tree.getRoot(), getName(), prefs, highlighProblems, 1));
 	}
 	
 	private SimpleTree<Stats> buildTree(BuildData data) {

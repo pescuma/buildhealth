@@ -169,11 +169,11 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full);
 		
 		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1", //
-				new Report(Good, "C++", "4", "CppLint: 3, Task: 1", //
+				new Report(Good, "C++", "4", "", //
 						new Report(Good, "CppLint", "3"), //
 						new Report(Good, "Task", "1") //
 				), //
-				new Report(Good, "Java", "1", "Task: 1", //
+				new Report(Good, "Java", "1", "", //
 						new Report(Good, "Task", "1") //
 				)//
 				), report);
