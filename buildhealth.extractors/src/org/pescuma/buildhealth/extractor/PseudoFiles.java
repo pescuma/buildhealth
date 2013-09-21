@@ -26,15 +26,26 @@ public class PseudoFiles {
 	}
 	
 	public PseudoFiles(File file) {
-		this.files.add(file);
+		this.files.add(fixFileName(file));
 		this.stream = null;
 		this.streamFilename = null;
 	}
 	
 	public PseudoFiles(List<File> files) {
-		this.files.addAll(files);
+		for (File file : files)
+			this.files.add(fixFileName(file));
 		this.stream = null;
 		this.streamFilename = null;
+	}
+	
+	private File fixFileName(File file) {
+		String name = file.getPath();
+		if (name.length() > 2 //
+				&& ((name.startsWith("'") && name.endsWith("'")) //
+				|| (name.startsWith("\"") && name.endsWith("\""))))
+			file = new File(name.substring(1, name.length() - 1));
+		
+		return file.getAbsoluteFile();
 	}
 	
 	public boolean isStream() {
