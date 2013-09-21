@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,9 +32,18 @@ import au.com.bytecode.opencsv.CSVWriter;
 // Based on https://github.com/jenkinsci/tasks-plugin/blob/master/src/main/java/hudson/plugins/tasks/parser/TaskScanner.java by Ulli Hafner
 public class TasksComputer implements BuildDataComputer {
 	
+	private static final Map<String, String> commentTerminators = new HashMap<String, String>();
+	static {
+		commentTerminators.put("Java", "*/");
+		commentTerminators.put("Javascript", "*/");
+		commentTerminators.put("C", "*/");
+		commentTerminators.put("C++", "*/");
+	}
+	
 	private final PseudoFiles files;
-	private final Pattern[] patterns;
 	private final String[] markers;
+	private final Pattern[] patterns;
+	private final Pattern ownerPattern = Pattern.compile("^\\[([^]]+)\\]");
 	
 	public TasksComputer(PseudoFiles files) {
 		this(files, false);
@@ -95,19 +106,20 @@ public class TasksComputer implements BuildDataComputer {
 	private void extractTo(CSVWriter out, BuildDataComputerTracker tracker) {
 		try {
 			if (files.isStream()) {
-				extractStream(firstNonNull(files.getStreamFilename(), "<stream>"),
+				extractStream(firstNonNull(files.getStreamFilename(), "<stream>"), null,
 						new InputStreamReader(files.getStream()), out);
 				tracker.onStreamProcessed();
 				
 			} else {
 				for (File file : files.getFiles()) {
-					if (!isKnownFileType(file.getPath()))
+					String language = detectLanguage(file.getPath());
+					if (language.isEmpty())
 						continue;
 					
 					FileReader reader = new FileReader(file);
 					try {
 						
-						extractStream(file.getPath(), reader, out);
+						extractStream(file.getPath(), language, reader, out);
 						tracker.onFileProcessed(file);
 						
 					} finally {
@@ -120,7 +132,10 @@ public class TasksComputer implements BuildDataComputer {
 		}
 	}
 	
-	private void extractStream(String filename, Reader reader, CSVWriter out) throws IOException {
+	private void extractStream(String filename, String language, Reader reader, CSVWriter out) throws IOException {
+		if (language == null)
+			language = detectLanguage(filename);
+		
 		LineIterator it = IOUtils.lineIterator(reader);
 		int lineNum = 0;
 		while (it.hasNext()) {
@@ -142,14 +157,42 @@ public class TasksComputer implements BuildDataComputer {
 				if (end < line.length()) {
 					text = line.substring(end).trim();
 					
-					if (text.startsWith(":"))
-						text = text.substring(1).trim();
+					text = removeSeparators(text);
 				}
 				
-				write(out, Double.toString(1), "Static analysis", detectLanguage(filename), "Tasks", filename,
-						Integer.toString(lineNum), marker, text);
+				String terminator = commentTerminators.get(language);
+				if (terminator != null) {
+					int pos = text.indexOf(terminator);
+					if (pos >= 0)
+						text = text.substring(0, pos).trim();
+				}
+				
+				Matcher ownerMatcher = ownerPattern.matcher(text);
+				String owner = "";
+				if (ownerMatcher.find()) {
+					owner = ownerMatcher.group(1).trim();
+					text = text.substring(ownerMatcher.end()).trim();
+				}
+				
+				StringBuilder message = new StringBuilder();
+				message.append(text);
+				if (!owner.isEmpty()) {
+					if (message.length() > 0)
+						message.append(" ");
+					message.append("(").append(owner).append(")");
+				}
+				
+				write(out, Double.toString(1), "Static analysis", language, "Tasks", filename,
+						Integer.toString(lineNum), marker, message.toString());
 			}
 		}
+	}
+	
+	private String removeSeparators(String text) {
+		if (text.startsWith(":"))
+			return text.substring(1).trim();
+		else
+			return text;
 	}
 	
 	private void write(CSVWriter out, String... line) {

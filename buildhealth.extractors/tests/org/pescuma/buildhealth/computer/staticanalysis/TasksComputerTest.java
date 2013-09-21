@@ -47,9 +47,17 @@ public class TasksComputerTest extends BaseExtractorTest {
 				0.001);
 	}
 	
+	private TasksComputer computerFor(String filename, String text) {
+		return new TasksComputer(new PseudoFiles(new ByteArrayInputStream(text.getBytes()), filename));
+	}
+	
+	private TasksComputer computerFor(String text) {
+		return new TasksComputer(new PseudoFiles(new ByteArrayInputStream(text.getBytes())));
+	}
+	
 	@Test
 	public void testRemoveColon() {
-		TasksComputer extractor = new TasksComputer(new PseudoFiles(new ByteArrayInputStream("TODO: a".getBytes())));
+		TasksComputer extractor = computerFor("TODO: a");
 		
 		computeAndExtract(extractor);
 		
@@ -60,13 +68,46 @@ public class TasksComputerTest extends BaseExtractorTest {
 	
 	@Test
 	public void testRemoveColonWithSpaceBefore() {
-		TasksComputer extractor = new TasksComputer(new PseudoFiles(new ByteArrayInputStream("TODO :".getBytes())));
+		TasksComputer extractor = computerFor("TODO : ");
 		
 		computeAndExtract(extractor);
 		
 		assertEquals(1, table.size());
 		
 		assertEquals(1, table.get("Static analysis", "", "Tasks", "<stream>", "1", "TODO", ""), 0.001);
+	}
+	
+	@Test
+	public void testDetectOwnerWithText() {
+		TasksComputer extractor = computerFor("TODO [pescuma] Works ");
+		
+		computeAndExtract(extractor);
+		
+		assertEquals(1, table.size());
+		
+		assertEquals(1, table.get("Static analysis", "", "Tasks", "<stream>", "1", "TODO", "Works (pescuma)"), 0.001);
+	}
+	
+	@Test
+	public void testDetectOwnerWithoutText() {
+		TasksComputer extractor = computerFor("TODO [pescuma]");
+		
+		computeAndExtract(extractor);
+		
+		assertEquals(1, table.size());
+		
+		assertEquals(1, table.get("Static analysis", "", "Tasks", "<stream>", "1", "TODO", "(pescuma)"), 0.001);
+	}
+	
+	@Test
+	public void testTerminator() {
+		TasksComputer extractor = computerFor("a.java", " /* TODO abc */");
+		
+		computeAndExtract(extractor);
+		
+		assertEquals(1, table.size());
+		
+		assertEquals(1, table.get("Static analysis", "Java", "Tasks", "a.java", "1", "TODO", "abc"), 0.001);
 	}
 	
 	@Test
