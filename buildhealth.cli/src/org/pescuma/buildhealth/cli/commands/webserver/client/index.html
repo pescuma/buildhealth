@@ -174,17 +174,39 @@ function build(id, data) {
 	if ($("." + id).length)
 		return;
 	
+	var config;
+	
+	if (id == "diskusage") {
+		config = [
+			{ "header": "File", "data": "name" },
+			{ "header": "Size", "data": "value" }
+		];
+		
+	} else if (id == "linesofcode") {
+		config = [
+			{ "header": "Type", "data": "name" },
+			{ "header": "Number of Lines", "data": "value" }
+		];
+		
+	} else {
+		config = [
+			{ "header": "Name", "data": "name" },
+			{ "header": "Value", "data": "value" },
+			{ "header": "Description", "data": "description" }
+		];
+	}
+	
 	var panel = $(".tree-template").clone();
 	panel.attr("class", "container item " + id);
 	panel.find(".main-text").text(fullText(data));
 	panel.find(".main-img").attr("src", createIcon(id, data.status));
 	
 	var tree = $('<table></table>').addClass('tree');
-	addHeaders(tree, 'Name', 'Value', 'Description');
+	addHeaders(tree, config);
 	
 	var tbody = $('<tbody></tbody>');
 	for(var i in data.children) 
-		createLines(tbody, "", "row-" + i, data.children[i]);
+		createLines(tbody, "", "row-" + i, data.children[i], config);
 	
 	tree.append(tbody);
 
@@ -194,32 +216,29 @@ function build(id, data) {
 	$("body").append(panel);
 }
 
-function addHeaders() {
-	var tree = arguments[0];
-	
+function addHeaders(tree, config) {
 	var row = $('<tr></tr>');
-	for (var i = 1; i < arguments.length; i++) 
-		addTh(row, arguments[i]);
+	for (var i in config) 
+		addTh(row, config[i].header);
 	
 	var thead = $('<thead></thead>');
 	thead.append(row);
 	tree.append(thead);
 }
 
-function createLines(tree, parentId, id, data) {
+function createLines(tree, parentId, id, data, config) {
 	var row = $('<tr></tr>');
 	row.attr("data-tt-id", id);
 	if (parentId != '')
 		row.attr("data-tt-parent-id", parentId);
 	
-	addTd(row, data.name);	
-	addTd(row, data.value);	
-	addTd(row, data.description);	
+	for(var i in config)
+		addTd(row, data[config[i].data]);	
 	
 	tree.append(row);
 	
 	for(var i in data.children) 
-		createLines(tree, id, id + "-" + i, data.children[i]);
+		createLines(tree, id, id + "-" + i, data.children[i], config);
 }
 
 function addTd(row, name) {
