@@ -1,0 +1,63 @@
+table.treetable {
+  margin-left: 1px;
+  border: 1px solid #888;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.treetable thead {
+  background: #aaa url(../images/bg-table-thead.png) repeat-x top left;
+}
+
+table.treetable thead tr th {
+  border: 1px solid #888;
+  font-weight: normal;
+  padding: .3em 1em .1em 1em;
+  text-align: left;
+}
+
+table.treetable tbody tr td {
+  cursor: default;
+  padding: .3em 1em;
+}
+
+table.treetable span {
+  background-position: center left;
+  background-repeat: no-repeat;
+  padding: .2em 0 .2em 1.5em;
+}
+
+table.treetable tr.collapsed span.indenter a {
+  background-image: url(../images/expand.png);
+}
+
+table.treetable tr.expanded span.indenter a {
+  background-image: url(../images/collapse.png);
+}
+
+table.treetable tr.branch {
+}
+
+table.treetable tr.selected {
+}
+
+table.treetable tr.collapsed.selected span.indenter a {
+  background-image: url(../images/expand-light.png);
+}
+
+table.treetable tr.expanded.selected span.indenter a {
+  background-image: url(../images/collapse-light.png);
+}
+
+table.treetable tr.accept {
+  background-color: #a3bce4;
+  color: #fff
+}
+
+table.treetable tr.collapsed.accept td span.indenter a {
+  background-image: url(../images/expand-light.png);
+}
+
+table.treetable tr.expanded.accept td span.indenter a {
+  background-image: url(../images/collapse-light.png);
+}

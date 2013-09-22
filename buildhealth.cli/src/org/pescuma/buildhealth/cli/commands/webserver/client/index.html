@@ -10,6 +10,8 @@
     <title>buildhealth report</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jquery.treetable.css" rel="stylesheet">
+    <link href="css/jquery.treetable.theme.default.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -52,7 +54,7 @@
 		</div>
 	</div>
 
-	<div class="container item" style="display: none">
+	<div class="container tree-template" style="display: none">
 		<div style="margin-top: 40px;">
 			<h1><img height="80px" class="main-img"></img> <span class="main-text"></span></h1>
 		</div>
@@ -70,6 +72,7 @@
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.address-1.6.js"></script>
+		<script type="text/javascript" src="js/jquery.treetable.js"></script>
 		<script language="javascript">
 
 var report = null;
@@ -82,24 +85,15 @@ $( document ).ready(function() {
 	})
 	.done(function(data) {
 		report = data;
-		fillBuildHTML();
 		setupPathChange();
+		switchTo($.address.pathNames());
 	})
 	;
 });
 
 function setupPathChange() {
 	$.address.change(function(event) {
-		if (event.path == '/') {
-			switchToBuild();
-			
-		} else {
-			var child = findChild(event.pathNames[0]);
-			if (child) 
-				switchToInternal(child);
-			else
-				$.address.value('/');
-		}
+		switchTo(event.pathNames);
 	});
 }
 
@@ -111,14 +105,35 @@ function findChild(name) {
 	}
 }
 
+function switchTo(paths) {
+	var item = decodeURIComponent(paths[0] || "");
+	if (item == '') {
+		switchToBuild();
+		
+	} else {
+		var child = findChild(item);
+		if (child) { 
+			switchToInternal(child);
+		} else {
+			$.address.value('/');
+		}
+	}
+}
+
 function switchToBuild() {
+	buildBuild();
+	
 	$(".item").hide();
 	$(".build").show();
 }
 
-function fillBuildHTML() {
-	$(".item").hide();
+var buildBuilt = false;
 
+function buildBuild() {
+	if (buildBuilt)
+		return;
+	buildBuilt = true;
+	
 	var panel = $(".build"); 	
 	panel.find(".main-text").text("Your build is " + createTitle(report.status));
 	panel.find(".main-img").attr("src", createIcon("build", report.status));
@@ -133,7 +148,7 @@ function fillBuildHTML() {
 		line.addClass("item-div")
 		line.find(".item-text").text(fullText(child));
 		line.find(".item-details").text(child.description);
-		line.find(".item-img").attr("src", createIcon(child.name, child.status));
+		line.find(".item-img").attr("src", createIcon(getId(child), child.status));
 		
 		line.click(function(obj) {
 			var i = $(this).attr("id").substring(5);
@@ -143,19 +158,80 @@ function fillBuildHTML() {
 		line.show();
 		line.appendTo(".build");
 	}
-
-	panel.show();
 }
 
 function switchToInternal(data)
 {
+	var id = getId(data);
+	build(id, data);
+	
+	$(".item").hide();
 	$(".build").hide();
+	$("." + id).show();
+}
 
-	var panel = $(".item"); 	
+function build(id, data) {
+	if ($("." + id).length)
+		return;
+	
+	var panel = $(".tree-template").clone();
+	panel.attr("class", "container item " + id);
 	panel.find(".main-text").text(fullText(data));
-	panel.find(".main-img").attr("src", createIcon(data.name, data.status));
+	panel.find(".main-img").attr("src", createIcon(id, data.status));
+	
+	var tree = $('<table></table>').addClass('tree');
+	addHeaders(tree, 'Name', 'Value', 'Description');
+	
+	var tbody = $('<tbody></tbody>');
+	for(var i in data.children) 
+		createLines(tbody, "", "row-" + i, data.children[i]);
+	
+	tree.append(tbody);
 
-	panel.show();
+	tree.treetable({ expandable: true });	
+	panel.append(tree);
+	
+	$("body").append(panel);
+}
+
+function addHeaders() {
+	var tree = arguments[0];
+	
+	var row = $('<tr></tr>');
+	for (var i = 1; i < arguments.length; i++) 
+		addTh(row, arguments[i]);
+	
+	var thead = $('<thead></thead>');
+	thead.append(row);
+	tree.append(thead);
+}
+
+function createLines(tree, parentId, id, data) {
+	var row = $('<tr></tr>');
+	row.attr("data-tt-id", id);
+	if (parentId != '')
+		row.attr("data-tt-parent-id", parentId);
+	
+	addTd(row, data.name);	
+	addTd(row, data.value);	
+	addTd(row, data.description);	
+	
+	tree.append(row);
+	
+	for(var i in data.children) 
+		createLines(tree, id, id + "-" + i, data.children[i]);
+}
+
+function addTd(row, name) {
+	var td = $('<td></td>');
+	td.text(name);
+	row.append(td);
+}
+
+function addTh(row, name) {
+	var td = $('<th></th>');
+	td.text(name);
+	row.append(td);
 }
 
 function fullText(data) {
@@ -172,7 +248,11 @@ function createTitle(status) {
 }
 
 function createIcon(type, status) {
-	return "/icons/" + type.toLowerCase().replace(/ /g, "") + "-" + status.toLowerCase() + ".png";
+	return "/icons/" + type + "-" + status.toLowerCase() + ".png";
+}
+
+function getId(data) {
+	return data.name.toLowerCase().replace(/ /g, "");
 }
 	
 		</script>

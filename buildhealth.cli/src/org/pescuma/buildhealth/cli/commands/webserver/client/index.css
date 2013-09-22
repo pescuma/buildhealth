@@ -2,10 +2,6 @@ body {
 	padding-top: 50px;
 }
 
-.starter-template {
-	padding: 40px 15px;
-	text-align: center;
-}
 
 .item-div {
 	background: #FFFFFF;
@@ -17,4 +13,10 @@ body {
 	background: #F5F5F5;
 	cursor: pointer;
 	cursor: hand;
+}
+
+.tree {
+	margin-top: 30px;
+	font-size: 18px;
+	width: 100%;
 }
