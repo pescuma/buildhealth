@@ -32,6 +32,7 @@ public class WebServerCommand extends BuildHealthCliCommand {
 		String url = "http://localhost:" + port;
 		System.out.println("Web server started at " + url);
 		System.out.println("Available urls:");
+		System.out.println("  " + url + "/            => Browse the reports as a web site");
 		System.out.println("  " + url + "/report.json => Report in JSON format");
 		System.out.println("  " + url + "/report.xml  => Report in XML format");
 		System.out.println();

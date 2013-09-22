@@ -1,10 +1,14 @@
 package org.pescuma.buildhealth.cli.commands.webserver;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.pescuma.buildhealth.core.Report;
 
@@ -43,11 +47,17 @@ public class BuildHealthWebServer extends NanoHTTPD {
 			
 			log(session);
 			
-			if ("/report.json".equals(session.getUri()))
+			if ("/report.json".equals(session.getUri())) {
 				return reportJson();
-			
-			else if ("/report.xml".equals(session.getUri()))
+				
+			} else if ("/report.xml".equals(session.getUri())) {
+				
 				return reportXml();
+			} else {
+				Response response = respond(session.getHeaders(), session.getUri());
+				if (response != null)
+					return response;
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,13 +68,57 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		return super.serve(session);
 	}
 	
+	private Response respond(Map<String, String> headers, String uri) {
+		uri = uri.trim().replace(File.separatorChar, '/');
+		if (uri.indexOf('?') >= 0) {
+			uri = uri.substring(0, uri.indexOf('?'));
+		}
+		
+		if (uri.equals("/"))
+			uri = "/index.html";
+		
+		String resourceName;
+		if (uri.startsWith("/icons/"))
+			resourceName = uri;
+		else
+			resourceName = "client" + uri;
+		
+		InputStream resource = getClass().getResourceAsStream(resourceName);
+		if (resource == null)
+			return null;
+		
+		String mime = getMimeTypeForFile(uri);
+		return new Response(Response.Status.OK, mime, resource);
+	}
+	
+	public static final String MIME_DEFAULT_BINARY = "application/octet-stream";
+	private static final Map<String, String> MIME_TYPES = new HashMap<String, String>();
+	static {
+		MIME_TYPES.put("js", "application/javascript");
+		MIME_TYPES.put("css", "text/css");
+		MIME_TYPES.put("html", "text/html");
+		MIME_TYPES.put("png", "image/png");
+		MIME_TYPES.put("htm", "text/html");
+		MIME_TYPES.put("md", "text/plain");
+		MIME_TYPES.put("xml", "text/xml");
+	}
+	
+	private String getMimeTypeForFile(String uri) {
+		int dot = uri.lastIndexOf('.');
+		String mime = null;
+		if (dot >= 0) {
+			mime = MIME_TYPES.get(uri.substring(dot + 1).toLowerCase());
+		}
+		return mime == null ? MIME_DEFAULT_BINARY : mime;
+	}
+	
 	private void log(HTTPSession session) {
 		StringBuilder log = new StringBuilder();
 		log.append(session.getMethod()).append(" ").append(session.getUri());
 		System.out.println(log.toString());
 	}
 	
-	private Response reportJson() throws IOException {
+	public static String toJson(Report report) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
 		
@@ -73,7 +127,13 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		
 		StringWriter result = new StringWriter();
 		mapper.writeValue(result, report);
-		return new Response(Response.Status.OK, "application/json", result.toString());
+		
+		return result.toString();
+	}
+	
+	private Response reportJson() throws IOException {
+		Response response = new Response(Response.Status.OK, "	text/plain", toJson(report));
+		return response;
 	}
 	
 	private Response reportXml() throws IOException {

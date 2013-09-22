@@ -1,0 +1,20 @@
+body {
+	padding-top: 50px;
+}
+
+.starter-template {
+	padding: 40px 15px;
+	text-align: center;
+}
+
+.item-div {
+	background: #FFFFFF;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.item-div:hover {
+	background: #F5F5F5;
+	cursor: pointer;
+	cursor: hand;
+}

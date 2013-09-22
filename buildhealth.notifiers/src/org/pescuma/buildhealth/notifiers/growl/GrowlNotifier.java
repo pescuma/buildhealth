@@ -97,11 +97,11 @@ public class GrowlNotifier implements BuildHealthNotifier {
 	}
 	
 	private String getIcon() {
-		return "https://raw.github.com/pescuma/buildhealth/master/icons/bh.png";
+		return "https://raw.github.com/pescuma/buildhealth/master/buildhealth.core/src/icons/buildhealth.png";
 	}
 	
 	private String getIcon(BuildStatus status) {
-		return "https://raw.github.com/pescuma/buildhealth/master/icons/bh_"
+		return "https://raw.github.com/pescuma/buildhealth/master/buildhealth.core/src/icons/build-"
 				+ status.name().toLowerCase(Locale.ENGLISH) + ".png";
 	}
 }
