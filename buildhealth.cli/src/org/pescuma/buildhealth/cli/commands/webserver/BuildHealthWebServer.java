@@ -118,21 +118,19 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		System.out.println(log.toString());
 	}
 	
-	public static String toJson(Report report) throws IOException {
+	private Response reportJson() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
 		
-		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+		// mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
 		
 		StringWriter result = new StringWriter();
 		mapper.writeValue(result, report);
 		
-		return result.toString();
-	}
-	
-	private Response reportJson() throws IOException {
-		Response response = new Response(Response.Status.OK, "	text/plain", toJson(report));
+		String json = result.toString();
+		
+		Response response = new Response(Response.Status.OK, "	text/plain", json);
 		return response;
 	}
 	
