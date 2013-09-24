@@ -51,7 +51,7 @@ import org.pescuma.buildhealth.prefs.Preferences;
 @MetaInfServices
 public class LOCAnalyser implements BuildHealthAnalyser {
 	
-	private static final int COLUMN_LANGAUGE = 1;
+	private static final int COLUMN_LANGUAGE = 1;
 	private static final int COLUMN_TYPE = 2;
 	
 	private static final String TYPE_FILES = "files";
@@ -64,7 +64,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	
 	@Override
 	public int getPriority() {
-		return 400;
+		return 500;
 	}
 	
 	@Override
@@ -102,7 +102,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	private List<Report> computeLanguagesFromCoverage(BuildData data) {
 		List<Report> children = new ArrayList<Report>();
 		
-		for (Map.Entry<String, Value> language : data.sumDistinct(COLUMN_LANGAUGE).entrySet())
+		for (Map.Entry<String, Value> language : data.sumDistinct(COLUMN_LANGUAGE).entrySet())
 			children.add(new Report(Good, language.getKey(), format(language.getValue().value)));
 		
 		return children;
@@ -140,7 +140,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	private List<Report> computeLanguages(BuildData data) {
 		List<Report> result = new ArrayList<Report>();
 		
-		Map<String[], BuildData.Value> vals = data.sumDistinct(COLUMN_LANGAUGE, COLUMN_TYPE);
+		Map<String[], BuildData.Value> vals = data.sumDistinct(COLUMN_LANGUAGE, COLUMN_TYPE);
 		
 		Map<String, Map<String, BuildData.Value>> tree = toTree(vals);
 		

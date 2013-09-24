@@ -53,7 +53,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 	
 	@Override
 	public int getPriority() {
-		return 600;
+		return 700;
 	}
 	
 	@Override
