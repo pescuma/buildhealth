@@ -36,7 +36,7 @@ import org.pescuma.buildhealth.cli.commands.add.unittest.NUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.PHPUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.TusarExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.compute.LOCComputerCommand;
-import org.pescuma.buildhealth.cli.commands.compute.staticanalysis.TasksExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.compute.tasks.CodeTasksComputerCommand;
 import org.pescuma.buildhealth.cli.commands.config.ListConfigCommand;
 import org.pescuma.buildhealth.cli.commands.config.SetConfigCommand;
 import org.pescuma.buildhealth.cli.commands.webserver.WebServerCommand;
@@ -69,7 +69,7 @@ public class BuildHealthCli {
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
 				.withDefaultCommand(ComputeGroupHelp.class) //
-				.withCommands(LOCComputerCommand.class, TasksExtractorCommand.class);
+				.withCommands(LOCComputerCommand.class, CodeTasksComputerCommand.class);
 		
 		builder.withGroup("config").withDescription("Configure your report preferences")
 				.withDefaultCommand(ConfigGroupHelp.class) //

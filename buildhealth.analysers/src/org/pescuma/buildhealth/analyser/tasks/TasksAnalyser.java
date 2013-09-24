@@ -31,7 +31,7 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},owner,text,id,parent id,details
+ * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},text,owner,id,parent id,details,file,line
  * </pre>
  * 
  * Parent id is only used if it also has an id.
@@ -50,11 +50,13 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 	private static final int COLUMN_ORIGIN = 1;
 	private static final int COLUMN_TYPE = 2;
 	private static final int COLUMN_STATUS = 3;
-	private static final int COLUMN_OWNER = 4;
-	private static final int COLUMN_TEXT = 5;
+	private static final int COLUMN_TEXT = 4;
+	private static final int COLUMN_OWNER = 5;
 	private static final int COLUMN_ID = 6;
 	private static final int COLUMN_PARENT_ID = 7;
 	private static final int COLUMN_DETAILS = 8;
+	private static final int COLUMN_FILE = 9;
+	private static final int COLUMN_LINE = 10;
 	
 	@Override
 	public String getName() {
@@ -200,7 +202,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		
 		if (stats.entry != null) {
 			return new TaskReport(BuildStatus.Good, stats.entry.id, stats.entry.text, stats.entry.owner,
-					stats.entry.type, stats.entry.status, stats.entry.details, stats.entry.count, children);
+					stats.entry.type, stats.entry.status, stats.entry.details, stats.entry.file, stats.entry.fileLine,
+					stats.entry.count, children);
 			
 		} else {
 			StringBuilder description = new StringBuilder();
@@ -227,6 +230,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		String fullId;
 		String fullParentId;
 		String details;
+		String file;
+		String fileLine;
 		boolean hasParent = false;
 		final List<Entry> children = new ArrayList<Entry>();
 		
@@ -238,6 +243,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 			status = line.getColumn(COLUMN_STATUS);
 			owner = line.getColumn(COLUMN_OWNER);
 			details = line.getColumn(COLUMN_DETAILS);
+			file = line.getColumn(COLUMN_FILE);
+			fileLine = line.getColumn(COLUMN_LINE);
 			
 			id = line.getColumn(COLUMN_ID);
 			fullId = origin + "\n" + id;

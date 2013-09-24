@@ -1,6 +1,5 @@
-package org.pescuma.buildhealth.computer.staticanalysis;
+package org.pescuma.buildhealth.computer.tasks;
 
-import static com.google.common.base.Objects.*;
 import static org.apache.commons.io.IOUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
@@ -30,7 +29,7 @@ import org.pescuma.buildhealth.utils.CSV;
 import au.com.bytecode.opencsv.CSVWriter;
 
 // Based on https://github.com/jenkinsci/tasks-plugin/blob/master/src/main/java/hudson/plugins/tasks/parser/TaskScanner.java by Ulli Hafner
-public class TasksComputer implements BuildDataComputer {
+public class CodeTasksComputer implements BuildDataComputer {
 	
 	private static final Map<String, String> commentTerminators = new HashMap<String, String>();
 	static {
@@ -45,11 +44,11 @@ public class TasksComputer implements BuildDataComputer {
 	private final Pattern[] patterns;
 	private final Pattern ownerPattern = Pattern.compile("^\\[([^]]+)\\]");
 	
-	public TasksComputer(PseudoFiles files) {
+	public CodeTasksComputer(PseudoFiles files) {
 		this(files, false);
 	}
 	
-	public TasksComputer(PseudoFiles files, boolean caseInsensitive, String... markers) {
+	public CodeTasksComputer(PseudoFiles files, boolean caseInsensitive, String... markers) {
 		if (files == null)
 			throw new IllegalArgumentException();
 		
@@ -106,8 +105,7 @@ public class TasksComputer implements BuildDataComputer {
 	private void extractTo(CSVWriter out, BuildDataComputerTracker tracker) {
 		try {
 			if (files.isStream()) {
-				extractStream(firstNonNull(files.getStreamFilename(), "<stream>"), null,
-						new InputStreamReader(files.getStream()), out);
+				extractStream(files.getStreamFilename(), null, new InputStreamReader(files.getStream()), out);
 				tracker.onStreamProcessed();
 				
 			} else {
@@ -174,16 +172,18 @@ public class TasksComputer implements BuildDataComputer {
 					text = text.substring(ownerMatcher.end()).trim();
 				}
 				
-				StringBuilder message = new StringBuilder();
-				message.append(text);
-				if (!owner.isEmpty()) {
-					if (message.length() > 0)
-						message.append(" ");
-					message.append("(").append(owner).append(")");
+				String file;
+				String fileLine;
+				if (filename == null) {
+					file = "";
+					fileLine = "";
+				} else {
+					file = filename;
+					fileLine = Integer.toString(lineNum);
 				}
 				
-				write(out, Double.toString(1), "Static analysis", language, "Tasks", filename,
-						Integer.toString(lineNum), marker, message.toString());
+				write(out, Double.toString(1), "Tasks", "From code", marker, "", text, owner, "", "", "", file,
+						fileLine);
 			}
 		}
 	}

@@ -14,16 +14,20 @@ public class TaskReport extends Report {
 	private final String type;
 	private final String taskStatus;
 	private final String details;
+	private final String file;
+	private final String fileLine;
 	private final double count;
 	
 	public TaskReport(BuildStatus status, String id, String text, String owner, String type, String taskStatus,
-			String details, double count, List<Report> children) {
+			String details, String file, String fileLine, double count, List<Report> children) {
 		super(status, text, "", createDescription(id, type, taskStatus, owner, count), children);
 		this.id = id;
 		this.owner = owner;
 		this.type = type;
 		this.taskStatus = taskStatus;
 		this.details = details;
+		this.file = file;
+		this.fileLine = fileLine;
 		this.count = count;
 	}
 	
@@ -83,6 +87,14 @@ public class TaskReport extends Report {
 	
 	public String getDetails() {
 		return details;
+	}
+	
+	public String getFile() {
+		return file;
+	}
+	
+	public String getFileLine() {
+		return fileLine;
 	}
 	
 	public double getCount() {

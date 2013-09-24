@@ -19,9 +19,9 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		data.add(count, "Tasks", orign, type, status);
 	}
 	
-	private void create(String orign, String type, String status, String owner, String text, String id,
+	private void create(String orign, String type, String status, String text, String owner, String id,
 			String parentId, int count) {
-		data.add(count, "Tasks", orign, type, status, owner, text, id, parentId);
+		data.add(count, "Tasks", orign, type, status, text, owner, id, parentId);
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testFull_SimpleType() {
-		create("Code", "TODO", "", "own", "Text", "1", "", 1);
+		create("Code", "TODO", "", "Text", "own", "1", "", 1);
 		
 		Report report = createReport(Full);
 		
@@ -87,7 +87,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testFull_SimpleTypeAndStatus() {
-		create("Code", "TODO", "Open", "own", "Text", "1", "", 1);
+		create("Code", "TODO", "Open", "Text", "own", "1", "", 1);
 		
 		Report report = createReport(Full);
 		
@@ -100,8 +100,8 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testFull_TaskWithParent() {
-		create("Code", "TODO", "", "", "Parent", "1", "", 1);
-		create("Code", "TODO", "", "", "Child", "2", "1", 1);
+		create("Code", "TODO", "", "Parent", "", "1", "", 1);
+		create("Code", "TODO", "", "Child", "", "2", "1", 1);
 		
 		Report report = createReport(Full);
 		
@@ -116,8 +116,8 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 	
 	@Test
 	public void testFull_StrangeParentWith2Count() {
-		create("Code", "TODO", "", "", "Parent", "1", "", 2);
-		create("Code", "TODO", "", "", "Child", "2", "1", 1);
+		create("Code", "TODO", "", "Parent", "", "1", "", 2);
+		create("Code", "TODO", "", "Child", "", "2", "1", 1);
 		
 		Report report = createReport(Full);
 		
