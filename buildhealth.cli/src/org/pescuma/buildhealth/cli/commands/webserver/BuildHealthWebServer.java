@@ -78,7 +78,9 @@ public class BuildHealthWebServer extends NanoHTTPD {
 			uri = "/index.html";
 		
 		String resourceName;
-		if (uri.startsWith("/icons/"))
+		if (uri.toLowerCase(Locale.ENGLISH).startsWith("/deps/"))
+			resourceName = "/META-INF/resources/webjars/" + uri.substring(6);
+		else if (uri.startsWith("/icons/"))
 			resourceName = uri;
 		else
 			resourceName = "client" + uri;

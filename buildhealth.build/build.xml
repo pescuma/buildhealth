@@ -49,6 +49,7 @@
 
 		<delete dir="${build.tmp.dir}/META-INF" includeemptydirs="true">
 			<exclude name="native/**" />
+			<exclude name="resources/**" />
 			<exclude name="*.default" />
 		</delete>
 
