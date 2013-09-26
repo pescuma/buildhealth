@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.extractor.tasks;
 
 import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,8 +72,8 @@ public class BugsEverywhereExtractor extends BaseBuildDataExtractor {
 		}
 		
 		StringBuilder details = new StringBuilder();
-		append(details, "Severity", severity);
-		append(details, "Tags", tags);
+		appendInNewLine(details, "Severity", severity);
+		appendInNewLine(details, "Tags", tags);
 		
 		data.add(1, "Tasks", "BugsEverywhere", type, status, message.trim(), "", id, "", details.toString());
 	}
@@ -91,15 +92,6 @@ public class BugsEverywhereExtractor extends BaseBuildDataExtractor {
 			return severity;
 		else
 			return result;
-	}
-	
-	private void append(StringBuilder out, String name, String value) {
-		if (value.isEmpty())
-			return;
-		
-		if (out.length() > 0)
-			out.append("\n");
-		out.append(name).append(": ").append(value);
 	}
 	
 }

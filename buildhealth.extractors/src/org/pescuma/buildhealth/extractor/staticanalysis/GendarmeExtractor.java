@@ -1,5 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
+import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -71,11 +73,11 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 						language = "C#"; // guess
 						
 					StringBuilder details = new StringBuilder();
-					append(details, "Problem", problem);
-					append(details, "Solution", solution);
-					append(details, "Severity", severity);
-					append(details, "Confidence", confidence);
-					append(details, "Location", location);
+					appendInNewLine(details, "Problem", problem);
+					appendInNewLine(details, "Solution", solution);
+					appendInNewLine(details, "Severity", severity);
+					appendInNewLine(details, "Confidence", confidence);
+					appendInNewLine(details, "Location", location);
 					
 					data.add(1, "Static analysis", language, "Gendarme", file, line, ruleName, message,
 							toBuildHealthSeverity(severity), details.toString(), uri);
@@ -96,16 +98,6 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 		if ("Audit".equalsIgnoreCase(severity))
 			return "Low";
 		return severity;
-	}
-	
-	private void append(StringBuilder out, String name, String text) {
-		if (text.isEmpty())
-			return;
-		
-		if (out.length() > 0)
-			out.append("\n");
-		
-		out.append(name).append(": ").append(text);
 	}
 	
 	private Map<String, String> findRuleFullNames(Document doc) {

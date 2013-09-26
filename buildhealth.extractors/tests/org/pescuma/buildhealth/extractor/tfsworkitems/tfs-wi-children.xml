@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WorkItems>
+  <WorkItem Id="12">
+    <Fields>
+      <Field RefName="System.Id" Value="12" />
+      <Field RefName="System.WorkItemType" Value="Tyype" />
+      <Field RefName="System.State" Value="Sttate" />
+      <Field RefName="System.Title" Value="Ti tle" />
+      <Field RefName="System.TeamProject" Value="VSS" />
+      <Field RefName="System.CreatedBy" Value="Pescuma" />
+      <Field RefName="System.CreatedDate" Value="01/02/2003 01:23:45" />
+    </Fields>
+  </WorkItem>
+  <WorkItem Id="13">
+    <Fields>
+      <Field RefName="System.Id" Value="13" />
+      <Field RefName="System.WorkItemType" Value="B Tyype" />
+      <Field RefName="System.State" Value="B Sttate" />
+      <Field RefName="System.Title" Value="B Ti tle" />
+      <Field RefName="System.TeamProject" Value="B VSS" />
+      <Field RefName="System.CreatedBy" Value="B Pescuma" />
+      <Field RefName="System.CreatedDate" Value="B 01/02/2003 01:23:45" />
+    </Fields>
+    <Links>
+      <Link Type="Child">
+        <WorkItem>
+          <Fields>
+            <Field RefName="System.Id" Value="14" />
+            <Field RefName="System.WorkItemType" Value="C Tyype" />
+            <Field RefName="System.State" Value="C Sttate" />
+            <Field RefName="System.Title" Value="C Ti tle" />
+            <Field RefName="System.TeamProject" Value="C VSS" />
+            <Field RefName="System.CreatedBy" Value="C Pescuma" />
+            <Field RefName="System.CreatedDate" Value="C 01/02/2003 01:23:45" />
+          </Fields>
+        </WorkItem>
+      </Link>
+    </Links>
+  </WorkItem>
+</WorkItems>

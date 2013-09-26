@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WorkItems>
+  <WorkItem Id="1234">
+    <Fields>
+      <Field RefName="System.Id" Value="1234" />
+      <Field RefName="System.State" Value="Active" />
+      <Field RefName="System.Title" Value="Description bla" />
+    </Fields>
+  </WorkItem>
+</WorkItems>

@@ -2,6 +2,8 @@ package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import static org.apache.commons.lang3.ObjectUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
+import static org.pescuma.buildhealth.extractor.utils.StringHelper.*;
+import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -95,49 +97,23 @@ public class FxCopExtractor extends BaseXMLExtractor {
 			}
 			
 			StringBuilder details = new StringBuilder();
-			append(details, "Level", firstNonEmpty(level, rule.level));
-			append(details, "Certainty", firstNonEmpty(certainty, rule.certainty), "%");
-			append(details, "Target", target);
-			append(details, "Target Kind", targetKind);
-			append(details, "Resolution", resolution);
-			append(details, "Help", rule.url);
-			append(details, "Category", category);
-			append(details, "CheckId", firstNonEmpty(checkId, rule.checkId));
-			append(details, "Info", rule.description);
-			append(details, "Created", created);
-			append(details, "Status", status);
-			append(details, "Fix Category", splitCamelCase(fixCategory));
+			appendInNewLine(details, "Level", firstNonEmpty(level, rule.level));
+			appendInNewLine(details, "Certainty", firstNonEmpty(certainty, rule.certainty), "%");
+			appendInNewLine(details, "Target", target);
+			appendInNewLine(details, "Target Kind", targetKind);
+			appendInNewLine(details, "Resolution", resolution);
+			appendInNewLine(details, "Help", rule.url);
+			appendInNewLine(details, "Category", category);
+			appendInNewLine(details, "CheckId", firstNonEmpty(checkId, rule.checkId));
+			appendInNewLine(details, "Info", rule.description);
+			appendInNewLine(details, "Created", created);
+			appendInNewLine(details, "Status", status);
+			appendInNewLine(details, "Fix Category", splitCamelCase(fixCategory));
 			
 			data.add(1, "Static analysis", language, "FxCop", fullFilename, line,
 					firstNonEmpty(rule.category, bhCateg), resolution, firstNonEmpty(bhServerity, rule.severity),
 					details.toString(), rule.url);
 		}
-	}
-	
-	private String splitCamelCase(String text) {
-		return text.replaceAll("(?=[A-Z]+)", " ").trim();
-	}
-	
-	private void append(StringBuilder out, String name, String text) {
-		append(out, name, text, "");
-	}
-	
-	private void append(StringBuilder out, String name, String text, String suffix) {
-		if (text.isEmpty())
-			return;
-		
-		if (out.length() > 0)
-			out.append("\n");
-		
-		out.append(name).append(": ").append(text).append(suffix);
-	}
-	
-	private String firstNonEmpty(String... args) {
-		for (String a : args) {
-			if (a != null && !a.isEmpty())
-				return a;
-		}
-		return "";
 	}
 	
 	private String buildFullFilename(String path, String file) {

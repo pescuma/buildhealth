@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
+import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -51,7 +52,7 @@ public class PMDExtractor extends BaseXMLExtractor {
 		appendWhere(description, ".", method);
 		if (!variable.isEmpty())
 			appendWhere(description, ", ", "variable " + variable);
-		appendProperty(description, "Priority", priority);
+		appendInNewLine(description, "Priority", priority);
 		
 		if (!ruleset.isEmpty())
 			rule = ruleset + "/" + rule;
@@ -70,16 +71,6 @@ public class PMDExtractor extends BaseXMLExtractor {
 			out.append(prefix);
 		
 		out.append(data);
-	}
-	
-	private void appendProperty(StringBuilder out, String name, String value) {
-		if (value.isEmpty())
-			return;
-		
-		if (out.length() > 0)
-			out.append("\n");
-		
-		out.append(name).append(": ").append(value);
 	}
 	
 	private String toPMDPriority(String priority) {

@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.tasks.BugsEverywhereExtractor;
 
-@Command(name = "be", description = "Add tasks from BugsEverywhere (the output of be list)")
+@Command(name = "be", description = "Add tasks from BugsEverywhere (the output of 'be list')")
 public class BugsEverywhereExtractorCommand extends BuildHealthCliCommand {
 	
 	@Arguments(title = "file or folder", description = "File or folder with 'be list' output(s)", required = true)

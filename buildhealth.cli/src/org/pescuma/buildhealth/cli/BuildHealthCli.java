@@ -25,6 +25,7 @@ import org.pescuma.buildhealth.cli.commands.add.staticanalysis.GendarmeExtractor
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.StyleCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.tasks.BugsEverywhereExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.tasks.TFSWorkItemsExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.AUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.BoostTestExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.CppTestExtractorCommand;
@@ -67,7 +68,7 @@ public class BuildHealthCli {
 						GendarmeExtractorCommand.class, FxCopExtractorCommand.class, StyleCopExtractorCommand.class, //
 						JapexExtractorCommand.class, //
 						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class, //
-						BugsEverywhereExtractorCommand.class);
+						BugsEverywhereExtractorCommand.class, TFSWorkItemsExtractorCommand.class);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
 				.withDefaultCommand(ComputeGroupHelp.class) //
