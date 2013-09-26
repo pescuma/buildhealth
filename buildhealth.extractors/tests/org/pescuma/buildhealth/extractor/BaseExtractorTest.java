@@ -8,9 +8,11 @@ import static org.pescuma.buildhealth.utils.FileHelper.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.mockito.Mockito;
@@ -66,6 +68,10 @@ public abstract class BaseExtractorTest {
 		closer.register(result);
 		
 		return result;
+	}
+	
+	protected ReaderInputStream getInputStream(String str) {
+		return new ReaderInputStream(new StringReader(str), "UTF-8");
 	}
 	
 	protected void assertTable(int size, double sum, BuildData data) {

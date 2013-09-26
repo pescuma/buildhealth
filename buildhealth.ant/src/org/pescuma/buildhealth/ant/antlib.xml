@@ -32,6 +32,8 @@
 
 	<typedef name="add-japex" classname="org.pescuma.buildhealth.ant.tasks.add.performance.JapexExtractorAntTask" />
 
+	<typedef name="add-be" classname="org.pescuma.buildhealth.ant.tasks.add.tasks.BugsEverywhereExtractorAntTask" />
+
 	<typedef name="compute-loc" classname="org.pescuma.buildhealth.ant.tasks.compute.LOCComputerAntTask" />
 	<typedef name="compute-tasks" classname="org.pescuma.buildhealth.ant.tasks.compute.tasks.CodeTasksExtractorAntTask" />
 </antlib>
