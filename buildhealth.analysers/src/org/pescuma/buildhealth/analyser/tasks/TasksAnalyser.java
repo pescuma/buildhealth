@@ -31,7 +31,7 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},text,owner,id,parent id,details,file,line
+ * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},text,owner,created by,creation date,id,parent id,details,file,line
  * </pre>
  * 
  * Parent id is only used if it also has an id.
@@ -52,11 +52,13 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 	private static final int COLUMN_STATUS = 3;
 	private static final int COLUMN_TEXT = 4;
 	private static final int COLUMN_OWNER = 5;
-	private static final int COLUMN_ID = 6;
-	private static final int COLUMN_PARENT_ID = 7;
-	private static final int COLUMN_DETAILS = 8;
-	private static final int COLUMN_FILE = 9;
-	private static final int COLUMN_LINE = 10;
+	private static final int COLUMN_CREATED_BY = 6;
+	private static final int COLUMN_CREATION_DATE = 7;
+	private static final int COLUMN_ID = 8;
+	private static final int COLUMN_PARENT_ID = 9;
+	private static final int COLUMN_DETAILS = 10;
+	private static final int COLUMN_FILE = 11;
+	private static final int COLUMN_LINE = 12;
 	
 	@Override
 	public String getName() {
@@ -202,8 +204,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		
 		if (stats.entry != null) {
 			return new TaskReport(BuildStatus.Good, stats.entry.id, stats.entry.text, stats.entry.owner,
-					stats.entry.type, stats.entry.status, stats.entry.details, stats.entry.file, stats.entry.fileLine,
-					stats.entry.count, children);
+					stats.entry.createdBy, stats.entry.creationDate, stats.entry.type, stats.entry.status,
+					stats.entry.details, stats.entry.file, stats.entry.fileLine, stats.entry.count, children);
 			
 		} else {
 			StringBuilder description = new StringBuilder();
@@ -227,6 +229,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		String type;
 		String status;
 		String owner;
+		String createdBy;
+		String creationDate;
 		String fullId;
 		String fullParentId;
 		String details;
@@ -242,6 +246,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 			type = line.getColumn(COLUMN_TYPE);
 			status = line.getColumn(COLUMN_STATUS);
 			owner = line.getColumn(COLUMN_OWNER);
+			createdBy = line.getColumn(COLUMN_CREATED_BY);
+			creationDate = line.getColumn(COLUMN_CREATION_DATE);
 			details = line.getColumn(COLUMN_DETAILS);
 			file = line.getColumn(COLUMN_FILE);
 			fileLine = line.getColumn(COLUMN_LINE);

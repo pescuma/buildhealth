@@ -5,6 +5,9 @@
       <Field RefName="System.Id" Value="1234" />
       <Field RefName="System.State" Value="Active" />
       <Field RefName="System.Title" Value="Description bla" />
+      <Field RefName="System.CreatedBy" Value="Created" />
+      <Field RefName="System.CreatedDate" Value="Date" />
+      <Field RefName="System.AssignedTo" Value="Assigned" />
     </Fields>
   </WorkItem>
 </WorkItems>

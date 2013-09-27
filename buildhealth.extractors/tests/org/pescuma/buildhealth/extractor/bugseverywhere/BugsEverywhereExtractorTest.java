@@ -20,8 +20,8 @@ public class BugsEverywhereExtractorTest extends BaseExtractorTest {
 		extractor.extractTo(table, tracker);
 		
 		assertTable(1, 1, table);
-		Assert.assertEquals(1, table.get("Tasks", "BugsEverywhere", "Bug", "Open", "Simple message", "", "bea/28f", "",
-				"Severity: Minor"), 0.001f);
+		Assert.assertEquals(1, table.get("Tasks", "BugsEverywhere", "Bug", "Open", "Simple message", "", "", "",
+				"bea/28f", "", "Severity: Minor"), 0.001f);
 	}
 	
 	@Test
@@ -32,7 +32,8 @@ public class BugsEverywhereExtractorTest extends BaseExtractorTest {
 		
 		assertTable(1, 1, table);
 		Assert.assertEquals(1,
-				table.get("Tasks", "BugsEverywhere", "Milestone", "Open", "Simple message", "", "bea/28f"), 0.001f);
+				table.get("Tasks", "BugsEverywhere", "Milestone", "Open", "Simple message", "", "", "", "bea/28f"),
+				0.001f);
 	}
 	
 	@Test
@@ -42,8 +43,8 @@ public class BugsEverywhereExtractorTest extends BaseExtractorTest {
 		extractor.extractTo(table, tracker);
 		
 		assertTable(1, 1, table);
-		Assert.assertEquals(1, table.get("Tasks", "BugsEverywhere", "Bug", "Open", "Simple message", "", "bea/28f", "",
-				"Severity: Minor\nTags: tag1, tag2"), 0.001f);
+		Assert.assertEquals(1, table.get("Tasks", "BugsEverywhere", "Bug", "Open", "Simple message", "", "", "",
+				"bea/28f", "", "Severity: Minor\nTags: tag1, tag2"), 0.001f);
 	}
 	
 	@Test

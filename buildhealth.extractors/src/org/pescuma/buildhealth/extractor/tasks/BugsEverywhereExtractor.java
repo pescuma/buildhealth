@@ -75,7 +75,7 @@ public class BugsEverywhereExtractor extends BaseBuildDataExtractor {
 		appendInNewLine(details, "Severity", severity);
 		appendInNewLine(details, "Tags", tags);
 		
-		data.add(1, "Tasks", "BugsEverywhere", type, status, message.trim(), "", id, "", details.toString());
+		data.add(1, "Tasks", "BugsEverywhere", type, status, message.trim(), "", "", "", id, "", details.toString());
 	}
 	
 	private String statusFromFirstLetter(String status) {

@@ -59,13 +59,16 @@ public class TFSWorkItemsExtractor extends BaseXMLExtractor {
 		if (!id.isEmpty() || !title.isEmpty()) {
 			String type = firstNonEmpty(fields.remove("WorkItemType"), "Bug");
 			String state = firstNonEmpty(fields.remove("State"), "Open");
-			// TODO Owner
+			String owner = fields.remove("AssignedTo");
+			String createdBy = fields.remove("CreatedBy");
+			String creationDate = fields.remove("CreatedDate");
 			
 			StringBuilder details = new StringBuilder();
 			for (Map.Entry<String, String> entry : fields.entrySet())
 				appendInNewLine(details, splitCamelCase(entry.getKey()), entry.getValue());
 			
-			data.add(1, "Tasks", "TFS", type, state, title, "", id, parentId, details.toString());
+			data.add(1, "Tasks", "TFS", type, state, title, owner, createdBy, creationDate, id, parentId,
+					details.toString());
 		}
 		
 		extractChildren(data, el, id);

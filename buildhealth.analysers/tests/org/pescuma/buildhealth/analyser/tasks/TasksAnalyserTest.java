@@ -21,7 +21,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 	
 	private void create(String orign, String type, String status, String text, String owner, String id,
 			String parentId, int count) {
-		data.add(count, "Tasks", orign, type, status, text, owner, id, parentId);
+		data.add(count, "Tasks", orign, type, status, text, owner, "", "", id, parentId);
 	}
 	
 	@Test

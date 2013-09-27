@@ -10,7 +10,6 @@ import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.pescuma.buildhealth.computer.tasks.CodeTasksComputer;
 import org.pescuma.buildhealth.extractor.BaseExtractorTest;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
@@ -38,10 +37,14 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(4, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "tasks.java", "2"), 0.001);
-		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "tasks.java", "4"), 0.001);
-		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "tasks.java", "6"), 0.001);
-		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "tasks.java", "8"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "tasks.java", "2"),
+				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "", "", "tasks.java", "4"),
+				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "", "", "tasks.java", "6"),
+				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "", "", "tasks.java", "8"),
+				0.001);
 	}
 	
 	private CodeTasksComputer computerFor(String filename, String text) {
@@ -75,25 +78,25 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 	}
 	
 	@Test
-	public void testDetectOwnerWithText() {
+	public void testDetectCreatedByWithText() {
 		CodeTasksComputer extractor = computerFor("TODO [pescuma] Works ");
 		
 		computeAndExtract(extractor);
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "Works", "pescuma"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "Works", "", "pescuma"), 0.001);
 	}
 	
 	@Test
-	public void testDetectOwnerWithoutText() {
+	public void testDetectCreatedByWithoutText() {
 		CodeTasksComputer extractor = computerFor("TODO [pescuma]");
 		
 		computeAndExtract(extractor);
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "", "pescuma"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "", "", "pescuma"), 0.001);
 	}
 	
 	@Test
@@ -104,7 +107,8 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "abc", "", "", "", "", "a.java", "1"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "abc", "", "", "", "", "", "", "a.java", "1"),
+				0.001);
 	}
 	
 	@Test
@@ -128,10 +132,14 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(4, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "c:\\a.cpp", "2"), 0.001);
-		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "c:\\a.cpp", "4"), 0.001);
-		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "c:\\a.cpp", "6"), 0.001);
-		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "c:\\a.cpp", "8"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "c:\\a.cpp", "2"),
+				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "", "", "c:\\a.cpp", "4"),
+				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "", "", "c:\\a.cpp", "6"),
+				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "", "", "c:\\a.cpp", "8"),
+				0.001);
 	}
 	
 }

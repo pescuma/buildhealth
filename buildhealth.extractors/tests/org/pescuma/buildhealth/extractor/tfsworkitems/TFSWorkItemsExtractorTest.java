@@ -27,7 +27,9 @@ public class TFSWorkItemsExtractorTest extends BaseExtractorTest {
 		
 		assertTable(1, 1, table);
 		
-		assertEquals(1, table.get("Tasks", "TFS", "Bug", "Active", "Description bla", "", "1234"), 0.0001);
+		assertEquals(1,
+				table.get("Tasks", "TFS", "Bug", "Active", "Description bla", "Assigned", "Created", "Date", "1234"),
+				0.0001);
 	}
 	
 	@Test
@@ -43,11 +45,11 @@ public class TFSWorkItemsExtractorTest extends BaseExtractorTest {
 		
 		assertTable(3, 3, table);
 		
-		assertEquals(1, table.get("Tasks", "TFS", "Tyype", "Sttate", "Ti tle", "", "12", "",
-				"Team Project: VSS\nCreated By: Pescuma\nCreated Date: 01/02/2003 01:23:45"), 0.0001);
-		assertEquals(1, table.get("Tasks", "TFS", "B Tyype", "B Sttate", "B Ti tle", "", "13", "",
-				"Team Project: B VSS\nCreated By: B Pescuma\nCreated Date: B 01/02/2003 01:23:45"), 0.0001);
-		assertEquals(1, table.get("Tasks", "TFS", "C Tyype", "C Sttate", "C Ti tle", "", "14", "13",
-				"Team Project: C VSS\nCreated By: C Pescuma\nCreated Date: C 01/02/2003 01:23:45"), 0.0001);
+		assertEquals(1, table.get("Tasks", "TFS", "Tyype", "Sttate", "Ti tle", "", "Pescuma", "01/02/2003 01:23:45",
+				"12", "", "Team Project: VSS"), 0.0001);
+		assertEquals(1, table.get("Tasks", "TFS", "B Tyype", "B Sttate", "B Ti tle", "", "B Pescuma",
+				"B 01/02/2003 01:23:45", "13", "", "Team Project: B VSS"), 0.0001);
+		assertEquals(1, table.get("Tasks", "TFS", "C Tyype", "C Sttate", "C Ti tle", "", "C Pescuma",
+				"C 01/02/2003 01:23:45", "14", "13", "Team Project: C VSS"), 0.0001);
 	}
 }

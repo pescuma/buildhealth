@@ -42,7 +42,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 	private final PseudoFiles files;
 	private final String[] markers;
 	private final Pattern[] patterns;
-	private final Pattern ownerPattern = Pattern.compile("^\\[([^]]+)\\]");
+	private final Pattern createdByPattern = Pattern.compile("^\\[([^]]+)\\]");
 	
 	public CodeTasksComputer(PseudoFiles files) {
 		this(files, false);
@@ -165,11 +165,11 @@ public class CodeTasksComputer implements BuildDataComputer {
 						text = text.substring(0, pos).trim();
 				}
 				
-				Matcher ownerMatcher = ownerPattern.matcher(text);
-				String owner = "";
-				if (ownerMatcher.find()) {
-					owner = ownerMatcher.group(1).trim();
-					text = text.substring(ownerMatcher.end()).trim();
+				Matcher createdByMatcher = createdByPattern.matcher(text);
+				String createdBy = "";
+				if (createdByMatcher.find()) {
+					createdBy = createdByMatcher.group(1).trim();
+					text = text.substring(createdByMatcher.end()).trim();
 				}
 				
 				String file;
@@ -182,8 +182,8 @@ public class CodeTasksComputer implements BuildDataComputer {
 					fileLine = Integer.toString(lineNum);
 				}
 				
-				write(out, Double.toString(1), "Tasks", "From code", marker, "", text, owner, "", "", "", file,
-						fileLine);
+				write(out, Double.toString(1), "Tasks", "From code", marker, "", text, "", createdBy, "", "", "", "",
+						file, fileLine);
 			}
 		}
 	}
