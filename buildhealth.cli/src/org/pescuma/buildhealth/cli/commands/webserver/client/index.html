@@ -178,30 +178,60 @@ function build(id, data) {
 	
 	if (id == "diskusage") {
 		config = [
-			{ "header": "File", "data": "name" },
-			{ "header": "Size", "data": "value" }
+			{ header: "File", data: "name", size: "1000px" },
+			{ header: "Size", data: "value", size: "170px" }
 		];
 		
 	} else if (id == "linesofcode") {
 		config = [
-			{ "header": "Type", "data": "name" },
-			{ "header": "Number of Lines", "data": "value" }
+			{ header: "Type", data: "name" },
+			{ header: "Number of Lines", data: "value" }
+		];
+		
+	} else if (id == "tasks") {
+		config = [
+			{ header: "Text", data: "name", size:"500px" },
+			{ header: "Type", data: "taskType", size:"120px" },
+			{ header: "Status", data: "taskStatus", size:"120px" },
+			{ header: "Owner", data: "owner", size:"150px" },
+			{ header: "Created by", data: "owner", size:"150px" },
+			{ header: "Creation Date", data: "creationDate", size:"130px" }
+		];
+		
+	} else if (id == "staticanalysis") {
+		config = [
+			{ header: "Type / File", data: "name", size:"600px" },
+			{ header: "Line", data: "value", size:"70px" },
+			{ header: "Text", data: "description", size:"500px", wrap:true },
+		];
+		
+	} else if (id == "unittests") {
+		config = [
+			{ header: "Test", data: "name", size:"600px" },
+			{ header: "Result", data: "value", size:"170px" },
+			{ header: "Details", data: "description", size:"400px", wrap:true },
 		];
 		
 	} else {
 		config = [
-			{ "header": "Name", "data": "name" },
-			{ "header": "Value", "data": "value" },
-			{ "header": "Description", "data": "description" }
+			{ header: "Name", data: "name", size:"450px" },
+			{ header: "Value", data: "value", size:"270px" },
+			{ header: "Description", data: "description", size:"450px" }
 		];
 	}
 	
+	config = removeUnusedColumns(data, config);
+
 	var panel = $(".tree-template").clone();
 	panel.attr("class", "container item " + id);
 	panel.find(".main-text").text(fullText(data));
 	panel.find(".main-img").attr("src", createIcon(id, data.status));
 	
 	var tree = $('<table></table>').addClass('tree');
+
+	for (var i in config) 
+		addCol(tree, config[i].size);
+	
 	addHeaders(tree, config);
 	
 	var tbody = $('<tbody></tbody>');
@@ -216,8 +246,30 @@ function build(id, data) {
 	$("body").append(panel);
 }
 
+function removeUnusedColumns(data, config) {
+	var result = [];
+	
+	for(var i in config)
+		if (i == 0 || hasColumn(data, config[i].data))
+			result.push(config[i]);
+	
+	return result;
+}
+
+function hasColumn(data, name) {
+	if (data[name])
+		return true;
+
+	for(var i in data.children)
+		if (hasColumn(data.children[i], name))
+			return true;
+	
+	return false;
+}
+
 function addHeaders(tree, config) {
 	var row = $('<tr></tr>');
+	
 	for (var i in config) 
 		addTh(row, config[i].header);
 	
@@ -233,7 +285,7 @@ function createLines(tree, parentId, id, data, config) {
 		row.attr("data-tt-parent-id", parentId);
 	
 	for(var i in config)
-		addTd(row, data[config[i].data]);	
+		addTd(row, !config[i].wrap && i > 0, data[config[i].data], config[i].size);	
 	
 	tree.append(row);
 	
@@ -241,9 +293,15 @@ function createLines(tree, parentId, id, data, config) {
 		createLines(tree, id, id + "-" + i, data.children[i], config);
 }
 
-function addTd(row, name) {
+function addTd(row, addDiv, name) {
 	var td = $('<td></td>');
-	td.text(name);
+	if (addDiv) {
+		var div = $('<div></div>');
+		div.text(name);
+		td.append(div);
+	} else{
+		td.text(name);
+	}
 	row.append(td);
 }
 
@@ -251,6 +309,14 @@ function addTh(row, name) {
 	var td = $('<th></th>');
 	td.text(name);
 	row.append(td);
+}
+
+function addCol(row, size) {
+	if (!size)
+		return;
+	 
+	var col = $('<col width="' + size + '" />');
+	row.append(col);
 }
 
 function fullText(data) {

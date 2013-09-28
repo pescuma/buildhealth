@@ -2,7 +2,8 @@ table.treetable {
   margin-left: 1px;
   border: 1px solid #888;
   border-collapse: collapse;
-  width: 100%;
+  width: 1170px;
+  table-layout:fixed;
 }
 
 table.treetable thead {
@@ -12,13 +13,21 @@ table.treetable thead {
 table.treetable thead tr th {
   border: 1px solid #888;
   font-weight: normal;
-  padding: .3em 1em .1em 1em;
+  padding: 4px 10px;
   text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 table.treetable tbody tr td {
   cursor: default;
-  padding: .3em 1em;
+  padding: 4px 10px;
+}
+
+table.treetable tbody tr td div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 table.treetable span {

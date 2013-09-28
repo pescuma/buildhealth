@@ -32,7 +32,13 @@
       this.indenter = $(this.settings.indenterTemplate);
       this.children = [];
       this.initialized = false;
-      this.treeCell.prepend(this.indenter);
+      
+      this.cellDiv = $("<div></div>");
+      this.cellDiv.append(this.indenter);
+      this.cellDiv.append(this.treeCell.html());
+      
+      this.treeCell.html("");
+      this.treeCell.append(this.cellDiv);
     }
 
     Node.prototype.addChild = function(child) {

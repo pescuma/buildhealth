@@ -13,7 +13,7 @@ public class TaskReport extends Report {
 	private final String owner;
 	private final String createdBy;
 	private final String creationDate;
-	private final String type;
+	private final String taskType;
 	private final String taskStatus;
 	private final String details;
 	private final String file;
@@ -21,14 +21,14 @@ public class TaskReport extends Report {
 	private final double count;
 	
 	public TaskReport(BuildStatus status, String id, String text, String owner, String createdBy, String creationDate,
-			String type, String taskStatus, String details, String file, String fileLine, double count,
+			String taskType, String taskStatus, String details, String file, String fileLine, double count,
 			List<Report> children) {
-		super(status, text, "", createDescription(id, type, taskStatus, owner, count), children);
+		super(status, text, "", createDescription(id, taskType, taskStatus, owner, count), children);
 		this.id = id;
 		this.owner = owner;
 		this.createdBy = createdBy;
 		this.creationDate = creationDate;
-		this.type = type;
+		this.taskType = taskType;
 		this.taskStatus = taskStatus;
 		this.details = details;
 		this.file = file;
@@ -82,8 +82,16 @@ public class TaskReport extends Report {
 		return owner;
 	}
 	
-	public String getType() {
-		return type;
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	
+	public String getCreationDate() {
+		return creationDate;
+	}
+	
+	public String getTaskType() {
+		return taskType;
 	}
 	
 	public String getTaskStatus() {
