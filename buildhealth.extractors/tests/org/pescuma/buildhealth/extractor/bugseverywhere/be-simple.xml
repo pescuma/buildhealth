@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="cp1252" ?>
+<be-xml>
+  <version>
+    <tag>dcbdaba0</tag>
+    <committer>W. Trevor King</committer>
+    <date>2013-08-02</date>
+    <revision>dcbdaba0806b27fbe8f6a3e9b5ca7d18919be866</revision>
+  </version>
+  <bug>
+    <uuid>28f0499e-7b53-679f-80c8-96959f2a3873</uuid>
+    <short-name>bea/28f</short-name>
+    <severity>minor</severity>
+    <status>wontfix</status>
+    <assigned>Assigned &lt;a@b.com&gt;</assigned>
+    <reporter>Reporter &lt;a@b.com&gt;</reporter>
+    <creator>Creator &lt;a@b.com&gt;</creator>
+    <created>Fri, 13 Sep 2013 21:24:47 +0000</created>
+    <summary>Summary</summary>
+  </bug>
+  <bug>
+    <uuid>38f0499e-7b53-679f-80c8-96959f2a3873</uuid>
+    <short-name>bea/38f</short-name>
+    <severity>target</severity>
+    <status>open</status>
+    <assigned>Assigned &lt;a@b.com&gt;</assigned>
+    <creator>Creator &lt;a@b.com&gt;</creator>
+    <created>Fri, 13 Sep 2013 21:24:47 +0000</created>
+    <summary>A milestone. Yay!</summary>
+  </bug>
+</be-xml>

@@ -1,97 +1,51 @@
 package org.pescuma.buildhealth.extractor.tasks;
 
-import static org.apache.commons.io.IOUtils.*;
-import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
+import static org.apache.commons.lang3.ObjectUtils.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.LineIterator;
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
+import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 // http://bugseverywhere.org/
-public class BugsEverywhereExtractor extends BaseBuildDataExtractor {
-	
-	private static Pattern LINE = Pattern.compile("^([^:]+):([^:])([^:]):(?:([^:]+):)?(.*)$");
-	private static Map<String, String> statuses = new HashMap<String, String>();
-	private static Map<String, String> severities = new HashMap<String, String>();
-	static {
-		statuses.put("u", "Unconfirmed");
-		statuses.put("o", "Open");
-		statuses.put("a", "Assigned");
-		statuses.put("t", "Test");
-		statuses.put("c", "Closed");
-		statuses.put("f", "Fixed");
-		statuses.put("w", "Won't fix");
-		
-		severities.put("t", "Target");
-		severities.put("w", "Wishlist");
-		severities.put("m", "Minor");
-		severities.put("s", "Serious");
-		severities.put("c", "Critical");
-		severities.put("f", "Fatal");
-	}
+public class BugsEverywhereExtractor extends BaseXMLExtractor {
 	
 	public BugsEverywhereExtractor(PseudoFiles files) {
-		super(files, "txt");
+		super(files);
 	}
 	
 	@Override
-	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		LineIterator lines = lineIterator(input, "UTF-8");
+	protected void extractDocument(String filename, Document doc, BuildData data) {
+		checkRoot(doc, "be-xml", filename);
 		
-		while (lines.hasNext()) {
-			String line = lines.next().trim();
-			
-			Matcher m = LINE.matcher(line);
-			if (!m.matches())
-				continue;
-			
-			extract(data, m.group(1), m.group(2), m.group(3), m.group(4), m.group(5));
-		}
+		for (Element bug : doc.getRootElement().getChildren("bug"))
+			extractBug(data, bug);
 	}
 	
-	private void extract(BuildData data, String id, String status, String severity, String tags, String message) {
-		status = statusFromFirstLetter(status);
-		severity = severityFromFirstLetter(severity);
-		if (tags == null)
-			tags = "";
-		tags = tags.replace(",", ", ");
+	private void extractBug(BuildData data, Element bug) {
+		String id = firstNonNull(bug.getChildText("short-name"), bug.getChildText("uuid"), "");
+		String severity = firstNonNull(bug.getChildText("severity"), "");
+		String status = firstNonNull(bug.getChildText("status"), "");
+		String assigned = firstNonNull(bug.getChildText("assigned"), "");
+		String reporter = firstNonNull(bug.getChildText("reporter"), bug.getChildText("creator"), "");
+		String created = firstNonNull(bug.getChildText("created"), "");
+		String summary = firstNonNull(bug.getChildText("summary"), "");
 		
 		String type = "Bug";
-		if ("Target".equals(severity)) {
+		
+		if (severity.equals("target")) {
 			type = "Milestone";
 			severity = "";
 		}
 		
-		StringBuilder details = new StringBuilder();
-		appendInNewLine(details, "Severity", severity);
-		appendInNewLine(details, "Tags", tags);
+		StringBuilder description = new StringBuilder();
 		
-		data.add(1, "Tasks", "BugsEverywhere", type, status, message.trim(), "", "", "", id, "", details.toString());
-	}
-	
-	private String statusFromFirstLetter(String status) {
-		String result = statuses.get(status.toLowerCase(Locale.ENGLISH));
-		if (result == null)
-			return status;
-		else
-			return result;
-	}
-	
-	private String severityFromFirstLetter(String severity) {
-		String result = severities.get(severity.toLowerCase(Locale.ENGLISH));
-		if (result == null)
-			return severity;
-		else
-			return result;
+		if (!severity.isEmpty())
+			description.append("severity: ").append(severity);
+		
+		data.add(1, "Tasks", "BugsEverywhere", type, status, summary, assigned, reporter, created, id, "",
+				description.toString());
 	}
 	
 }
