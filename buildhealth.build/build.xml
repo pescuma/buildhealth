@@ -229,6 +229,7 @@
 				</fileset>
 			</add-findbugs>
 			<add-diskusage dir="${build.dir}" />
+			<add-github-issues username="pescuma" repository="buildhealth" />
 			<compute-tasks>
 				<fileset dir="${basedir}/..">
 					<include name="**/*.java" />

@@ -32,10 +32,9 @@
 	<classpathentry kind="lib" path="lib/auto/compile/commons-io-2.2-jar.jar" sourcepath="lib/auto/compile/commons-io-2.2-source.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.core"/>
 	<classpathentry kind="lib" path="lib/auto/compile/commons-lang3-3.1-jar.jar" sourcepath="lib/auto/compile/commons-lang3-3.1-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-codec-1.7-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-lang-2.6-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/github-api-1.44-jar.jar" sourcepath="lib/auto/compile/github-api-1.44-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jackson-core-asl-1.9.9-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jackson-mapper-asl-1.9.9-jar.jar"/>
+	<classpathentry kind="lib" path="lib/github-api-1.45-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/jackson-annotations-2.2.3-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/jackson-core-2.2.3-jar.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/jackson-databind-2.2.3-jar.jar" sourcepath="lib/auto/compile/jackson-databind-2.2.3-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

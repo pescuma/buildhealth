@@ -5,9 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.kohsuke.github.GHIssue;
@@ -31,7 +29,6 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 	private final String username;
 	private final String repository;
 	private final boolean onlyOpen;
-	private final Map<String, String> userToName = new HashMap<String, String>();
 	
 	public GitHubIssuesExtractor(String username, String repository, boolean onlyOpen) {
 		this.username = username;
@@ -68,23 +65,13 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private String toLabels(Collection<String> labels) {
-		// BUG: the issue should be an object
-		
+	private String toLabels(Collection<GHIssue.Label> labels) {
 		StringBuilder result = new StringBuilder();
 		
-		boolean lastWasName = false;
-		for (String label : labels) {
-			if (lastWasName) {
-				lastWasName = false;
-				
-				if (result.length() > 0)
-					result.append(", ");
-				result.append(label);
-				
-			} else if (label.equals("name")) {
-				lastWasName = true;
-			}
+		for (GHIssue.Label label : labels) {
+			if (result.length() > 0)
+				result.append(", ");
+			result.append(label.getName());
 		}
 		
 		if (result.length() > 0)
@@ -104,28 +91,7 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 		if (user == null)
 			return "";
 		
-		String login = user.getLogin();
-		String result = userToName.get(login);
-		if (result == null) {
-			result = getName(user);
-			userToName.put(login, result);
-		}
-		
-		return result;
-		
-	}
-	
-	private String getName(GHUser user) {
-		try {
-			
-			String name = user.getName();
-			if (name != null)
-				return name;
-			
-		} catch (IOException e) {
-			// Ignore
-		}
-		
+		// Use login as name so we don't hit github API limit
 		return user.getLogin();
 	}
 	
