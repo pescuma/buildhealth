@@ -8,4 +8,6 @@ public interface BuildDataExtractorTracker {
 	
 	void onStreamProcessed();
 	
+	void onProcessed(String message);
+	
 }

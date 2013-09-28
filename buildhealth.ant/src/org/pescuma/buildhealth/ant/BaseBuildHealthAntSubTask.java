@@ -27,6 +27,11 @@ public abstract class BaseBuildHealthAntSubTask extends Task {
 			public void onFileComputed(BuildDataComputer computer, File file) {
 				log("File computed: " + file);
 			}
+			
+			@Override
+			public void onOtherExtracted(BuildDataExtractor extractor, String message) {
+				log(message);
+			}
 		};
 		buildHealth.addListener(listener);
 		

@@ -25,6 +25,7 @@ import org.pescuma.buildhealth.cli.commands.add.staticanalysis.GendarmeExtractor
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.StyleCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.tasks.BugsEverywhereExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.tasks.GitHubIssuesExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.tasks.TFSWorkItemsExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.AUnitExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.unittest.BoostTestExtractorCommand;
@@ -54,21 +55,31 @@ public class BuildHealthCli {
 				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class,
 						NotifyCommand.class, WebServerCommand.class);
 		
-		builder.withGroup("add").withDescription("Add information to the current build")
+		builder.withGroup("add")
+				.withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)
-				.withCommands(AUnitExtractorCommand.class, BoostTestExtractorCommand.class, //
-						CppTestExtractorCommand.class, CppUnitExtractorCommand.class, //
-						FPCUnitExtractorCommand.class, JUnitExtractorCommand.class, //
+				.withCommands(AUnitExtractorCommand.class,
+						BoostTestExtractorCommand.class, //
+						CppTestExtractorCommand.class,
+						CppUnitExtractorCommand.class, //
+						FPCUnitExtractorCommand.class,
+						JUnitExtractorCommand.class, //
 						MNMLSTCUnitTestExtractorCommand.class, //
 						MSTestExtractorCommand.class, //
-						NUnitExtractorCommand.class, PHPUnitExtractorCommand.class, //
+						NUnitExtractorCommand.class,
+						PHPUnitExtractorCommand.class, //
 						TusarExtractorCommand.class, //
-						EmmaExtractorCommand.class, JacocoExtractorCommand.class, DotCoverExtractorCommand.class, //
-						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class, //
-						GendarmeExtractorCommand.class, FxCopExtractorCommand.class, StyleCopExtractorCommand.class, //
+						EmmaExtractorCommand.class, JacocoExtractorCommand.class,
+						DotCoverExtractorCommand.class, //
+						PMDExtractorCommand.class, CPDExtractorCommand.class,
+						FindBugsExtractorCommand.class, //
+						GendarmeExtractorCommand.class, FxCopExtractorCommand.class,
+						StyleCopExtractorCommand.class, //
 						JapexExtractorCommand.class, //
-						DiskUsageExtractorCommand.class, CLOCExtractorCommand.class, //
-						BugsEverywhereExtractorCommand.class, TFSWorkItemsExtractorCommand.class);
+						DiskUsageExtractorCommand.class,
+						CLOCExtractorCommand.class, //
+						BugsEverywhereExtractorCommand.class, TFSWorkItemsExtractorCommand.class,
+						GitHubIssuesExtractorCommand.class);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
 				.withDefaultCommand(ComputeGroupHelp.class) //

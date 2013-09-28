@@ -34,6 +34,7 @@
 
 	<typedef name="add-be" classname="org.pescuma.buildhealth.ant.tasks.add.tasks.BugsEverywhereExtractorAntTask" />
 	<typedef name="add-tfs-wi" classname="org.pescuma.buildhealth.ant.tasks.add.tasks.TFSWorkItemsExtractorAntTask" />
+	<typedef name="add-github-issues" classname="org.pescuma.buildhealth.ant.tasks.add.tasks.GitHubIssuesExtractorAntTask" />
 
 	<typedef name="compute-loc" classname="org.pescuma.buildhealth.ant.tasks.compute.LOCComputerAntTask" />
 	<typedef name="compute-tasks" classname="org.pescuma.buildhealth.ant.tasks.compute.tasks.CodeTasksExtractorAntTask" />

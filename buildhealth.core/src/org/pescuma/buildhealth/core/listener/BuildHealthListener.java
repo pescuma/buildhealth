@@ -13,4 +13,6 @@ public interface BuildHealthListener {
 	
 	void onStreamExtracted(BuildDataExtractor extractor);
 	
+	void onOtherExtracted(BuildDataExtractor extractor, String message);
+	
 }

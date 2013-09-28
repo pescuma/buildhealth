@@ -37,4 +37,10 @@ public class CompositeBuildHealthListener implements BuildHealthListener {
 			listener.onStreamExtracted(extractor);
 	}
 	
+	@Override
+	public void onOtherExtracted(BuildDataExtractor extractor, String message) {
+		for (BuildHealthListener listener : listeners)
+			listener.onOtherExtracted(extractor, message);
+	}
+	
 }

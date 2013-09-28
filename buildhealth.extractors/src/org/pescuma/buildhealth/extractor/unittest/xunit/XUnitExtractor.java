@@ -95,6 +95,11 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 						public void onFileProcessed(File file) {
 							// Ignore
 						}
+						
+						@Override
+						public void onProcessed(String message) {
+							// Ignore
+						}
 					});
 			
 		} catch (IOException e) {

@@ -157,6 +157,11 @@ public class BuildHealth {
 			public void onStreamProcessed() {
 				listeners.onStreamExtracted(extractor);
 			}
+			
+			@Override
+			public void onProcessed(String message) {
+				listeners.onOtherExtracted(extractor, message);
+			}
 		});
 	}
 	

@@ -28,6 +28,7 @@
 		<dependency org="commons-io" name="commons-io" rev="2.2" />
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.1" />
 		<dependency org="org.jsoup" name="jsoup" rev="1.7.2" />
+		<dependency org="org.kohsuke" name="github-api" rev="1.44" />
 
 		<!-- Tests only -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="compile" />

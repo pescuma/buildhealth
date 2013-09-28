@@ -30,6 +30,11 @@ public abstract class BuildHealthCliCommand implements Runnable {
 			public void onFileComputed(BuildDataComputer computer, File file) {
 				System.out.println("File computed: " + file);
 			}
+			
+			@Override
+			public void onOtherExtracted(BuildDataExtractor extractor, String message) {
+				System.out.println(message);
+			}
 		});
 		
 		execute();
