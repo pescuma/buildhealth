@@ -79,7 +79,7 @@ var report = null;
 
 $( document ).ready(function() {
 
-	$.getJSON("/report.json")
+	$.getJSON("report.json")
 	.fail(function() {
 		$("#build-text").text("Error fetching report");
 	})
