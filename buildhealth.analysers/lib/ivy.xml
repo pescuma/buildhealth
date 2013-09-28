@@ -18,6 +18,6 @@
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.1" />
 		<dependency org="org.kohsuke.metainf-services" name="metainf-services" rev="1.5" conf="compile" />
 
-		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
+		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
 	</dependencies>
 </ivy-module>

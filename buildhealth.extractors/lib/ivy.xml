@@ -34,7 +34,7 @@
 
 		<!-- Tests only -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="compile" />
-		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
+		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
 
 		<!-- Excluded -->
 		<exclude org="com.google.code.guice" module="guice" />

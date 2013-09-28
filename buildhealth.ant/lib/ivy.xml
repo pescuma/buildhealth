@@ -15,6 +15,6 @@
 
 	<dependencies>
 		<dependency org="org.apache.ant" name="ant" rev="1.7.0" conf="compile" />
-		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
+		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
 	</dependencies>
 </ivy-module>

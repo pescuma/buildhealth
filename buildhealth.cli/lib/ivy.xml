@@ -28,6 +28,6 @@
 		<dependency org="org.webjars" name="bootstrap" rev="3.0.0" />
 		<dependency org="org.webjars" name="html5shiv" rev="3.6.2" />
 
-		<dependency org="junit" name="junit" rev="4.10" conf="compile" />
+		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
 	</dependencies>
 </ivy-module>
