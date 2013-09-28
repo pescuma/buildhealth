@@ -12,7 +12,8 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
@@ -158,7 +159,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		if (!isRealTask) {
 			// Only add stats to parent
 			Stats stats = node.getData();
-			stats.getType(entry.type + " " + entry.status).count += entry.count;
+			stats.addToType(entry);
 			return;
 		}
 		
@@ -167,7 +168,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		
 		Stats stats = node.getData();
 		stats.entry = entry;
-		stats.getType(entry.type + " " + entry.status).count += entry.count;
+		stats.addToType(entry);
 		
 		for (Entry child : entry.children)
 			addToTree(node, child);
@@ -210,15 +211,36 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		} else {
 			StringBuilder description = new StringBuilder();
 			double total = 0;
-			for (Type type : stats.types.values()) {
-				total += type.count;
+			
+			if (!stats.types.isEmpty()) {
+				Set<String> statuses = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+				Set<String> types = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 				
-				if (description.length() > 0)
-					description.append(", ");
-				description.append(type.name.trim()).append(": ").append(format1000(type.count));
+				for (Type type : stats.types.values())
+					(Stats.TYPE.equals(type.type) ? types : statuses).add(type.name);
+				
+				for (String status : statuses) {
+					Type type = stats.getType(Stats.STATUS, status);
+					total += type.count;
+					append(description, type);
+				}
+				
+				description.append(" ; ");
+				
+				for (String type : types)
+					append(description, stats.getType(Stats.TYPE, type));
 			}
+			
 			return new Report(stats.getOwnStatus(), name, format1000(total), description.toString(), children);
 		}
+	}
+	
+	private void append(StringBuilder description, Type type) {
+		int length = description.length();
+		if (length > 0 && description.charAt(length - 1) != ' ')
+			description.append(", ");
+		
+		description.append(type.name.trim()).append(": ").append(format1000(type.count));
 	}
 	
 	private static class Entry {
@@ -245,6 +267,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 			text = line.getColumn(COLUMN_TEXT);
 			type = line.getColumn(COLUMN_TYPE);
 			status = line.getColumn(COLUMN_STATUS);
+			if (status.isEmpty())
+				status = "Open";
 			owner = line.getColumn(COLUMN_OWNER);
 			createdBy = line.getColumn(COLUMN_CREATED_BY);
 			creationDate = line.getColumn(COLUMN_CREATION_DATE);
@@ -268,18 +292,29 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 	}
 	
 	private static class Stats extends TreeStats {
+		static final String STATUS = "status";
+		static final String TYPE = "type";
+		
 		Entry entry;
-		final Map<String, Type> types = new TreeMap<String, Type>(String.CASE_INSENSITIVE_ORDER);
+		
+		final Map<String, Type> types = new HashMap<String, Type>();
 		
 		Stats(String... names) {
 			super(names);
 		}
 		
-		Type getType(String name) {
-			Type result = types.get(name);
+		void addToType(Entry entry) {
+			getType(STATUS, entry.status).count += entry.count;
+			getType(TYPE, entry.type).count += entry.count;
+		}
+		
+		Type getType(String type, String name) {
+			String key = type + "_" + name;
+			
+			Type result = types.get(key);
 			if (result == null) {
-				result = new Type(name);
-				types.put(name, result);
+				result = new Type(type, name);
+				types.put(key, result);
 			}
 			
 			return result;
@@ -287,15 +322,17 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		
 		void addChild(Stats child) {
 			for (Type type : child.types.values())
-				getType(type.name).count += type.count;
+				getType(type.type, type.name).count += type.count;
 		}
 	}
 	
 	private static class Type {
+		final String type;
 		final String name;
 		double count;
 		
-		Type(String name) {
+		Type(String type, String name) {
+			this.type = type;
 			this.name = name;
 		}
 	}

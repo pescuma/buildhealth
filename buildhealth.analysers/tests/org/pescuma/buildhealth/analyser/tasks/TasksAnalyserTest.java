@@ -30,7 +30,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Tasks", "1", "XXX: 1"), report);
+		assertReport(new Report(Good, "Tasks", "1", "Open: 1 ; XXX: 1"), report);
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Tasks", "1", "XXX Open: 1"), report);
+		assertReport(new Report(Good, "Tasks", "1", "Open: 1 ; XXX: 1"), report);
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Tasks", "3", "TODO: 2, XXX: 1"), report);
+		assertReport(new Report(Good, "Tasks", "3", "Open: 3 ; TODO: 2, XXX: 1"), report);
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Tasks", "3", "TODO Closed: 2, TODO Open: 1"), report);
+		assertReport(new Report(Good, "Tasks", "3", "Closed: 2, Open: 1 ; TODO: 3"), report);
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Tasks", "3", "TODO: 3"), report);
+		assertReport(new Report(Good, "Tasks", "3", "Open: 3 ; TODO: 3"), report);
 	}
 	
 	@Test
@@ -78,9 +78,9 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Tasks", "1", "TODO: 1", //
-				new Report(Good, "Code", "1", "TODO: 1", //
-						new Report(Good, "Text", "", "TODO, id: 1, owner: own") //
+		assertReport(new Report(Good, "Tasks", "1", "Open: 1 ; TODO: 1", //
+				new Report(Good, "Code", "1", "Open: 1 ; TODO: 1", //
+						new Report(Good, "Text", "", "TODO, Open, id: 1, owner: own") //
 				) //
 				), report);
 	}
@@ -91,8 +91,8 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Tasks", "1", "TODO Open: 1", //
-				new Report(Good, "Code", "1", "TODO Open: 1", //
+		assertReport(new Report(Good, "Tasks", "1", "Open: 1 ; TODO: 1", //
+				new Report(Good, "Code", "1", "Open: 1 ; TODO: 1", //
 						new Report(Good, "Text", "", "TODO, Open, id: 1, owner: own") //
 				) //
 				), report);
@@ -105,10 +105,10 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Tasks", "2", "TODO: 2", //
-				new Report(Good, "Code", "2", "TODO: 2", //
-						new Report(Good, "Parent", "", "TODO, id: 1", //
-								new Report(Good, "Child", "", "TODO, id: 2") //
+		assertReport(new Report(Good, "Tasks", "2", "Open: 2 ; TODO: 2", //
+				new Report(Good, "Code", "2", "Open: 2 ; TODO: 2", //
+						new Report(Good, "Parent", "", "TODO, Open, id: 1", //
+								new Report(Good, "Child", "", "TODO, Open, id: 2") //
 						) //
 				) //
 				), report);
@@ -121,10 +121,10 @@ public class TasksAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Tasks", "3", "TODO: 3", //
-				new Report(Good, "Code", "3", "TODO: 3", //
-						new Report(Good, "Parent", "", "TODO, id: 1, representing 2 tasks", //
-								new Report(Good, "Child", "", "TODO, id: 2") //
+		assertReport(new Report(Good, "Tasks", "3", "Open: 3 ; TODO: 3", //
+				new Report(Good, "Code", "3", "Open: 3 ; TODO: 3", //
+						new Report(Good, "Parent", "", "TODO, Open, id: 1, representing 2 tasks", //
+								new Report(Good, "Child", "", "TODO, Open, id: 2") //
 						) //
 				) //
 				), report);
