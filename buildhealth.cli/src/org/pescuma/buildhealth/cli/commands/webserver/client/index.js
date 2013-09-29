@@ -120,6 +120,7 @@ function build(id, data) {
 			{ header: "Created by", data: "createdBy", size:"130px" },
 			{ header: "Creation Date", data: "creationDate", size:"130px" }
 		];
+		config = removeUnusedColumns(data, config);
 		
 	} else if (id == "staticanalysis") {
 		config = [
@@ -135,6 +136,9 @@ function build(id, data) {
 			{ header: "Details", data: "description", size:"400px", wrap:true },
 		];
 		
+	} else if (id == "coverage") {
+		config = createCoverageColumns(data);
+		
 	} else {
 		config = [
 			{ header: "Name", data: "name", size:"450px" },
@@ -143,8 +147,6 @@ function build(id, data) {
 		];
 	}
 	
-	config = removeUnusedColumns(data, config);
-
 	var panel = $(".tree-template").clone();
 	panel.attr("class", "container item " + id);
 	panel.find(".main-text").text(fullText(data));
@@ -157,16 +159,87 @@ function build(id, data) {
 	
 	addHeaders(tree, config);
 	
-	var tbody = $('<tbody></tbody>');
+	var html = [];
+	html.push('<tbody>');
 	for(var i in data.children) 
-		createLines(tbody, "", "row-" + i, data.children[i], config);
-	
-	tree.append(tbody);
+		createLines(html, "", "row-" + i, data.children[i], config);
+	html.push('</tbody>');
+
+	tree.append(html.join(''));
 
 	tree.treetable({ expandable: true });	
 	panel.append(tree);
 	
 	$("body").append(panel);
+}
+
+function createCoverageColumns(data) {
+	var coverage = findFirstByType(data, "CoverageReport");
+	if (!coverage)
+		return  [
+					{ header: "Name", data: "name", size:"450px" },
+					{ header: "Value", data: "value", size:"270px" },
+					{ header: "Description", data: "description", size:"450px" }
+				];
+	
+	config = [ '' ]; // Reserve space for first element
+	var width = 0;
+	
+	for(var i in coverage.coverages) {
+		var name = coverage.coverages[i].name;
+		config.push({ 
+			header: name, 
+			size:"110px",
+			type: "percentage",
+			value: function(r) {
+				var c = findCoverage(r, this.header);
+				if (c && c.total > 0)
+					return c.percentage;
+				else
+					return "no data";
+			} 
+		});
+		width += 110;
+	}
+
+	if (findCoverage(coverage, "line")) {
+		config.push({ 
+			header: "Lines", 
+			size:"80px",
+			value: function(r) {
+				var c = findCoverage(r, "line");
+				if (c)
+					return c.total;
+				else
+					return "";
+			} 
+		});
+		width += 80;
+	}
+	
+	var left = 1170 - width;
+	if (left < 300)
+		left = 300;
+	
+	config[0] = { header: "Name", data: "name", size: left + "px" }
+	
+	return config;
+}
+
+function findCoverage(data, name) {
+	for(var i in data.coverages) 
+		if (data.coverages[i].name == name) 
+			return data.coverages[i];
+}
+
+function findFirstByType(data, type) {
+	if (data.type == type)
+		return data;
+	
+	for (var child in data.children)
+		var result = findFirstByType(child, type);
+			if (result)
+				return result;
 }
 
 function removeUnusedColumns(data, config) {
@@ -201,31 +274,47 @@ function addHeaders(tree, config) {
 	tree.append(thead);
 }
 
-function createLines(tree, parentId, id, data, config) {
-	var row = $('<tr></tr>');
-	row.attr("data-tt-id", id);
+function createLines(html, parentId, id, data, config) {
+	html.push('<tr data-tt-id="' + id + '"');
 	if (parentId != '')
-		row.attr("data-tt-parent-id", parentId);
+		html.push(' data-tt-parent-id="' + parentId + '"');
+	html.push('>');
 	
-	for(var i in config)
-		addTd(row, !config[i].wrap && i > 0, data[config[i].data], config[i].size);	
+	for(var i in config) {
+		var cfg = config[i];
+		
+		var value;
+		if (cfg.data)
+			value = data[cfg.data];
+		else if (cfg.value)
+			value = cfg.value(data);
+		
+		if (value == undefined)
+			value = '';
+		
+		if (cfg.type == "percentage") {
+			if (value == "no data")
+				value = '';
+			else if (value < 50)
+				value = '<div class="progressBar"><div class="progressBar-left" style="width: ' + value + '%"></div><div class="progressBar-right">&nbsp;' + value + '%</div></div>';
+			else
+				value = '<div class="progressBar"><div class="progressBar-left" style="width: ' + value + '%">' + value + '%&nbsp;</div></div>';
+		}
+		
+		addTd(html, !cfg.wrap && i > 0, value, cfg.size);
+	}
 	
-	tree.append(row);
+	html.push('</tr>');
 	
 	for(var i in data.children) 
-		createLines(tree, id, id + "-" + i, data.children[i], config);
+		createLines(html, id, id + "-" + i, data.children[i], config);
 }
 
-function addTd(row, addDiv, name) {
-	var td = $('<td></td>');
-	if (addDiv) {
-		var div = $('<div></div>');
-		div.text(name);
-		td.append(div);
-	} else{
-		td.text(name);
-	}
-	row.append(td);
+function addTd(html, addDiv, name) {
+	if (addDiv) 
+		html.push('<td><div>' + name + '</div></td>');
+	else
+		html.push('<td>' + name + '</td>');
 }
 
 function addTh(row, name) {

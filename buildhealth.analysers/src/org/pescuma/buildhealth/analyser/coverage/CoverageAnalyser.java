@@ -429,7 +429,10 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		}
 		
 		int getPercentage() {
-			return (int) round(100 * covered / total);
+			if (total < 0.001)
+				return 100;
+			else
+				return (int) round(100 * covered / total);
 		}
 		
 		boolean hasData() {

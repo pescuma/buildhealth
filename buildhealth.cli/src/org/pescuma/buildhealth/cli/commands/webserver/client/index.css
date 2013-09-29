@@ -17,6 +17,34 @@ body {
 
 .tree {
 	margin-top: 30px;
+	margin-bottom: 30px;
 	font-size: 18px;
 	width: 100%;
+}
+
+.progressBar {
+	width: 100%;
+	height: 22px;
+	border: 1px solid #111;
+	background-color: #a80c10;
+}
+
+.progressBar .progressBar-left {
+	float: left;
+	height: 100%;
+	color: #fff;
+	font-size: 12px;
+	text-align: right;
+	line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+	border-right: 1px solid #111;
+	background-color: #089232;
+}
+
+.progressBar .progressBar-right {
+	float: left;
+	height: 100%;
+	color: #fff;
+	font-size: 12px;
+	text-align: left;
+	line-height: 22px; /* same as #progressBar height if we want text middle aligned */
 }

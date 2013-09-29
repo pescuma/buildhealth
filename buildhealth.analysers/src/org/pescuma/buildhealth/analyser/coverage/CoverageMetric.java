@@ -19,7 +19,10 @@ public class CoverageMetric {
 	}
 	
 	public int getPercentage() {
-		return (int) round(100 * covered / total);
+		if (total < 0.001)
+			return 100;
+		else
+			return (int) round(100 * covered / total);
 	}
 	
 	public double getCovered() {
