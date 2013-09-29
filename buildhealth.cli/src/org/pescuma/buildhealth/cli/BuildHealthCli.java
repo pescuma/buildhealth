@@ -17,6 +17,7 @@ import org.pescuma.buildhealth.cli.commands.add.DiskUsageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.DotCoverExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.EmmaExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.JacocoExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.coverage.VtestCoverageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.japex.JapexExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.CPDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FindBugsExtractorCommand;
@@ -58,21 +59,19 @@ public class BuildHealthCli {
 		builder.withGroup("add")
 				.withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)
-				.withCommands(AUnitExtractorCommand.class,
-						BoostTestExtractorCommand.class, //
-						CppTestExtractorCommand.class,
-						CppUnitExtractorCommand.class, //
-						FPCUnitExtractorCommand.class,
-						JUnitExtractorCommand.class, //
-						MNMLSTCUnitTestExtractorCommand.class, //
-						MSTestExtractorCommand.class, //
+				.withCommands(AUnitExtractorCommand.class, BoostTestExtractorCommand.class,
+						CppTestExtractorCommand.class, CppUnitExtractorCommand.class, FPCUnitExtractorCommand.class,
+						JUnitExtractorCommand.class,
+						MNMLSTCUnitTestExtractorCommand.class,
+						MSTestExtractorCommand.class,
 						NUnitExtractorCommand.class,
-						PHPUnitExtractorCommand.class, //
+						PHPUnitExtractorCommand.class,
 						TusarExtractorCommand.class, //
-						EmmaExtractorCommand.class, JacocoExtractorCommand.class,
-						DotCoverExtractorCommand.class, //
-						PMDExtractorCommand.class, CPDExtractorCommand.class,
-						FindBugsExtractorCommand.class, //
+						EmmaExtractorCommand.class,
+						JacocoExtractorCommand.class,
+						DotCoverExtractorCommand.class,
+						VtestCoverageExtractorCommand.class, //
+						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class,
 						GendarmeExtractorCommand.class, FxCopExtractorCommand.class,
 						StyleCopExtractorCommand.class, //
 						JapexExtractorCommand.class, //

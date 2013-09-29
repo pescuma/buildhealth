@@ -22,6 +22,7 @@
 	<typedef name="add-emma" classname="org.pescuma.buildhealth.ant.tasks.add.coverage.EmmaExtractorAntTask" />
 	<typedef name="add-jacoco" classname="org.pescuma.buildhealth.ant.tasks.add.coverage.JacocoExtractorAntTask" />
 	<typedef name="add-dotCover" classname="org.pescuma.buildhealth.ant.tasks.add.coverage.DotCoverExtractorAntTask" />
+	<typedef name="add-vtest-coverage" classname="org.pescuma.buildhealth.ant.tasks.add.coverage.VtestCoverageExtractorAntTask" />
 
 	<typedef name="add-pmd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.PMDExtractorAntTask" />
 	<typedef name="add-cpd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.CPDExtractorAntTask" />
