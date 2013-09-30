@@ -15,6 +15,12 @@ So, this is a tool that receive as inputs the results of the build (test results
 Some goals for this project: it should be easy to create plugins for this tool to process new kinds of output. Also, it would be good if the results can be used by other tools (to be displayed in different formats). Lastly, it would be good if the tool could store the results from previous builds to tell if the quality has improved or not.
 
 
+Downloading
+-----------
+
+From the [Releases tab](https://github.com/pescuma/buildhealth/releases) you can download a jar that contains both the cli and ant tasks or the cli as an exe for Windows. To call the cli from linux you need to call `java -jar buildhealth-0.X.jar`
+
+
 Interface
 ---------
 
@@ -24,20 +30,18 @@ Let's first see some examples
 
 ### Command line interface (cli)
 
-The way it works is: you first create a build, then you add data to it and finally you call report to see the status of your build.
-
-Currently you need to call `java -jar buildhealth-01.jar`. This should be improved in a future version.
+The way it works is: you first create a build, then you add data to it and finally you call report to see the status of your build. At this point you can also call the notify command to receive nofications with the report.
 
 
 ##### Creates a new build
 This must be done before adding data
 ```
-> java -jar buildhealth-01.jar new
+> buildhealth new
 ```
 
 ##### Add junit tests
 ```
-> java -jar buildhealth-0.1.jar add junit /path/to/xmls
+> buildhealth add junit /path/to/xmls
 File processed: /path/to/xmls/TEST-test1.xml
 File processed: /path/to/xmls/TEST-test2.xml
 File processed: /path/to/xmls/TEST-test2.xml
@@ -45,26 +49,61 @@ File processed: /path/to/xmls/TEST-test2.xml
 
 ##### Add coverage
 ```
-> java -jar buildhealth-0.1.jar add jacoco /path/th/xmls
+> buildhealth add jacoco /path/th/xmls
 File processed: /path/th/xmls/coverage.xml
 ```
 
 ##### Compute tasks
 Tasks are `TODO`/`FIXME`/`HACK`/`XXX` comments on your code
 ```
-> java -jar buildhealth-0.1.jar compute tasks /path/to/sources
+> buildhealth compute tasks /path/to/sources
 File computed: /home/pescuma/.buildhealth/computed/tasks.csv
 File processed: /home/pescuma/.buildhealth/computed/tasks.csv
 ```
 
+##### List available configurations
+```
+> buildhealth config list
+Coverage:
+    coverage good = <no limit> [Minimun coverage for a Good build]
+    coverage warn = <no limit> [Minimun coverage for a So So build]
+    coverage <type> good = <no limit> [Minimun coverage for a Good build]
+    coverage <type> warn = <no limit> [Minimun coverage for a So So build]
+    coverage maintype = instruction,line [Which coverage type will represent the global coverage (can have more than one, separated by ',', with the most import ant first)]
+
+Disk usage:
+    diskUsage reportWithTags = true [If file tags should be used in the full report tree]
+
+Performance:
+    performace runsPerS good = <no limit> [Minimun runs per second for a Good build]
+    performace runsPerS warn = <no limit> [Minimun runs per second for a Good build]
+    performace ms good = <no limit> [Maximun run time (ms) for a Good build]
+    performace ms warn = <no limit> [Maximun run time (ms) for a Good build]
+    performace report = <ms if both available, else what is available> [How to show the agregated results (runsPerS or ms)]
+
+Static analysis:
+    staticanalysis good = <no limit> [Maximun munber of violations for a Good build]
+    staticanalysis warn = <no limit> [Maximun munber of violations for a So So build]
+    staticanalysis <language> good = <no limit> [Maximun munber of violations for a Good build]
+    staticanalysis <language> warn = <no limit> [Maximun munber of violations for a So So build]
+    staticanalysis <language> <framework> good = <no limit> [Maximun munber of violations for a Good build]
+    staticanalysis <language> <framework> warn = <no limit> [Maximun munber of violations for a So So build]
+
+Growl notifier:
+    notification growl enabled = true [Growl server name]
+    notification growl server = localhost [Growl server name]
+    notification growl port = 23053 [Growl server port]
+```
+
+
 ##### Set config parameters
 ```
-> java -jar buildhealth-0.1.jar config set coverage good = 70
+> buildhealth config set coverage good = 70
 ```
 
 ##### Get report
 ```
-> java -jar buildhealth-0.1.jar report
+> buildhealth report
 Your build is GOOD
     Unit tests: PASSED [109 tests, 109 passed (1.4 s)]
     Coverage: 73% [class: 50%, method: 56%, line: 67%, branch: 57%, instruction: 73%, complexity: 52%]
@@ -73,7 +112,31 @@ Your build is GOOD
     Disk usage: 10.5 MiB
 ```
 
+##### Get detailed report on one item
+```
+> buildhealth report "Unit tests"
+Unit tests: PASSED [109 tests, 109 passed (1.4 s)]
+    Java: PASSED [109 tests, 109 passed (1.4 s)]
+...
+```
 
+##### Notify
+```
+> buildhealth notify
+Sent growl notification
+```
+
+##### Start web server to see the report as an HTML page
+```
+> buildhealth webserver
+Web server started at http://localhost:8190
+Available urls:
+  http://localhost:8190/            => Browse the reports as a web site
+  http://localhost:8190/report.json => Report in JSON format
+  http://localhost:8190/report.xml  => Report in XML format
+
+Hit Enter to stop...
+```
 
 ### `ant` task
 
@@ -82,7 +145,7 @@ There is one `ant` task that does everything. In this case you don't need to cal
 ```xml
 <taskdef resource="org/pescuma/buildhealth/ant/antlib.xml" classpath="${build.dir}/buildhealth-${version}.jar" />
 
-<buildhealth home="${reports.dir}/builhealth">
+<buildhealth home="${reports.dir}/builhealth" notify="true">
    <config key="coverage good" value="70" />
 	<add-junit>
 		<fileset dir="${build.dir}">
@@ -124,14 +187,21 @@ If you noticied, in the previous examples, some commands start with _add_ and ot
  - `add emma`: adds coverage information from [EMMA](http://emma.sourceforge.net/)
  - `add jacoco`: adds coverage information from [JaCoCo](http://www.eclemma.org/jacoco/)
  - `add dotCover`: adds coverage information from [dotCover](http://www.jetbrains.com/dotcover/)
+ - `add vtest-coverage`: adds coverage information from a [vtest](http://www.jetbrains.com/dotcover/) XML file. Information on how to convert the .coverage to an XML can be found [here](http://reportgenerator.codeplex.com/wikipage?title=Visual%20Studio%20Coverage%20Tools&ANCHOR#vstestconsoleexe)
  - `add pmd`: adds static analysis results from [PMD](http://pmd.sourceforge.net/)
  - `add cpd`: adds static analysis results from [CPD](http://pmd.sourceforge.net/snapshot/cpd-usage.html)
  - `add findbugs`: adds static analysis results from [FindBugs](http://findbugs.sourceforge.net/)
+ - `add gendarme`: adds static analysis results from [Gendarme](http://www.mono-project.com/Gendarme)
+ - `add fxcop`: adds static analysis results from [FxCop](http://msdn.microsoft.com/en-us/library/bb429476%28v=vs.80%29.aspx)
+ - `add stylecop`: adds static analysis results from [StyleCop](https://stylecop.codeplex.com/)
  - `add japex`: adds performance test results from [Japex](http://japex.java.net/)
- - `compute loc`: compute and add lines of code using [CLOC](http://cloc.sourceforge.net/). This requires `perl` in your path
+ - `add be`: adds tasks from [BugsEverywhere](http://bugseverywhere.org/) (a call to `be show -xml`)
+ - `add tfs-wi`: adds tasks from [TFS work items](http://msdn.microsoft.com/en-us/library/ms181268%28v=vs.90%29.aspx) (a call to `tfpt query /collection:uri /format:xml`)
+ - `add github-issues`: adds tasks from [GitHub issues](https://github.com/)
+ - `compute loc`: compute and add lines of code using [CLOC](http://cloc.sourceforge.net/). This requires `perl` in your path if you are on Linux or MacOS.
  - `compute tasks`: compute and add tasks from the source code
  
-
+The ant tasks have the same name, with an - in the midde. For eg. `add pmd` command is equivalent to the ant task `add-pmd`.
 
 Implementation
 --------------
@@ -164,7 +234,7 @@ Thanks
  - Kohsuke Kawaguchi for creating [Jenkins](http://jenkins-ci.org/), from which I copied a lot of ideas and code to parse JUnit reports
  - Gregory Boissinot who created the [xUnit Jenkins plugin](https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin) and a library to parse most unit test results handled
  - Ulli Hafner who created the [Task Scanner Jenkins plugin](https://wiki.jenkins-ci.org/display/JENKINS/Task+Scanner+Plugin), from which I copied the code to parse tasks
-
+ - All the library developers for all the libs I'm using.
 
 
 License
