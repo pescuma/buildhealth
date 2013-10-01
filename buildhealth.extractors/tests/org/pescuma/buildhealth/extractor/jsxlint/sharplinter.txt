@@ -1,0 +1,18 @@
+C:\devel\js\index.js: Lint found 17 errors.
+C:\devel\js\index.js(33): (lint) Use '===' to compare with ''. at character 14
+C:\devel\js\index.js(60): (lint) Mixed spaces and tabs. at character 26
+C:\devel\js\index.js(71): (lint) Missing semicolon. at character 34
+C:\devel\js\index.js(79): (lint) Don't make functions within a loop. at character 10
+C:\devel\js\index.js(129): (lint) Extra comma. at character 77
+C:\devel\js\index.js(136): (lint) Extra comma. at character 80
+C:\devel\js\index.js(164): (lint) 'i' is already defined. at character 15
+C:\devel\js\index.js(201): (lint) Don't make functions within a loop. at character 9
+C:\devel\js\index.js(224): (lint) Missing semicolon. at character 68
+C:\devel\js\index.js(241): (lint) 'result' used out of scope. at character 17
+C:\devel\js\index.js(242): (lint) 'result' used out of scope. at character 24
+C:\devel\js\index.js(249): (lint) Use '===' to compare with '0'. at character 15
+C:\devel\js\index.js(279): (lint) Use '!==' to compare with ''. at character 18
+C:\devel\js\index.js(292): (lint) Use '===' to compare with 'undefined'. at character 19
+C:\devel\js\index.js(309): (lint) 'i' is already defined. at character 15
+C:\devel\js\index.js(335): (lint) Missing semicolon. at character 67
+C:\devel\js\index.js(335): (lint) Use '===' to compare with ''. at character 36

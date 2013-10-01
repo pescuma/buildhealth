@@ -1,0 +1,17 @@
+index.js: line 33, col 14, Use '===' to compare with ''.
+index.js: line 60, col 26, Mixed spaces and tabs.
+index.js: line 71, col 34, Missing semicolon.
+index.js: line 79, col 10, Don't make functions within a loop.
+index.js: line 164, col 15, 'i' is already defined.
+index.js: line 201, col 9, Don't make functions within a loop.
+index.js: line 224, col 68, Missing semicolon.
+index.js: line 241, col 17, 'result' used out of scope.
+index.js: line 242, col 24, 'result' used out of scope.
+index.js: line 249, col 15, Use '===' to compare with '0'.
+index.js: line 279, col 18, Use '!==' to compare with ''.
+index.js: line 292, col 19, Use '===' to compare with 'undefined'.
+index.js: line 309, col 15, 'i' is already defined.
+index.js: line 335, col 36, Use '===' to compare with ''.
+index.js: line 335, col 67, Missing semicolon.
+
+15 errors

@@ -1,0 +1,35 @@
+jslint:index.js:3:1:'$' was used before it was defined.
+jslint:index.js:3:4:Unexpected space between '(' and 'document'.
+jslint:index.js:3:13:Unexpected space between 'document' and ')'.
+jslint:index.js:5:1:Use spaces, not tabs.
+jslint:index.js:5:2:Missing 'use strict' statement.
+jslint:index.js:6:1:Use spaces, not tabs.
+jslint:index.js:6:2:Expected '.' at column 9, not column 2.
+jslint:index.js:7:1:Use spaces, not tabs.
+jslint:index.js:7:3:Expected '$' at column 13, not column 3.
+jslint:index.js:8:1:Use spaces, not tabs.
+jslint:index.js:8:2:Expected '}' at column 9, not column 2.
+jslint:index.js:9:1:Use spaces, not tabs.
+jslint:index.js:9:2:Expected '.' at column 9, not column 2.
+jslint:index.js:10:1:Use spaces, not tabs.
+jslint:index.js:10:3:Expected 'report' at column 13, not column 3.
+jslint:index.js:11:1:Use spaces, not tabs.
+jslint:index.js:11:3:Expected 'setupPathChange' at column 13, not column 3.
+jslint:index.js:12:1:Use spaces, not tabs.
+jslint:index.js:12:3:Expected 'switchTo' at column 13, not column 3.
+jslint:index.js:12:12:'$' was used before it was defined.
+jslint:index.js:13:1:Use spaces, not tabs.
+jslint:index.js:13:2:Expected '}' at column 9, not column 2.
+jslint:index.js:14:1:Use spaces, not tabs.
+jslint:index.js:14:2:Unexpected space between ')' and ';'.
+jslint:index.js:18:1:Use spaces, not tabs.
+jslint:index.js:18:2:Missing 'use strict' statement.
+jslint:index.js:19:1:Use spaces, not tabs.
+jslint:index.js:19:3:Expected 'switchTo' at column 9, not column 3.
+jslint:index.js:20:1:Use spaces, not tabs.
+jslint:index.js:20:2:Expected '}' at column 5, not column 2.
+jslint:index.js:24:1:Use spaces, not tabs.
+jslint:index.js:24:2:Missing 'use strict' statement.
+jslint:index.js:24:5:Missing space between 'for' and '('.
+jslint:index.js:24:6:Move 'var' declarations to the top of the function.
+jslint:index.js:24:6:Cannot read property "line" from undefined

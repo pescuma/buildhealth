@@ -1,0 +1,82 @@
+JavaScript Lint 0.3.0 (JavaScript-C 1.5 2004-09-24)
+Developed by Matthias Miller (http://www.JavaScriptLint.com)
+
+index.js
+C:\devel\js\index.js(6): lint warning: unexpected end of line; it is ambiguous whether these lines are part of the same statement
+        .fail(function() {
+........^
+
+C:\devel\js\index.js(9): lint warning: unexpected end of line; it is ambiguous whether these lines are part of the same statement
+        .done(function(data) {
+........^
+
+C:\devel\js\index.js(14): lint warning: unexpected end of line; it is ambiguous whether these lines are part of the same statement
+        ;
+........^
+
+C:\devel\js\index.js(29): warning: function findChild does not always return a value
+}
+^
+
+C:\devel\js\index.js(33): lint warning: comparisons against null, 0, true, false, or an empty string allowing implicit type conversion (use === or !==)
+        if (item == '') {
+......................^
+
+C:\devel\js\index.js(72): lint warning: missing semicolon
+                line.find(".item-text").text(fullText(child));
+................^
+
+C:\devel\js\index.js(130): lint warning: extra comma is not recommended in array initializers
+                ];
+................^
+
+C:\devel\js\index.js(137): lint warning: extra comma is not recommended in array initializers
+                ];
+................^
+
+C:\devel\js\index.js(164): warning: redeclaration of var i
+        for(var i in data.children)
+................^
+
+C:\devel\js\index.js(226): lint warning: missing semicolon
+        return config;
+........^
+
+C:\devel\js\index.js(231): lint warning: block statements containing block statements should use curly braces to resolve ambiguity
+                if (data.coverages[i].name == name)
+................^
+
+C:\devel\js\index.js(233): warning: function findCoverage does not always return a value
+}
+^
+
+C:\devel\js\index.js(249): lint warning: block statements containing block statements should use curly braces to resolve ambiguity
+                if (i == 0 || hasColumn(data, config[i].data))
+................^
+
+C:\devel\js\index.js(249): lint warning: comparisons against null, 0, true, false, or an empty string allowing implicit type conversion (use === or !==)
+                if (i == 0 || hasColumn(data, config[i].data))
+...........................^
+
+C:\devel\js\index.js(260): lint warning: block statements containing block statements should use curly braces to resolve ambiguity
+                if (hasColumn(data.children[i], name))
+................^
+
+C:\devel\js\index.js(279): lint warning: comparisons against null, 0, true, false, or an empty string allowing implicit type conversion (use === or !==)
+        if (parentId != '')
+..........................^
+
+C:\devel\js\index.js(309): warning: redeclaration of var i
+        for(var i in data.children)
+................^
+
+C:\devel\js\index.js(335): lint warning: comparisons against null, 0, true, false, or an empty string allowing implicit type conversion (use === or !==)
+        return data.name + (data.value == "" ? "" : ": " + data.value)
+.............................................^
+
+C:\devel\js\index.js(336): lint warning: missing semicolon
+}
+^
+
+
+0 error(s), 19 warning(s)

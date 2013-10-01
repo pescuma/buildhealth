@@ -23,6 +23,7 @@ import org.pescuma.buildhealth.cli.commands.add.staticanalysis.CPDExtractorComma
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FindBugsExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FxCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.GendarmeExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.staticanalysis.JSXLintExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.StyleCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.tasks.BugsEverywhereExtractorCommand;
@@ -60,7 +61,8 @@ public class BuildHealthCli {
 				.withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)
 				.withCommands(AUnitExtractorCommand.class, BoostTestExtractorCommand.class,
-						CppTestExtractorCommand.class, CppUnitExtractorCommand.class, FPCUnitExtractorCommand.class,
+						CppTestExtractorCommand.class, CppUnitExtractorCommand.class,
+						FPCUnitExtractorCommand.class,
 						JUnitExtractorCommand.class,
 						MNMLSTCUnitTestExtractorCommand.class,
 						MSTestExtractorCommand.class,
@@ -73,7 +75,8 @@ public class BuildHealthCli {
 						VtestCoverageExtractorCommand.class, //
 						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class,
 						GendarmeExtractorCommand.class, FxCopExtractorCommand.class,
-						StyleCopExtractorCommand.class, //
+						StyleCopExtractorCommand.class,
+						JSXLintExtractorCommand.class, //
 						JapexExtractorCommand.class, //
 						DiskUsageExtractorCommand.class,
 						CLOCExtractorCommand.class, //
