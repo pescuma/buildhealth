@@ -2,7 +2,7 @@
 
 	<property name="projs"
 	          value="buildhealth.core,buildhealth.extractors,buildhealth.analysers,buildhealth.notifiers,buildhealth.cli,buildhealth.ant" />
-	<property name="version" value="0.1" />
+	<property name="version" value="0.2" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
 	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/lib/proguard-4.9.jar" />
