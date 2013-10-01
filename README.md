@@ -194,6 +194,7 @@ If you noticied, in the previous examples, some commands start with _add_ and ot
  - `add gendarme`: adds static analysis results from [Gendarme](http://www.mono-project.com/Gendarme)
  - `add fxcop`: adds static analysis results from [FxCop](http://msdn.microsoft.com/en-us/library/bb429476%28v=vs.80%29.aspx)
  - `add stylecop`: adds static analysis results from [StyleCop](https://stylecop.codeplex.com/)
+ - `add js-lint`: adds static analysis results from [JSLint](https://github.com/douglascrockford/JSLint), [JSHint](http://www.jshint.com) or [JavaScript Lint](http://www.javascriptlint.com)
  - `add japex`: adds performance test results from [Japex](http://japex.java.net/)
  - `add be`: adds tasks from [BugsEverywhere](http://bugseverywhere.org/) (a call to `be show -xml`)
  - `add tfs-wi`: adds tasks from [TFS work items](http://msdn.microsoft.com/en-us/library/ms181268%28v=vs.90%29.aspx) (a call to `tfpt query /collection:uri /format:xml`)
