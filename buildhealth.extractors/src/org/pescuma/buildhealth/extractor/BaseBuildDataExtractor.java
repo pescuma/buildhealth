@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.extractor;
 
 import static org.apache.commons.io.FilenameUtils.*;
 import static org.apache.commons.io.IOUtils.*;
+import static org.apache.commons.lang3.ObjectUtils.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,14 +15,14 @@ import org.pescuma.buildhealth.core.BuildData;
 public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	
 	private final PseudoFiles files;
-	private final String extension;
+	private final String[] extensions;
 	
-	public BaseBuildDataExtractor(PseudoFiles files, String extension) {
+	public BaseBuildDataExtractor(PseudoFiles files, String... extensions) {
 		if (files == null)
 			throw new IllegalArgumentException();
 		
 		this.files = files;
-		this.extension = extension;
+		this.extensions = firstNonNull(extensions, new String[0]);
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 				tracker.onStreamProcessed();
 				
 			} else {
-				Collection<File> toProcess = (extension == null ? files.getFiles() : files.getFiles(extension));
+				Collection<File> toProcess = (extensions.length == 0 ? files.getFiles() : files.getFiles(extensions));
 				for (File file : toProcess) {
 					extractFile(file, data);
 					tracker.onFileProcessed(file);

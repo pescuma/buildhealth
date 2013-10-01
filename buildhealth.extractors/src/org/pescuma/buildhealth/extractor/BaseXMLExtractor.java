@@ -16,8 +16,12 @@ import org.pescuma.buildhealth.core.BuildData;
 
 public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	
-	public BaseXMLExtractor(PseudoFiles files) {
+	protected BaseXMLExtractor(PseudoFiles files) {
 		super(files, "xml");
+	}
+	
+	protected BaseXMLExtractor(PseudoFiles files, String... extensions) {
+		super(files, extensions);
 	}
 	
 	@Override

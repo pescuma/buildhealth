@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jshint>
+    <file name="index.js">
+        <issue line="5" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	$.getJSON(&quot;report.json&quot;)"/>
+        <issue line="18" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	$.address.change(function(event) {"/>
+        <issue line="24" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	for(var i in report.children) {"/>
+        <issue line="26" char="24" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="		if (child.name == name)"/>
+        <issue line="27" char="13" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="			return child;"/>
+        <issue line="24" char="5" reason="The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype." evidence="	for(var i in report.children) {"/>
+        <issue line="32" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	var item = decodeURIComponent(paths[0] || &quot;&quot;);"/>
+        <issue line="33" char="14" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	if (item == &apos;&apos;) {"/>
+        <issue line="47" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	buildBuild();"/>
+        <issue line="56" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	if (buildBuilt)"/>
+        <issue line="57" char="9" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="		return;"/>
+        <issue line="60" char="26" reason="Mixed spaces and tabs." evidence="	var panel = $(&quot;.build&quot;); 	"/>
+        <issue line="71" char="34" reason="Missing semicolon." evidence="		line.addClass(&quot;item-div&quot;)"/>
+        <issue line="79" char="10" reason="Don&apos;t make functions within a loop." evidence="		});"/>
+        <issue line="65" char="5" reason="The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype." evidence="	for(var i in report.children) {"/>
+        <issue line="88" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	var id = getId(data);"/>
+        <issue line="97" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	if ($(&quot;.&quot; + id).length)"/>
+        <issue line="98" char="9" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="		return;"/>
+        <issue line="102" char="12" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	if (id == &quot;diskusage&quot;) {"/>
+        <issue line="108" char="19" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	} else if (id == &quot;linesofcode&quot;) {"/>
+        <issue line="114" char="19" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	} else if (id == &quot;tasks&quot;) {"/>
+        <issue line="125" char="19" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	} else if (id == &quot;staticanalysis&quot;) {"/>
+        <issue line="129" char="77" reason="Extra comma. (it breaks older versions of IE)" evidence="			{ header: &quot;Text&quot;, data: &quot;description&quot;, size:&quot;500px&quot;, wrap:true },"/>
+        <issue line="132" char="19" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	} else if (id == &quot;unittests&quot;) {"/>
+        <issue line="136" char="80" reason="Extra comma. (it breaks older versions of IE)" evidence="			{ header: &quot;Details&quot;, data: &quot;description&quot;, size:&quot;400px&quot;, wrap:true },"/>
+        <issue line="139" char="19" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	} else if (id == &quot;coverage&quot;) {"/>
+        <issue line="158" char="9" reason="Expected &apos;{&apos; and instead saw &apos;addCol&apos;." evidence="		addCol(tree, config[i].size);"/>
+        <issue line="157" char="5" reason="The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype." evidence="	for (var i in config) "/>
+        <issue line="164" char="15" reason="&apos;i&apos; is already defined." evidence="	for(var i in data.children) "/>
+        <issue line="165" char="9" reason="Expected &apos;{&apos; and instead saw &apos;createLines&apos;." evidence="		createLines(html, &quot;&quot;, &quot;row-&quot; + i, data.children[i], config);"/>
+        <issue line="164" char="5" reason="The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype." evidence="	for(var i in data.children) "/>
+        <issue line="177" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	var coverage = findFirstByType(data, &quot;CoverageReport&quot;);"/>
+        <issue line="179" char="9" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="		return  ["/>
+        <issue line="197" char="21" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="					return c.percentage;"/>
+        <issue line="199" char="21" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="					return &quot;no data&quot;;"/>
+        <issue line="201" char="9" reason="Don&apos;t make functions within a loop." evidence="		});"/>
+        <issue line="188" char="5" reason="The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype." evidence="	for(var i in coverage.coverages) {"/>
+        <issue line="212" char="21" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="					return c.total;"/>
+        <issue line="214" char="21" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="					return &quot;&quot;;"/>
+        <issue line="222" char="9" reason="Expected &apos;{&apos; and instead saw &apos;left&apos;." evidence="		left = 300;"/>
+        <issue line="224" char="68" reason="Missing semicolon." evidence="	config[0] = { header: &quot;Name&quot;, data: &quot;name&quot;, size: left + &quot;px&quot; }"/>
+        <issue line="230" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	for(var i in data.coverages) "/>
+        <issue line="231" char="9" reason="Expected &apos;{&apos; and instead saw &apos;if&apos;." evidence="		if (data.coverages[i].name == name) "/>
+        <issue line="231" char="36" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="		if (data.coverages[i].name == name) "/>
+        <issue line="232" char="13" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="			return data.coverages[i];"/>
+        <issue line="236" char="5" reason="Missing &quot;use strict&quot; statement." evidence="	if (data.type == type)"/>
+        <issue line="236" char="19" reason="Expected &apos;===&apos; and instead saw &apos;==&apos;." evidence="	if (data.type == type)"/>
+        <issue line="237" char="9" reason="Expected &apos;{&apos; and instead saw &apos;return&apos;." evidence="		return data;"/>
+        <issue line="240" char="9" reason="Expected &apos;{&apos; and instead saw &apos;var&apos;." evidence="		var result = findFirstByType(child, type);"/>
+        <issue line="239" char="5" reason="The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype." evidence="	for (var child in data.children)"/>
+    </file>
+</jshint>

@@ -188,7 +188,34 @@
 		<delete file="${build.dir}/buildhealth.full-${version}.jar" quiet="true" />
 	</target>
 
-	<target name="report">
+	<target name="jslint">
+		<mkdir dir="${reports.dir}" />
+
+		<taskdef resource="com/googlecode/jslint4java/antlib.xml"
+		         classpath="${basedir}/lib/jslint4java/jslint4java-2.0.5.jar" />
+
+		<jslint haltOnFailure="false">
+			<formatter type="xml" destfile="${reports.dir}/jslint.xml" />
+			<fileset dir="${basedir}/../buildhealth.cli/src/org/pescuma/buildhealth/cli/commands/webserver/client"
+			         includes="*.js" />
+		</jslint>
+	</target>
+
+	<target name="jshint">
+		<mkdir dir="${reports.dir}" />
+
+		<taskdef name="jshint"
+		         classname="com.philmander.jshint.JsHintAntTask"
+		         classpath="${basedir}/lib/ant-jshint-0.3.6.jar" />
+
+		<jshint dir="${basedir}/../buildhealth.cli/src/org/pescuma/buildhealth/cli/commands/webserver/client"
+		        includes="*.js"
+		        fail="no">
+			<report type="xml" destFile="${reports.dir}/jshint.xml" />
+		</jshint>
+	</target>
+
+	<target name="report" depends="jslint, jshint">
 		<taskdef resource="org/pescuma/buildhealth/ant/antlib.xml"
 		         classpath="${build.dir}/buildhealth-${version}.jar" />
 
@@ -228,6 +255,8 @@
 					<include name="**/reports/findbugs/*" />
 				</fileset>
 			</add-findbugs>
+			<add-js-lint file="${reports.dir}/jslint.xml" />
+			<add-js-lint file="${reports.dir}/jshint.xml" />
 			<add-diskusage dir="${build.dir}" />
 			<add-github-issues username="pescuma" repository="buildhealth" />
 			<compute-tasks>

@@ -55,6 +55,26 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 	}
 	
 	@Test
+	public void testJSHintXML() {
+		InputStream stream = load("jshint.xml");
+		
+		JSXLintExtractor extractor = new JSXLintExtractor(new PseudoFiles(stream));
+		
+		extractor.extractTo(table, tracker);
+		
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
+		
+		assertTable(50, 50, table);
+		
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "index.js", "33:14", "",
+				"Expected '===' and instead saw '=='."), 0.0001);
+		assertEquals(1,
+				table.get("Static analysis", "Javascript", "JSHint", "index.js", "71:34", "", "Missing semicolon."),
+				0.0001);
+	}
+	
+	@Test
 	public void testJSLint() {
 		InputStream stream = load("jslint.txt");
 		
@@ -76,6 +96,25 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 				true,
 				table.filter("Static analysis", "Javascript", "JSLint", "index.js", "24:6", "",
 						"Stopping. (6% scanned)").isEmpty());
+	}
+	
+	@Test
+	public void testJSLintXML() {
+		InputStream stream = load("jslint.xml");
+		
+		JSXLintExtractor extractor = new JSXLintExtractor(new PseudoFiles(stream));
+		
+		extractor.extractTo(table, tracker);
+		
+		verify(tracker).onStreamProcessed();
+		verify(tracker, never()).onFileProcessed(any(File.class));
+		
+		assertTable(35, 35, table);
+		
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "3:1", "",
+				"'$' was used before it was defined."), 0.0001);
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "24:6", "",
+				"Move 'var' declarations to the top of the function."), 0.0001);
 	}
 	
 	@Test
