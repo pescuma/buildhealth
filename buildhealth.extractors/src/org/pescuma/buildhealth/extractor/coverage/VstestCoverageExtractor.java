@@ -11,9 +11,9 @@ import org.pescuma.buildhealth.extractor.PseudoFiles;
 
 // http://msdn.microsoft.com/en-us/library/vstudio/jj155796.aspx
 // http://reportgenerator.codeplex.com/wikipage?title=Visual%20Studio%20Coverage%20Tools
-public class VtestCoverageExtractor extends BaseXMLExtractor {
+public class VstestCoverageExtractor extends BaseXMLExtractor {
 	
-	public VtestCoverageExtractor(PseudoFiles files) {
+	public VstestCoverageExtractor(PseudoFiles files) {
 		super(files);
 	}
 	
@@ -21,7 +21,7 @@ public class VtestCoverageExtractor extends BaseXMLExtractor {
 	protected void extractDocument(String filename, Document doc, BuildData data) {
 		checkRoot(doc, "CoverageDSPriv", filename);
 		
-		PlacesTracker place = new PlacesTracker(data, "C#", "vtest");
+		PlacesTracker place = new PlacesTracker(data, "C#", "vstest");
 		extract(doc.getRootElement(), null, "all", place);
 	}
 	

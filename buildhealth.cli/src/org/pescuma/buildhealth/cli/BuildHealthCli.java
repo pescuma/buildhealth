@@ -17,7 +17,7 @@ import org.pescuma.buildhealth.cli.commands.add.DiskUsageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.DotCoverExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.EmmaExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.coverage.JacocoExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.add.coverage.VtestCoverageExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.coverage.VstestCoverageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.japex.JapexExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.CPDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FindBugsExtractorCommand;
@@ -72,7 +72,7 @@ public class BuildHealthCli {
 						EmmaExtractorCommand.class,
 						JacocoExtractorCommand.class,
 						DotCoverExtractorCommand.class,
-						VtestCoverageExtractorCommand.class, //
+						VstestCoverageExtractorCommand.class, //
 						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class,
 						GendarmeExtractorCommand.class, FxCopExtractorCommand.class,
 						StyleCopExtractorCommand.class,
