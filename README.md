@@ -1,7 +1,9 @@
 buildhealth
 ===========
 
-[Download buildhealth-0.1.jar](http://dl.bintray.com/pescuma/buildhealth/buildhealth-0.1.jar?direct)
+[Download buildhealth-0.2.jar](https://github.com/pescuma/buildhealth/releases/download/v0.2/buildhealth-0.2.jar) (command line interface and ant task)
+
+[Download buildhealth-0.2.exe](https://github.com/pescuma/buildhealth/releases/download/v0.2/buildhealth-0.2.exe) (Windows command line interface)
 
 [![Build Status](https://travis-ci.org/pescuma/buildhealth.png?branch=master)](https://travis-ci.org/pescuma/buildhealth) (you can see the buildhealth results of buldhealth at the end of the console logs) 
 
@@ -15,11 +17,6 @@ So, this is a tool that receive as inputs the results of the build (test results
 Some goals for this project: it should be easy to create plugins for this tool to process new kinds of output. Also, it would be good if the results can be used by other tools (to be displayed in different formats). Lastly, it would be good if the tool could store the results from previous builds to tell if the quality has improved or not.
 
 
-Downloading
------------
-
-From the [Releases tab](https://github.com/pescuma/buildhealth/releases) you can download a jar that contains both the cli and ant tasks or the cli as an exe for Windows. To call the cli from linux you need to call `java -jar buildhealth-0.X.jar`
-
 
 Interface
 ---------
@@ -32,6 +29,7 @@ Let's first see some examples
 
 The way it works is: you first create a build, then you add data to it and finally you call report to see the status of your build. At this point you can also call the notify command to receive nofications with the report.
 
+To call the cli: `java -jar buildhealth-0.X.jar`. For Windows you can use the exe version.
 
 ##### Creates a new build
 This must be done before adding data
