@@ -5,6 +5,8 @@ buildhealth
 
 [Download buildhealth-0.2.exe](https://github.com/pescuma/buildhealth/releases/download/v0.2/buildhealth-0.2.exe) (Windows command line interface)
 
+Maven packages can be found on [bintray](https://bintray.com/pescuma/buildhealth/maven)
+
 [![Build Status](https://travis-ci.org/pescuma/buildhealth.png?branch=master)](https://travis-ci.org/pescuma/buildhealth) (you can see the buildhealth results of buldhealth at the end of the console logs) 
 
 Idea
