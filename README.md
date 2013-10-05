@@ -187,7 +187,7 @@ If you noticied, in the previous examples, some commands start with _add_ and ot
  - `add emma`: adds coverage information from [EMMA](http://emma.sourceforge.net/)
  - `add jacoco`: adds coverage information from [JaCoCo](http://www.eclemma.org/jacoco/)
  - `add dotCover`: adds coverage information from [dotCover](http://www.jetbrains.com/dotcover/)
- - `add vtest-coverage`: adds coverage information from a [vtest](http://www.jetbrains.com/dotcover/) XML file. Information on how to convert the .coverage to an XML can be found [here](http://reportgenerator.codeplex.com/wikipage?title=Visual%20Studio%20Coverage%20Tools&ANCHOR#vstestconsoleexe)
+ - `add vstest-coverage`: adds coverage information from a [vstest](http://msdn.microsoft.com/en-us/library/vstudio/jj155796.aspx) XML file. Information on how to convert the .coverage to an XML can be found [here](http://reportgenerator.codeplex.com/wikipage?title=Visual%20Studio%20Coverage%20Tools&ANCHOR#vstestconsoleexe)
  - `add pmd`: adds static analysis results from [PMD](http://pmd.sourceforge.net/)
  - `add cpd`: adds static analysis results from [CPD](http://pmd.sourceforge.net/snapshot/cpd-usage.html)
  - `add findbugs`: adds static analysis results from [FindBugs](http://findbugs.sourceforge.net/)
