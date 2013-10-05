@@ -238,7 +238,7 @@
 		</findbugs>
 	</target>
 
-	<target name="tattletale" depends="init" description="Run tattletale on sources">
+	<target name="tattletale" depends="init" description="Run tattletale on libs">
 		<taskdef name="tattletale" classname="org.jboss.tattletale.ant.ReportTask">
 			<classpath>
 				<fileset dir="${tools.lib.dir}/tattletale">
