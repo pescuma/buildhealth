@@ -97,6 +97,7 @@ public class BuildHealthRecorder extends Recorder {
 	@Extension
 	public static class DescriptorImpl extends BuildStepDescriptor<Publisher> {
 		
+		@Override
 		public String getDisplayName() {
 			return "Publish buildhealth report";
 		}
@@ -125,6 +126,7 @@ public class BuildHealthRecorder extends Recorder {
 			return ws.validateRelativeDirectory(value);
 		}
 		
+		@Override
 		public boolean isApplicable(@SuppressWarnings("rawtypes") Class<? extends AbstractProject> jobType) {
 			return true;
 		}
