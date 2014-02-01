@@ -38,6 +38,7 @@ public class WarningsExtractorGenerator {
 		
 		System.out.println("Creating generator ant tasks...");
 		createGeneratorAntTasks(parsers);
+		fillAntlib(parsers);
 	}
 	
 	private List<Class<? extends AbstractWarningsParser>> listParsers() {
@@ -104,6 +105,27 @@ public class WarningsExtractorGenerator {
 		generateFromTemplate(parsers,
 				"../buildhealth.ant/src/org/pescuma/buildhealth/ant/tasks/add/staticanalysis/console/",
 				"templates/WarningsExtractorAntTask.st", "ConsoleExtractorAntTask");
+	}
+	
+	private void fillAntlib(List<WarningsParser> parsers) throws IOException {
+		ST st = new ST(FileUtils.readFileToString(new File("templates/antlib.st")), '$', '$');
+		for (WarningsParser parser : parsers) {
+			st.addAggr("items.{name, class}", "console-" + parser.getName(),
+					"org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console." + parser.getBaseClassName()
+							+ "ConsoleExtractorAntTask");
+		}
+		String toAdd = st.render();
+		
+		File antlibFile = new File("../buildhealth.ant/src/org/pescuma/buildhealth/ant/antlib.xml");
+		
+		String contents = FileUtils.readFileToString(antlibFile);
+		String start = "	<!-- Start of auto generated entries -->";
+		String end = "	<!-- End of auto generated entries -->";
+		int startPos = contents.indexOf(start);
+		int endPos = contents.indexOf(end);
+		contents = contents.substring(0, startPos) + start + "\n" + toAdd + "\n" + contents.substring(endPos);
+		
+		FileUtils.write(antlibFile, contents);
 	}
 	
 	private void generateFromTemplate(List<WarningsParser> parsers, String dirName, String templateName,
