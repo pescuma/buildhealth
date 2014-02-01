@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.IntelCConsoleExtractor;
 
-@Command(name = "intel-c", description = "Add warnings from Intel C Compiler output files")
+@Command(name = "intel-c-console", description = "Add warnings from Intel C Compiler output files")
 public class IntelCConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Intel C Compiler output(s)", required = true)

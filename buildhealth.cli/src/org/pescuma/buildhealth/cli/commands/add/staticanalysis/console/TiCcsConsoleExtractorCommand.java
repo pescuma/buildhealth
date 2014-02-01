@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.TiCcsConsoleExtractor;
 
-@Command(name = "ticcs", description = "Add warnings from Texas Instruments Code Composer Studio (C/C++) output files")
+@Command(name = "ticcs-console", description = "Add warnings from Texas Instruments Code Composer Studio (C/C++) output files")
 public class TiCcsConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Texas Instruments Code Composer Studio (C/C++) output(s)", required = true)

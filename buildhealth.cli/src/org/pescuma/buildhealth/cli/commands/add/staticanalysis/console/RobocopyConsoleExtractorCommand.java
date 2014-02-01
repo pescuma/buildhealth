@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.RobocopyConsoleExtractor;
 
-@Command(name = "robocopy", description = "Add warnings from Robocopy output files")
+@Command(name = "robocopy-console", description = "Add warnings from Robocopy output files")
 public class RobocopyConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Robocopy output(s)", required = true)

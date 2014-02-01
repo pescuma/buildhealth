@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.IarConsoleExtractor;
 
-@Command(name = "iar", description = "Add warnings from IAR Compiler (C/C++) output files")
+@Command(name = "iar-console", description = "Add warnings from IAR Compiler (C/C++) output files")
 public class IarConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with IAR Compiler (C/C++) output(s)", required = true)

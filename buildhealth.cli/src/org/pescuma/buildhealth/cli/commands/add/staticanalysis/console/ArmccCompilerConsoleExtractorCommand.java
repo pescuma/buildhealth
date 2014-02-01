@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.ArmccCompilerConsoleExtractor;
 
-@Command(name = "armcc", description = "Add warnings from Armcc Compiler output files")
+@Command(name = "armcc-console", description = "Add warnings from Armcc Compiler output files")
 public class ArmccCompilerConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Armcc Compiler output(s)", required = true)

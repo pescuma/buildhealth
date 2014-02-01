@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.InvalidsConsoleExtractor;
 
-@Command(name = "invalids", description = "Add warnings from Oracle Invalids output files")
+@Command(name = "invalids-console", description = "Add warnings from Oracle Invalids output files")
 public class InvalidsConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Oracle Invalids output(s)", required = true)

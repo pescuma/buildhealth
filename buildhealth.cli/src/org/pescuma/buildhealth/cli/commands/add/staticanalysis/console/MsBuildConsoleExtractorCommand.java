@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.MsBuildConsoleExtractor;
 
-@Command(name = "msbuild", description = "Add warnings from MSBuild output files")
+@Command(name = "msbuild-console", description = "Add warnings from MSBuild output files")
 public class MsBuildConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with MSBuild output(s)", required = true)

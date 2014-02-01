@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.DoxygenConsoleExtractor;
 
-@Command(name = "doxygen", description = "Add warnings from Doxygen output files")
+@Command(name = "doxygen-console", description = "Add warnings from Doxygen output files")
 public class DoxygenConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Doxygen output(s)", required = true)

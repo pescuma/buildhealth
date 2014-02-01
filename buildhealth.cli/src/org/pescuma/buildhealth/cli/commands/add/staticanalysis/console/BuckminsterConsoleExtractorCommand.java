@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.BuckminsterConsoleExtractor;
 
-@Command(name = "buckminster", description = "Add warnings from Buckminster output files")
+@Command(name = "buckminster-console", description = "Add warnings from Buckminster output files")
 public class BuckminsterConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Buckminster output(s)", required = true)

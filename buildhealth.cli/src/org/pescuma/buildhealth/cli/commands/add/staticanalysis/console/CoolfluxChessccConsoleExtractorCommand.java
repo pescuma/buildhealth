@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.CoolfluxChessccConsoleExtractor;
 
-@Command(name = "chesscc", description = "Add warnings from Coolflux DSP Compiler (chesscc) output files")
+@Command(name = "chesscc-console", description = "Add warnings from Coolflux DSP Compiler (chesscc) output files")
 public class CoolfluxChessccConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Coolflux DSP Compiler (chesscc) output(s)", required = true)

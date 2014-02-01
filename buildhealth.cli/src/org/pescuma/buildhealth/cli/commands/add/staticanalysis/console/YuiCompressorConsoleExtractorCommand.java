@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.YuiCompressorConsoleExtractor;
 
-@Command(name = "yui-compressor", description = "Add warnings from YUI Compressor output files")
+@Command(name = "yui-compressor-console", description = "Add warnings from YUI Compressor output files")
 public class YuiCompressorConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with YUI Compressor output(s)", required = true)

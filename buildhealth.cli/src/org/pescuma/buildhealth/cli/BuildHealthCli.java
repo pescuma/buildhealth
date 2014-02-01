@@ -60,28 +60,68 @@ public class BuildHealthCli {
 		builder.withGroup("add")
 				.withDescription("Add information to the current build")
 				.withDefaultCommand(AddGroupHelp.class)
-				.withCommands(AUnitExtractorCommand.class, BoostTestExtractorCommand.class,
-						CppTestExtractorCommand.class, CppUnitExtractorCommand.class,
+				.withCommands(
+						AUnitExtractorCommand.class,
+						BoostTestExtractorCommand.class,
+						CppTestExtractorCommand.class,
+						CppUnitExtractorCommand.class,
 						FPCUnitExtractorCommand.class,
 						JUnitExtractorCommand.class,
 						MNMLSTCUnitTestExtractorCommand.class,
 						MSTestExtractorCommand.class,
 						NUnitExtractorCommand.class,
 						PHPUnitExtractorCommand.class,
-						TusarExtractorCommand.class, //
+						TusarExtractorCommand.class,
 						EmmaExtractorCommand.class,
 						JacocoExtractorCommand.class,
 						DotCoverExtractorCommand.class,
-						VstestCoverageExtractorCommand.class, //
-						PMDExtractorCommand.class, CPDExtractorCommand.class, FindBugsExtractorCommand.class,
-						GendarmeExtractorCommand.class, FxCopExtractorCommand.class,
+						VstestCoverageExtractorCommand.class,
+						PMDExtractorCommand.class,
+						CPDExtractorCommand.class,
+						FindBugsExtractorCommand.class,
+						GendarmeExtractorCommand.class,
+						FxCopExtractorCommand.class,
 						StyleCopExtractorCommand.class,
-						JSXLintExtractorCommand.class, //
-						JapexExtractorCommand.class, //
+						JSXLintExtractorCommand.class,
+						JapexExtractorCommand.class,
 						DiskUsageExtractorCommand.class,
-						CLOCExtractorCommand.class, //
-						BugsEverywhereExtractorCommand.class, TFSWorkItemsExtractorCommand.class,
-						GitHubIssuesExtractorCommand.class);
+						CLOCExtractorCommand.class,
+						BugsEverywhereExtractorCommand.class,
+						TFSWorkItemsExtractorCommand.class,
+						GitHubIssuesExtractorCommand.class
+						// Start of auto generated entries
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.AcuCobolConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.AntJavacConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ArmccCompilerConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.BuckminsterConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CoolfluxChessccConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GhsMultiConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ClangConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DiabCConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DoxygenConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.EclipseConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ErlcConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.FlexSDKConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GccConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4CompilerConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4LinkerConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnatConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IarConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IntelCConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.InvalidsConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavacConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavaDocConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MavenConsoleConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MsBuildConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.P4ConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PhpConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.RobocopyConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.SunCConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TiCcsConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TnsdlConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.YuiCompressorConsoleExtractorCommand.class
+				// End of auto generated entries
+				);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
 				.withDefaultCommand(ComputeGroupHelp.class) //

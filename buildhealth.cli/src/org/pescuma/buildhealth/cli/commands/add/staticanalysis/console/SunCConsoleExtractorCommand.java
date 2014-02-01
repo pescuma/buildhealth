@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.SunCConsoleExtractor;
 
-@Command(name = "sun-c", description = "Add warnings from SUN C++ Compiler output files")
+@Command(name = "sun-c-console", description = "Add warnings from SUN C++ Compiler output files")
 public class SunCConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with SUN C++ Compiler output(s)", required = true)

@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.Gcc4CompilerConsoleExtractor;
 
-@Command(name = "gcc4", description = "Add warnings from GNU Compiler 4 (gcc) output files")
+@Command(name = "gcc4-console", description = "Add warnings from GNU Compiler 4 (gcc) output files")
 public class Gcc4CompilerConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with GNU Compiler 4 (gcc) output(s)", required = true)

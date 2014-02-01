@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.AcuCobolConsoleExtractor;
 
-@Command(name = "acu-cobol", description = "Add warnings from AcuCobol Compiler output files")
+@Command(name = "acu-cobol-console", description = "Add warnings from AcuCobol Compiler output files")
 public class AcuCobolConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with AcuCobol Compiler output(s)", required = true)

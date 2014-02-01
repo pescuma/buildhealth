@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.P4ConsoleExtractor;
 
-@Command(name = "p4", description = "Add warnings from Perforce Compiler output files")
+@Command(name = "p4-console", description = "Add warnings from Perforce Compiler output files")
 public class P4ConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Perforce Compiler output(s)", required = true)

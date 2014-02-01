@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.FlexSDKConsoleExtractor;
 
-@Command(name = "flex", description = "Add warnings from Flex SDK Compilers (compc & mxmlc) output files")
+@Command(name = "flex-console", description = "Add warnings from Flex SDK Compilers (compc & mxmlc) output files")
 public class FlexSDKConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Flex SDK Compilers (compc & mxmlc) output(s)", required = true)

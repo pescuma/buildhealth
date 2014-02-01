@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.$parser.baseClassName$ConsoleExtractor;
 
-@Command(name = "$parser.name$", description = "Add warnings from $parser.description$ output files")
+@Command(name = "$parser.name$-console", description = "Add warnings from $parser.description$ output files")
 public class $class$ extends BuildHealthCliCommand {
 	
 	@Arguments(title = "file or folder", description = "File or folder with $parser.description$ output(s)", required = true)

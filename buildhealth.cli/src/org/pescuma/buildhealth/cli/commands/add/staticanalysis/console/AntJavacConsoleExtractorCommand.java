@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.AntJavacConsoleExtractor;
 
-@Command(name = "ant-javac", description = "Add warnings from Java Compiler (javac) output files")
+@Command(name = "ant-javac-console", description = "Add warnings from Java Compiler (javac) output files")
 public class AntJavacConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Java Compiler (javac) output(s)", required = true)

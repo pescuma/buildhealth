@@ -42,6 +42,7 @@ public class WarningsExtractorGenerator {
 		
 		System.out.println("Creating cli...");
 		createCli(parsers);
+		fillCli(parsers);
 	}
 	
 	private List<Class<? extends AbstractWarningsParser>> listParsers() {
@@ -110,26 +111,48 @@ public class WarningsExtractorGenerator {
 				"templates/WarningsExtractorAntTask.st", "ConsoleExtractorAntTask");
 	}
 	
+	private void fillAntlib(List<WarningsParser> parsers) throws IOException {
+		ST st = new ST(FileUtils.readFileToString(new File("templates/antlib.st")), '$', '$');
+		for (WarningsParser parser : parsers) {
+			st.addAggr("items.{name, class}", parser.getName() + "-console",
+					"org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console." + parser.getBaseClassName()
+							+ "ConsoleExtractorAntTask");
+		}
+		String toAdd = st.render();
+		
+		String filename = "../buildhealth.ant/src/org/pescuma/buildhealth/ant/antlib.xml";
+		String start = "<!-- Start of auto generated entries -->";
+		String end = "	<!-- End of auto generated entries -->";
+		
+		insertInto(filename, start, end, toAdd);
+	}
+	
 	private void createCli(List<WarningsParser> parsers) throws IOException {
 		generateFromTemplate(parsers,
 				"../buildhealth.cli/src/org/pescuma/buildhealth/cli/commands/add/staticanalysis/console/",
 				"templates/WarningsExtractorCommand.st", "ConsoleExtractorCommand");
 	}
 	
-	private void fillAntlib(List<WarningsParser> parsers) throws IOException {
-		ST st = new ST(FileUtils.readFileToString(new File("templates/antlib.st")), '$', '$');
+	private void fillCli(List<WarningsParser> parsers) throws IOException {
+		ST st = new ST(FileUtils.readFileToString(new File("templates/BuildHealthCli.st")), '$', '$');
 		for (WarningsParser parser : parsers) {
-			st.addAggr("items.{name, class}", "console-" + parser.getName(),
-					"org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console." + parser.getBaseClassName()
-							+ "ConsoleExtractorAntTask");
+			st.addAggr("items.{className}",
+					"org.pescuma.buildhealth.cli.commands.add.staticanalysis.console." + parser.getBaseClassName()
+							+ "ConsoleExtractorCommand");
 		}
 		String toAdd = st.render();
 		
-		File antlibFile = new File("../buildhealth.ant/src/org/pescuma/buildhealth/ant/antlib.xml");
+		String filename = "../buildhealth.cli/src/org/pescuma/buildhealth/cli/BuildHealthCli.java";
+		String start = "// Start of auto generated entries";
+		String end = "				// End of auto generated entries";
+		
+		insertInto(filename, start, end, toAdd);
+	}
+	
+	private void insertInto(String filename, String start, String end, String toAdd) throws IOException {
+		File antlibFile = new File(filename);
 		
 		String contents = FileUtils.readFileToString(antlibFile);
-		String start = "	<!-- Start of auto generated entries -->";
-		String end = "	<!-- End of auto generated entries -->";
 		int startPos = contents.indexOf(start);
 		int endPos = contents.indexOf(end);
 		contents = contents.substring(0, startPos) + start + "\n" + toAdd + "\n" + contents.substring(endPos);

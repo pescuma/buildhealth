@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.JavaDocConsoleExtractor;
 
-@Command(name = "javadoc", description = "Add warnings from JavaDoc Tool output files")
+@Command(name = "javadoc-console", description = "Add warnings from JavaDoc Tool output files")
 public class JavaDocConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with JavaDoc Tool output(s)", required = true)

@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.MavenConsoleConsoleExtractor;
 
-@Command(name = "maven", description = "Add warnings from Maven output files")
+@Command(name = "maven-console", description = "Add warnings from Maven output files")
 public class MavenConsoleConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Maven output(s)", required = true)

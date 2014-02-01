@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.EclipseConsoleExtractor;
 
-@Command(name = "eclipse", description = "Add warnings from Java Compiler (Eclipse) output files")
+@Command(name = "eclipse-console", description = "Add warnings from Java Compiler (Eclipse) output files")
 public class EclipseConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Java Compiler (Eclipse) output(s)", required = true)

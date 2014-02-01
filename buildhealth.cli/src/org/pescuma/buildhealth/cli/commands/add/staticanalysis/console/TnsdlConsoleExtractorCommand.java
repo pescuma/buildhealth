@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.console.TnsdlConsoleExtractor;
 
-@Command(name = "tnsdl", description = "Add warnings from TNSDL Translator output files")
+@Command(name = "tnsdl-console", description = "Add warnings from TNSDL Translator output files")
 public class TnsdlConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with TNSDL Translator output(s)", required = true)
