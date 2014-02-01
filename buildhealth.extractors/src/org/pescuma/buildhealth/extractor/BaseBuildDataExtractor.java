@@ -2,7 +2,7 @@ package org.pescuma.buildhealth.extractor;
 
 import static org.apache.commons.io.FilenameUtils.*;
 import static org.apache.commons.io.IOUtils.*;
-import static org.apache.commons.lang3.ObjectUtils.*;
+import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,9 +1,9 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static org.apache.commons.lang3.ObjectUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
-import static org.pescuma.buildhealth.extractor.utils.StringHelper.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
+import static org.pescuma.buildhealth.extractor.utils.StringHelper.*;
+import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import java.io.File;
 import java.util.HashMap;

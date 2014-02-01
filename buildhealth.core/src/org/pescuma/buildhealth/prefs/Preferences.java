@@ -2,7 +2,7 @@ package org.pescuma.buildhealth.prefs;
 
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 import com.google.common.base.Strings;
 
@@ -104,7 +104,7 @@ public class Preferences {
 	}
 	
 	private String[] subkey(String... second) {
-		return ArrayUtils.addAll(currentKey, second);
+		return (String[]) ArrayUtils.addAll(currentKey, second);
 	}
 	
 	public List<String[]> getKeys() {

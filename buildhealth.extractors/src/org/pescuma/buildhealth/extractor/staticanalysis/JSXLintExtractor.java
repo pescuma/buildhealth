@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import static org.apache.commons.io.IOUtils.*;
-import static org.apache.commons.lang3.ObjectUtils.*;
+import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

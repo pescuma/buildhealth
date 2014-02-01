@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.tasks;
 
-import static org.apache.commons.lang3.ObjectUtils.*;
+import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;

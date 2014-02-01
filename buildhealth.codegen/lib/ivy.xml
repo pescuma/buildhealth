@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="org.pescuma" module="buildhealth.createWarningsExtractors" />
+	<info organisation="org.pescuma" module="buildhealth.codegen" />
 
 	<configurations defaultconfmapping="compile->default,sources;runtime->default">
 		<conf name="compile" />
@@ -8,6 +8,7 @@
 	</configurations>
 
 	<dependencies>
+		<dependency org="commons-lang" name="commons-lang" rev="2.6" />
 		<dependency org="org.reflections" name="reflections" rev="0.9.9-RC1" />
 		<dependency org="org.antlr" name="stringtemplate" rev="4.0.2" />
 	</dependencies>

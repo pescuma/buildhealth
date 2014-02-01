@@ -3,7 +3,7 @@ package org.pescuma.buildhealth.extractor.coverage;
 import static com.google.common.base.Objects.*;
 import static com.google.common.base.Strings.*;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
