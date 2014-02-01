@@ -6,15 +6,15 @@ import java.util.List;
 import org.pescuma.buildhealth.ant.FileListBuildHealthAntSubTask;
 import org.pescuma.buildhealth.core.BuildHealth;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.staticanalysis.console.$parser.baseClassName$ConsoleExtractor;
+import org.pescuma.buildhealth.extractor.staticanalysis.console.ClangConsoleExtractor;
 
-public class $class$ extends FileListBuildHealthAntSubTask {
-	
+public class ClangConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
+
 	@Override
 	protected void execute(BuildHealth buildHealth) {
 		List<File> files = getFiles();
-		
-		buildHealth.extract(new $parser.baseClassName$ConsoleExtractor(new PseudoFiles(files)));
+
+		buildHealth.extract(new ClangConsoleExtractor(new PseudoFiles(files)));
 	}
-	
+
 }

@@ -34,8 +34,9 @@ public class WarningsExtractorGenerator {
 		dump(parsers);
 		
 		System.out.println("Creating generators...");
-		
 		createGenerators(parsers);
+		
+		System.out.println("Creating generator ant tasks...");
 		createGeneratorAntTasks(parsers);
 	}
 	
@@ -96,13 +97,13 @@ public class WarningsExtractorGenerator {
 	private void createGenerators(List<WarningsParser> parsers) throws IOException {
 		generateFromTemplate(parsers,
 				"../buildhealth.extractors/src/org/pescuma/buildhealth/extractor/staticanalysis/console/",
-				"templates/WarningsExtractorAntTask.st", "ConsoleExtractorAntTask");
+				"templates/WarningsExtractor.st", "ConsoleExtractor");
 	}
 	
 	private void createGeneratorAntTasks(List<WarningsParser> parsers) throws IOException {
 		generateFromTemplate(parsers,
 				"../buildhealth.ant/src/org/pescuma/buildhealth/ant/tasks/add/staticanalysis/console/",
-				"templates/WarningsExtractor.st", "ConsoleExtractor");
+				"templates/WarningsExtractorAntTask.st", "ConsoleExtractorAntTask");
 	}
 	
 	private void generateFromTemplate(List<WarningsParser> parsers, String dirName, String templateName,
@@ -112,19 +113,20 @@ public class WarningsExtractorGenerator {
 		deleteOldExtractors(dir, classSuffix);
 		
 		for (WarningsParser parser : parsers) {
-			ST st = new ST(FileUtils.readFileToString(new File(templateName)));
+			ST st = new ST(FileUtils.readFileToString(new File(templateName)), '$', '$');
 			st.add("parser", parser);
 			st.add("class", parser.getBaseClassName() + classSuffix);
-			String result = st.render();
-			String contents = result;
+			String contents = st.render();
 			
-			FileUtils.write(new File(dir, parser.getClassName() + classSuffix + ".java"), contents);
+			FileUtils.write(new File(dir, parser.getBaseClassName() + classSuffix + ".java"), contents);
 		}
 	}
 	
 	private void deleteOldExtractors(File dir, String classSuffix) {
-		for (File e : dir.listFiles(new PatternFilenameFilter(".*" + classSuffix + ".java")))
-			e.delete();
+		File[] files = dir.listFiles(new PatternFilenameFilter(".*" + classSuffix + ".java"));
+		if (files != null)
+			for (File e : files)
+				e.delete();
 		dir.mkdirs();
 	}
 	

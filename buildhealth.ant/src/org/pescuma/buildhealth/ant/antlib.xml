@@ -40,4 +40,8 @@
 
 	<typedef name="compute-loc" classname="org.pescuma.buildhealth.ant.tasks.compute.LOCComputerAntTask" />
 	<typedef name="compute-tasks" classname="org.pescuma.buildhealth.ant.tasks.compute.tasks.CodeTasksExtractorAntTask" />
+	
+	<!-- Start of auto generated entries -->
+	<!-- End of auto generated entries -->
+	
 </antlib>
