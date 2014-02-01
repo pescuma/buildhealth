@@ -259,6 +259,11 @@
 			<add-js-lint file="${reports.dir}/jshint.xml" />
 			<add-diskusage dir="${build.dir}" />
 			<add-github-issues username="pescuma" repository="buildhealth" />
+			<add-ant-javac-console>
+				<fileset dir="${basedir}/..">
+					<include name="**/reports/console/*" />
+				</fileset>
+			</add-ant-javac-console>
 			<compute-tasks>
 				<fileset dir="${basedir}/..">
 					<include name="**/*.java" />

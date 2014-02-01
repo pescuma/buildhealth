@@ -15,7 +15,7 @@ public class ClangConsoleExtractor extends BaseBuildDataExtractor {
 
 	@Override
 	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		WarningsHelper.extractFromParser("LLVM Compiler (Clang)", new hudson.plugins.warnings.parser.AppleLLVMClangParser(),
+		WarningsHelper.extractFromParser("Clang (LLVM based)", new hudson.plugins.warnings.parser.ClangParser(),
 				input, data);
 	}
 

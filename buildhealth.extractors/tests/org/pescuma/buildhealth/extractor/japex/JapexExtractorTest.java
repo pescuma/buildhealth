@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.japex;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -27,8 +27,8 @@ public class JapexExtractorTest extends BaseExtractorTest {
 		
 		assertTable(2, 0.175 + 0.315, table.filter("Performance"));
 		
-		assertEquals(0.175, table.get("Performance", "Java", "Japex", "ms", "Driver1 Driver", "TestSub"));
-		assertEquals(0.315, table.get("Performance", "Java", "Japex", "ms", "Driver1 Driver", "TestClass"));
+		assertEquals(0.175, table.get("Performance", "Java", "Japex", "ms", "Driver1 Driver", "TestSub"), 0.0001);
+		assertEquals(0.315, table.get("Performance", "Java", "Japex", "ms", "Driver1 Driver", "TestClass"), 0.0001);
 	}
 	
 }

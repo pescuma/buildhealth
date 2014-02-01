@@ -28,14 +28,14 @@
 		<dependency org="commons-io" name="commons-io" rev="2.2" />
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.1" />
 		<dependency org="org.jsoup" name="jsoup" rev="1.7.2" />
+		<dependency org="org.kohsuke" name="github-api" rev="1.49" />
 
-		<dependency org="org.jvnet.hudson.plugins" name="warnings" rev="4.9" transitive="false">
+		<dependency org="org.jvnet.hudson.plugins" name="warnings" rev="4.38" transitive="false">
 			<artifact name="warnings" type="jar" />
-			<artifact name="warnings" type="source" ext="jar" conf="compile" />
+			<artifact name="warnings" type="source" ext="jar" conf="compile"
+				url="http://repo.jenkins-ci.org/public/org/jvnet/hudson/plugins/warnings/4.38/warnings-4.38-sources.jar" />
 		</dependency>
-
-		<!-- For github-api -->
-		<dependency org="org.kohsuke" name="github-api" rev="1.49"/>
+		<dependency org="commons-lang" name="commons-lang" rev="2.6" />
 
 		<!-- Tests only -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="compile" />

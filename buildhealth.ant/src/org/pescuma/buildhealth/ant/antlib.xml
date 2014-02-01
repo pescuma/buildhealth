@@ -49,6 +49,7 @@
 	<typedef name="add-chesscc-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.CoolfluxChessccConsoleExtractorAntTask" />
 	<typedef name="add-chs-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.GhsMultiConsoleExtractorAntTask" />
 	<typedef name="add-clang-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.ClangConsoleExtractorAntTask" />
+	<typedef name="add-code-analysis-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.CodeAnalysisConsoleExtractorAntTask" />
 	<typedef name="add-diab-c-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.DiabCConsoleExtractorAntTask" />
 	<typedef name="add-doxygen-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.DoxygenConsoleExtractorAntTask" />
 	<typedef name="add-eclipse-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.EclipseConsoleExtractorAntTask" />
@@ -58,19 +59,27 @@
 	<typedef name="add-gcc4-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.Gcc4CompilerConsoleExtractorAntTask" />
 	<typedef name="add-gcc4-linker-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.Gcc4LinkerConsoleExtractorAntTask" />
 	<typedef name="add-gnat-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.GnatConsoleExtractorAntTask" />
+	<typedef name="add-gnu-fortran-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.GnuFortranConsoleExtractorAntTask" />
+	<typedef name="add-gnu-make-gcc-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.GnuMakeGccConsoleExtractorAntTask" />
 	<typedef name="add-iar-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.IarConsoleExtractorAntTask" />
-	<typedef name="add-intel-c-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.IntelCConsoleExtractorAntTask" />
+	<typedef name="add-intel-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.IntelConsoleExtractorAntTask" />
 	<typedef name="add-invalids-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.InvalidsConsoleExtractorAntTask" />
 	<typedef name="add-javac-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.JavacConsoleExtractorAntTask" />
 	<typedef name="add-javadoc-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.JavaDocConsoleExtractorAntTask" />
 	<typedef name="add-maven-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.MavenConsoleConsoleExtractorAntTask" />
 	<typedef name="add-msbuild-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.MsBuildConsoleExtractorAntTask" />
+	<typedef name="add-nag-fortran-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.NagFortranConsoleExtractorAntTask" />
 	<typedef name="add-p4-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.P4ConsoleExtractorAntTask" />
+	<typedef name="add-pep8-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.Pep8ConsoleExtractorAntTask" />
+	<typedef name="add-perl-critic-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.PerlCriticConsoleExtractorAntTask" />
 	<typedef name="add-php-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.PhpConsoleExtractorAntTask" />
+	<typedef name="add-py-lint-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.PyLintConsoleExtractorAntTask" />
 	<typedef name="add-robocopy-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.RobocopyConsoleExtractorAntTask" />
 	<typedef name="add-sun-c-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.SunCConsoleExtractorAntTask" />
 	<typedef name="add-ticcs-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.TiCcsConsoleExtractorAntTask" />
 	<typedef name="add-tnsdl-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.TnsdlConsoleExtractorAntTask" />
+	<typedef name="add-xlc-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.XlcCompilerConsoleExtractorAntTask" />
+	<typedef name="add-xlc-linker-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.XlcLinkerConsoleExtractorAntTask" />
 	<typedef name="add-yui-compressor-console" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.console.YuiCompressorConsoleExtractorAntTask" />
 	<!-- End of auto generated entries -->
 

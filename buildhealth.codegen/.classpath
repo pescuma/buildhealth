@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/buildhealth.extractors/lib/auto/compile/warnings-4.9-jar.jar" sourcepath="/buildhealth.extractors/lib/auto/compile/warnings-4.9-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dom4j-1.6.1-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/guava-11.0.2-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/javassist-3.16.1-GA-jar.jar"/>
@@ -15,5 +14,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.extractors"/>
 	<classpathentry kind="lib" path="lib/auto/compile/antlr-runtime-3.3-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/stringtemplate-4.0.2-jar.jar" sourcepath="lib/auto/compile/stringtemplate-4.0.2-source.jar"/>
+	<classpathentry kind="lib" path="/buildhealth.extractors/lib/auto/compile/warnings-4.38-jar.jar" sourcepath="/buildhealth.extractors/lib/auto/compile/warnings-4.38-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

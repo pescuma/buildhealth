@@ -15,7 +15,7 @@ public class Gcc4LinkerConsoleExtractor extends BaseBuildDataExtractor {
 
 	@Override
 	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		WarningsHelper.extractFromParser("GNU Compiler 4 (gcc)", new hudson.plugins.warnings.parser.Gcc4LinkerParser(),
+		WarningsHelper.extractFromParser("GNU C Compiler 4 (gcc)", new hudson.plugins.warnings.parser.Gcc4LinkerParser(),
 				input, data);
 	}
 

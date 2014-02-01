@@ -30,6 +30,7 @@
 	<property name="reports.cpd.dir" location="${reports.dir}/cpd" />
 	<property name="reports.findbugs.dir" location="${reports.dir}/findbugs" />
 	<property name="reports.tattletale.dir" location="${reports.dir}/tattletale" />
+	<property name="reports.console.dir" location="${reports.dir}/console" />
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="tools.dir" location="${basedir}/../buildhealth.build" />
 	<property name="tools.lib.dir" location="${tools.dir}/lib" />
@@ -87,14 +88,20 @@
 		<delete dir="${build.javac.dir}" quiet="true" />
 		<mkdir dir="${build.javac.dir}" />
 
+		<mkdir dir="${reports.console.dir}" />
+		<record name="${reports.console.dir}/javac.src.out" action="start" />
+
 		<javac destdir="${build.javac.dir}"
 		       debug="true"
 		       includeantruntime="false"
 		       target="${javac.target}"
 		       source="${javac.target}">
+			<compilerarg value="-Xlint:all" />
 			<src path="${src.dir}" />
 			<classpath refid="compile.path" />
 		</javac>
+
+		<record name="${reports.console.dir}/javac.src.out" action="stop" />
 	</target>
 
 	<target name="check-tests">
@@ -105,17 +112,23 @@
 		<delete dir="${build.tests.dir}" quiet="true" />
 		<mkdir dir="${build.tests.dir}" />
 
+		<mkdir dir="${reports.console.dir}" />
+		<record name="${reports.console.dir}/javac.tests.out" action="start" />
+
 		<javac destdir="${build.tests.dir}"
 		       debug="true"
 		       includeantruntime="false"
 		       target="${javac.target}"
 		       source="${javac.target}">
+			<compilerarg value="-Xlint:all" />
 			<src path="${tests.dir}" />
 			<classpath refid="compile.path" />
 			<classpath>
 				<pathelement location="${build.javac.dir}" />
 			</classpath>
 		</javac>
+
+		<record name="${reports.console.dir}/javac.tests.out" action="stop" />
 
 		<copy todir="${build.tests.dir}">
 			<fileset dir="${tests.dir}" excludes="**/*.java" />

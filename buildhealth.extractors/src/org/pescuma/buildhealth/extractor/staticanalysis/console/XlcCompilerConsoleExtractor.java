@@ -7,15 +7,15 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
-public class Gcc4CompilerConsoleExtractor extends BaseBuildDataExtractor {
+public class XlcCompilerConsoleExtractor extends BaseBuildDataExtractor {
 
-	public Gcc4CompilerConsoleExtractor(PseudoFiles files) {
+	public XlcCompilerConsoleExtractor(PseudoFiles files) {
 		super(files, "txt", "out");
 	}
 
 	@Override
 	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		WarningsHelper.extractFromParser("GNU C Compiler 4 (gcc)", new hudson.plugins.warnings.parser.Gcc4CompilerParser(),
+		WarningsHelper.extractFromParser("IBM XLC Compiler", new hudson.plugins.warnings.parser.XlcCompilerParser(),
 				input, data);
 	}
 

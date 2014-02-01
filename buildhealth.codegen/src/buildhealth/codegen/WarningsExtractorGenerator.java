@@ -223,11 +223,18 @@ public class WarningsExtractorGenerator {
 	static {
 		ignored.add("hudson.plugins.warnings.parser.ParserAdapter");
 		ignored.add("hudson.plugins.warnings.parser.DynamicParser");
+		ignored.add("hudson.plugins.warnings.parser.LintParser");
 		ignored.add("hudson.plugins.warnings.parser.JSLintParser");
-		ignored.add("hudson.plugins.warnings.parser.ViolationsAdapter");
-		ignored.add("hudson.plugins.warnings.parser.fxcop.FxCopParser");
+		ignored.add("hudson.plugins.warnings.parser.CssLintParser");
 		ignored.add("hudson.plugins.warnings.parser.CppLintParser");
 		ignored.add("hudson.plugins.warnings.parser.PuppetLintParser");
+		ignored.add("hudson.plugins.warnings.parser.ViolationsAdapter");
+		ignored.add("hudson.plugins.warnings.parser.fxcop.FxCopParser");
+		ignored.add("hudson.plugins.warnings.parser.gendarme.GendarmeParser");
+		ignored.add("hudson.plugins.warnings.parser.jcreport.JcReportParser");
+		ignored.add("hudson.plugins.warnings.parser.StyleCopParser");
+		ignored.add("");
+		ignored.add("");
 	}
 	
 }

@@ -97,6 +97,7 @@ public class BuildHealthCli {
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CoolfluxChessccConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GhsMultiConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ClangConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CodeAnalysisConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DiabCConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DoxygenConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.EclipseConsoleExtractorCommand.class
@@ -106,19 +107,27 @@ public class BuildHealthCli {
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4CompilerConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4LinkerConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnatConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnuFortranConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnuMakeGccConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IarConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IntelCConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IntelConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.InvalidsConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavacConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavaDocConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MavenConsoleConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MsBuildConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.NagFortranConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.P4ConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Pep8ConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PerlCriticConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PhpConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PyLintConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.RobocopyConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.SunCConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TiCcsConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TnsdlConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.XlcCompilerConsoleExtractorCommand.class
+						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.XlcLinkerConsoleExtractorCommand.class
 						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.YuiCompressorConsoleExtractorCommand.class
 				// End of auto generated entries
 				);

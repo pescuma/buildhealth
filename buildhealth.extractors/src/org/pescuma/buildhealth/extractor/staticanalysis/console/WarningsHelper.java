@@ -22,18 +22,8 @@ class WarningsHelper {
 		
 		for (FileAnnotation ann : anns) {
 			
-			data.add(
-					1,
-					"Static analysis",
-					detectLanguage(ann.getFileName()),
-					name,
-					ann.getFileName(),
-					generateLine(ann),
-					"Compiler warnings",
-					ann.getMessage(),
-					toSeverity(ann.getPriority()),
-					String.format("Category: %s\nModule name: %s", ann.getCategory(), ann.getModuleName(),
-							ann.getOrigin()));
+			data.add(1, "Static analysis", detectLanguage(ann.getFileName()), name, ann.getFileName(),
+					generateLine(ann), "Compiler warnings", ann.getMessage(), toSeverity(ann.getPriority()));
 		}
 	}
 	

@@ -7,15 +7,15 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
-public class Gcc4CompilerConsoleExtractor extends BaseBuildDataExtractor {
+public class NagFortranConsoleExtractor extends BaseBuildDataExtractor {
 
-	public Gcc4CompilerConsoleExtractor(PseudoFiles files) {
+	public NagFortranConsoleExtractor(PseudoFiles files) {
 		super(files, "txt", "out");
 	}
 
 	@Override
 	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		WarningsHelper.extractFromParser("GNU C Compiler 4 (gcc)", new hudson.plugins.warnings.parser.Gcc4CompilerParser(),
+		WarningsHelper.extractFromParser("NAG Fortran Compiler (nagfor)", new hudson.plugins.warnings.parser.NagFortranParser(),
 				input, data);
 	}
 

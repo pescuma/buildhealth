@@ -7,17 +7,17 @@ import java.io.File;
 
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.staticanalysis.console.IntelCConsoleExtractor;
+import org.pescuma.buildhealth.extractor.staticanalysis.console.IntelConsoleExtractor;
 
-@Command(name = "intel-c-console", description = "Add warnings from Intel C Compiler output files")
-public class IntelCConsoleExtractorCommand extends BuildHealthCliCommand {
+@Command(name = "intel-console", description = "Add warnings from Intel C Compiler output files")
+public class IntelConsoleExtractorCommand extends BuildHealthCliCommand {
 
 	@Arguments(title = "file or folder", description = "File or folder with Intel C Compiler output(s)", required = true)
 	public File file;
 
 	@Override
 	public void execute() {
-		buildHealth.extract(new IntelCConsoleExtractor(new PseudoFiles(file)));
+		buildHealth.extract(new IntelConsoleExtractor(new PseudoFiles(file)));
 	}
 
 }

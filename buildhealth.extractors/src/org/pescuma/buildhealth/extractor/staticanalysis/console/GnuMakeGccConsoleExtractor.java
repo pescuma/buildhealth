@@ -7,15 +7,15 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 
-public class IntelCConsoleExtractor extends BaseBuildDataExtractor {
+public class GnuMakeGccConsoleExtractor extends BaseBuildDataExtractor {
 
-	public IntelCConsoleExtractor(PseudoFiles files) {
+	public GnuMakeGccConsoleExtractor(PseudoFiles files) {
 		super(files, "txt", "out");
 	}
 
 	@Override
 	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
-		WarningsHelper.extractFromParser("Intel C Compiler", new hudson.plugins.warnings.parser.IntelCParser(),
+		WarningsHelper.extractFromParser("GNU Make + GNU C Compiler (gcc)", new hudson.plugins.warnings.parser.GnuMakeGccParser(),
 				input, data);
 	}
 

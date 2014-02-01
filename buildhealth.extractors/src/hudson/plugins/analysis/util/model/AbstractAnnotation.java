@@ -424,6 +424,10 @@ public abstract class AbstractAnnotation implements FileAnnotation {
 		return true;
 	}
 	
+	public boolean hasPackageName() {
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("%s(%s):%s,%s,%s:%s", getFileName(), primaryLineNumber, priority, getCategory(),
