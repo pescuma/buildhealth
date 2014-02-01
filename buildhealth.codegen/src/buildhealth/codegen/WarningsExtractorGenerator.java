@@ -33,12 +33,15 @@ public class WarningsExtractorGenerator {
 		
 		dump(parsers);
 		
-		System.out.println("Creating generators...");
-		createGenerators(parsers);
+		System.out.println("Creating extractors...");
+		createExtractors(parsers);
 		
-		System.out.println("Creating generator ant tasks...");
-		createGeneratorAntTasks(parsers);
+		System.out.println("Creating ant tasks...");
+		createAntTasks(parsers);
 		fillAntlib(parsers);
+		
+		System.out.println("Creating cli...");
+		createCli(parsers);
 	}
 	
 	private List<Class<? extends AbstractWarningsParser>> listParsers() {
@@ -95,16 +98,22 @@ public class WarningsExtractorGenerator {
 		return result;
 	}
 	
-	private void createGenerators(List<WarningsParser> parsers) throws IOException {
+	private void createExtractors(List<WarningsParser> parsers) throws IOException {
 		generateFromTemplate(parsers,
 				"../buildhealth.extractors/src/org/pescuma/buildhealth/extractor/staticanalysis/console/",
 				"templates/WarningsExtractor.st", "ConsoleExtractor");
 	}
 	
-	private void createGeneratorAntTasks(List<WarningsParser> parsers) throws IOException {
+	private void createAntTasks(List<WarningsParser> parsers) throws IOException {
 		generateFromTemplate(parsers,
 				"../buildhealth.ant/src/org/pescuma/buildhealth/ant/tasks/add/staticanalysis/console/",
 				"templates/WarningsExtractorAntTask.st", "ConsoleExtractorAntTask");
+	}
+	
+	private void createCli(List<WarningsParser> parsers) throws IOException {
+		generateFromTemplate(parsers,
+				"../buildhealth.cli/src/org/pescuma/buildhealth/cli/commands/add/staticanalysis/console/",
+				"templates/WarningsExtractorCommand.st", "ConsoleExtractorCommand");
 	}
 	
 	private void fillAntlib(List<WarningsParser> parsers) throws IOException {
