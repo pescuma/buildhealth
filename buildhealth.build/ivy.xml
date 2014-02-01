@@ -3,12 +3,22 @@
 	<property name="project.dir" value="${basedir}" />
 	<property name="lib.dir" value="${project.dir}/lib" />
 	<property name="lib.auto.dir" value="${lib.dir}/auto" />
+	<property name="tools.dir" location="${basedir}/../buildhealth.build" />
+	<property name="tools.lib.dir" location="${tools.dir}/lib" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
 
 	<target name="deps" depends="install-ivy" description="Download dependencies needed to build">
 		<property name="ivy.dep.file" value="${lib.dir}/ivy.xml" />
+		<if>
+			<available file="${lib.dir}/ivysettings.xml" type="file" />
+			<then>
+				<ivy:settings file="${lib.dir}/ivysettings.xml" />
+			</then>
+		</if>
 		<ivy:retrieve sync="true" pattern="${lib.auto.dir}/[conf]/[artifact]-[revision]-[type].[ext]" />
 	</target>
-		
+
 	<!-- ========================= IVY ========================= -->
 
 	<property name="ivy.install.version" value="2.3.0" />
@@ -17,7 +27,9 @@
 
 	<target name="download-ivy">
 		<mkdir dir="${ivy.jar.dir}" />
-		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
+		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+		     dest="${ivy.jar.file}"
+		     usetimestamp="true" />
 	</target>
 
 	<target name="install-ivy" depends="download-ivy">
