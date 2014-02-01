@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.tasks;
 
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
-import static org.pescuma.buildhealth.extractor.utils.StringHelper.*;
+import static org.pescuma.buildhealth.utils.StringHelper.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.coverage;
 
 import static com.google.common.base.Strings.*;
-import static org.pescuma.buildhealth.extractor.utils.StringHelper.*;
+import static org.pescuma.buildhealth.utils.StringHelper.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;

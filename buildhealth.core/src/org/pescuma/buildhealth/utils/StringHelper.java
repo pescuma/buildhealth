@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.extractor.utils;
+package org.pescuma.buildhealth.utils;
 
 public class StringHelper {
 	

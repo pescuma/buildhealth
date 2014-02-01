@@ -6,6 +6,7 @@ import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
 import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
+import static org.pescuma.buildhealth.utils.StringHelper.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		for (Line line : data.getLines()) {
 			SimpleTree<Stats>.Node node = tree.getRoot();
 			
-			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
+			node = node.getChild(getLanguage(line));
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
 			
 			String category = line.getColumn(COLUMN_CATEGORY);
@@ -137,6 +138,10 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		}
 		
 		return tree;
+	}
+	
+	private static String getLanguage(Line line) {
+		return firstNonEmpty(line.getColumn(COLUMN_LANGUAGE), "Unknown");
 	}
 	
 	private void sumChildStatsAndComputeBuildStatuses(SimpleTree<Stats> tree, final Preferences prefs) {
@@ -263,7 +268,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	}
 	
 	private StaticAnalysisViolation toViolation(Line line) {
-		String language = line.getColumn(COLUMN_LANGUAGE);
+		String language = getLanguage(line);
 		String framework = line.getColumn(COLUMN_FRAMEWORK);
 		String filename = line.getColumn(COLUMN_FILE);
 		String fileLine = line.getColumn(COLUMN_LINE);
@@ -287,7 +292,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		}
 		
 		void add(Line line) {
-			getFramework(line.getColumn(COLUMN_LANGUAGE), line.getColumn(COLUMN_FRAMEWORK)).total += line.getValue();
+			getFramework(getLanguage(line), line.getColumn(COLUMN_FRAMEWORK)).total += line.getValue();
 			
 			if (!line.getColumn(COLUMN_FILE).isEmpty())
 				violations.add(line);

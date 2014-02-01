@@ -1,6 +1,8 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
+import static org.pescuma.buildhealth.utils.StringHelper.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +14,6 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.utils.FilenameToLanguage;
 
 // http://www.mono-project.com/Gendarme
 public class GendarmeExtractor extends BaseXMLExtractor {
@@ -68,10 +69,8 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 						line = "";
 					}
 					
-					String language = FilenameToLanguage.detectLanguage(file);
-					if (language.isEmpty())
-						language = "C#"; // guess
-						
+					String language = firstNonEmpty(detectLanguage(file), "C#");
+					
 					StringBuilder details = new StringBuilder();
 					appendInNewLine(details, "Problem", problem);
 					appendInNewLine(details, "Solution", solution);
