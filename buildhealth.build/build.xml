@@ -47,6 +47,11 @@
 			</sequential>
 		</for>
 
+		<delete dir="${build.tmp.dir}" includeemptydirs="true">
+			<include name="**/*.jelly" />
+			<include name="**/*.stapler" />
+		</delete>
+
 		<delete dir="${build.tmp.dir}/META-INF" includeemptydirs="true">
 			<exclude name="native/**" />
 			<exclude name="resources/**" />
@@ -116,6 +121,8 @@
 			-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature {*;}
 			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
 			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
+			-keep interface hudson.ExtensionPoint {*;}
+			-keep class hudson.util.IOException2 {*;}
 			
 			-dontnote **
 		</proguard>
@@ -150,6 +157,8 @@
 			-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature {*;}
 			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
 			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
+			-keep interface hudson.ExtensionPoint {*;}
+			-keep class hudson.util.IOException2 {*;}
 			
 			-dontnote **
 		</proguard>
