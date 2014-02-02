@@ -43,5 +43,8 @@
 		<!-- Excluded -->
 		<exclude org="com.google.code.guice" module="guice" />
 		<exclude org="net.sourceforge.saxon" module="saxon" />
+		<exclude org="javax.activation" module="activation" />
+		<exclude org="javax.xml.bind" module="jaxb-api" />
+		<exclude org="stax" module="stax-api" />
 	</dependencies>
 </ivy-module>

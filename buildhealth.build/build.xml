@@ -5,7 +5,7 @@
 	<property name="version" value="0.2" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
-	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/lib/proguard-4.9.jar" />
+	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/lib/proguard-4.11.jar" />
 	<taskdef resource="org/pescuma/mergeservices/antlib.xml" classpath="${basedir}/lib/merge-services.jar" />
 
 	<property name="build.dir" value="${basedir}/build" />
@@ -96,6 +96,8 @@
 
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
+			-libraryjars "${basedir}/../buildhealth.ant/lib/auto/compile/ant-1.7.0-jar.jar"
+			-libraryjars "${basedir}/../buildhealth.codegen/lib/auto/compile/jsr305-1.3.9-jar.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
 			-outjars     "${build.dir}/buildhealth-${version}.jar"
 			-dontoptimize
@@ -105,10 +107,20 @@
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
 			-keep class org.pescuma.buildhealth.ant.** {*;}
 
+			-keep class org.pescuma.buildhealth.core.BuildHealth {*;}
+			-keep class org.pescuma.buildhealth.core.BuildStatus {*;}
 			-keep class org.pescuma.buildhealth.core.Report {*;}
 			-keep class * extends org.pescuma.buildhealth.core.Report {*;}
+			-keep interface org.pescuma.buildhealth.core.listener.BuildHealthListener {*;}
+			-keep interface org.pescuma.buildhealth.extractor.BuildDataExtractor {*;}
+			-keep class * implements org.pescuma.buildhealth.extractor.BuildDataExtractor {*;}
+			-keep interface org.pescuma.buildhealth.computer.BuildDataComputer {*;}
+			-keep class * implements org.pescuma.buildhealth.computer.BuildDataComputer {*;}
+			-keep interface org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
+			-keep interface org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
 			-keep class * implements org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
+			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
@@ -120,7 +132,6 @@
 			-keep class com.ctc.wstx.stax.WstxOutputFactory {*;}
 			-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature {*;}
 			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
-			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
 			-keep interface hudson.ExtensionPoint {*;}
 			-keep class hudson.util.IOException2 {*;}
 			
@@ -133,18 +144,31 @@
 
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
+			-libraryjars "${basedir}/../buildhealth.ant/lib/auto/compile/ant-1.7.0-jar.jar"
+			-libraryjars "${basedir}/../buildhealth.codegen/lib/auto/compile/jsr305-1.3.9-jar.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
 			-outjars     "${build.dir}/buildhealth.cli-${version}.jar" 
 			-dontoptimize
 			-dontobfuscate
 			-dontwarn
-			
+				
 			-keep class org.pescuma.buildhealth.cli.BuildHealthCli {*;}
-			
+			-keep class org.pescuma.buildhealth.ant.** {*;}
+
+			-keep class org.pescuma.buildhealth.core.BuildHealth {*;}
+			-keep class org.pescuma.buildhealth.core.BuildStatus {*;}
 			-keep class org.pescuma.buildhealth.core.Report {*;}
 			-keep class * extends org.pescuma.buildhealth.core.Report {*;}
+			-keep interface org.pescuma.buildhealth.core.listener.BuildHealthListener {*;}
+			-keep interface org.pescuma.buildhealth.extractor.BuildDataExtractor {*;}
+			-keep class * implements org.pescuma.buildhealth.extractor.BuildDataExtractor {*;}
+			-keep interface org.pescuma.buildhealth.computer.BuildDataComputer {*;}
+			-keep class * implements org.pescuma.buildhealth.computer.BuildDataComputer {*;}
+			-keep interface org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
 			-keep class * implements org.pescuma.buildhealth.analyser.BuildHealthAnalyser {*;}
+			-keep interface org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
 			-keep class * implements org.pescuma.buildhealth.notifiers.BuildHealthNotifier {*;}
+			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
 			-keep class org.fusesource.jansi.internal.** {*;}
 			-keep class com.google.common.base.FinalizableReference {*;}
 			-keep class org.jaxen.saxpath.base.XPathReader {*;}
@@ -156,7 +180,6 @@
 			-keep class com.ctc.wstx.stax.WstxOutputFactory {*;}
 			-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature {*;}
 			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
-			-keep class org.pescuma.buildhealth.cli.commands.webserver.BuildHealthWebServer.** {*;}
 			-keep interface hudson.ExtensionPoint {*;}
 			-keep class hudson.util.IOException2 {*;}
 			

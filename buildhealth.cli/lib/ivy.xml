@@ -29,5 +29,8 @@
 		<dependency org="org.webjars" name="html5shiv" rev="3.6.2" />
 
 		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
+
+		<!-- Excluded -->
+		<exclude org="javax.xml.stream" module="stax-api" />
 	</dependencies>
 </ivy-module>

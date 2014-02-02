@@ -6,16 +6,13 @@
 	<classpathentry kind="lib" path="lib/auto/compile/guava-14.0-bundle.jar" sourcepath="lib/auto/compile/guava-14.0-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/jdom2-2.0.4-jar.jar" sourcepath="lib/auto/compile/jdom2-2.0.4-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/jaxen-1.1.4-jar.jar" sourcepath="lib/auto/compile/jaxen-1.1.4-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/activation-1.1-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dtkit-default-junit-0.14-jar.jar" sourcepath="lib/auto/compile/dtkit-default-junit-0.14-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dtkit-junit-model-0.12-jar.jar" sourcepath="lib/auto/compile/dtkit-junit-model-0.12-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dtkit-metrics-model-0.11-jar.jar" sourcepath="lib/auto/compile/dtkit-metrics-model-0.11-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dtkit-metrics-util-0.11-jar.jar" sourcepath="lib/auto/compile/dtkit-metrics-util-0.11-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dtkit-processor-0.1-jar.jar" sourcepath="lib/auto/compile/dtkit-processor-0.1-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/dtkit-tusar-model-0.11-jar.jar" sourcepath="lib/auto/compile/dtkit-tusar-model-0.11-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jaxb-api-2.2.1-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/jaxb-impl-2.2.1.1-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/stax-api-1.0-2-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/mockito-all-1.9.5-jar.jar" sourcepath="lib/auto/compile/mockito-all-1.9.5-source.jar"/>
 	<classpathentry kind="lib" path="lib/saxon/saxon9-s9api.jar"/>
 	<classpathentry kind="lib" path="lib/saxon/saxon9.jar"/>
