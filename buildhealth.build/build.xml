@@ -97,7 +97,7 @@
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
 			-libraryjars "${basedir}/../buildhealth.ant/lib/auto/compile/ant-1.7.0-jar.jar"
-			-libraryjars "${basedir}/../buildhealth.codegen/lib/auto/compile/jsr305-1.3.9-jar.jar"
+			-libraryjars "${basedir}/lib/findbugs/lib/jsr305.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
 			-outjars     "${build.dir}/buildhealth-${version}.jar"
 			-dontoptimize
@@ -145,7 +145,7 @@
 		<proguard>
 			-libraryjars "${java.home}/lib/rt.jar"
 			-libraryjars "${basedir}/../buildhealth.ant/lib/auto/compile/ant-1.7.0-jar.jar"
-			-libraryjars "${basedir}/../buildhealth.codegen/lib/auto/compile/jsr305-1.3.9-jar.jar"
+			-libraryjars "${basedir}/lib/findbugs/lib/jsr305.jar"
 			-injars      "${build.dir}/buildhealth.full-${version}.jar"
 			-outjars     "${build.dir}/buildhealth.cli-${version}.jar" 
 			-dontoptimize
