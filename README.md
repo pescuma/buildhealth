@@ -49,8 +49,8 @@ File processed: /path/to/xmls/TEST-test2.xml
 
 ##### Add coverage
 ```
-> buildhealth add jacoco /path/th/xmls
-File processed: /path/th/xmls/coverage.xml
+> buildhealth add jacoco /path/to/xmls
+File processed: /path/to/xmls/coverage.xml
 ```
 
 ##### Compute tasks
