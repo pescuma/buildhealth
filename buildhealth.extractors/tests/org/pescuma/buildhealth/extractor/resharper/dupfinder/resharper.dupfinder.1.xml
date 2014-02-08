@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DuplicatesReport ToolsVersion="8.1">
+  <Statistics>
+    <CodebaseCost>999</CodebaseCost>
+    <TotalDuplicatesCost>111</TotalDuplicatesCost>
+    <TotalFragmentsCost>333</TotalFragmentsCost>
+  </Statistics>
+  <Duplicates>
+    <Duplicate Cost="132">
+      <Fragment>
+        <FileName>..\A.cs</FileName>
+        <OffsetRange Start="123" End="987" />
+        <LineRange Start="13" End="17" />
+      </Fragment>
+      <Fragment>
+        <FileName>..\B.cs</FileName>
+        <OffsetRange Start="345" End="543" />
+        <LineRange Start="8" End="13" />
+      </Fragment>
+    </Duplicate>
+  </Duplicates>
+</DuplicatesReport>

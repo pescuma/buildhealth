@@ -26,6 +26,7 @@
 
 	<typedef name="add-pmd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.PMDExtractorAntTask" />
 	<typedef name="add-cpd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.CPDExtractorAntTask" />
+	<typedef name="add-resharper-dupfinder" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.ResharperDupFinderExtractorAntTask" />
 	<typedef name="add-findbugs" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.FindBugsExtractorAntTask" />
 	<typedef name="add-gendarme" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.GendarmeExtractorAntTask" />
 	<typedef name="add-fxcop" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.FxCopExtractorAntTask" />
