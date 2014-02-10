@@ -9,7 +9,7 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.staticanalysis.ResharperDupFinderExtractor;
 
-@Command(name = "resharper-dupfinder", description = "Add code duplication information from ReSharper's DupFinder output file")
+@Command(name = "resharper-dupfinder", description = "Add code duplication information from ReSharper DupFinder output file")
 public class ResharperDupFinderExtractorCommand extends BuildHealthCliCommand {
 	
 	@Arguments(title = "file or folder", description = "File or folder with DupFinder XML output(s)", required = true)

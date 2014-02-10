@@ -26,6 +26,7 @@ import org.pescuma.buildhealth.cli.commands.add.staticanalysis.GendarmeExtractor
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.JSXLintExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.PMDExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.ResharperDupFinderExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.staticanalysis.ResharperInspectCodeExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.StyleCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.tasks.BugsEverywhereExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.tasks.GitHubIssuesExtractorCommand;
@@ -80,6 +81,7 @@ public class BuildHealthCli {
 						PMDExtractorCommand.class,
 						CPDExtractorCommand.class,
 						ResharperDupFinderExtractorCommand.class,
+						ResharperInspectCodeExtractorCommand.class,
 						FindBugsExtractorCommand.class,
 						GendarmeExtractorCommand.class,
 						FxCopExtractorCommand.class,
