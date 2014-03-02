@@ -10,6 +10,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 	
@@ -37,7 +38,7 @@ public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 				if (file.isEmpty())
 					continue;
 				
-				locations.add(new Location(file, line));
+				locations.add(new Location(file, Integer.parseInt(line)));
 			}
 			
 			if (locations.isEmpty()) {
@@ -47,16 +48,16 @@ public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 					if (file.isEmpty())
 						continue;
 					
-					locations.add(new Location(file, ""));
+					locations.add(new Location(file));
 				}
 			}
 			
 			if (locations.isEmpty())
-				locations.add(new Location("", ""));
+				locations.add(new Location());
 			
 			for (Location location : locations) {
-				data.add(1, "Static analysis", "C#", " dotnet-dependency-checker", location.file, location.line, type,
-						message, toBuildHealthSeverity(severity));
+				data.add(1, "Static analysis", "C#", " dotnet-dependency-checker", location.file,
+						Integer.toString(location.beginLine), type, message, toBuildHealthSeverity(severity));
 			}
 			
 		}
@@ -72,13 +73,4 @@ public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 		return severity;
 	}
 	
-	private static class Location {
-		final String file;
-		final String line;
-		
-		public Location(String file, String line) {
-			this.file = file;
-			this.line = line;
-		}
-	}
 }
