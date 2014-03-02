@@ -37,7 +37,10 @@ import com.google.common.base.Function;
  * Static analysis,language,framework,filename,line or line:column or beginLine:beginColumn:endLine:endColumn,category,message,severity (Low or Medium or High),details,URL with details
  * </pre>
  * 
- * The number is the number of violations in that place. Empty line means all file.
+ * <ul>
+ * <li>The number is the number of violations in that place.
+ * <li>Empty line means all file.
+ * </ul>
  * 
  * To be able to use the details (anything after filename) at least the filename is required.
  * 
