@@ -1,5 +1,8 @@
 package org.pescuma.buildhealth.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 
 public class Location {
@@ -120,4 +123,59 @@ public class Location {
 		return result.toString();
 	}
 	
+	public static String toFormatedString(List<Location> locations) {
+		if (locations == null || locations.size() < 1)
+			return "";
+		
+		StringBuilder result = new StringBuilder();
+		boolean first = true;
+		for (Location loc : locations) {
+			if (first)
+				first = false;
+			else
+				result.append("|");
+			
+			result.append(loc.toString());
+		}
+		return result.toString();
+	}
+	
+	public static List<Location> parse(String column) {
+		List<Location> result = new ArrayList<Location>();
+		
+		for (String loc : column.split("\\|")) {
+			Location location = parseLocation(loc);
+			if (location != null)
+				result.add(location);
+		}
+		
+		return result;
+	}
+	
+	private static Location parseLocation(String loc) {
+		String[] places = loc.split(">");
+		
+		if (places.length < 1)
+			return null;
+		
+		if (places.length > 2)
+			throw new IllegalStateException(loc + " is not a location");
+		
+		String file = places[0];
+		if (places.length == 1)
+			return new Location(file);
+		
+		String[] lines = places[1].split(":");
+		if (lines.length < 1)
+			return new Location(file);
+		else if (lines.length == 1)
+			return new Location(file, Integer.parseInt(lines[0]));
+		else if (lines.length == 2)
+			return new Location(file, Integer.parseInt(lines[0]), Integer.parseInt(lines[1]));
+		else if (lines.length == 4)
+			return new Location(file, Integer.parseInt(lines[0]), Integer.parseInt(lines[1]),
+					Integer.parseInt(lines[2]), Integer.parseInt(lines[3]));
+		else
+			throw new IllegalStateException(loc + " is not a location");
+	}
 }

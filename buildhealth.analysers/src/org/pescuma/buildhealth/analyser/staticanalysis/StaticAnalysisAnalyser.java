@@ -27,6 +27,7 @@ import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.utils.Location;
 
 import com.google.common.base.Function;
 
@@ -34,12 +35,18 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Static analysis,language,framework,filename,line or line:column or beginLine:beginColumn:endLine:endColumn,category,message,severity (Low or Medium or High),details,URL with details
+ * Static analysis,language,framework,location,category,message,{severity:Low,Medium,High},details,URL with details
  * </pre>
  * 
+ * The number is the number of violations in that place.
+ * 
+ * Location can be one of:
  * <ul>
- * <li>The number is the number of violations in that place.
- * <li>Empty line means all file.
+ * <li>filename
+ * <li>filename>line
+ * <li>filename>line:column
+ * <li>filename>beginLine:beginColumn:endLine:endColumn
+ * <li>or multiple of above, separated by | (ex: file1|file2:32)
  * </ul>
  * 
  * To be able to use the details (anything after filename) at least the filename is required.
@@ -57,13 +64,12 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	
 	public static final int COLUMN_LANGUAGE = 1;
 	public static final int COLUMN_FRAMEWORK = 2;
-	public static final int COLUMN_FILE = 3;
-	public static final int COLUMN_LINE = 4;
-	public static final int COLUMN_CATEGORY = 5;
-	public static final int COLUMN_MESSAGE = 6;
-	public static final int COLUMN_SEVERITY = 7;
-	public static final int COLUMN_DETAILS = 8;
-	public static final int COLUMN_URL = 9;
+	public static final int COLUMN_LOCATION = 3;
+	public static final int COLUMN_CATEGORY = 4;
+	public static final int COLUMN_MESSAGE = 5;
+	public static final int COLUMN_SEVERITY = 6;
+	public static final int COLUMN_DETAILS = 7;
+	public static final int COLUMN_URL = 8;
 	
 	@Override
 	public String getName() {
@@ -247,23 +253,26 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		Collections.sort(violations, new Comparator<StaticAnalysisViolation>() {
 			@Override
 			public int compare(StaticAnalysisViolation o1, StaticAnalysisViolation o2) {
-				int cmp = o1.getFilename().compareToIgnoreCase(o2.getFilename());
-				if (cmp != 0)
-					return cmp;
+				List<Location> ls1 = o1.getLocations();
+				List<Location> ls2 = o2.getLocations();
 				
-				cmp = toInt(o1.getLine()) - toInt(o2.getLine());
-				if (cmp != 0)
-					return cmp;
+				if (ls1.isEmpty() != ls2.isEmpty())
+					return ls1.isEmpty() ? 0 : 1;
+				
+				if (!ls1.isEmpty() && !ls2.isEmpty()) {
+					Location l1 = ls1.get(0);
+					Location l2 = ls2.get(0);
+					
+					int cmp = l1.file.compareToIgnoreCase(l2.file);
+					if (cmp != 0)
+						return cmp;
+					
+					cmp = l1.beginLine - l2.beginLine;
+					if (cmp != 0)
+						return cmp;
+				}
 				
 				return o1.getMessage().compareToIgnoreCase(o2.getMessage());
-			}
-			
-			private int toInt(String line) {
-				try {
-					return Integer.parseInt(line);
-				} catch (NumberFormatException e) {
-					return 0;
-				}
 			}
 		});
 		
@@ -273,16 +282,15 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	private StaticAnalysisViolation toViolation(Line line) {
 		String language = getLanguage(line);
 		String framework = line.getColumn(COLUMN_FRAMEWORK);
-		String filename = line.getColumn(COLUMN_FILE);
-		String fileLine = line.getColumn(COLUMN_LINE);
+		List<Location> locations = Location.parse(line.getColumn(COLUMN_LOCATION));
 		String category = line.getColumn(COLUMN_CATEGORY);
 		String message = line.getColumn(COLUMN_MESSAGE);
 		String severity = line.getColumn(COLUMN_SEVERITY);
 		String details = line.getColumn(COLUMN_DETAILS);
 		String url = line.getColumn(COLUMN_URL);
 		
-		return new StaticAnalysisViolation(BuildStatus.Good, language, framework, filename, fileLine, category,
-				message, severity, details, url);
+		return new StaticAnalysisViolation(BuildStatus.Good, language, framework, locations, category, message,
+				severity, details, url);
 	}
 	
 	private static class Stats extends TreeStats {
@@ -297,7 +305,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		void add(Line line) {
 			getFramework(getLanguage(line), line.getColumn(COLUMN_FRAMEWORK)).total += line.getValue();
 			
-			if (!line.getColumn(COLUMN_FILE).isEmpty())
+			if (!line.getColumn(COLUMN_LOCATION).isEmpty())
 				violations.add(line);
 		}
 		

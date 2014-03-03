@@ -1,28 +1,30 @@
 package org.pescuma.buildhealth.analyser.staticanalysis;
 
+import java.util.List;
+
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.utils.Location;
 
 public class StaticAnalysisViolation extends Report {
 	
 	private final String language;
 	private final String framework;
-	private final String filename;
-	private final String line;
+	private final List<Location> locations;
 	private final String category;
 	private final String message;
 	private final String severity;
 	private final String details;
 	private final String url;
 	
-	public StaticAnalysisViolation(BuildStatus status, String language, String framework, String filename, String line,
+	public StaticAnalysisViolation(BuildStatus status, String language, String framework, List<Location> locations,
 			String category, String message, String severity, String details, String url) {
-		super(status, filename, line, createDescription(message, severity));
+		super(status, locations.get(0).file, Integer.toString(locations.get(0).beginLine), createDescription(message,
+				severity));
 		
 		this.language = language;
 		this.framework = framework;
-		this.filename = filename;
-		this.line = line;
+		this.locations = locations;
 		this.category = category;
 		this.message = message;
 		this.severity = severity;
@@ -38,12 +40,8 @@ public class StaticAnalysisViolation extends Report {
 		return framework;
 	}
 	
-	public String getFilename() {
-		return filename;
-	}
-	
-	public String getLine() {
-		return line;
+	public List<Location> getLocations() {
+		return locations;
 	}
 	
 	public String getCategory() {
