@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class LocationTests {
+public class LocationTest {
 	
 	@Test
 	public void testCreate_Line() {

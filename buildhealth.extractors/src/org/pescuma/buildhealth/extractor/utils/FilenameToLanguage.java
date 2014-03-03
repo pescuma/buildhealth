@@ -105,6 +105,7 @@ public class FilenameToLanguage {
 		extensions.put("pde", "Arduino Sketch");
 		extensions.put("itk", "Tcl/Tk");
 		extensions.put("java", "Java");
+		extensions.put("jar", "Java");
 		extensions.put("jcl", "JCL");
 		extensions.put("jl", "Lisp");
 		extensions.put("js", "Javascript");
