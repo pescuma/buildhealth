@@ -52,7 +52,7 @@ public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 				}
 			}
 			
-			data.add(1, "Static analysis", "C#", " dotnet-dependency-checker", Location.toFormatedString(locations),
+			data.add(1, "Static analysis", "C#", "dotnet-dependency-checker", Location.toFormatedString(locations),
 					type, message, toBuildHealthSeverity(severity));
 		}
 	}
