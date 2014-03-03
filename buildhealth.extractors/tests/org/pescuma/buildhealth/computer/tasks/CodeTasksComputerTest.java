@@ -37,13 +37,13 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(4, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "tasks.java", "2"),
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "tasks.java>2"),
 				0.001);
-		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "", "", "tasks.java", "4"),
+		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "", "", "tasks.java>4"),
 				0.001);
-		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "", "", "tasks.java", "6"),
+		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "", "", "tasks.java>6"),
 				0.001);
-		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "", "", "tasks.java", "8"),
+		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "", "", "tasks.java>8"),
 				0.001);
 	}
 	
@@ -107,8 +107,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "abc", "", "", "", "", "", "", "a.java", "1"),
-				0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "abc", "", "", "", "", "", "", "a.java>1"), 0.001);
 	}
 	
 	@Test
@@ -132,13 +131,12 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(4, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "c:\\a.cpp", "2"),
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "c:\\a.cpp>2"),
 				0.001);
-		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "", "", "c:\\a.cpp", "4"),
+		assertEquals(1, table.get("Tasks", "From code", "HACK", "", "456", "", "", "", "", "", "", "c:\\a.cpp>4"),
 				0.001);
-		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "", "", "c:\\a.cpp", "6"),
-				0.001);
-		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "", "", "c:\\a.cpp", "8"),
+		assertEquals(1, table.get("Tasks", "From code", "XXX", "", "789", "", "", "", "", "", "", "c:\\a.cpp>6"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "FIXME", "", "012", "", "", "", "", "", "", "c:\\a.cpp>8"),
 				0.001);
 	}
 	

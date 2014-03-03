@@ -25,6 +25,7 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.CSVExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.CSV;
+import org.pescuma.buildhealth.utils.Location;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -172,18 +173,10 @@ public class CodeTasksComputer implements BuildDataComputer {
 					text = text.substring(createdByMatcher.end()).trim();
 				}
 				
-				String file;
-				String fileLine;
-				if (filename == null) {
-					file = "";
-					fileLine = "";
-				} else {
-					file = filename;
-					fileLine = Integer.toString(lineNum);
-				}
+				Location loc = Location.create(filename, lineNum, null, null, null);
 				
 				write(out, Double.toString(1), "Tasks", "From code", marker, "", text, "", createdBy, "", "", "", "",
-						file, fileLine);
+						Location.toFormatedString(loc));
 			}
 		}
 	}

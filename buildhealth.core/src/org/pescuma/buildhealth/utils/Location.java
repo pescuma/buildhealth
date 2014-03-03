@@ -120,6 +120,9 @@ public class Location {
 	}
 	
 	public static String toFormatedString(Location location) {
+		if (location == null)
+			return "";
+		
 		return location.toString();
 	}
 	

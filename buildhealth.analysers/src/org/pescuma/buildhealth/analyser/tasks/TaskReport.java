@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
+import org.pescuma.buildhealth.utils.Location;
 
 public class TaskReport extends Report {
 	
@@ -16,12 +17,11 @@ public class TaskReport extends Report {
 	private final String taskType;
 	private final String taskStatus;
 	private final String details;
-	private final String file;
-	private final String fileLine;
+	private final List<Location> locations;
 	private final double count;
 	
 	public TaskReport(BuildStatus status, String id, String text, String owner, String createdBy, String creationDate,
-			String taskType, String taskStatus, String details, String file, String fileLine, double count,
+			String taskType, String taskStatus, String details, List<Location> locations, double count,
 			List<Report> children) {
 		super(status, text, "", createDescription(id, taskType, taskStatus, owner, count), children);
 		this.id = id;
@@ -31,8 +31,7 @@ public class TaskReport extends Report {
 		this.taskType = taskType;
 		this.taskStatus = taskStatus;
 		this.details = details;
-		this.file = file;
-		this.fileLine = fileLine;
+		this.locations = locations;
 		this.count = count;
 	}
 	
@@ -102,12 +101,8 @@ public class TaskReport extends Report {
 		return details;
 	}
 	
-	public String getFile() {
-		return file;
-	}
-	
-	public String getFileLine() {
-		return fileLine;
+	public List<Location> getLocations() {
+		return locations;
 	}
 	
 	public double getCount() {

@@ -25,6 +25,7 @@ import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.utils.Location;
 
 import com.google.common.base.Function;
 
@@ -32,10 +33,19 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},text,owner,created by,creation date,id,parent id,details,file,line
+ * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},text,owner,created by,creation date,id,parent id,details,location
  * </pre>
  * 
  * Parent id is only used if it also has an id.
+ * 
+ * Location can be one of:
+ * <ul>
+ * <li>filename
+ * <li>filename>line
+ * <li>filename>line:column
+ * <li>filename>beginLine:beginColumn:endLine:endColumn
+ * <li>or multiple of above, separated by | (ex: file1|file2:32)
+ * </ul>
  * 
  * Example:
  * 
@@ -58,8 +68,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 	private static final int COLUMN_ID = 8;
 	private static final int COLUMN_PARENT_ID = 9;
 	private static final int COLUMN_DETAILS = 10;
-	private static final int COLUMN_FILE = 11;
-	private static final int COLUMN_LINE = 12;
+	private static final int COLUMN_LOCATION = 11;
 	
 	@Override
 	public String getName() {
@@ -206,7 +215,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		if (stats.entry != null) {
 			return new TaskReport(BuildStatus.Good, stats.entry.id, stats.entry.text, stats.entry.owner,
 					stats.entry.createdBy, stats.entry.creationDate, stats.entry.type, stats.entry.status,
-					stats.entry.details, stats.entry.file, stats.entry.fileLine, stats.entry.count, children);
+					stats.entry.details, stats.entry.locations, stats.entry.count, children);
 			
 		} else {
 			StringBuilder description = new StringBuilder();
@@ -256,8 +265,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		String fullId;
 		String fullParentId;
 		String details;
-		String file;
-		String fileLine;
+		List<Location> locations;
 		boolean hasParent = false;
 		final List<Entry> children = new ArrayList<Entry>();
 		
@@ -273,8 +281,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 			createdBy = line.getColumn(COLUMN_CREATED_BY);
 			creationDate = line.getColumn(COLUMN_CREATION_DATE);
 			details = line.getColumn(COLUMN_DETAILS);
-			file = line.getColumn(COLUMN_FILE);
-			fileLine = line.getColumn(COLUMN_LINE);
+			locations = Location.parse(line.getColumn(COLUMN_LOCATION));
 			
 			id = line.getColumn(COLUMN_ID);
 			fullId = origin + "\n" + id;
