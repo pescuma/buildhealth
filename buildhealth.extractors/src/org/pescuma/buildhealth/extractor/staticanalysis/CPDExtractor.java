@@ -5,6 +5,8 @@ import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +14,7 @@ import org.apache.commons.io.LineIterator;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // http://pmd.sourceforge.net/snapshot/cpd-usage.html
 // TODO Maybe create a Code duplication analyser?
@@ -64,6 +67,8 @@ public class CPDExtractor extends BaseBuildDataExtractor {
 		if (message.isEmpty())
 			return;
 		
+		List<Location> locations = new ArrayList<Location>();
+		
 		String[] lines = message.split("\n");
 		for (int i = 1; i < lines.length; i++) {
 			String line = lines[i];
@@ -74,7 +79,10 @@ public class CPDExtractor extends BaseBuildDataExtractor {
 			
 			String linenum = matcher.group(1);
 			String file = matcher.group(2);
-			data.add(1, "Static analysis", detectLanguage(file), "CPD", file, linenum, "Code duplication", message);
+			locations.add(Location.create(file, linenum));
 		}
+		
+		data.add(1, "Static analysis", detectLanguage(locations.get(0).file), "CPD",
+				Location.toFormatedString(locations), "Code duplication", message);
 	}
 }

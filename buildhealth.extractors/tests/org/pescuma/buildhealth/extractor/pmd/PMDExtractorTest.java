@@ -33,20 +33,21 @@ public class PMDExtractorTest extends BaseExtractorTest {
 						"Static analysis",
 						"Java",
 						"PMD",
-						"org\\pescuma\\buildhealth\\ant\\BuildHealthAntTask.java",
-						"47:23:47:46",
+						"org\\pescuma\\buildhealth\\ant\\BuildHealthAntTask.java>47:23:47:46",
 						"Design/FieldDeclarationsShouldBeAtStartOfClass",
 						"Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.",
 						"Medium",
 						"in org.pescuma.buildhealth.ant.BuildHealthAntTask, variable buildHealth\nPriority: Medium",
 						"http://pmd.sourceforge.net/pmd-5.0.2/rules/java/design.html#FieldDeclarationsShouldBeAtStartOfClass"),
 				0.0001);
-		assertEquals(1, table.get("Static analysis", "Java", "PMD", "org\\pescuma\\buildhealth\\ant\\DummyTest.java",
-				"11:28:12:9", "Design/UncommentedEmptyMethod", "Document empty method", "High",
-				"in org.pescuma.buildhealth.ant.DummyTest.test\nPriority: High",
+		
+		assertEquals(1, table.get("Static analysis", "Java", "PMD",
+				"org\\pescuma\\buildhealth\\ant\\DummyTest.java>11:28:12:9", "Design/UncommentedEmptyMethod",
+				"Document empty method", "High", "in org.pescuma.buildhealth.ant.DummyTest.test\nPriority: High",
 				"http://pmd.sourceforge.net/pmd-5.0.2/rules/java/design.html#UncommentedEmptyMethod"), 0.0001);
-		assertEquals(1, table.get("Static analysis", "Java", "PMD", "org\\pescuma\\buildhealth\\ant\\DummyTest.java",
-				"10:1:10:2", "UncommentedEmptyMethod", "Bla"), 0.0001);
+		
+		assertEquals(1, table.get("Static analysis", "Java", "PMD",
+				"org\\pescuma\\buildhealth\\ant\\DummyTest.java>10:1:10:2", "UncommentedEmptyMethod", "Bla"), 0.0001);
 	}
 	
 }

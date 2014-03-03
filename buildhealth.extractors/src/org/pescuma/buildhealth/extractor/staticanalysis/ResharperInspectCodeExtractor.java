@@ -11,6 +11,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 public class ResharperInspectCodeExtractor extends BaseXMLExtractor {
 	
@@ -45,8 +46,10 @@ public class ResharperInspectCodeExtractor extends BaseXMLExtractor {
 				if (type == null)
 					type = new IssueType("", typeId, "Low");
 				
-				data.add(1, "Static analysis", language, "Resharper InspectCode", file, line, type.category, message,
-						type.severity);
+				Location loc = Location.create(file, line);
+				
+				data.add(1, "Static analysis", language, "Resharper InspectCode", Location.toFormatedString(loc),
+						type.category, message, type.severity);
 			}
 		}
 	}

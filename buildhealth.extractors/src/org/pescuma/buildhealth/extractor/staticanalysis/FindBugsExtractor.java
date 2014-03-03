@@ -15,6 +15,7 @@ import org.jsoup.Jsoup;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // http://findbugs.sourceforge.net/
 public class FindBugsExtractor extends BaseXMLExtractor {
@@ -50,11 +51,7 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 			
 			path = findRealSource(path, sourceDirs);
 			
-			String line;
-			if (startLine.equals(endLine))
-				line = startLine;
-			else
-				line = startLine + ":0:" + endLine + ":999";
+			Location loc = Location.create(path, startLine, null, endLine, null);
 			
 			StringBuilder desc = new StringBuilder();
 			desc.append(longMessage);
@@ -66,7 +63,7 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 				desc.append("\nConfidence: ").append(confidence);
 			desc.append("\n\n").append(details);
 			
-			data.add(1, "Static analysis", "Java", "FindBugs", path, line, category, shortMessage,
+			data.add(1, "Static analysis", "Java", "FindBugs", Location.toFormatedString(loc), category, shortMessage,
 					toBuildHealthSeverity(rank), desc.toString());
 		}
 	}

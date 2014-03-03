@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // https://stylecop.codeplex.com/
 // Based on Jenkins Violations plugin: https://github.com/jenkinsci/violations-plugin
@@ -57,8 +58,10 @@ public class StyleCopExtractor extends BaseXMLExtractor {
 			else
 				description = "";
 			
-			data.add(1, "Static analysis", "C#", "StyleCop", source, lineNumber, category, message, "", description,
-					url);
+			Location loc = Location.create(source, lineNumber);
+			
+			data.add(1, "Static analysis", "C#", "StyleCop", Location.toFormatedString(loc), category, message, "",
+					description, url);
 		}
 	}
 }

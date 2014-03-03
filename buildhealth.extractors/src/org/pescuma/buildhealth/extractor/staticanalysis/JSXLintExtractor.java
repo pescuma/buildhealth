@@ -18,6 +18,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // https://github.com/douglascrockford/JSLint
 // https://github.com/FND/jslint-reporter
@@ -90,13 +91,13 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 				if (!m.matches())
 					continue;
 				
-				String type = format.type;
+				String tool = format.tool;
 				String file = m.group(format.file);
 				String lineNum = m.group(format.line);
 				String column = (format.column > 0 ? m.group(format.column) : null);
 				String text = m.group(format.text);
 				
-				add(data, type, file, lineNum, column, text);
+				add(data, tool, file, lineNum, column, text);
 				
 				break;
 			}
@@ -107,60 +108,56 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 	protected void extractDocument(String filename, Document doc, BuildData data) {
 		checkRoot(doc, new String[] { "jslint", "jshint" }, filename);
 		
-		String type = toType(doc.getRootElement().getName());
+		String tool = toTool(doc.getRootElement().getName());
 		
 		for (Element el : doc.getRootElement().getChildren("file"))
-			extractFile(data, el, type);
+			extractFile(data, el, tool);
 	}
 	
-	private String toType(String name) {
+	private String toTool(String name) {
 		if (name.equals("jslint"))
 			return "JSLint";
 		else
 			return "JSHint";
 	}
 	
-	private void extractFile(BuildData data, Element file, String type) {
+	private void extractFile(BuildData data, Element file, String tool) {
 		String fileName = file.getAttributeValue("name", "");
 		
 		for (Element el : file.getChildren("issue"))
-			extractIssue(data, el, type, fileName);
+			extractIssue(data, el, tool, fileName);
 	}
 	
-	private void extractIssue(BuildData data, Element el, String type, String fileName) {
+	private void extractIssue(BuildData data, Element el, String tool, String fileName) {
 		String lineNum = el.getAttributeValue("line", "");
 		String column = el.getAttributeValue("char", "");
 		String text = el.getAttributeValue("reason", "");
 		
-		add(data, type, fileName, lineNum, column, text);
+		add(data, tool, fileName, lineNum, column, text);
 	}
 	
-	private void add(BuildData data, String type, String file, String lineNum, String column, String text) {
-		file = firstNonNull(file, "");
-		lineNum = firstNonNull(lineNum, "");
-		column = firstNonNull(column, "");
+	private void add(BuildData data, String tool, String file, String lineNum, String column, String text) {
 		text = firstNonNull(text, "");
 		
 		if (text.isEmpty())
 			return;
 		
-		if (!column.isEmpty())
-			lineNum += ":" + column;
+		Location loc = Location.create(file, lineNum, column);
 		
-		data.add(1, "Static analysis", "Javascript", type, file, lineNum, "", text);
+		data.add(1, "Static analysis", "Javascript", tool, Location.toFormatedString(loc), "", text);
 	}
 	
 	private static class Format {
 		
-		final String type;
+		final String tool;
 		final Pattern pattern;
 		final int file;
 		final int line;
 		final int column;
 		final int text;
 		
-		Format(String type, String pattern, int file, int line, int column, int text) {
-			this.type = type;
+		Format(String tool, String pattern, int file, int line, int column, int text) {
+			this.tool = tool;
 			this.pattern = Pattern.compile(pattern);
 			this.file = file;
 			this.line = line;

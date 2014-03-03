@@ -27,10 +27,9 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(19, 19, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JavaScript Lint", "C:\\devel\\js\\index.js", "6",
-				"", "unexpected end of line; it is ambiguous whether these lines are part of the same statement"),
-				0.0001);
-		assertEquals(1, table.get("Static analysis", "Javascript", "JavaScript Lint", "C:\\devel\\js\\index.js", "164",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JavaScript Lint", "C:\\devel\\js\\index.js>6", "",
+				"unexpected end of line; it is ambiguous whether these lines are part of the same statement"), 0.0001);
+		assertEquals(1, table.get("Static analysis", "Javascript", "JavaScript Lint", "C:\\devel\\js\\index.js>164",
 				"", "redeclaration of var i"), 0.0001);
 	}
 	
@@ -47,10 +46,10 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(15, 15, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "index.js", "33:14", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "index.js>33:14", "",
 				"Use '===' to compare with ''"), 0.0001);
 		assertEquals(1,
-				table.get("Static analysis", "Javascript", "JSHint", "index.js", "335:67", "", "Missing semicolon"),
+				table.get("Static analysis", "Javascript", "JSHint", "index.js>335:67", "", "Missing semicolon"),
 				0.0001);
 	}
 	
@@ -67,10 +66,10 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(50, 50, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "index.js", "33:14", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "index.js>33:14", "",
 				"Expected '===' and instead saw '=='."), 0.0001);
 		assertEquals(1,
-				table.get("Static analysis", "Javascript", "JSHint", "index.js", "71:34", "", "Missing semicolon."),
+				table.get("Static analysis", "Javascript", "JSHint", "index.js>71:34", "", "Missing semicolon."),
 				0.0001);
 	}
 	
@@ -87,15 +86,14 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(38, 38, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "3:1", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js>3:1", "",
 				"'$' was used before it was defined"), 0.0001);
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "24:6", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js>24:6", "",
 				"Move 'var' declarations to the top of the function"), 0.0001);
 		
-		assertEquals(
-				true,
-				table.filter("Static analysis", "Javascript", "JSLint", "index.js", "24:6", "",
-						"Stopping. (6% scanned)").isEmpty());
+		assertEquals(true,
+				table.filter("Static analysis", "Javascript", "JSLint", "index.js>24:6", "", "Stopping. (6% scanned)")
+						.isEmpty());
 	}
 	
 	@Test
@@ -111,9 +109,9 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(35, 35, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "3:1", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js>3:1", "",
 				"'$' was used before it was defined."), 0.0001);
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "24:6", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js>24:6", "",
 				"Move 'var' declarations to the top of the function."), 0.0001);
 	}
 	
@@ -130,9 +128,9 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(34, 34, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "3:1", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js>3:1", "",
 				"'$' was used before it was defined"), 0.0001);
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js", "24:6", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSLint", "index.js>24:6", "",
 				"Move 'var' declarations to the top of the function"), 0.0001);
 	}
 	
@@ -149,9 +147,9 @@ public class JSXLintExtractorTest extends BaseExtractorTest {
 		
 		assertTable(17, 17, table);
 		
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "C:\\devel\\js\\index.js", "33:14", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "C:\\devel\\js\\index.js>33:14", "",
 				"Use '===' to compare with ''"), 0.0001);
-		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "C:\\devel\\js\\index.js", "335:67", "",
+		assertEquals(1, table.get("Static analysis", "Javascript", "JSHint", "C:\\devel\\js\\index.js>335:67", "",
 				"Missing semicolon"), 0.0001);
 	}
 }

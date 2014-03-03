@@ -30,8 +30,7 @@ public class ResharperInspectCodeExtractorTest extends BaseExtractorTest {
 		assertEquals(1, table.get("Static analysis", //
 				"C#", //
 				"Resharper InspectCode", //
-				"Proj1\\AssemblyInfo.cs", //
-				"2", //
+				"Proj1\\AssemblyInfo.cs>2", //
 				"Redundancies in Code", //
 				"Using directive is not required by the code and can be safely removed", //
 				"Medium"), 0.0001);

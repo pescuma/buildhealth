@@ -15,6 +15,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // http://msdn.microsoft.com/en-us/library/bb429476%28v=vs.80%29.aspx
 public class FxCopExtractor extends BaseXMLExtractor {
@@ -96,6 +97,8 @@ public class FxCopExtractor extends BaseXMLExtractor {
 				line = "";
 			}
 			
+			Location loc = Location.create(fullFilename, line);
+			
 			StringBuilder details = new StringBuilder();
 			appendInNewLine(details, "Level", firstNonEmpty(level, rule.level));
 			appendInNewLine(details, "Certainty", firstNonEmpty(certainty, rule.certainty), "%");
@@ -110,7 +113,7 @@ public class FxCopExtractor extends BaseXMLExtractor {
 			appendInNewLine(details, "Status", status);
 			appendInNewLine(details, "Fix Category", splitCamelCase(fixCategory));
 			
-			data.add(1, "Static analysis", language, "FxCop", fullFilename, line,
+			data.add(1, "Static analysis", language, "FxCop", Location.toFormatedString(loc),
 					firstNonEmpty(rule.category, bhCateg), resolution, firstNonEmpty(bhServerity, rule.severity),
 					details.toString(), rule.url);
 		}

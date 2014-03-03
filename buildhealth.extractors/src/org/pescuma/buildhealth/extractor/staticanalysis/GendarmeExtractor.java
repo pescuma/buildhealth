@@ -14,6 +14,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // http://www.mono-project.com/Gendarme
 public class GendarmeExtractor extends BaseXMLExtractor {
@@ -54,22 +55,20 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 					String source = defect.getAttributeValue("Source", "");
 					if (source.isEmpty())
 						source = location;
-					String file;
-					String line;
+					
+					Location loc;
 					
 					Matcher m = SOURCE_PATTERN.matcher(source);
 					if (m.matches()) {
-						file = m.group(1);
 						if (m.group(3) == null)
-							line = m.group(2);
+							loc = Location.create(m.group(1), m.group(2));
 						else
-							line = m.group(2) + ":" + m.group(3);
+							loc = Location.create(m.group(1), m.group(2), m.group(3));
 					} else {
-						file = source;
-						line = "";
+						loc = new Location(source);
 					}
 					
-					String language = firstNonEmpty(detectLanguage(file), "C#");
+					String language = firstNonEmpty(detectLanguage(loc.file), "C#");
 					
 					StringBuilder details = new StringBuilder();
 					appendInNewLine(details, "Problem", problem);
@@ -78,8 +77,8 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 					appendInNewLine(details, "Confidence", confidence);
 					appendInNewLine(details, "Location", location);
 					
-					data.add(1, "Static analysis", language, "Gendarme", file, line, ruleName, message,
-							toBuildHealthSeverity(severity), details.toString(), uri);
+					data.add(1, "Static analysis", language, "Gendarme", Location.toFormatedString(loc), ruleName,
+							message, toBuildHealthSeverity(severity), details.toString(), uri);
 				}
 			}
 		}

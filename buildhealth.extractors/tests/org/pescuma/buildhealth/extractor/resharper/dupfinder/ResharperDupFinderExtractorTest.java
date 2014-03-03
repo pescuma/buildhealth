@@ -25,24 +25,14 @@ public class ResharperDupFinderExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertTable(2, 2, table);
+		assertTable(1, 1, table);
 		
 		assertEquals(1, table.get("Static analysis", //
 				"C#", //
 				"Resharper DupFinder", //
-				"..\\A.cs", //
-				"13:17", //
+				"..\\A.cs>13:1:17:9999|..\\B.cs>8:1:13:9999", //
 				"Code duplication", //
-				"These 5 lines of code are duplicated with:\n  ..\\B.cs lines 8 to 13", //
-				"", "Cost: 132"), 0.0001);
-		
-		assertEquals(1, table.get("Static analysis", //
-				"C#", //
-				"Resharper DupFinder", //
-				"..\\B.cs", //
-				"8:13", //
-				"Code duplication", //
-				"These 6 lines of code are duplicated with:\n  ..\\A.cs lines 13 to 17", //
+				"There are 6 lines of code duplicated in:\n  ..\\A.cs lines 13 to 17\n  ..\\B.cs lines 8 to 13", //
 				"", "Cost: 132"), 0.0001);
 	}
 	

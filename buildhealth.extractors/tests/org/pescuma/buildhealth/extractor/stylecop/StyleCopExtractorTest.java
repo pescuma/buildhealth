@@ -27,7 +27,7 @@ public class StyleCopExtractorTest extends BaseExtractorTest {
 		
 		assertTable(3, 3, table);
 		
-		assertEquals(1, table.get("Static analysis", "C#", "StyleCop", "MainClass.cs", "7",
+		assertEquals(1, table.get("Static analysis", "C#", "StyleCop", "MainClass.cs>7",
 				"DocumentationRules/ElementsMustBeDocumented", "The class must have a documentation header.", "",
 				"at Root.UnitTests.MainClass", "http://www.stylecop.com/docs/SA1600.html"), 0.0001);
 	}
@@ -51,8 +51,7 @@ public class StyleCopExtractorTest extends BaseExtractorTest {
 						"Static analysis",
 						"C#",
 						"StyleCop",
-						"Form1.Designer.cs",
-						"16",
+						"Form1.Designer.cs>16",
 						"ReadabilityRules/PrefixLocalCallsWithThis",
 						"The call to components must begin with the 'this.' prefix to indicate that the item is a member of the class.",
 						"", "at Root.ListViewProblem.Form1.Dispose%bool", "http://www.stylecop.com/docs/SA1101.html"),

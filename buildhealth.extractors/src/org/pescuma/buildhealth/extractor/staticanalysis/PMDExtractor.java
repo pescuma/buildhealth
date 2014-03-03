@@ -8,6 +8,7 @@ import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.utils.Location;
 
 // http://pmd.sourceforge.net/
 public class PMDExtractor extends BaseXMLExtractor {
@@ -32,10 +33,9 @@ public class PMDExtractor extends BaseXMLExtractor {
 	}
 	
 	private void extractViolation(String filename, Element violation, BuildData data) {
-		String line = violation.getAttributeValue("beginline", "") + ":"
-				+ violation.getAttributeValue("begincolumn", "") + ":" //
-				+ violation.getAttributeValue("endline", "") + ":" //
-				+ violation.getAttributeValue("endcolumn", "");
+		Location loc = Location.create(filename, violation.getAttributeValue("beginline", ""),
+				violation.getAttributeValue("begincolumn", ""), violation.getAttributeValue("endline", ""),
+				violation.getAttributeValue("endcolumn", ""));
 		String rule = violation.getAttributeValue("rule", "");
 		String ruleset = violation.getAttributeValue("ruleset", "");
 		String externalInfoUrl = violation.getAttributeValue("externalInfoUrl", "");
@@ -57,7 +57,7 @@ public class PMDExtractor extends BaseXMLExtractor {
 		if (!ruleset.isEmpty())
 			rule = ruleset + "/" + rule;
 		
-		data.add(1, "Static analysis", detectLanguage(filename), "PMD", filename, line, rule, message,
+		data.add(1, "Static analysis", detectLanguage(filename), "PMD", Location.toFormatedString(loc), rule, message,
 				toBuildHealthSeverity(priority), description.toString(), externalInfoUrl);
 	}
 	

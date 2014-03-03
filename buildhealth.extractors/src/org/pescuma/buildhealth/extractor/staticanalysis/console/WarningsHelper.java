@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 
 import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.buildhealth.utils.Location;
 
 class WarningsHelper {
 	
@@ -21,27 +22,13 @@ class WarningsHelper {
 		Collection<FileAnnotation> anns = parser.parse(new InputStreamReader(input));
 		
 		for (FileAnnotation ann : anns) {
+			LineRange r = ann.getLineRanges().iterator().next();
+			Location loc = Location.create(ann.getFileName(), r.getStart(), ann.getColumnStart(), r.getEnd(),
+					ann.getColumnEnd());
 			
-			data.add(1, "Static analysis", detectLanguage(ann.getFileName()), name, ann.getFileName(),
-					generateLine(ann), "Compiler warnings", ann.getMessage(), toSeverity(ann.getPriority()));
+			data.add(1, "Static analysis", detectLanguage(ann.getFileName()), name, Location.toFormatedString(loc),
+					"Compiler warnings", ann.getMessage(), toSeverity(ann.getPriority()));
 		}
-	}
-	
-	private static String generateLine(FileAnnotation ann) {
-		LineRange r = ann.getLineRanges().iterator().next();
-		
-		int lineStart = r.getStart();
-		int lineEnd = r.getEnd();
-		int columnStart = ann.getColumnStart();
-		int columnEnd = ann.getColumnEnd();
-		
-		boolean sameLine = (lineStart == lineEnd);
-		boolean sameColumn = (columnStart == columnEnd);
-		
-		if (sameLine && sameColumn)
-			return lineStart + ":" + columnStart;
-		else
-			return lineStart + ":" + columnStart + ":" + lineEnd + ":" + columnEnd;
 	}
 	
 	private static String toSeverity(Priority priority) {

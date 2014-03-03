@@ -26,10 +26,6 @@ public class Location {
 		this.endColumn = endColumn;
 	}
 	
-	public Location() {
-		this(null, NO_INFO, NO_INFO, NO_INFO, NO_INFO, true);
-	}
-	
 	public Location(String file) {
 		this(file, NO_INFO, NO_INFO, NO_INFO, NO_INFO, true);
 		
@@ -123,6 +119,10 @@ public class Location {
 		return result.toString();
 	}
 	
+	public static String toFormatedString(Location location) {
+		return location.toString();
+	}
+	
 	public static String toFormatedString(List<Location> locations) {
 		if (locations == null || locations.size() < 1)
 			return "";
@@ -177,5 +177,73 @@ public class Location {
 					Integer.parseInt(lines[2]), Integer.parseInt(lines[3]));
 		else
 			throw new IllegalStateException(loc + " is not a location");
+	}
+	
+	public static Location create(String file, String line) {
+		return create(file, line, null, null, null);
+	}
+	
+	public static Location create(String file, String line, String column) {
+		return create(file, line, column, null, null);
+	}
+	
+	public static Location create(String file, String beginLine, String beginColumn, String endLine, String endColumn) {
+		return create(file, toInt(beginLine), toInt(beginColumn), toInt(endLine), toInt(endColumn));
+	}
+	
+	private static Integer toInt(String line) {
+		if (line == null || line.trim().isEmpty())
+			return null;
+		else
+			return Integer.parseInt(line);
+	}
+	
+	public static Location create(String file, Integer beginLine, Integer beginColumn, Integer endLine,
+			Integer endColumn) {
+		if (file == null)
+			return null;
+		
+		beginLine = nullIfIncorrect(beginLine);
+		beginColumn = nullIfIncorrect(beginColumn);
+		endLine = nullIfIncorrect(endLine);
+		endColumn = nullIfIncorrect(endColumn);
+		
+		if (beginLine == null && endLine != null)
+			beginLine = 1;
+		
+		if (beginLine == null)
+			return new Location(file);
+		
+		if (beginLine != null && beginColumn == null && endLine == null && endColumn == null)
+			return new Location(file, beginLine);
+		
+		if (beginLine != null && beginColumn == null && endLine != null && endColumn == null
+				&& beginLine.equals(endLine))
+			return new Location(file, beginLine);
+		
+		if (beginLine != null && beginColumn != null && endLine == null && endColumn == null)
+			return new Location(file, beginLine, beginColumn);
+		
+		if (endColumn == null)
+			endColumn = beginColumn;
+		if (endLine == null)
+			endLine = beginLine;
+		
+		if (beginColumn == null && endColumn != null)
+			beginColumn = 1;
+		
+		if (beginColumn == null && endColumn == null) {
+			beginColumn = 1;
+			endColumn = 9999;
+		}
+		
+		return new Location(file, beginLine, beginColumn, endLine, endColumn);
+	}
+	
+	private static Integer nullIfIncorrect(Integer val) {
+		if (val != null && val < 1)
+			return null;
+		else
+			return val;
 	}
 }

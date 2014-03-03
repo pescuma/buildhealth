@@ -39,7 +39,7 @@ public class CPDExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertTable(2, 2, table);
+		assertTable(1, 1, table);
 		
 		assertEquals(
 				1,
@@ -47,22 +47,7 @@ public class CPDExtractorTest extends BaseExtractorTest {
 						"Static analysis",
 						"Java",
 						"CPD",
-						"buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\CSVExtractor.java",
-						"19",
-						"Code duplication",
-						"Found a 38 line (168 tokens) duplication in the following files:\n"
-								+ "Starting at line 19 of buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\CSVExtractor.java\n"
-								+ "Starting at line 25 of java\\buildhealth\\buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\loc\\CLOCExtractor.java"),
-				0.0001);
-		
-		assertEquals(
-				1,
-				table.get(
-						"Static analysis",
-						"Java",
-						"CPD",
-						"java\\buildhealth\\buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\loc\\CLOCExtractor.java",
-						"25",
+						"buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\CSVExtractor.java>19|java\\buildhealth\\buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\loc\\CLOCExtractor.java>25",
 						"Code duplication",
 						"Found a 38 line (168 tokens) duplication in the following files:\n"
 								+ "Starting at line 19 of buildhealth.core\\src\\org\\pescuma\\buildhealth\\extractor\\CSVExtractor.java\n"
@@ -81,7 +66,7 @@ public class CPDExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertTable(6, 6, table);
+		assertTable(3, 3, table);
 	}
 	
 }
