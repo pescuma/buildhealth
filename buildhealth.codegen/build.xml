@@ -1,4 +1,4 @@
-<project name="buildhealth.createWarningsExtractors" default="deps">
+<project name="buildhealth.codegen" default="deps">
 
 	<import file="../buildhealth.build/ivy.xml" />
 	<import file="../buildhealth.build/project.xml" />

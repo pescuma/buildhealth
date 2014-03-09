@@ -60,7 +60,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 			}
 			
 		} else {
-			for (File f : files.getFiles("xml")) {
+			for (File f : files.getFilesByExtension("xml")) {
 				extractFile(f, getBaseName(f.getName()), data);
 				tracker.onFileProcessed(f);
 			}

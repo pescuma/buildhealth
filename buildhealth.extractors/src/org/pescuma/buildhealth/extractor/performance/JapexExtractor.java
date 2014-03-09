@@ -19,10 +19,10 @@ public class JapexExtractor extends BaseXMLExtractor {
 	protected void extractDocument(String filename, Document doc, BuildData data) {
 		checkRoot(doc, "testSuiteReport", filename);
 		
-		extractSuite(filename, doc.getRootElement(), data);
+		extractSuite(doc.getRootElement(), data);
 	}
 	
-	private void extractSuite(String filename, Element suite, BuildData data) {
+	private void extractSuite(Element suite, BuildData data) {
 		String type = suite.getChildTextTrim("resultUnit", suite.getNamespace());
 		
 		if ("ms".equalsIgnoreCase(type))

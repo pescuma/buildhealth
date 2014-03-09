@@ -47,6 +47,7 @@ import org.pescuma.buildhealth.cli.commands.compute.LOCComputerCommand;
 import org.pescuma.buildhealth.cli.commands.compute.tasks.CodeTasksComputerCommand;
 import org.pescuma.buildhealth.cli.commands.config.ListConfigCommand;
 import org.pescuma.buildhealth.cli.commands.config.SetConfigCommand;
+import org.pescuma.buildhealth.cli.commands.projects.ProjectsFromEclipseExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.webserver.WebServerCommand;
 
 public class BuildHealthCli {
@@ -94,53 +95,57 @@ public class BuildHealthCli {
 						CLOCExtractorCommand.class,
 						BugsEverywhereExtractorCommand.class,
 						TFSWorkItemsExtractorCommand.class,
-						GitHubIssuesExtractorCommand.class
+						GitHubIssuesExtractorCommand.class,
 						// Start of auto generated entries
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.AcuCobolConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.AntJavacConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ArmccCompilerConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.BuckminsterConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CoolfluxChessccConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GhsMultiConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ClangConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CodeAnalysisConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DiabCConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DoxygenConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.EclipseConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ErlcConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.FlexSDKConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GccConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4CompilerConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4LinkerConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnatConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnuFortranConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnuMakeGccConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IarConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IntelConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.InvalidsConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavacConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavaDocConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MavenConsoleConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MsBuildConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.NagFortranConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.P4ConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Pep8ConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PerlCriticConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PhpConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PyLintConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.RobocopyConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.SunCConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TiCcsConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TnsdlConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.XlcCompilerConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.XlcLinkerConsoleExtractorCommand.class
-						, org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.YuiCompressorConsoleExtractorCommand.class
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.AcuCobolConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.AntJavacConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ArmccCompilerConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.BuckminsterConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CoolfluxChessccConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GhsMultiConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ClangConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.CodeAnalysisConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DiabCConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.DoxygenConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.EclipseConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.ErlcConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.FlexSDKConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GccConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4CompilerConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Gcc4LinkerConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnatConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnuFortranConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.GnuMakeGccConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IarConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.IntelConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.InvalidsConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavacConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.JavaDocConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MavenConsoleConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.MsBuildConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.NagFortranConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.P4ConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.Pep8ConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PerlCriticConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PhpConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.PyLintConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.RobocopyConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.SunCConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TiCcsConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.TnsdlConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.XlcCompilerConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.XlcLinkerConsoleExtractorCommand.class,
+						org.pescuma.buildhealth.cli.commands.add.staticanalysis.console.YuiCompressorConsoleExtractorCommand.class
 				// End of auto generated entries
 				);
 		
 		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
 				.withDefaultCommand(ComputeGroupHelp.class) //
 				.withCommands(LOCComputerCommand.class, CodeTasksComputerCommand.class);
+		
+		builder.withGroup("projects").withDescription("Add projects information to current build")
+				.withDefaultCommand(ProjectsGroupHelp.class) //
+				.withCommands(ProjectsFromEclipseExtractorCommand.class);
 		
 		builder.withGroup("config").withDescription("Configure your report preferences")
 				.withDefaultCommand(ConfigGroupHelp.class) //
@@ -171,5 +176,4 @@ public class BuildHealthCli {
 			System.exit(1);
 		}
 	}
-	
 }

@@ -91,7 +91,7 @@ public class LOCComputer implements BuildDataComputer {
 			result = File.createTempFile("cloc.flielist.", ".txt");
 			
 			writer = new FileWriter(result);
-			for (File file : files.getFiles()) {
+			for (File file : files.getFilesByExtension()) {
 				if (!isKnownFileType(file.getPath()))
 					continue;
 				

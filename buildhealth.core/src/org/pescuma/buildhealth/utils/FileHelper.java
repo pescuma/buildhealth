@@ -18,6 +18,17 @@ public class FileHelper {
 		}
 	}
 	
+	public static String getCanonicalPath(File file) {
+		if (file == null)
+			return null;
+		
+		try {
+			return file.getCanonicalPath();
+		} catch (IOException e) {
+			return file.getAbsolutePath();
+		}
+	}
+	
 	public static void deleteFile(File file) {
 		if (file == null)
 			return;

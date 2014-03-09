@@ -43,7 +43,7 @@ public class DiskUsageExtractor implements BuildDataExtractor {
 			addUsage(data, total, null);
 			
 		} else {
-			for (File file : files.getFiles())
+			for (File file : files.getFilesByExtension())
 				addUsage(data, file.length(), file.getPath());
 		}
 	}

@@ -14,6 +14,8 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 import org.pescuma.buildhealth.core.BuildData;
 
+import com.sun.xml.txw2.IllegalSignatureException;
+
 public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	
 	protected BaseXMLExtractor(PseudoFiles files) {
@@ -38,13 +40,13 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	
 	protected abstract void extractDocument(String filename, Document doc, BuildData data);
 	
-	protected void checkRoot(Document doc, String name, String filename) {
+	public static void checkRoot(Document doc, String name, String filename) {
 		if (!doc.getRootElement().getName().equals(name))
 			throw new BuildDataExtractorException("Invalid file format: top node must be " + name + " (in "
 					+ firstNonNull(filename, "<stream>") + ")");
 	}
 	
-	protected void checkRoot(Document doc, String[] names, String filename) {
+	public static void checkRoot(Document doc, String[] names, String filename) {
 		boolean found = false;
 		for (String name : names) {
 			if (doc.getRootElement().getName().equals(name))
@@ -55,12 +57,22 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 					+ StringUtils.join(names, " or ") + " (in " + firstNonNull(filename, "<stream>") + ")");
 	}
 	
-	protected List<Element> findElementsXPath(Document doc, String xpath) {
+	public static List<Element> findElementsXPath(Document doc, String xpath) {
 		return XPathFactory.instance().compile(xpath, Filters.element()).evaluate(doc);
 	}
 	
-	protected List<Element> findElementsXPath(Element el, String xpath) {
+	public static List<Element> findElementsXPath(Element el, String xpath) {
 		return XPathFactory.instance().compile(xpath, Filters.element()).evaluate(el);
+	}
+	
+	public static Element findElementXPath(Document doc, String xpath) {
+		List<Element> result = findElementsXPath(doc, xpath);
+		if (result.isEmpty())
+			return null;
+		else if (result.size() > 1)
+			throw new IllegalSignatureException("More than one element found: " + xpath);
+		else
+			return result.get(0);
 	}
 	
 }

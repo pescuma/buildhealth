@@ -110,7 +110,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 				tracker.onStreamProcessed();
 				
 			} else {
-				for (File file : files.getFiles()) {
+				for (File file : files.getFilesByExtension()) {
 					String language = detectLanguage(file.getPath());
 					if (language.isEmpty())
 						continue;

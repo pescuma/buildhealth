@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
+import org.apache.commons.lang.Validate;
 import org.pescuma.buildhealth.core.BuildData;
 
 public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
@@ -18,8 +19,7 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	private final String[] extensions;
 	
 	public BaseBuildDataExtractor(PseudoFiles files, String... extensions) {
-		if (files == null)
-			throw new IllegalArgumentException();
+		Validate.notNull(files);
 		
 		this.files = files;
 		this.extensions = firstNonNull(extensions, new String[0]);
@@ -34,7 +34,7 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 				tracker.onStreamProcessed();
 				
 			} else {
-				Collection<File> toProcess = (extensions.length == 0 ? files.getFiles() : files.getFiles(extensions));
+				Collection<File> toProcess = (extensions.length == 0 ? files.getFilesByExtension() : files.getFilesByExtension(extensions));
 				for (File file : toProcess) {
 					extractFile(file, data);
 					tracker.onFileProcessed(file);

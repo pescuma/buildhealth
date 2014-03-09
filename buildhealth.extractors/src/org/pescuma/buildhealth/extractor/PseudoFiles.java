@@ -10,6 +10,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+
 public class PseudoFiles {
 	
 	private final List<File> files = new ArrayList<File>();
@@ -60,7 +65,18 @@ public class PseudoFiles {
 		return streamFilename;
 	}
 	
-	public Collection<File> getFiles(String... validExtensions) {
+	public Collection<File> getFilesByExtension(String... validExtensions) {
+		for (int i = 0; i < validExtensions.length; i++)
+			validExtensions[i] = "." + validExtensions[i];
+		
+		return getFiles(validExtensions.length > 0 ? new SuffixFileFilter(validExtensions) : TrueFileFilter.INSTANCE);
+	}
+	
+	public Collection<File> getFilesByName(String... filenames) {
+		return getFiles(new NameFileFilter(filenames));
+	}
+	
+	public Collection<File> getFiles(IOFileFilter fileFilter) {
 		if (files.isEmpty())
 			return Collections.emptyList();
 		
@@ -68,10 +84,7 @@ public class PseudoFiles {
 		
 		for (File file : files) {
 			if (file.isDirectory()) {
-				if (validExtensions.length > 0)
-					result.addAll(listFiles(file, validExtensions, true));
-				else
-					result.addAll(listFiles(file, null, true));
+				result.addAll(listFiles(file, fileFilter, TrueFileFilter.INSTANCE));
 				
 			} else {
 				if (file.exists())
