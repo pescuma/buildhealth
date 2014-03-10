@@ -18,7 +18,7 @@ public class ProjectsFromVsprojExtractorTest extends BaseExtractorTest {
 		InputStream stream = load("vsproj.xml");
 		
 		ProjectsFromVsprojExtractor extractor = new ProjectsFromVsprojExtractor(new PseudoFiles(stream,
-				"c:\\devel\\MyProj.csproj"));
+				"/devel/MyProj.csproj"));
 		
 		extractor.extractTo(table, tracker);
 		
