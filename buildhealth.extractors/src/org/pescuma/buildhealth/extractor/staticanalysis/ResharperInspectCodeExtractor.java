@@ -3,6 +3,7 @@ package org.pescuma.buildhealth.extractor.staticanalysis;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class ResharperInspectCodeExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File inputFile, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "Report", filename);
 		
 		Map<String, IssueType> types = loadIssueTypes(doc);

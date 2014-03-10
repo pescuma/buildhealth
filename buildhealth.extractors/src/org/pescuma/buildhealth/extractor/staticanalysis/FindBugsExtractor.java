@@ -25,7 +25,7 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "BugCollection", filename);
 		
 		Map<String, String> categoryFullName = findCategories(doc);

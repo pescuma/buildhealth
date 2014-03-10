@@ -27,7 +27,7 @@ public class FxCopExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "FxCopReport", filename);
 		
 		Map<String, Rule> rules = findRules(doc);

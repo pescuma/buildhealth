@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.extractor.unittest;
 
 import static com.google.common.base.Objects.*;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
@@ -31,7 +32,7 @@ public class JUnitExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		for (Element suite : findElementsXPath(doc, "//testsuite"))
 			extractSuite(filename, suite, data);
 	}

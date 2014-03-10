@@ -4,6 +4,7 @@ import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -28,7 +29,7 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 	private static final Pattern SOURCE_PATTERN = Pattern.compile("(.*)\\(\\u2248?(\\d+)(?:,(\\d*))?\\)");
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "gendarme-output", filename);
 		
 		Map<String, String> fullNames = findRuleFullNames(doc);

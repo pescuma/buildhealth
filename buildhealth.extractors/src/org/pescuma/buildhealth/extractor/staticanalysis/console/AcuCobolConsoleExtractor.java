@@ -1,5 +1,6 @@
 package org.pescuma.buildhealth.extractor.staticanalysis.console;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -14,7 +15,7 @@ public class AcuCobolConsoleExtractor extends BaseBuildDataExtractor {
 	}
 
 	@Override
-	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
+	protected void extract(File file, String filename, InputStream input, BuildData data) throws IOException {
 		WarningsHelper.extractFromParser("AcuCobol Compiler", new hudson.plugins.warnings.parser.AcuCobolParser(),
 				input, data);
 	}

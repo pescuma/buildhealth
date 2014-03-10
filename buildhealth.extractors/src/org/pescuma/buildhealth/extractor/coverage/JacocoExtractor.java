@@ -3,6 +3,8 @@ package org.pescuma.buildhealth.extractor.coverage;
 import static com.google.common.base.Objects.*;
 import static com.google.common.base.Strings.*;
 
+import java.io.File;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,7 +20,7 @@ public class JacocoExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "report", filename);
 		
 		PlacesTracker place = new PlacesTracker(data, "Java", "JaCoCo");

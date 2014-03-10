@@ -1,5 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
+import java.io.File;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -19,7 +21,7 @@ public class StyleCopExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, new String[] { "SourceAnalysisViolations", "StyleCopViolations" }, filename);
 		
 		for (Element violation : findElementsXPath(doc, "//Violation")) {

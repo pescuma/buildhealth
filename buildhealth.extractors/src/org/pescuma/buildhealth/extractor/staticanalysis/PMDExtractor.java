@@ -3,6 +3,8 @@ package org.pescuma.buildhealth.extractor.staticanalysis;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 
+import java.io.File;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -18,7 +20,7 @@ public class PMDExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File inputFile, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "pmd", filename);
 		
 		for (Element file : doc.getRootElement().getChildren("file"))

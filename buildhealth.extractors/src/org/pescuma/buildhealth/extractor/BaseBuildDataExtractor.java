@@ -34,7 +34,8 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 				tracker.onStreamProcessed();
 				
 			} else {
-				Collection<File> toProcess = (extensions.length == 0 ? files.getFilesByExtension() : files.getFilesByExtension(extensions));
+				Collection<File> toProcess = (extensions.length == 0 ? files.getFilesByExtension() : files
+						.getFilesByExtension(extensions));
 				for (File file : toProcess) {
 					extractFile(file, data);
 					tracker.onFileProcessed(file);
@@ -49,16 +50,16 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	private void extractFile(File file, BuildData data) throws IOException {
 		InputStream input = new FileInputStream(file);
 		try {
-			extract(getBaseName(file.getName()), input, data);
+			extract(file, getBaseName(file.getName()), input, data);
 		} finally {
 			closeQuietly(input);
 		}
 	}
 	
 	private void extractStream(String filename, InputStream input, BuildData data) throws IOException {
-		extract(getBaseName(filename), input, data);
+		extract(null, getBaseName(filename), input, data);
 	}
 	
-	protected abstract void extract(String filename, InputStream input, BuildData data) throws IOException;
+	protected abstract void extract(File file, String filename, InputStream input, BuildData data) throws IOException;
 	
 }

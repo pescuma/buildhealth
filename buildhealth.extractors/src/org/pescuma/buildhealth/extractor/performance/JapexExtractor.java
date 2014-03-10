@@ -1,5 +1,7 @@
 package org.pescuma.buildhealth.extractor.performance;
 
+import java.io.File;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -16,7 +18,7 @@ public class JapexExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, "testSuiteReport", filename);
 		
 		extractSuite(doc.getRootElement(), data);

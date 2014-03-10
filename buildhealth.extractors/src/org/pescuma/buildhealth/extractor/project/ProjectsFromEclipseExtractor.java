@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.extractor.project;
 
 import static org.pescuma.buildhealth.extractor.BaseXMLExtractor.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,6 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.utils.FilenameToLanguage;
-import org.pescuma.buildhealth.utils.FileHelper;
 
 public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 	
@@ -78,9 +78,10 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 			File srcPath = new File(classpathFile.getParentFile(), path);
 			for (File file : FileUtils.listFiles(srcPath, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
 				String language = FilenameToLanguage.detectLanguage(file.getName());
+				if (language == null)
+					continue;
 				
-				if (language != null)
-					data.add(0, "Project", projectName, "File", language, FileHelper.getCanonicalPath(file));
+				data.add(0, "Project", projectName, "File", language, getCanonicalPath(file));
 			}
 		}
 	}

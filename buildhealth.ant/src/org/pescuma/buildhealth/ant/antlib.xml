@@ -86,6 +86,7 @@
 	<typedef name="compute-tasks" classname="org.pescuma.buildhealth.ant.tasks.compute.tasks.CodeTasksExtractorAntTask" />
 
 	<typedef name="projects-from-eclipse" classname="org.pescuma.buildhealth.ant.tasks.project.ProjectsFromEclipseExtractorAntTask" />
+	<typedef name="projects-from-csproj" classname="org.pescuma.buildhealth.ant.tasks.project.ProjectsFromCsprojExtractorAntTask" />
 
 	<typedef name="config" classname="org.pescuma.buildhealth.ant.tasks.ConfigBuildHealthAntTask" />
 

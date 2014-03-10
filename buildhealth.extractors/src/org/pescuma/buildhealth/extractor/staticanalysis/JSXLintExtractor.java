@@ -4,6 +4,7 @@ import static org.apache.commons.io.IOUtils.*;
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,12 +52,12 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
+	protected void extract(File file, String filename, InputStream input, BuildData data) throws IOException {
 		if (!input.markSupported())
 			input = new BufferedInputStream(input);
 		
 		if (isXML(filename, input))
-			super.extract(filename, input, data);
+			super.extract(file, filename, input, data);
 		else
 			extractTxt(filename, input, data);
 	}
@@ -105,7 +106,7 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String filename, Document doc, BuildData data) {
+	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
 		checkRoot(doc, new String[] { "jslint", "jshint" }, filename);
 		
 		String tool = toTool(doc.getRootElement().getName());
