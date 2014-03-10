@@ -47,7 +47,7 @@ import org.pescuma.buildhealth.cli.commands.compute.LOCComputerCommand;
 import org.pescuma.buildhealth.cli.commands.compute.tasks.CodeTasksComputerCommand;
 import org.pescuma.buildhealth.cli.commands.config.ListConfigCommand;
 import org.pescuma.buildhealth.cli.commands.config.SetConfigCommand;
-import org.pescuma.buildhealth.cli.commands.projects.ProjectsFromCsprojExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.projects.ProjectsFromVsprojExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.projects.ProjectsFromEclipseExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.webserver.WebServerCommand;
 
@@ -146,7 +146,7 @@ public class BuildHealthCli {
 		
 		builder.withGroup("projects").withDescription("Add projects information to current build")
 				.withDefaultCommand(ProjectsGroupHelp.class) //
-				.withCommands(ProjectsFromEclipseExtractorCommand.class, ProjectsFromCsprojExtractorCommand.class);
+				.withCommands(ProjectsFromEclipseExtractorCommand.class, ProjectsFromVsprojExtractorCommand.class);
 		
 		builder.withGroup("config").withDescription("Configure your report preferences")
 				.withDefaultCommand(ConfigGroupHelp.class) //
