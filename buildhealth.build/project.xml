@@ -147,12 +147,14 @@
 		         classpath="${tools.lib.dir}/jacocoant.jar" />
 
 		<jacoco:coverage destfile="${reports.coverage.dir}/jacoco.exec">
-			<junit printsummary="yes" fork="yes" forkmode="once">
+			<junit fork="yes" forkmode="once">
 				<classpath refid="compile.path" />
 				<classpath>
 					<pathelement location="${build.javac.dir}" />
 					<pathelement location="${build.tests.dir}" />
 				</classpath>
+
+				<formatter type="plain" usefile="false" />
 
 				<formatter type="xml" />
 
