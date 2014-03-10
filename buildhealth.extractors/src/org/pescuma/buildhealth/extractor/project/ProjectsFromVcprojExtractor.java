@@ -1,9 +1,11 @@
 package org.pescuma.buildhealth.extractor.project;
 
+import static org.apache.commons.io.FilenameUtils.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 
+import org.apache.commons.lang.Validate;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -18,15 +20,19 @@ public class ProjectsFromVcprojExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "VisualStudioProject", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		Validate.notNull(path);
 		
+		checkRoot(doc, path, "VisualStudioProject");
+		
+		String project = getBaseName(path);
+		File file = new File(path);
 		File basePath = file.getParentFile();
 		
-		data.add(0, "Project", filename, "BasePath", basePath.getPath());
+		data.add(0, "Project", project, "BasePath", basePath.getPath());
 		
 		for (Element el : findElementsXPath(doc, "//File"))
-			Add(data, filename, basePath, el.getAttributeValue("RelativePath", ""));
+			Add(data, project, basePath, el.getAttributeValue("RelativePath", ""));
 	}
 	
 	private void Add(BuildData data, String project, File basePath, String include) {

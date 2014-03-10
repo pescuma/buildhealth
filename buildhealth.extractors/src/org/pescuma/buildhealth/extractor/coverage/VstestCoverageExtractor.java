@@ -3,8 +3,6 @@ package org.pescuma.buildhealth.extractor.coverage;
 import static com.google.common.base.Strings.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
-import java.io.File;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -20,8 +18,8 @@ public class VstestCoverageExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "CoverageDSPriv", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "CoverageDSPriv");
 		
 		PlacesTracker place = new PlacesTracker(data, "C#", "vstest");
 		extract(doc.getRootElement(), null, "all", place);

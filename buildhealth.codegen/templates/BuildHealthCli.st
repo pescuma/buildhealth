@@ -1,2 +1,2 @@
 $items:{it|
-						, $it.className$.class}$
+						$it.className$.class,}$

@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.extractor.unittest;
 
 import static com.google.common.base.Objects.*;
+import static org.apache.commons.io.FilenameUtils.*;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
@@ -32,14 +32,17 @@ public class JUnitExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		for (Element suite : findElementsXPath(doc, "//testsuite"))
-			extractSuite(filename, suite, data);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "testsuite");
+		
+		// for (Element suite : findElementsXPath(doc, "//testsuite"))
+		extractSuite(path, doc.getRootElement(), data);
 	}
 	
-	private void extractSuite(String filename, Element suite, BuildData data) {
+	private void extractSuite(String path, Element suite, BuildData data) {
 		// some user reported that name is null in their environment.
 		// see http://www.nabble.com/Unexpected-Null-Pointer-Exception-in-Hudson-1.131-tf4314802.html
+		String filename = (path != null ? getBaseName(path) : null);
 		String name = suite.getAttributeValue("name", firstNonNull(filename, "(no name)"));
 		
 		String pkg = suite.getAttributeValue("package", "");

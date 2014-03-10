@@ -3,7 +3,6 @@ package org.pescuma.buildhealth.extractor.tasks;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,8 +22,8 @@ public class TFSWorkItemsExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "WorkItems", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "WorkItems");
 		
 		extractChildren(data, doc.getRootElement(), "");
 	}

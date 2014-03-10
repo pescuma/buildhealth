@@ -106,7 +106,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 	private void extractTo(CSVWriter out, BuildDataComputerTracker tracker) {
 		try {
 			if (files.isStream()) {
-				extractStream(files.getStreamFilename(), null, new InputStreamReader(files.getStream()), out);
+				extractStream(files.getStreamPath(), null, new InputStreamReader(files.getStream()), out);
 				tracker.onStreamProcessed();
 				
 			} else {

@@ -14,7 +14,7 @@ public class $class$ extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String filename, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, InputStream input, BuildData data) throws IOException {
 		WarningsHelper.extractFromParser("$parser.description$", new $parser.className$(),
 				input, data);
 	}

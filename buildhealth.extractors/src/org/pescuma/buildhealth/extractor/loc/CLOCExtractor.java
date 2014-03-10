@@ -3,7 +3,6 @@ package org.pescuma.buildhealth.extractor.loc;
 import static java.lang.Integer.*;
 import static java.lang.Math.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,7 +22,7 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(File file, String csvFilename, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, InputStream input, BuildData data) throws IOException {
 		CSVReader reader = CSV.newReader(new InputStreamReader(input));
 		
 		String[] headers = null;

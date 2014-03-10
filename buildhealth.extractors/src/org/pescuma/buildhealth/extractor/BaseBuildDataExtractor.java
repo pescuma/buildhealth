@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor;
 
-import static org.apache.commons.io.FilenameUtils.*;
 import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import java.io.File;
@@ -30,7 +30,7 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 		try {
 			
 			if (files.isStream()) {
-				extractStream(files.getStreamFilename(), files.getStream(), data);
+				extractStream(files.getStreamPath(), files.getStream(), data);
 				tracker.onStreamProcessed();
 				
 			} else {
@@ -50,16 +50,16 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	private void extractFile(File file, BuildData data) throws IOException {
 		InputStream input = new FileInputStream(file);
 		try {
-			extract(file, getBaseName(file.getName()), input, data);
+			extract(getCanonicalPath(file), input, data);
 		} finally {
 			closeQuietly(input);
 		}
 	}
 	
-	private void extractStream(String filename, InputStream input, BuildData data) throws IOException {
-		extract(null, getBaseName(filename), input, data);
+	private void extractStream(String path, InputStream input, BuildData data) throws IOException {
+		extract(path, input, data);
 	}
 	
-	protected abstract void extract(File file, String filename, InputStream input, BuildData data) throws IOException;
+	protected abstract void extract(String path, InputStream input, BuildData data) throws IOException;
 	
 }

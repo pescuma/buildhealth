@@ -1,5 +1,6 @@
 package org.pescuma.buildhealth.extractor.project;
 
+import static org.apache.commons.io.FilenameUtils.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
@@ -18,28 +19,30 @@ public class ProjectsFromVsprojExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "Project", filename);
-		removeNamespace(doc, "http://schemas.microsoft.com/developer/msbuild/2003", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "Project");
+		removeNamespace(doc, "http://schemas.microsoft.com/developer/msbuild/2003", path);
 		
+		String project = getBaseName(path);
+		File file = new File(path);
 		File basePath = file.getParentFile();
 		
-		data.add(0, "Project", filename, "BasePath", basePath.getPath());
+		data.add(0, "Project", project, "BasePath", basePath.getPath());
 		
 		for (Element el : findElementsXPath(doc, "//Compile"))
-			Add(data, filename, basePath, el.getAttributeValue("Include", ""));
+			Add(data, project, basePath, el.getAttributeValue("Include", ""));
 		
 		for (Element el : findElementsXPath(doc, "//EmbeddedResource"))
-			Add(data, filename, basePath, el.getAttributeValue("Include", ""));
+			Add(data, project, basePath, el.getAttributeValue("Include", ""));
 		
 		for (Element el : findElementsXPath(doc, "//None"))
-			Add(data, filename, basePath, el.getAttributeValue("Include", ""));
+			Add(data, project, basePath, el.getAttributeValue("Include", ""));
 		
 		for (Element el : findElementsXPath(doc, "//ClCompile"))
-			Add(data, filename, basePath, el.getAttributeValue("Include", ""));
+			Add(data, project, basePath, el.getAttributeValue("Include", ""));
 		
 		for (Element el : findElementsXPath(doc, "//ClInclude"))
-			Add(data, filename, basePath, el.getAttributeValue("Include", ""));
+			Add(data, project, basePath, el.getAttributeValue("Include", ""));
 	}
 	
 	private void Add(BuildData data, String project, File basePath, String include) {

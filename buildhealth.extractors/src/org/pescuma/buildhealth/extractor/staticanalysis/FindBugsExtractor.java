@@ -25,8 +25,8 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "BugCollection", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "BugCollection");
 		
 		Map<String, String> categoryFullName = findCategories(doc);
 		Map<String, String> bugDetails = findBugDetails(doc);
@@ -45,13 +45,13 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 				category = categoryFullName.get(category);
 			
 			Element sourceline = findSourceLine(bug);
-			String path = sourceline.getAttributeValue("sourcepath", "");
+			String sourcepath = sourceline.getAttributeValue("sourcepath", "");
 			String startLine = sourceline.getAttributeValue("start", "");
 			String endLine = sourceline.getAttributeValue("end", "");
 			
-			path = findRealSource(path, sourceDirs);
+			sourcepath = findRealSource(sourcepath, sourceDirs);
 			
-			Location loc = Location.create(path, startLine, null, endLine, null);
+			Location loc = Location.create(sourcepath, startLine, null, endLine, null);
 			
 			StringBuilder desc = new StringBuilder();
 			desc.append(longMessage);

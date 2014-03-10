@@ -54,7 +54,7 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 	
 	private void processProject(BuildData data, File projFile) throws IOException, JDOMException {
 		Document projDoc = JDomUtil.parse(projFile);
-		checkRoot(projDoc, "projectDescription", PROJECT_FILENAME);
+		checkRoot(projDoc, PROJECT_FILENAME, "projectDescription");
 		
 		String name = findElementXPath(projDoc, "/projectDescription/name").getText();
 		
@@ -68,7 +68,7 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 	private void processClasspath(BuildData data, String projectName, File classpathFile) throws JDOMException,
 			IOException {
 		Document classpathDoc = JDomUtil.parse(classpathFile);
-		checkRoot(classpathDoc, "classpath", CLASSPATH_FILENAME);
+		checkRoot(classpathDoc, CLASSPATH_FILENAME, "classpath");
 		
 		for (Element cp : findElementsXPath(classpathDoc, "//classpathentry[@kind='src']")) {
 			String path = cp.getAttributeValue("path", "");

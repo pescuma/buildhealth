@@ -2,7 +2,6 @@ package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +19,8 @@ public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File inputFile, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "dotnet-dependency-checker", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "dotnet-dependency-checker");
 		
 		for (Element entry : findElementsXPath(doc, "/dotnet-dependency-checker/Entry")) {
 			String type = entry.getAttributeValue("Type", "");

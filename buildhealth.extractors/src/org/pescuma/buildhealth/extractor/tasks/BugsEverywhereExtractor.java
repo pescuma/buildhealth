@@ -2,8 +2,6 @@ package org.pescuma.buildhealth.extractor.tasks;
 
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
-import java.io.File;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.pescuma.buildhealth.core.BuildData;
@@ -18,8 +16,8 @@ public class BugsEverywhereExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "be-xml", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "be-xml");
 		
 		for (Element bug : doc.getRootElement().getChildren("bug"))
 			extractBug(data, bug);

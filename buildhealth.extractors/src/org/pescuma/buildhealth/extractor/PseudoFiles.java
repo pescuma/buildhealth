@@ -19,28 +19,28 @@ public class PseudoFiles {
 	
 	private final List<File> files = new ArrayList<File>();
 	private final InputStream stream;
-	private final String streamFilename;
+	private final String streamPath;
 	
 	public PseudoFiles(InputStream stream) {
 		this(stream, null);
 	}
 	
-	public PseudoFiles(InputStream stream, String streamFilename) {
+	public PseudoFiles(InputStream stream, String streamPath) {
 		this.stream = stream;
-		this.streamFilename = streamFilename;
+		this.streamPath = streamPath;
 	}
 	
 	public PseudoFiles(File file) {
 		this.files.add(fixFileName(file));
 		this.stream = null;
-		this.streamFilename = null;
+		this.streamPath = null;
 	}
 	
 	public PseudoFiles(List<File> files) {
 		for (File file : files)
 			this.files.add(fixFileName(file));
 		this.stream = null;
-		this.streamFilename = null;
+		this.streamPath = null;
 	}
 	
 	private File fixFileName(File file) {
@@ -61,8 +61,8 @@ public class PseudoFiles {
 		return stream;
 	}
 	
-	public String getStreamFilename() {
-		return streamFilename;
+	public String getStreamPath() {
+		return streamPath;
 	}
 	
 	public Collection<File> getFilesByExtension(String... validExtensions) {

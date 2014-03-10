@@ -1,6 +1,5 @@
 package org.pescuma.buildhealth.extractor.staticanalysis.console;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,7 +14,7 @@ public class GccConsoleExtractor extends BaseBuildDataExtractor {
 	}
 
 	@Override
-	protected void extract(File file, String filename, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, InputStream input, BuildData data) throws IOException {
 		WarningsHelper.extractFromParser("GNU C Compiler 3 (gcc)", new hudson.plugins.warnings.parser.GccParser(),
 				input, data);
 	}

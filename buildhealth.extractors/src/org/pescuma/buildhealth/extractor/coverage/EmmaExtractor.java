@@ -2,7 +2,6 @@ package org.pescuma.buildhealth.extractor.coverage;
 
 import static com.google.common.base.Strings.*;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +24,8 @@ public class EmmaExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(File file, String filename, Document doc, BuildData data) {
-		checkRoot(doc, "report", filename);
+	protected void extractDocument(String path, Document doc, BuildData data) {
+		checkRoot(doc, path, "report");
 		
 		PlacesTracker place = new PlacesTracker(data, "Java", "Emma");
 		extract(doc.getRootElement().getChild("data").getChild("all"), "all", place);
