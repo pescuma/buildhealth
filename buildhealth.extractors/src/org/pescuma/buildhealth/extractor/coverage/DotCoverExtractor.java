@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.coverage;
 
-import static com.google.common.base.Strings.*;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -28,12 +28,8 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 		
 		String name = el.getAttributeValue("Name");
 		if (!isNullOrEmpty(name)) {
-			if ("package".equals(placeType)) {
+			if (!"all".equals(placeType))
 				place.goInto(placeType, name);
-				
-			} else if (!"all".equals(placeType)) {
-				place.goInto(placeType, name);
-			}
 		}
 		
 		// Always add "all" so it can be used for LOC
