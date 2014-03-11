@@ -16,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang.Validate;
 import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.computer.BuildDataComputerException;
 import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
@@ -33,8 +34,7 @@ public class LOCComputer implements BuildDataComputer {
 	
 	@Override
 	public BuildDataExtractor compute(File folder, BuildDataComputerTracker tracker) {
-		if (files.isStream())
-			throw new UnsupportedOperationException();
+		Validate.isTrue(!files.isStream());
 		
 		File cloc = null;
 		File fileList = null;

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ReportFormater {
 	
-	private static final String NO_DATA = "No data to generate report";
+	public static final String NO_DATA = "No data to generate report";
 	private static final String PREFIX = "    ";
 	
 	private boolean showDescriptions = true;

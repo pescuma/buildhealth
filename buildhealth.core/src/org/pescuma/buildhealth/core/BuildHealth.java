@@ -1,7 +1,8 @@
 package org.pescuma.buildhealth.core;
 
-import static org.apache.commons.io.FileUtils.*;
-import static org.pescuma.buildhealth.utils.FileHelper.*;
+import static org.apache.commons.io.FileUtils.forceDelete;
+import static org.apache.commons.io.FileUtils.forceMkdir;
+import static org.pescuma.buildhealth.utils.FileHelper.getCanonicalFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -330,6 +331,11 @@ public class BuildHealth {
 		});
 		
 		Report report = generateReport(ReportFlags.SummaryOnly);
+		
+		if (report == null) {
+			System.out.println(ReportFormater.NO_DATA);
+			return;
+		}
 		
 		for (BuildHealthNotifier notifier : notifiers)
 			notifier.sendNotification(report, preferences, tracker);
