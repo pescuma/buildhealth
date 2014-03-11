@@ -12,9 +12,7 @@ public class XlcLinkerConsoleExtractorAntTask extends FileListBuildHealthAntSubT
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new XlcLinkerConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new XlcLinkerConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

@@ -1,23 +1,16 @@
 package org.pescuma.buildhealth.cli.commands.add.unittest;
 
-import io.airlift.command.Arguments;
 import io.airlift.command.Command;
 
-import java.io.File;
-
-import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
-import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.cli.BaseBuildHealthFilesCliCommand;
 import org.pescuma.buildhealth.extractor.unittest.xunit.MSTestExtractor;
 
 @Command(name = "mstest", description = "Add information from a MSTest XML file")
-public class MSTestExtractorCommand extends BuildHealthCliCommand {
-	
-	@Arguments(title = "xml", description = "XML file or folder to parse", required = true)
-	public File xml;
+public class MSTestExtractorCommand extends BaseBuildHealthFilesCliCommand {
 	
 	@Override
 	public void execute() {
-		buildHealth.extract(new MSTestExtractor(new PseudoFiles(xml)));
+		buildHealth.extract(new MSTestExtractor(getFiles()));
 	}
 	
 }

@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.cli;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 import io.airlift.command.Cli;
 import io.airlift.command.Cli.CliBuilder;
 import io.airlift.command.Help;

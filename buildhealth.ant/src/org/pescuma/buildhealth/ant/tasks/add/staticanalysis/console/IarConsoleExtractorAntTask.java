@@ -12,9 +12,7 @@ public class IarConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new IarConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new IarConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

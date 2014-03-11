@@ -12,9 +12,7 @@ public class IntelConsoleExtractorAntTask extends FileListBuildHealthAntSubTask 
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new IntelConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new IntelConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

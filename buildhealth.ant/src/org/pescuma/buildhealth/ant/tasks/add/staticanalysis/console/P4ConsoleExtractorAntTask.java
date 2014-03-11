@@ -12,9 +12,7 @@ public class P4ConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new P4ConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new P4ConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

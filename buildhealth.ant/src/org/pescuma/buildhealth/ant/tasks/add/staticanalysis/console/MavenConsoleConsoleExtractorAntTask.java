@@ -12,9 +12,7 @@ public class MavenConsoleConsoleExtractorAntTask extends FileListBuildHealthAntS
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new MavenConsoleConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new MavenConsoleConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

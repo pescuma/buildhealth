@@ -12,9 +12,7 @@ public class Gcc4LinkerConsoleExtractorAntTask extends FileListBuildHealthAntSub
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new Gcc4LinkerConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new Gcc4LinkerConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

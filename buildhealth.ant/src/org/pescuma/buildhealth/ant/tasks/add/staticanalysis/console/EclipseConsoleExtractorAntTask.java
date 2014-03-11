@@ -12,9 +12,7 @@ public class EclipseConsoleExtractorAntTask extends FileListBuildHealthAntSubTas
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new EclipseConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new EclipseConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

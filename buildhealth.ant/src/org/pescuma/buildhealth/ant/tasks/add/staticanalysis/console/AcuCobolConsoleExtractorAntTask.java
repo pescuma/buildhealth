@@ -12,9 +12,7 @@ public class AcuCobolConsoleExtractorAntTask extends FileListBuildHealthAntSubTa
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new AcuCobolConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new AcuCobolConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

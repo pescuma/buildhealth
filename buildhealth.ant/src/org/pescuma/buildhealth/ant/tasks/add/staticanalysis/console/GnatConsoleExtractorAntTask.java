@@ -12,9 +12,7 @@ public class GnatConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new GnatConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new GnatConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

@@ -12,9 +12,7 @@ public class ClangConsoleExtractorAntTask extends FileListBuildHealthAntSubTask 
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new ClangConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new ClangConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

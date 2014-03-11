@@ -12,9 +12,7 @@ public class SunCConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new SunCConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new SunCConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

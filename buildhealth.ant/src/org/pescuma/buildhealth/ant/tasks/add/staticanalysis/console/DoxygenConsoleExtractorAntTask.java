@@ -12,9 +12,7 @@ public class DoxygenConsoleExtractorAntTask extends FileListBuildHealthAntSubTas
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new DoxygenConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new DoxygenConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

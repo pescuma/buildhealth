@@ -12,9 +12,7 @@ public class BuckminsterConsoleExtractorAntTask extends FileListBuildHealthAntSu
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new BuckminsterConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new BuckminsterConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

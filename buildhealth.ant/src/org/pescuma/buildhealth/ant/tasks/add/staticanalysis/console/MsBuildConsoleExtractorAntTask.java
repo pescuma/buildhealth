@@ -12,9 +12,7 @@ public class MsBuildConsoleExtractorAntTask extends FileListBuildHealthAntSubTas
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new MsBuildConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new MsBuildConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

@@ -12,9 +12,7 @@ public class CodeAnalysisConsoleExtractorAntTask extends FileListBuildHealthAntS
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new CodeAnalysisConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new CodeAnalysisConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

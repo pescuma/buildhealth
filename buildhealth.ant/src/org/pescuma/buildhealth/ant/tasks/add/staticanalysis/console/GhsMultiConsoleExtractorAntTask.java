@@ -12,9 +12,7 @@ public class GhsMultiConsoleExtractorAntTask extends FileListBuildHealthAntSubTa
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new GhsMultiConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new GhsMultiConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

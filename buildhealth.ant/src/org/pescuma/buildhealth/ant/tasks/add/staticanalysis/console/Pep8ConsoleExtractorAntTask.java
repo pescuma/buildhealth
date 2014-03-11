@@ -12,9 +12,7 @@ public class Pep8ConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new Pep8ConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new Pep8ConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

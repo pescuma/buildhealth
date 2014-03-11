@@ -12,9 +12,7 @@ public class TnsdlConsoleExtractorAntTask extends FileListBuildHealthAntSubTask 
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new TnsdlConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new TnsdlConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

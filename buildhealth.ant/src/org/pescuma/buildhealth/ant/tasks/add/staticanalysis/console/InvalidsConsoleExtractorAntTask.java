@@ -12,9 +12,7 @@ public class InvalidsConsoleExtractorAntTask extends FileListBuildHealthAntSubTa
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new InvalidsConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new InvalidsConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

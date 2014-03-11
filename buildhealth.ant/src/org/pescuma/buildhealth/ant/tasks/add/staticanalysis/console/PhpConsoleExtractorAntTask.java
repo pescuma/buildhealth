@@ -12,9 +12,7 @@ public class PhpConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new PhpConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new PhpConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

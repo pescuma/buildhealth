@@ -1,8 +1,10 @@
 package org.pescuma.buildhealth.computer.loc;
 
-import static org.apache.commons.io.IOUtils.*;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
-import static org.pescuma.buildhealth.utils.FileHelper.*;
+import static org.apache.commons.io.IOUtils.closeQuietly;
+import static org.apache.commons.io.IOUtils.copy;
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.isKnownFileType;
+import static org.pescuma.buildhealth.utils.FileHelper.deleteFile;
+import static org.pescuma.buildhealth.utils.FileHelper.getCanonicalFile;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -12,9 +12,7 @@ public class ArmccCompilerConsoleExtractorAntTask extends FileListBuildHealthAnt
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new ArmccCompilerConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new ArmccCompilerConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

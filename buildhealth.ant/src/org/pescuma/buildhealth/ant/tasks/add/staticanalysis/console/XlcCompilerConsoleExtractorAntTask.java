@@ -12,9 +12,7 @@ public class XlcCompilerConsoleExtractorAntTask extends FileListBuildHealthAntSu
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new XlcCompilerConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new XlcCompilerConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

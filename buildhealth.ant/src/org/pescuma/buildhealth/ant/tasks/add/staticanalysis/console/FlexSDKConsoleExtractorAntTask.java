@@ -12,9 +12,7 @@ public class FlexSDKConsoleExtractorAntTask extends FileListBuildHealthAntSubTas
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new FlexSDKConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new FlexSDKConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

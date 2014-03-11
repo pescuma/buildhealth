@@ -12,9 +12,7 @@ public class YuiCompressorConsoleExtractorAntTask extends FileListBuildHealthAnt
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new YuiCompressorConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new YuiCompressorConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

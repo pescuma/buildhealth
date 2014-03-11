@@ -12,9 +12,7 @@ public class ErlcConsoleExtractorAntTask extends FileListBuildHealthAntSubTask {
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new ErlcConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new ErlcConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

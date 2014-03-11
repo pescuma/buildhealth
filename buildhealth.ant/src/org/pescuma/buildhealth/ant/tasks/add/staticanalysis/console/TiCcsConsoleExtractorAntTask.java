@@ -12,9 +12,7 @@ public class TiCcsConsoleExtractorAntTask extends FileListBuildHealthAntSubTask 
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new TiCcsConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new TiCcsConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

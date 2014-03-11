@@ -12,9 +12,7 @@ public class PyLintConsoleExtractorAntTask extends FileListBuildHealthAntSubTask
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new PyLintConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new PyLintConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

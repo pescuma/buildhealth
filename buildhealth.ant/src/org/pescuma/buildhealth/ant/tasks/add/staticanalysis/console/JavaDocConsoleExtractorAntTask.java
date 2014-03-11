@@ -12,9 +12,7 @@ public class JavaDocConsoleExtractorAntTask extends FileListBuildHealthAntSubTas
 
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-
-		buildHealth.extract(new JavaDocConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new JavaDocConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 
 }

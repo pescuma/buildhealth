@@ -12,9 +12,7 @@ public class $class$ extends FileListBuildHealthAntSubTask {
 	
 	@Override
 	protected void execute(BuildHealth buildHealth) {
-		List<File> files = getFiles();
-		
-		buildHealth.extract(new $parser.baseClassName$ConsoleExtractor(new PseudoFiles(files)));
+		buildHealth.extract(new $parser.baseClassName$ConsoleExtractor(new PseudoFiles(getFiles())));
 	}
 	
 }
