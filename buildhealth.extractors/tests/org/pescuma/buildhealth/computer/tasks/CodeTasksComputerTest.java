@@ -1,8 +1,9 @@
 package org.pescuma.buildhealth.computer.tasks;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -74,7 +75,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", CodeTasksComputer.NO_MESSAGE), 0.001);
 	}
 	
 	@Test
@@ -96,7 +97,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		assertEquals(1, table.size());
 		
-		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "", "", "pescuma"), 0.001);
+		assertEquals(1, table.get("Tasks", "From code", "TODO", "", CodeTasksComputer.NO_MESSAGE, "", "pescuma"), 0.001);
 	}
 	
 	@Test

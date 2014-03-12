@@ -36,7 +36,8 @@ import com.google.common.base.Function;
  * Tasks,origin,{type:Bug,Feature,...},{status:Open,Closed,...},text,owner,created by,creation date,id,parent id,details,location
  * </pre>
  * 
- * Parent id is only used if it also has an id.
+ * Parent id is only used if it also has an id. If the line has no message nor id, it is assumed to be only a counting
+ * of tasks.
  * 
  * Location can be one of:
  * <ul>

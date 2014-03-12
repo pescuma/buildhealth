@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.computer.tasks;
 
-import static org.apache.commons.io.IOUtils.*;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
+import static org.apache.commons.io.IOUtils.closeQuietly;
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.detectLanguage;
 
 import java.io.File;
 import java.io.FileReader;
@@ -31,6 +31,8 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 // Based on https://github.com/jenkinsci/tasks-plugin/blob/master/src/main/java/hudson/plugins/tasks/parser/TaskScanner.java by Ulli Hafner
 public class CodeTasksComputer implements BuildDataComputer {
+	
+	public static final String NO_MESSAGE = "<no message>";
 	
 	private static final Map<String, String> commentTerminators = new HashMap<String, String>();
 	static {
@@ -172,6 +174,9 @@ public class CodeTasksComputer implements BuildDataComputer {
 					createdBy = createdByMatcher.group(1).trim();
 					text = text.substring(createdByMatcher.end()).trim();
 				}
+				
+				if (text.isEmpty())
+					text = NO_MESSAGE;
 				
 				Location loc = Location.create(filename, lineNum, null, null, null);
 				
