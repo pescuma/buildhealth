@@ -291,6 +291,8 @@ function createLines(html, parentId, id, data, config) {
 		
 		if (value == undefined)
 			value = '';
+			
+		value = htmlEncode(value);
 		
 		if (cfg.type == "percentage") {
 			if (value == "no data")
@@ -308,6 +310,11 @@ function createLines(html, parentId, id, data, config) {
 	
 	for(var i in data.children) 
 		createLines(html, id, id + "-" + i, data.children[i], config);
+}
+
+// http://stackoverflow.com/questions/14346414/how-do-you-do-html-encode-using-javascript
+function htmlEncode(value) {
+	return $('<div/>').text(value).html();
 }
 
 function addTd(html, addDiv, name) {
