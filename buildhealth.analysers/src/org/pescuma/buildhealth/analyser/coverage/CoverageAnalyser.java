@@ -1,14 +1,16 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
-import static com.google.common.base.Objects.*;
-import static java.lang.Math.*;
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
-import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
-import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
+import static com.google.common.base.Objects.firstNonNull;
+import static java.lang.Math.round;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.pescuma.buildhealth.analyser.BuildStatusHelper.computeStatusFromThresholdIfExists;
+import static org.pescuma.buildhealth.analyser.NumbersFormater.format1000;
+import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.removeNonSummaryNodes;
+import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.sort;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.HighlightProblems;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.SummaryOnly;
+import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.ANY_VALUE_KEY_PREFIX;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -285,12 +287,8 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	private List<CoverageMetric> getCoverageMetrics(Stats stats) {
 		List<CoverageMetric> coverageMetrics = new ArrayList<CoverageMetric>();
 		
-		for (CoverageTypeStats coverage : sortCoverageTypes(stats.coverages.values())) {
-			if (!coverage.hasData())
-				continue;
-			
+		for (CoverageTypeStats coverage : sortCoverageTypes(stats.coverages.values()))
 			coverageMetrics.add(new CoverageMetric(coverage.getName(), coverage.covered, coverage.total));
-		}
 		
 		return coverageMetrics;
 	}
@@ -331,7 +329,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			if (description.length() > 0)
 				description.append(", ");
 			
-			description.append(coverage.getName()).append(": ").append(coverage.getPercentage()).append("%");
+			description.append(coverage.getName()).append(": ");
+			if (coverage.hasTotal())
+				description.append(coverage.getPercentage()).append("%");
+			else
+				description.append("-");
 			
 			if (showDetailsInDescription)
 				description.append(" (").append(format1000(coverage.getCovered())).append("/")
@@ -354,6 +356,9 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		int resultIndex = Integer.MAX_VALUE;
 		
 		for (CoverageMetric coverage : coverageMetrics) {
+			if (!coverage.hasTotal())
+				continue;
+			
 			int index = preferredCoverageTypes.indexOf(coverage.getName());
 			if (index == -1)
 				index = Integer.MAX_VALUE;
@@ -363,6 +368,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				resultIndex = index;
 			}
 		}
+		
+		if (result == null)
+			for (CoverageMetric coverage : coverageMetrics)
+				if (coverage.hasTotal())
+					result = coverage;
 		
 		if (result == null)
 			result = coverageMetrics.get(0);

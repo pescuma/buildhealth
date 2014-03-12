@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
-import static java.lang.Math.*;
+import static java.lang.Math.round;
 
 public class CoverageMetric {
 	
@@ -19,10 +19,14 @@ public class CoverageMetric {
 	}
 	
 	public int getPercentage() {
-		if (total < 0.001)
+		if (!hasTotal())
 			return 100;
 		else
 			return (int) round(100 * covered / total);
+	}
+	
+	public boolean hasTotal() {
+		return total >= 0.001;
 	}
 	
 	public double getCovered() {

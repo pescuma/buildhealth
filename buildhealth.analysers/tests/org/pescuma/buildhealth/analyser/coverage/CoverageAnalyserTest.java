@@ -1,9 +1,13 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
-import static java.util.Arrays.*;
-import static org.junit.Assert.*;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
-import static org.pescuma.buildhealth.core.BuildStatus.*;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.Full;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.HighlightProblems;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.SummaryOnly;
+import static org.pescuma.buildhealth.core.BuildStatus.Good;
+import static org.pescuma.buildhealth.core.BuildStatus.Problematic;
+import static org.pescuma.buildhealth.core.BuildStatus.SoSo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +80,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Coverage", "50%", "instruction: 50%"), report);
+		assertReport(new Report(Good, "Coverage", "50%", "line: -, instruction: 50%"), report);
 	}
 	
 	@Test
