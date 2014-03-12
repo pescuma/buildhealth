@@ -1,5 +1,6 @@
 package org.pescuma.buildhealth.utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -78,5 +79,21 @@ public class ReportHelper {
 				Collections.sort(report.getChildren(), comp);
 			}
 		});
+	}
+	
+	public static List<Report> findSourcesOfProblems(List<Report> reports) {
+		final List<Report> result = new ArrayList<Report>();
+		
+		for (Report report : reports) {
+			report.visit(new Report.Visitor() {
+				@Override
+				public void preVisit(Report report) {
+					if (report.isSourceOfProblem())
+						result.add(report);
+				}
+			});
+		}
+		
+		return result;
 	}
 }

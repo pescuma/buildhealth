@@ -64,7 +64,7 @@ public class ReportCommand extends BuildHealthCliCommand {
 		int hp = highlightProblems ? ReportFlags.HighlightProblems : 0;
 		
 		if (category == null || category.isEmpty())
-			return buildHealth.generateReport(ReportFlags.SummaryOnly | hp);
+			return buildHealth.generateReport(ReportFlags.SummaryOnly | ReportFlags.ListSourcesOfProblems | hp);
 		else
 			return buildHealth.generateReport(category, ReportFlags.Full | hp);
 	}

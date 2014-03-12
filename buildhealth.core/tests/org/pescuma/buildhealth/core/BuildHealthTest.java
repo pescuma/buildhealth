@@ -55,7 +55,9 @@ public class BuildHealthTest {
 			}
 		});
 		
-		assertEquals(new Report(Good, "Build", "Good", false, new Report(BuildStatus.Good, "Unit tests", "100%",
-				"10.0 passed", false)), buildhealth.generateReportSummary());
+		assertEquals(new BuildReport(Good, "Build", "Good", null, //
+				new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false)//
+				), //
+				buildhealth.generateReportSummary());
 	}
 }

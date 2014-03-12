@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.utils;
 
 import java.util.List;
 
+import org.pescuma.buildhealth.core.BuildReport;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 
@@ -38,7 +39,7 @@ public class ReportFormater {
 	}
 	
 	private void appendSummaryLine(Report report, Outputer out) {
-		if (report.getName().equals("Build")) {
+		if (report instanceof BuildReport) {
 			out.append("Your build is ").append(createTitle(report.getStatus()), report.getStatus());
 			
 		} else {
@@ -72,6 +73,25 @@ public class ReportFormater {
 			out.append("\n");
 			
 			append(PREFIX, report.getChildren(), out);
+			
+			appendSourcesOfProblems(report, out);
+		}
+	}
+	
+	private void appendSourcesOfProblems(Report report, Outputer out) {
+		if (!(report instanceof BuildReport))
+			return;
+		
+		List<Report> sourcesOfProblems = ((BuildReport) report).getSourcesOfProblems();
+		if (sourcesOfProblems == null || sourcesOfProblems.isEmpty())
+			return;
+		
+		out.append("\n");
+		out.append("Sources of instability:\n");
+		for (Report source : sourcesOfProblems) {
+			out.append(PREFIX);
+			appendSummaryLine(source, out);
+			out.append("\n");
 		}
 	}
 	

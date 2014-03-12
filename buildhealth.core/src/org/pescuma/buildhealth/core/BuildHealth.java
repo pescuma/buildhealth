@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.core;
 
-import static org.apache.commons.io.FileUtils.forceDelete;
-import static org.apache.commons.io.FileUtils.forceMkdir;
-import static org.pescuma.buildhealth.utils.FileHelper.getCanonicalFile;
+import static org.apache.commons.io.FileUtils.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
+import static org.pescuma.buildhealth.utils.ReportHelper.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,6 +119,9 @@ public class BuildHealth {
 	private void loadAnalysersIfNeeded() {
 		if (analysers.isEmpty())
 			addAnalysersFromServices();
+		
+		if (analysers.isEmpty())
+			throw new IllegalStateException("No analysers configured");
 	}
 	
 	public void compute(final BuildDataComputer computer) {
@@ -167,14 +170,14 @@ public class BuildHealth {
 		});
 	}
 	
-	public Report generateReportSummary() {
+	public BuildReport generateReportSummary() {
 		return generateReport(ReportFlags.SummaryOnly);
 	}
 	
 	/**
 	 * @param opts Flags from BuildHealth.ReportFlags
 	 */
-	public Report generateReport(int opts) {
+	public BuildReport generateReport(int opts) {
 		if (table.isEmpty())
 			return null;
 		
@@ -192,12 +195,15 @@ public class BuildHealth {
 		for (BuildHealthAnalyser analyser : analysers)
 			reports.addAll(analyser.computeReport(table, preferences, opts));
 		
-		ReportHelper.simplifyReport(reports, opts);
+		List<Report> sourcesOfProblems = null;
+		if ((opts & ReportFlags.ListSourcesOfProblems) != 0)
+			sourcesOfProblems = findSourcesOfProblems(reports);
+		
+		simplifyReport(reports, opts);
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
-		return new Report(status, "Build", status.name(), reports.isEmpty() ? "no analysers configured" : null, false,
-				reports);
+		return new BuildReport(status, "Build", status.name(), sourcesOfProblems, reports);
 	}
 	
 	/**
@@ -351,6 +357,7 @@ public class BuildHealth {
 	public static abstract class ReportFlags {
 		public static final int Full = 0;
 		public static final int SummaryOnly = 1;
-		public static final int HighlightProblems = 2;
+		public static final int HighlightProblems = 1 << 1;
+		public static final int ListSourcesOfProblems = 1 << 2;
 	}
 }
