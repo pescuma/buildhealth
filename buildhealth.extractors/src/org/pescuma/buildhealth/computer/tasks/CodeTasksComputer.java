@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.computer.tasks;
 
-import static org.apache.commons.io.IOUtils.closeQuietly;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.detectLanguage;
+import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
 import java.io.File;
 import java.io.FileReader;

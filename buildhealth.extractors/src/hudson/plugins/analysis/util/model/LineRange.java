@@ -1,6 +1,5 @@
 package hudson.plugins.analysis.util.model;
 
-
 /**
  * A line range in a source file is defined by its first and last line.
  * 

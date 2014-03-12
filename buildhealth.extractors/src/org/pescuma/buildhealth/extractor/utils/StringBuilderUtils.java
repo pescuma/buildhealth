@@ -16,5 +16,4 @@ public class StringBuilderUtils {
 		out.append(name).append(": ").append(text).append(suffix);
 	}
 	
-	
 }

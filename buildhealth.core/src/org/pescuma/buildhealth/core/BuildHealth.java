@@ -32,6 +32,7 @@ import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.prefs.PreferencesStore;
 import org.pescuma.buildhealth.prefs.PropertiesPreferencesStore;
+import org.pescuma.buildhealth.utils.ReportFormater;
 import org.pescuma.buildhealth.utils.ReportHelper;
 
 import com.google.common.base.Strings;
