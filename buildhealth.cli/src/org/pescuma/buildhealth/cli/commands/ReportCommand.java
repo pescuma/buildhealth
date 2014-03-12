@@ -11,8 +11,8 @@ import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.ReportFormater;
-import org.pescuma.buildhealth.core.ReportFormater.Outputer;
+import org.pescuma.buildhealth.utils.ReportFormater;
+import org.pescuma.buildhealth.utils.ReportFormater.Outputer;
 
 @Command(name = "report", description = "Report the status of the current build")
 public class ReportCommand extends BuildHealthCliCommand {

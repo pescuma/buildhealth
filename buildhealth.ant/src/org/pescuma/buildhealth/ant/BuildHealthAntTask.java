@@ -10,8 +10,8 @@ import org.apache.tools.ant.TaskContainer;
 import org.pescuma.buildhealth.core.BuildHealth;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.ReportFormater;
 import org.pescuma.buildhealth.notifiers.BuildHealthNotifierTracker;
+import org.pescuma.buildhealth.utils.ReportFormater;
 
 public class BuildHealthAntTask extends Task implements TaskContainer {
 	

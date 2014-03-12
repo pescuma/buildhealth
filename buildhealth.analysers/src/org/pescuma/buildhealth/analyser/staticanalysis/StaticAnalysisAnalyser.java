@@ -3,8 +3,6 @@ package org.pescuma.buildhealth.analyser.staticanalysis;
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
-import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
@@ -111,17 +109,11 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		
 		prefs = prefs.child("staticanalysis");
 		
-		boolean highlighProblems = (opts & HighlightProblems) != 0;
-		boolean summaryOnly = (opts & SummaryOnly) != 0;
-		
 		SimpleTree<Stats> tree = buildTree(data);
 		
 		sumChildStatsAndComputeBuildStatuses(tree, prefs);
 		
-		if (summaryOnly)
-			removeNonSummaryNodes(tree, highlighProblems);
-		
-		return asList(toReport(tree.getRoot(), getName(), prefs, highlighProblems, 1));
+		return asList(toReport(tree.getRoot(), getName(), prefs, 1));
 	}
 	
 	private SimpleTree<Stats> buildTree(BuildData data) {
@@ -176,16 +168,15 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		});
 	}
 	
-	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs, boolean highlighProblems,
-			int showAllFrameworks) {
+	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs, int showAllFrameworks) {
 		Stats stats = node.getData();
 		
 		List<Report> children = new ArrayList<Report>();
 		
 		children.addAll(toViolations(stats));
 		
-		for (SimpleTree<Stats>.Node child : sort(node.getChildren(), highlighProblems))
-			children.add(toReport(child, child.getName(), prefs, highlighProblems, showAllFrameworks - 1));
+		for (SimpleTree<Stats>.Node child : node.getChildren())
+			children.add(toReport(child, child.getName(), prefs, showAllFrameworks - 1));
 		
 		String description = "";
 		if (showAllFrameworks > 0)

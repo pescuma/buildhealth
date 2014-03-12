@@ -32,6 +32,7 @@ import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.prefs.PreferencesStore;
 import org.pescuma.buildhealth.prefs.PropertiesPreferencesStore;
+import org.pescuma.buildhealth.utils.ReportHelper;
 
 import com.google.common.base.Strings;
 
@@ -191,6 +192,8 @@ public class BuildHealth {
 		for (BuildHealthAnalyser analyser : analysers)
 			reports.addAll(analyser.computeReport(table, preferences, opts));
 		
+		ReportHelper.simplifyReport(reports, opts);
+		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
 		return new Report(status, "Build", status.name(), reports.isEmpty() ? "no analysers configured" : null, false,
@@ -200,15 +203,18 @@ public class BuildHealth {
 	/**
 	 * @param opts Flags from BuildHealth.ReportFlags
 	 */
-	public Report generateReport(String category, int opts) {
+	public Report generateReport(String analyserName, int opts) {
 		if (table.isEmpty())
 			return null;
 		
-		BuildHealthAnalyser analyser = findAnalyser(category);
+		BuildHealthAnalyser analyser = findAnalyser(analyserName);
 		if (analyser == null)
 			return null;
 		
 		List<Report> reports = analyser.computeReport(table, preferences, opts);
+		
+		ReportHelper.simplifyReport(reports, opts);
+		
 		if (reports.isEmpty())
 			return null;
 		
@@ -220,11 +226,11 @@ public class BuildHealth {
 		return new Report(status, analyser.getName(), status.name(), false, reports);
 	}
 	
-	private BuildHealthAnalyser findAnalyser(String category) {
+	private BuildHealthAnalyser findAnalyser(String name) {
 		loadAnalysersIfNeeded();
 		
 		for (BuildHealthAnalyser analyser : analysers)
-			if (analyser.getName().equalsIgnoreCase(category))
+			if (analyser.getName().equalsIgnoreCase(name))
 				return analyser;
 		
 		return null;

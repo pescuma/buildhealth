@@ -2,8 +2,6 @@ package org.pescuma.buildhealth.analyser.tasks;
 
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
-import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -92,15 +90,9 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
-		boolean highlighProblems = (opts & HighlightProblems) != 0;
-		boolean summaryOnly = (opts & SummaryOnly) != 0;
-		
 		SimpleTree<Stats> tree = buildTree(data);
 		
 		sumChildStats(tree);
-		
-		if (summaryOnly)
-			removeNonSummaryNodes(tree, highlighProblems);
 		
 		return asList(toReport(tree.getRoot(), getName()));
 	}

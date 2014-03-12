@@ -1,6 +1,9 @@
-package org.pescuma.buildhealth.core;
+package org.pescuma.buildhealth.utils;
 
 import java.util.List;
+
+import org.pescuma.buildhealth.core.BuildStatus;
+import org.pescuma.buildhealth.core.Report;
 
 public class ReportFormater {
 	

@@ -26,7 +26,6 @@ import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 
 /**
  * Expect the lines to be:
@@ -86,18 +85,14 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
-		final boolean highlighProblems = (opts & HighlightProblems) != 0 && hasProblems(data);
-		boolean summaryOnly = (opts & SummaryOnly) != 0;
+		boolean highlighProblems = (opts & HighlightProblems) != 0 && (opts & SummaryOnly) == 0 && hasProblems(data);
 		
 		SimpleTree<Stats> tree = toTree(data);
 		
-		if (!summaryOnly && highlighProblems)
+		if (highlighProblems)
 			tree = splitTree(tree);
 		
 		computeParentStats(tree);
-		
-		if (summaryOnly)
-			removeNonSummaryNodes(tree, highlighProblems);
 		
 		return asList((Report) toReport(tree.getRoot(), getName()));
 	}
@@ -239,20 +234,6 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 				Stats parent = stack.peek();
 				if (!parent.isFromData)
 					parent.add(stats);
-			}
-		});
-	}
-	
-	private void removeNonSummaryNodes(SimpleTree<Stats> tree, final boolean highlighProblems) {
-		tree.removeNodesIf(new Predicate<SimpleTree<Stats>.Node>() {
-			@Override
-			public boolean apply(SimpleTree<Stats>.Node node) {
-				if (!highlighProblems)
-					return true;
-				
-				Stats data = node.getData();
-				return data.getStatus() == BuildStatus.Good
-						|| (!node.isRoot() && !data.isFromData && node.getChildren().isEmpty());
 			}
 		});
 	}

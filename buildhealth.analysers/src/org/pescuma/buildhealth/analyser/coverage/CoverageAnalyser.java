@@ -1,16 +1,12 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
-import static com.google.common.base.Objects.firstNonNull;
-import static java.lang.Math.round;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static org.pescuma.buildhealth.analyser.BuildStatusHelper.computeStatusFromThresholdIfExists;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.format1000;
-import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.removeNonSummaryNodes;
-import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.sort;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.HighlightProblems;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.SummaryOnly;
-import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.ANY_VALUE_KEY_PREFIX;
+import static com.google.common.base.Objects.*;
+import static java.lang.Math.*;
+import static java.util.Arrays.*;
+import static java.util.Collections.*;
+import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
+import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -115,18 +111,13 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		
 		prefs = prefs.child("coverage");
 		
-		boolean highlighProblems = (opts & HighlightProblems) != 0;
-		boolean summaryOnly = (opts & SummaryOnly) != 0;
 		List<String> preferredCoverageTypes = getPreferredCoverageTypes(prefs);
 		
 		SimpleTree<Stats> tree = toTree(data);
 		
 		sumChildStatsAndComputeBuildStatuses(tree, prefs, preferredCoverageTypes);
 		
-		if (summaryOnly)
-			removeNonSummaryNodes(tree, highlighProblems);
-		
-		CoverageReport result = toReport(tree.getRoot(), getName(), prefs, highlighProblems, preferredCoverageTypes);
+		CoverageReport result = toReport(tree.getRoot(), getName(), prefs, preferredCoverageTypes);
 		if (result == null)
 			return emptyList();
 		else
@@ -260,7 +251,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	private CoverageReport toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs,
-			boolean highlighProblems, List<String> preferredCoverageTypes) {
+			List<String> preferredCoverageTypes) {
 		
 		Stats stats = node.getData();
 		
@@ -274,8 +265,8 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		CoverageMetric defCoverage = getDefaultCoverage(coverageMetrics, preferredCoverageTypes);
 		
 		List<CoverageReport> children = new ArrayList<CoverageReport>();
-		for (SimpleTree<Stats>.Node child : sort(node.getChildren(), highlighProblems)) {
-			CoverageReport report = toReport(child, child.getName(), prefs, highlighProblems, preferredCoverageTypes);
+		for (SimpleTree<Stats>.Node child : node.getChildren()) {
+			CoverageReport report = toReport(child, child.getName(), prefs, preferredCoverageTypes);
 			if (report != null)
 				children.add(report);
 		}

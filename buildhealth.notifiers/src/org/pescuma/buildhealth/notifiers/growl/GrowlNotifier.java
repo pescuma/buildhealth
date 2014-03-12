@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.notifiers.growl;
 
 import static org.pescuma.buildhealth.core.BuildStatus.*;
-import static org.pescuma.buildhealth.core.ReportFormater.*;
+import static org.pescuma.buildhealth.utils.ReportFormater.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,11 +17,11 @@ import net.sf.libgrowl.internal.IResponse;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.ReportFormater;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.notifiers.BuildHealthNotifier;
 import org.pescuma.buildhealth.notifiers.BuildHealthNotifierTracker;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.utils.ReportFormater;
 
 @MetaInfServices
 public class GrowlNotifier implements BuildHealthNotifier {

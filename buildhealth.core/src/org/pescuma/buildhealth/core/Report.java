@@ -3,7 +3,6 @@ package org.pescuma.buildhealth.core;
 import static java.util.Arrays.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Objects;
@@ -55,7 +54,7 @@ public class Report {
 		List<Report> list = new ArrayList<Report>();
 		if (children != null)
 			list.addAll(children);
-		this.children = Collections.unmodifiableList(list);
+		this.children = list;
 	}
 	
 	public BuildStatus getStatus() {
@@ -80,6 +79,15 @@ public class Report {
 	
 	public List<Report> getChildren() {
 		return children;
+	}
+	
+	public void visit(Visitor visitor) {
+		visitor.preVisit(this);
+		
+		for (Report child : children)
+			child.visit(visitor);
+		
+		visitor.posVisit(this);
 	}
 	
 	@Override
@@ -143,4 +151,13 @@ public class Report {
 			status = BuildStatus.merge(status, report.getStatus());
 		return status;
 	}
+	
+	public static class Visitor {
+		public void preVisit(Report report) {
+		}
+		
+		public void posVisit(Report report) {
+		}
+	}
+	
 }

@@ -3,8 +3,6 @@ package org.pescuma.buildhealth.analyser.performance;
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
 import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
-import static org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.*;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -91,17 +89,11 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		
 		prefs = prefs.child("performance");
 		
-		boolean highlighProblems = (opts & HighlightProblems) != 0;
-		boolean summaryOnly = (opts & SummaryOnly) != 0;
-		
 		SimpleTree<Stats> tree = buildTree(data);
 		
 		sumChildStatsAndComputeBuildStatuses(tree, prefs);
 		
-		if (summaryOnly)
-			removeNonSummaryNodes(tree, highlighProblems);
-		
-		return asList(toReport(tree.getRoot(), getName(), prefs, highlighProblems));
+		return asList(toReport(tree.getRoot(), getName(), prefs));
 	}
 	
 	private SimpleTree<Stats> buildTree(BuildData data) {
@@ -161,11 +153,11 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		});
 	}
 	
-	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs, boolean highlighProblems) {
+	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs) {
 		List<Report> children = new ArrayList<Report>();
 		
-		for (SimpleTree<Stats>.Node child : sort(node.getChildren(), highlighProblems))
-			children.add(toReport(child, child.getName(), prefs, highlighProblems));
+		for (SimpleTree<Stats>.Node child : node.getChildren())
+			children.add(toReport(child, child.getName(), prefs));
 		
 		Stats stats = node.getData();
 		
