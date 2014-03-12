@@ -93,7 +93,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(SoSo, "Static analysis", "10", "Task: 10", true), report);
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(SoSo, "Static analysis", "10", "Task: 10", true), report);
 	}
 	
 	@Test
@@ -115,7 +115,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Static analysis", "10", "Task: 10"), report);
+		assertReport(new Report(Problematic, "Static analysis", "10", "Task: 10", true), report);
 	}
 	
 	@Test

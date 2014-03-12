@@ -95,7 +95,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			return Collections.emptyList();
 		
 		List<Report> children = (summaryOnly ? null : computeLanguagesFromCoverage(data));
-		return asList(new Report(Good, getName(), format(lines), "from coverage", children));
+		return asList(new Report(Good, getName(), format(lines), "from coverage", false, children));
 		
 	}
 	
@@ -103,7 +103,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		List<Report> children = new ArrayList<Report>();
 		
 		for (Map.Entry<String, Value> language : data.sumDistinct(COLUMN_LANGUAGE).entrySet())
-			children.add(new Report(Good, language.getKey(), format(language.getValue().value)));
+			children.add(new Report(Good, language.getKey(), format(language.getValue().value), false));
 		
 		return children;
 	}
@@ -134,7 +134,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			append(description, "in", round(files.value), "file", "files");
 		
 		List<Report> children = (summaryOnly ? null : computeLanguages(data));
-		return asList(new Report(Good, "Lines of code", format(total), description.toString(), children));
+		return asList(new Report(Good, "Lines of code", format(total), description.toString(), false, children));
 	}
 	
 	private List<Report> computeLanguages(BuildData data) {
@@ -153,7 +153,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			for (Map.Entry<String, BuildData.Value> typeEntry : langEntry.getValue().entrySet()) {
 				String type = typeEntry.getKey();
 				double value = typeEntry.getValue().value;
-				children.add(new Report(Good, StringUtils.capitalize(type), format(value)));
+				children.add(new Report(Good, StringUtils.capitalize(type), format(value), false));
 				
 				if (!type.equalsIgnoreCase(TYPE_FILES))
 					total += value;
@@ -163,7 +163,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			if (files > 0)
 				append(description, "in", files, "file", "files");
 			
-			result.add(new Report(Good, langauge, format(total), description.toString(), children));
+			result.add(new Report(Good, langauge, format(total), description.toString(), false, children));
 		}
 		
 		return result;

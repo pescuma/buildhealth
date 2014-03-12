@@ -192,7 +192,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 			description = toDescription(stats);
 		
 		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
-				format1000(stats.getTotal()), description, children);
+				format1000(stats.getTotal()), description, stats.isSourceOfProblem(), children);
 	}
 	
 	private String toDescription(Stats stats) {
@@ -248,7 +248,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		List<StaticAnalysisViolation> violations = new ArrayList<StaticAnalysisViolation>();
 		
 		for (Line line : stats.violations)
-			violations.add(toViolation(line));
+			violations.add(toViolation(line, false));
 		
 		Collections.sort(violations, new Comparator<StaticAnalysisViolation>() {
 			@Override
@@ -279,7 +279,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		return violations;
 	}
 	
-	private StaticAnalysisViolation toViolation(Line line) {
+	private StaticAnalysisViolation toViolation(Line line, boolean isSourceOfProblem) {
 		String language = getLanguage(line);
 		String framework = line.getColumn(COLUMN_FRAMEWORK);
 		List<Location> locations = Location.parse(line.getColumn(COLUMN_LOCATION));
@@ -290,7 +290,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		String url = line.getColumn(COLUMN_URL);
 		
 		return new StaticAnalysisViolation(BuildStatus.Good, language, framework, locations, category, message,
-				severity, details, url);
+				severity, details, url, isSourceOfProblem);
 	}
 	
 	private static class Stats extends TreeStats {

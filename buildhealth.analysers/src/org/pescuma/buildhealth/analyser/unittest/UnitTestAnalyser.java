@@ -266,7 +266,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		Stats stats = node.getData();
 		
 		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
-				stats.getTime(), stats.computeDescription(), children);
+				stats.getTime(), stats.computeDescription(), stats.isSourceOfProblem(), children);
 	}
 	
 	private static class Stats {
@@ -297,6 +297,10 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		
 		BuildStatus getStatus() {
 			return getErrors() + getFailures() > 0 ? BuildStatus.Problematic : BuildStatus.Good;
+		}
+		
+		public boolean isSourceOfProblem() {
+			return isFromData && getStatus() != BuildStatus.Good;
 		}
 		
 		int getInt(String type) {

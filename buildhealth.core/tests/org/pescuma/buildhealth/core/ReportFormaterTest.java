@@ -23,7 +23,7 @@ public class ReportFormaterTest {
 	@Test
 	public void testExtractGenerateSimpleReport() {
 		assertEquals("Your build is GOOD\n    Unit tests: 100% [10.0 passed]\n", formater.format(new Report(Good,
-				"Build", "Good", new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed"))));
+				"Build", "Good", false, new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false))));
 	}
 	
 }

@@ -92,6 +92,10 @@ public class BuildHealthAnalyserUtils {
 			return ownStatus;
 		}
 		
+		public boolean isSourceOfProblem() {
+			return hasOwnStatus && ownStatus != BuildStatus.Good;
+		}
+		
 		public void setOwnStatus(BuildStatus status) {
 			if (hasOwnStatus)
 				ownStatus = ownStatus.mergeWith(status);

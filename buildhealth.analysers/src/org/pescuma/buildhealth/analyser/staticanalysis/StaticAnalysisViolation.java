@@ -18,9 +18,9 @@ public class StaticAnalysisViolation extends Report {
 	private final String url;
 	
 	public StaticAnalysisViolation(BuildStatus status, String language, String framework, List<Location> locations,
-			String category, String message, String severity, String details, String url) {
+			String category, String message, String severity, String details, String url, boolean isSourceOfProblem) {
 		super(status, locations.get(0).file, Integer.toString(locations.get(0).beginLine), createDescription(message,
-				severity));
+				severity), isSourceOfProblem);
 		
 		this.language = language;
 		this.framework = framework;

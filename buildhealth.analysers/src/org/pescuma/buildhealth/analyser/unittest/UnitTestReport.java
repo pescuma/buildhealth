@@ -13,14 +13,15 @@ public class UnitTestReport extends Report {
 	private final Double time;
 	
 	public UnitTestReport(BuildStatus status, String name, int passed, int errors, int failures, Double time,
-			String message) {
-		this(status, name, passed, errors, failures, time, message, null);
+			String message, boolean isSourceOfProblem) {
+		this(status, name, passed, errors, failures, time, message, isSourceOfProblem, null);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public UnitTestReport(BuildStatus status, String name, int passed, int errors, int failures, Double time,
-			String message, List<UnitTestReport> children) {
-		super(status, name, status == BuildStatus.Good ? "PASSED" : "FAILED", message, (List) children);
+			String message, boolean isSourceOfProblem, List<UnitTestReport> children) {
+		super(status, name, status == BuildStatus.Good ? "PASSED" : "FAILED", message, isSourceOfProblem,
+				(List) children);
 		
 		this.passed = passed;
 		this.errors = errors;

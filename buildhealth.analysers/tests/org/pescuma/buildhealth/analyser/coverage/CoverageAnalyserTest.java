@@ -192,7 +192,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)", true), report);
 	}
 	
 	@Test
@@ -203,7 +203,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)", true), report);
 	}
 	
 	@Test
@@ -214,7 +214,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)"), report);
+		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)", true), report);
 	}
 	
 	@Test
@@ -226,7 +226,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)"), report);
+		assertReport(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)", true), report);
 	}
 	
 	@Test
@@ -238,7 +238,8 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)"), report);
+		assertReport(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)", true),
+				report);
 	}
 	
 	@Test
@@ -353,7 +354,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
 								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
-										new Report(SoSo, "b", "50%", "line: 50% (1/2)"), //
+										new Report(SoSo, "b", "50%", "line: 50% (1/2)", true), //
 										new Report(Good, "c", "50%", "line: 50% (2/4)") //
 								) //
 						) //
@@ -373,9 +374,9 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (3/6)", //
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
-								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", true, //
 										new Report(Good, "b", "50%", "line: 50% (1/2)"), //
-										new Report(Problematic, "c", "50%", "line: 50% (2/4)") //
+										new Report(Problematic, "c", "50%", "line: 50% (2/4)", true) //
 								) //
 						) //
 				) //
@@ -394,7 +395,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
 								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
-										new Report(SoSo, "c", "50%", "line: 50% (2/4)"), //
+										new Report(SoSo, "c", "50%", "line: 50% (2/4)", true), //
 										new Report(Good, "b", "50%", "line: 50% (1/2)") //
 								) //
 						) //
@@ -413,7 +414,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
-								new Report(SoSo, "a", "50%", "line: 50% (3/6)") //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", true) //
 						) //
 				) //
 				), report);

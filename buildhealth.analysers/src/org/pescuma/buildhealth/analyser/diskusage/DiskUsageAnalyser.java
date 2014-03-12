@@ -79,7 +79,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 		if (summaryOnly) {
 			double total = data.sum();
 			
-			return asList(new Report(BuildStatus.Good, getName(), formatBytes(total)));
+			return asList(new Report(BuildStatus.Good, getName(), formatBytes(total), false));
 		}
 		
 		boolean useTags = prefs.get("reportWithTags", true);
@@ -155,7 +155,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 		
 		Stats stats = node.getData();
 		
-		return new Report(BuildStatus.Good, name, formatBytes(stats.total), children);
+		return new Report(BuildStatus.Good, name, formatBytes(stats.total), false, children);
 	}
 	
 	private static class Stats {

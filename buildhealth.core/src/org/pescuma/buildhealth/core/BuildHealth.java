@@ -193,7 +193,8 @@ public class BuildHealth {
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
-		return new Report(status, "Build", status.name(), reports.isEmpty() ? "no analysers configured" : null, reports);
+		return new Report(status, "Build", status.name(), reports.isEmpty() ? "no analysers configured" : null, false,
+				reports);
 	}
 	
 	/**
@@ -216,7 +217,7 @@ public class BuildHealth {
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
-		return new Report(status, analyser.getName(), status.name(), reports);
+		return new Report(status, analyser.getName(), status.name(), false, reports);
 	}
 	
 	private BuildHealthAnalyser findAnalyser(String category) {

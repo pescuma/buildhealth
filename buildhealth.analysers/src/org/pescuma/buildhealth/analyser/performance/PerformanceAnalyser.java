@@ -170,7 +170,7 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		Stats stats = node.getData();
 		
 		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
-				stats.toText(prefs), children);
+				stats.toText(prefs), stats.isSourceOfProblem(), children);
 	}
 	
 	private static class Stats extends TreeStats {

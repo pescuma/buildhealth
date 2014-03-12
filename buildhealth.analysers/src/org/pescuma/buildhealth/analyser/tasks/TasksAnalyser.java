@@ -216,7 +216,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		if (stats.entry != null) {
 			return new TaskReport(BuildStatus.Good, stats.entry.id, stats.entry.text, stats.entry.owner,
 					stats.entry.createdBy, stats.entry.creationDate, stats.entry.type, stats.entry.status,
-					stats.entry.details, stats.entry.locations, stats.entry.count, children);
+					stats.entry.details, stats.entry.locations, stats.entry.count, false, children);
 			
 		} else {
 			StringBuilder description = new StringBuilder();
@@ -241,7 +241,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 					append(description, stats.getType(Stats.TYPE, type));
 			}
 			
-			return new Report(stats.getOwnStatus(), name, format1000(total), description.toString(), children);
+			return new Report(stats.getOwnStatus(), name, format1000(total), description.toString(),
+					stats.isSourceOfProblem(), children);
 		}
 	}
 	

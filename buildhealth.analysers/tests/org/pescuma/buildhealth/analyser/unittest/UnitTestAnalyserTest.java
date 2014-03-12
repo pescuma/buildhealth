@@ -121,12 +121,14 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(SummaryOnly | HighlightProblems);
 		
-		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
-				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
-						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
-								new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure") //
+		assertReport(
+				new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
+								new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+										new Report(Problematic, "No suite name", "FAILED",
+												"2 tests, 1 passed, 1 failure", true) //
+								) //
 						) //
-				) //
 				), report);
 	}
 	
@@ -137,12 +139,14 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
-				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
-						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
-								new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure") //
+		assertReport(
+				new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
+								new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+										new Report(Problematic, "No suite name", "FAILED",
+												"2 tests, 1 passed, 1 failure", true) //
+								) //
 						) //
-				) //
 				), report);
 	}
 	
@@ -214,7 +218,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 						new Report(Problematic, "java", "FAILED", "1 test, 1 failure (200 ms)", //
 								new Report(Problematic, "junit", "FAILED", "1 test, 1 failure (200 ms)", //
 										new Report(Problematic, "Suite", "FAILED", "1 test, 1 failure (200 ms)", //
-												new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+												new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms", true) //
 										) //
 								) //
 						) //
@@ -245,7 +249,7 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
 								new Report(Problematic, "Suite", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
 										new Report(Good, "Test 1", "PASSED", "Executed in 800 ms"), //
-										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms") //
+										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms", true) //
 								) //
 						) //
 				) //

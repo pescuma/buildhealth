@@ -281,7 +281,8 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		}
 		
 		return new CoverageReport(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
-				defCoverage.getPercentage() + "%", description, coverageMetrics, stats.placeType, children);
+				defCoverage.getPercentage() + "%", description, coverageMetrics, stats.placeType,
+				stats.isSourceOfProblem(), children);
 	}
 	
 	private List<CoverageMetric> getCoverageMetrics(Stats stats) {

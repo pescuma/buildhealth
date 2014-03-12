@@ -15,21 +15,32 @@ public class Report {
 	private final String name;
 	private final String value;
 	private final String description;
+	private final boolean sourceOfProblem;
 	private final List<Report> children;
 	
 	public Report(BuildStatus status, String name, String value, Report... children) {
-		this(status, name, value, null, asList(children));
+		this(status, name, value, null, false, asList(children));
+	}
+	
+	public Report(BuildStatus status, String name, String value, boolean isSourceOfProblem, Report... children) {
+		this(status, name, value, null, isSourceOfProblem, asList(children));
 	}
 	
 	public Report(BuildStatus status, String name, String value, String description, Report... children) {
-		this(status, name, value, description, asList(children));
+		this(status, name, value, description, false, asList(children));
 	}
 	
-	public Report(BuildStatus status, String name, String value, List<Report> children) {
-		this(status, name, value, null, children);
+	public Report(BuildStatus status, String name, String value, String description, boolean isSourceOfProblem,
+			Report... children) {
+		this(status, name, value, description, isSourceOfProblem, asList(children));
 	}
 	
-	public Report(BuildStatus status, String name, String value, String description, List<Report> children) {
+	public Report(BuildStatus status, String name, String value, boolean isSourceOfProblem, List<Report> children) {
+		this(status, name, value, null, isSourceOfProblem, children);
+	}
+	
+	public Report(BuildStatus status, String name, String value, String description, boolean isSourceOfProblem,
+			List<Report> children) {
 		if (status == null)
 			throw new IllegalArgumentException();
 		if (Strings.isNullOrEmpty(name))
@@ -39,6 +50,7 @@ public class Report {
 		this.name = name;
 		this.value = value;
 		this.description = Objects.firstNonNull(description, "");
+		this.sourceOfProblem = isSourceOfProblem;
 		
 		List<Report> list = new ArrayList<Report>();
 		if (children != null)
@@ -62,6 +74,10 @@ public class Report {
 		return description;
 	}
 	
+	public boolean isSourceOfProblem() {
+		return sourceOfProblem;
+	}
+	
 	public List<Report> getChildren() {
 		return children;
 	}
@@ -70,11 +86,12 @@ public class Report {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + children.hashCode();
-		result = prime * result + description.hashCode();
-		result = prime * result + name.hashCode();
-		result = prime * result + status.hashCode();
-		result = prime * result + value.hashCode();
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + (sourceOfProblem ? 1231 : 1237);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 	
@@ -87,15 +104,29 @@ public class Report {
 		if (getClass() != obj.getClass())
 			return false;
 		Report other = (Report) obj;
-		if (!children.equals(other.children))
+		if (children == null) {
+			if (other.children != null)
+				return false;
+		} else if (!children.equals(other.children))
 			return false;
-		if (!description.equals(other.description))
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
 			return false;
-		if (!name.equals(other.name))
+		if (sourceOfProblem != other.sourceOfProblem)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		if (status != other.status)
 			return false;
-		if (!value.equals(other.value))
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
@@ -103,7 +134,7 @@ public class Report {
 	@Override
 	public String toString() {
 		return "Report [" + status + ", " + name + "=" + value + ", desc=" + description
-				+ (children.isEmpty() ? "" : ", " + children) + "]";
+				+ (sourceOfProblem ? ", source of problem" : "") + (children.isEmpty() ? "" : ", " + children) + "]";
 	}
 	
 	public static BuildStatus mergeBuildStatus(List<Report> reports) {

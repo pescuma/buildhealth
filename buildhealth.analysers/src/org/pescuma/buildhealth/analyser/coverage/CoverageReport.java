@@ -14,8 +14,8 @@ public class CoverageReport extends Report {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public CoverageReport(BuildStatus status, String name, String value, String description,
-			List<CoverageMetric> coverages, String placeType, List<CoverageReport> children) {
-		super(status, name, value, description, (List) children);
+			List<CoverageMetric> coverages, String placeType, boolean isSourceOfProblem, List<CoverageReport> children) {
+		super(status, name, value, description, isSourceOfProblem, (List) children);
 		
 		this.coverages = unmodifiableList(coverages);
 		this.placeType = placeType;
