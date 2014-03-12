@@ -34,11 +34,11 @@ public class ReportFormater {
 		if (report == null) {
 			out.append(NO_DATA);
 		} else {
-			appendSummaryLine(report, out);
+			appendSummaryLine(report, showDescriptions, out);
 		}
 	}
 	
-	private void appendSummaryLine(Report report, Outputer out) {
+	private void appendSummaryLine(Report report, boolean withDescription, Outputer out) {
 		if (report instanceof BuildReport) {
 			out.append("Your build is ").append(createTitle(report.getStatus()), report.getStatus());
 			
@@ -53,7 +53,7 @@ public class ReportFormater {
 		}
 		
 		String description = report.getDescription();
-		if (showDescriptions && !description.isEmpty())
+		if (withDescription && !description.isEmpty())
 			out.append(" [").append(description).append("]");
 	}
 	
@@ -69,7 +69,7 @@ public class ReportFormater {
 			out.append("\n");
 			
 		} else {
-			appendSummaryLine(report, out);
+			appendSummaryLine(report, showDescriptions, out);
 			out.append("\n");
 			
 			append(PREFIX, report.getChildren(), out);
@@ -90,7 +90,7 @@ public class ReportFormater {
 		out.append("Sources of instability:\n");
 		for (Report source : sourcesOfProblems) {
 			out.append(PREFIX);
-			appendSummaryLine(source, out);
+			appendSummaryLine(source, false, out);
 			out.append("\n");
 		}
 	}
@@ -98,7 +98,7 @@ public class ReportFormater {
 	private void append(String prefix, List<Report> reports, Outputer out) {
 		for (Report report : reports) {
 			out.append(prefix);
-			appendSummaryLine(report, out);
+			appendSummaryLine(report, showDescriptions, out);
 			out.append("\n");
 			
 			append(prefix + PREFIX, report.getChildren(), out);

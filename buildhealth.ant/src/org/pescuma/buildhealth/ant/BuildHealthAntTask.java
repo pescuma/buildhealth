@@ -8,6 +8,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.TaskContainer;
 import org.pescuma.buildhealth.core.BuildHealth;
+import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.notifiers.BuildHealthNotifierTracker;
@@ -69,7 +70,7 @@ public class BuildHealthAntTask extends Task implements TaskContainer {
 		for (Task task : tasks)
 			task.perform();
 		
-		Report buildReport = buildHealth.generateReportSummary();
+		Report buildReport = buildHealth.generateReport(ReportFlags.SummaryOnly | ReportFlags.ListSourcesOfProblems);
 		
 		if (report)
 			log(new ReportFormater().writeBuildStatuses().format(buildReport).trim());

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -23,7 +24,7 @@ public class BuildHealthTest {
 	
 	@Test
 	public void testNoData() {
-		assertEquals(null, buildhealth.generateReportSummary());
+		assertEquals(null, buildhealth.generateReport(0));
 	}
 	
 	@Test
@@ -35,7 +36,7 @@ public class BuildHealthTest {
 			}
 		});
 		
-		assertEquals(null, buildhealth.generateReportSummary());
+		assertEquals(null, buildhealth.generateReport(0));
 	}
 	
 	@Test
@@ -58,6 +59,6 @@ public class BuildHealthTest {
 		assertEquals(new BuildReport(Good, "Build", "Good", null, //
 				new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false)//
 				), //
-				buildhealth.generateReportSummary());
+				buildhealth.generateReport(ReportFlags.SummaryOnly));
 	}
 }

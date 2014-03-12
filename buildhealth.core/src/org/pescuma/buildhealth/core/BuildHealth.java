@@ -170,10 +170,6 @@ public class BuildHealth {
 		});
 	}
 	
-	public BuildReport generateReportSummary() {
-		return generateReport(ReportFlags.SummaryOnly);
-	}
-	
 	/**
 	 * @param opts Flags from BuildHealth.ReportFlags
 	 */

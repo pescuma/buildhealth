@@ -24,7 +24,8 @@ public class ReportFormaterTest {
 	
 	@Test
 	public void testExtractGenerateSimpleReport() {
-		assertEquals("Your build is GOOD\n    Unit tests: 100% [10.0 passed]\n", //
+		assertEquals("Your build is GOOD\n" //
+				+ "    Unit tests: 100% [10.0 passed]\n", //
 				formater.format( //
 				new BuildReport(Good, "Build", "Good", null, //
 						new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false) //
@@ -40,7 +41,7 @@ public class ReportFormaterTest {
 				+ "    Unit tests: 0% [10.0 failed]\n" //
 				+ "\n" //
 				+ "Sources of instability:\n" //
-				+ "    Unit tests: 0% [10.0 failed]\n" //
+				+ "    Unit tests: 0%\n" //
 		, //
 				formater.format( //
 				new BuildReport(Problematic, "Build", "Problematic", asList(problematic), //
