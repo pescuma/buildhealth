@@ -28,13 +28,13 @@ public class ReportFormaterTest {
 				+ "    Unit tests: 100% [10.0 passed]\n", //
 				formater.format( //
 				new BuildReport(Good, "Build", "Good", null, //
-						new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false) //
+						new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed") //
 				)));
 	}
 	
 	@Test
 	public void testExtractGenerateReportWithSources() {
-		Report problematic = new Report(BuildStatus.Problematic, "Unit tests", "0%", "10.0 failed", true);
+		Report problematic = new Report(BuildStatus.Problematic, "Unit tests", "0%", "10.0 failed", "Unit test failed");
 		
 		assertEquals("Your build is PROBLEMATIC\n" //
 				+ "    Unit tests: 100% [10.0 passed]\n" //
@@ -45,7 +45,7 @@ public class ReportFormaterTest {
 		, //
 				formater.format( //
 				new BuildReport(Problematic, "Build", "Problematic", asList(problematic), //
-						new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false), //
+						new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed"), //
 						problematic //
 				)));
 	}

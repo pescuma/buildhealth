@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.analyser;
+package org.pescuma.buildhealth.analyser.utils;
 
 import static com.google.common.base.Strings.*;
 import static java.lang.Math.*;

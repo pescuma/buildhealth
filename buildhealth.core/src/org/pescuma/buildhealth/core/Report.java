@@ -14,31 +14,23 @@ public class Report {
 	private final String name;
 	private final String value;
 	private final String description;
-	private final boolean sourceOfProblem;
+	private final String problemDescription;
 	private final List<Report> children;
 	
 	public Report(BuildStatus status, String name, String value, Report... children) {
-		this(status, name, value, null, false, asList(children));
-	}
-	
-	public Report(BuildStatus status, String name, String value, boolean isSourceOfProblem, Report... children) {
-		this(status, name, value, null, isSourceOfProblem, asList(children));
+		this(status, name, value, null, null, asList(children));
 	}
 	
 	public Report(BuildStatus status, String name, String value, String description, Report... children) {
-		this(status, name, value, description, false, asList(children));
+		this(status, name, value, description, null, asList(children));
 	}
 	
-	public Report(BuildStatus status, String name, String value, String description, boolean isSourceOfProblem,
+	public Report(BuildStatus status, String name, String value, String description, String problemDescription,
 			Report... children) {
-		this(status, name, value, description, isSourceOfProblem, asList(children));
+		this(status, name, value, description, problemDescription, asList(children));
 	}
 	
-	public Report(BuildStatus status, String name, String value, boolean isSourceOfProblem, List<Report> children) {
-		this(status, name, value, null, isSourceOfProblem, children);
-	}
-	
-	public Report(BuildStatus status, String name, String value, String description, boolean isSourceOfProblem,
+	public Report(BuildStatus status, String name, String value, String description, String problemDescription,
 			List<Report> children) {
 		if (status == null)
 			throw new IllegalArgumentException();
@@ -49,7 +41,7 @@ public class Report {
 		this.name = name;
 		this.value = value;
 		this.description = Objects.firstNonNull(description, "");
-		this.sourceOfProblem = isSourceOfProblem;
+		this.problemDescription = problemDescription;
 		
 		List<Report> list = new ArrayList<Report>();
 		if (children != null)
@@ -74,7 +66,11 @@ public class Report {
 	}
 	
 	public boolean isSourceOfProblem() {
-		return sourceOfProblem;
+		return problemDescription != null;
+	}
+	
+	public String getProblemDescription() {
+		return problemDescription;
 	}
 	
 	public List<Report> getChildren() {
@@ -96,8 +92,8 @@ public class Report {
 		int result = 1;
 		result = prime * result + ((children == null) ? 0 : children.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + (sourceOfProblem ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((problemDescription == null) ? 0 : problemDescription.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
@@ -122,12 +118,15 @@ public class Report {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (sourceOfProblem != other.sourceOfProblem)
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (problemDescription == null) {
+			if (other.problemDescription != null)
+				return false;
+		} else if (!problemDescription.equals(other.problemDescription))
 			return false;
 		if (status != other.status)
 			return false;
@@ -142,7 +141,8 @@ public class Report {
 	@Override
 	public String toString() {
 		return "Report [" + status + ", " + name + "=" + value + ", desc=" + description
-				+ (sourceOfProblem ? ", source of problem" : "") + (children.isEmpty() ? "" : ", " + children) + "]";
+				+ (problemDescription != null ? ", source of problem: " + problemDescription : "")
+				+ (children.isEmpty() ? "" : ", " + children) + "]";
 	}
 	
 	public static BuildStatus mergeBuildStatus(List<Report> reports) {

@@ -1,13 +1,9 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.Full;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.HighlightProblems;
-import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.SummaryOnly;
-import static org.pescuma.buildhealth.core.BuildStatus.Good;
-import static org.pescuma.buildhealth.core.BuildStatus.Problematic;
-import static org.pescuma.buildhealth.core.BuildStatus.SoSo;
+import static java.util.Arrays.*;
+import static org.junit.Assert.*;
+import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
+import static org.pescuma.buildhealth.core.BuildStatus.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,7 +188,8 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)", true), report);
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)", "Coverage is unstable if less than 70%"),
+				report);
 	}
 	
 	@Test
@@ -203,7 +200,8 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)", true), report);
+		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (1/2)", "Coverage is unstable if less than 70%"),
+				report);
 	}
 	
 	@Test
@@ -214,7 +212,8 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)", true), report);
+		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (1/2)",
+				"Coverage should not be less than 70%"), report);
 	}
 	
 	@Test
@@ -226,7 +225,8 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)", true), report);
+		assertReport(new Report(SoSo, "Coverage", "25%", "line: 50% (1/2), instruction: 25% (1/4)",
+				"Line coverage is unstable if less than 60%"), report);
 	}
 	
 	@Test
@@ -238,8 +238,8 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)", true),
-				report);
+		assertReport(new Report(Problematic, "Coverage", "75%", "line: 50% (1/2), instruction: 75% (3/4)",
+				"Line coverage should not be less than 60%"), report);
 	}
 	
 	@Test
@@ -350,11 +350,13 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
+		String prob = "Line coverage for java measured by emma in a.b is unstable if less than 70%";
+		
 		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
 								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
-										new Report(SoSo, "b", "50%", "line: 50% (1/2)", true), //
+										new Report(SoSo, "b", "50%", "line: 50% (1/2)", prob), //
 										new Report(Good, "c", "50%", "line: 50% (2/4)") //
 								) //
 						) //
@@ -371,12 +373,15 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
+		String prob1 = "Line coverage for java measured by emma in a is unstable if less than 70%";
+		String prob2 = "Line coverage for java measured by emma in a.c should not be less than 70%";
+		
 		assertReport(new Report(Problematic, "Coverage", "50%", "line: 50% (3/6)", //
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
-								new Report(SoSo, "a", "50%", "line: 50% (3/6)", true, //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", prob1, //
 										new Report(Good, "b", "50%", "line: 50% (1/2)"), //
-										new Report(Problematic, "c", "50%", "line: 50% (2/4)", true) //
+										new Report(Problematic, "c", "50%", "line: 50% (2/4)", prob2) //
 								) //
 						) //
 				) //
@@ -391,11 +396,13 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full | HighlightProblems);
 		
+		String prob = "Line coverage for java measured by emma in a.c is unstable if less than 70%";
+		
 		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
 								new Report(SoSo, "a", "50%", "line: 50% (3/6)", //
-										new Report(SoSo, "c", "50%", "line: 50% (2/4)", true), //
+										new Report(SoSo, "c", "50%", "line: 50% (2/4)", prob), //
 										new Report(Good, "b", "50%", "line: 50% (1/2)") //
 								) //
 						) //
@@ -411,10 +418,12 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(SummaryOnly | HighlightProblems);
 		
+		String prob = "Line coverage for java measured by emma in a is unstable if less than 70%";
+		
 		assertReport(new Report(SoSo, "Coverage", "50%", "line: 50% (3/6)", //
 				new Report(SoSo, "java", "50%", "line: 50% (3/6)", //
 						new Report(SoSo, "emma", "50%", "line: 50% (3/6)", //
-								new Report(SoSo, "a", "50%", "line: 50% (3/6)", true) //
+								new Report(SoSo, "a", "50%", "line: 50% (3/6)", prob) //
 						) //
 				) //
 				), report);

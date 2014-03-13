@@ -51,8 +51,7 @@ public abstract class BaseAnalyserTest {
 		assertEquals(expected.getName(), actual.getName());
 		assertEquals(expected.getValue(), actual.getValue());
 		assertEquals(expected.getDescription(), actual.getDescription());
-		assertEquals(expected.getDescription(), actual.getDescription());
-		assertEquals(expected.isSourceOfProblem(), actual.isSourceOfProblem());
+		assertEquals(expected.getProblemDescription(), actual.getProblemDescription());
 		
 		List<Report> expectedChildren = expected.getChildren();
 		List<Report> actualChildren = actual.getChildren();

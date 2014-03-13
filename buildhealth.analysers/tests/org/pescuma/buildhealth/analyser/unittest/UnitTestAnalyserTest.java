@@ -121,14 +121,13 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(SummaryOnly | HighlightProblems);
 		
-		assertReport(
-				new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
-						new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
-								new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
-										new Report(Problematic, "No suite name", "FAILED",
-												"2 tests, 1 passed, 1 failure", true) //
-								) //
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+								new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure",
+										"Unit test failed") //
 						) //
+				) //
 				), report);
 	}
 	
@@ -139,14 +138,13 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(
-				new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
-						new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
-								new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
-										new Report(Problematic, "No suite name", "FAILED",
-												"2 tests, 1 passed, 1 failure", true) //
-								) //
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure", //
+				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure", //
+						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure", //
+								new Report(Problematic, "No suite name", "FAILED", "2 tests, 1 passed, 1 failure",
+										"Unit test failed") //
 						) //
+				) //
 				), report);
 	}
 	
@@ -218,7 +216,8 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 						new Report(Problematic, "java", "FAILED", "1 test, 1 failure (200 ms)", //
 								new Report(Problematic, "junit", "FAILED", "1 test, 1 failure (200 ms)", //
 										new Report(Problematic, "Suite", "FAILED", "1 test, 1 failure (200 ms)", //
-												new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms", true) //
+												new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms",
+														"Unit test failed") //
 										) //
 								) //
 						) //
@@ -239,17 +238,18 @@ public class UnitTestAnalyserTest extends BaseAnalyserTest {
 	public void testFullWithTimeForTests() {
 		data.add(1, "Unit test", "java", "junit", "passed", "Suite", "Test 1");
 		data.add(0.8, "Unit test", "java", "junit", "time", "Suite", "Test 1");
-		data.add(1, "Unit test", "java", "junit", "failed", "Suite", "Test 2");
+		data.add(1, "Unit test", "java", "junit", "error", "Suite", "Test 2");
 		data.add(0.2, "Unit test", "java", "junit", "time", "Suite", "Test 2");
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
-								new Report(Problematic, "Suite", "FAILED", "2 tests, 1 passed, 1 failure (1 s)", //
+		assertReport(new Report(Problematic, "Unit tests", "FAILED", "2 tests, 1 passed, 1 error (1 s)", //
+				new Report(Problematic, "java", "FAILED", "2 tests, 1 passed, 1 error (1 s)", //
+						new Report(Problematic, "junit", "FAILED", "2 tests, 1 passed, 1 error (1 s)", //
+								new Report(Problematic, "Suite", "FAILED", "2 tests, 1 passed, 1 error (1 s)", //
 										new Report(Good, "Test 1", "PASSED", "Executed in 800 ms"), //
-										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms", true) //
+										new Report(Problematic, "Test 2", "FAILED", "Executed in 200 ms",
+												"Unit test with error") //
 								) //
 						) //
 				) //

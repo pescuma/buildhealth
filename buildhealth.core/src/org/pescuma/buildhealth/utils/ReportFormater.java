@@ -91,6 +91,11 @@ public class ReportFormater {
 		for (Report source : sourcesOfProblems) {
 			out.append(PREFIX);
 			appendSummaryLine(source, false, out);
+			
+			String description = report.getProblemDescription();
+			if (description != null && !description.isEmpty())
+				out.append(" [").append(description).append("]");
+			
 			out.append("\n");
 		}
 	}

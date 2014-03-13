@@ -111,4 +111,8 @@ public class Preferences {
 		return store.getKeys();
 	}
 	
+	public String[] getCurrentKey() {
+		return currentKey;
+	}
+	
 }

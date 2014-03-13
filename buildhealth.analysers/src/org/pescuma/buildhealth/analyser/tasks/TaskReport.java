@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.analyser.tasks;
 
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 
 import java.util.List;
 
@@ -22,8 +22,8 @@ public class TaskReport extends Report {
 	
 	public TaskReport(BuildStatus status, String id, String text, String owner, String createdBy, String creationDate,
 			String taskType, String taskStatus, String details, List<Location> locations, double count,
-			boolean isSourceOfProblem, List<Report> children) {
-		super(status, text, "", createDescription(id, taskType, taskStatus, owner, count), isSourceOfProblem, children);
+			List<Report> children) {
+		super(status, text, "", createDescription(id, taskType, taskStatus, owner, count), null, children);
 		this.id = id;
 		this.owner = owner;
 		this.createdBy = createdBy;

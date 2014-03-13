@@ -1,8 +1,7 @@
 package org.pescuma.buildhealth.analyser.staticanalysis;
 
 import static java.util.Arrays.*;
-import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
@@ -18,6 +17,8 @@ import java.util.Map;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.BuildStatusAndExplanation;
+import org.pescuma.buildhealth.analyser.utils.BuildStatusFromThresholdComputer;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
@@ -68,6 +69,18 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	public static final int COLUMN_SEVERITY = 6;
 	public static final int COLUMN_DETAILS = 7;
 	public static final int COLUMN_URL = 8;
+	
+	private static final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(false) {
+		@Override
+		protected String computeSoSoMessage(double good, String[] prefKey) {
+			return "Instable if has more than " + formatValue(good) + " violations";
+		}
+		
+		@Override
+		protected String computeProblematicMessage(double warn, String[] prefKey) {
+			return "Should not have more than " + formatValue(warn) + " violations";
+		}
+	};
 	
 	@Override
 	public String getName() {
@@ -182,8 +195,8 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		if (showAllFrameworks > 0)
 			description = toDescription(stats);
 		
-		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
-				format1000(stats.getTotal()), description, stats.isSourceOfProblem(), children);
+		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getStatus(), name,
+				format1000(stats.getTotal()), description, stats.getProblemDescription(), children);
 	}
 	
 	private String toDescription(Stats stats) {
@@ -239,7 +252,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		List<StaticAnalysisViolation> violations = new ArrayList<StaticAnalysisViolation>();
 		
 		for (Line line : stats.violations)
-			violations.add(toViolation(line, false));
+			violations.add(toViolation(line));
 		
 		Collections.sort(violations, new Comparator<StaticAnalysisViolation>() {
 			@Override
@@ -270,7 +283,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		return violations;
 	}
 	
-	private StaticAnalysisViolation toViolation(Line line, boolean isSourceOfProblem) {
+	private StaticAnalysisViolation toViolation(Line line) {
 		String language = getLanguage(line);
 		String framework = line.getColumn(COLUMN_FRAMEWORK);
 		List<Location> locations = Location.parse(line.getColumn(COLUMN_LOCATION));
@@ -281,7 +294,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		String url = line.getColumn(COLUMN_URL);
 		
 		return new StaticAnalysisViolation(BuildStatus.Good, language, framework, locations, category, message,
-				severity, details, url, isSourceOfProblem);
+				severity, details, url, null);
 	}
 	
 	private static class Stats extends TreeStats {
@@ -308,7 +321,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		}
 		
 		void computeStatus(Preferences prefs) {
-			BuildStatus status = computeStatusFromThresholdIfExists(prefs.child(getNames()), getTotal(), false);
+			BuildStatusAndExplanation status = statusComputer.compute(getTotal(), prefs.child(getNames()));
 			
 			if (status != null)
 				setOwnStatus(status);

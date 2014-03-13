@@ -14,8 +14,8 @@ import java.util.TreeMap;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.analyser.NumbersFormater;
 import org.pescuma.buildhealth.analyser.coverage.CoverageAnalyser;
+import org.pescuma.buildhealth.analyser.utils.NumbersFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
@@ -95,7 +95,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			return Collections.emptyList();
 		
 		List<Report> children = (summaryOnly ? null : computeLanguagesFromCoverage(data));
-		return asList(new Report(Good, getName(), format(lines), "from coverage", false, children));
+		return asList(new Report(Good, getName(), format(lines), "from coverage", null, children));
 		
 	}
 	
@@ -103,7 +103,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		List<Report> children = new ArrayList<Report>();
 		
 		for (Map.Entry<String, Value> language : data.sumDistinct(COLUMN_LANGUAGE).entrySet())
-			children.add(new Report(Good, language.getKey(), format(language.getValue().value), false));
+			children.add(new Report(Good, language.getKey(), format(language.getValue().value)));
 		
 		return children;
 	}
@@ -134,7 +134,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			append(description, "in", round(files.value), "file", "files");
 		
 		List<Report> children = (summaryOnly ? null : computeLanguages(data));
-		return asList(new Report(Good, "Lines of code", format(total), description.toString(), false, children));
+		return asList(new Report(Good, "Lines of code", format(total), description.toString(), null, children));
 	}
 	
 	private List<Report> computeLanguages(BuildData data) {
@@ -153,7 +153,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			for (Map.Entry<String, BuildData.Value> typeEntry : langEntry.getValue().entrySet()) {
 				String type = typeEntry.getKey();
 				double value = typeEntry.getValue().value;
-				children.add(new Report(Good, StringUtils.capitalize(type), format(value), false));
+				children.add(new Report(Good, StringUtils.capitalize(type), format(value)));
 				
 				if (!type.equalsIgnoreCase(TYPE_FILES))
 					total += value;
@@ -163,7 +163,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 			if (files > 0)
 				append(description, "in", files, "file", "files");
 			
-			result.add(new Report(Good, langauge, format(total), description.toString(), false, children));
+			result.add(new Report(Good, langauge, format(total), description.toString(), null, children));
 		}
 		
 		return result;

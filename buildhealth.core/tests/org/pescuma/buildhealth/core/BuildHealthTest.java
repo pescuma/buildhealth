@@ -32,7 +32,7 @@ public class BuildHealthTest {
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
 			public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
-				return asList(new Report(BuildStatus.Good, "", "", "", false));
+				return asList(new Report(BuildStatus.Good, "", "", ""));
 			}
 		});
 		
@@ -52,12 +52,12 @@ public class BuildHealthTest {
 			@Override
 			public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "Unit tests", "100%", data.filter("Unit test").sum()
-						+ " passed", false));
+						+ " passed"));
 			}
 		});
 		
 		assertEquals(new BuildReport(Good, "Build", "Good", null, //
-				new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed", false)//
+				new Report(BuildStatus.Good, "Unit tests", "100%", "10.0 passed") //
 				), //
 				buildhealth.generateReport(ReportFlags.SummaryOnly));
 	}

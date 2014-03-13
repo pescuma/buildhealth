@@ -8,13 +8,13 @@ public class BuildReport extends Report {
 	
 	public BuildReport(BuildStatus status, String name, String value, List<Report> sourcesOfProblems,
 			List<Report> children) {
-		super(status, name, value, false, children);
+		super(status, name, value, null, null, children);
 		this.sourcesOfProblems = sourcesOfProblems;
 	}
 	
 	public BuildReport(BuildStatus status, String name, String value, List<Report> sourcesOfProblems,
 			Report... children) {
-		super(status, name, value, false, children);
+		super(status, name, value, null, null, children);
 		this.sourcesOfProblems = sourcesOfProblems;
 	}
 	

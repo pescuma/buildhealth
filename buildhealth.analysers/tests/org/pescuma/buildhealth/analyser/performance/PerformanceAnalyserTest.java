@@ -91,7 +91,8 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Performance", "200 ms", true), report);
+		assertReport(new Report(SoSo, "Performance", "200 ms", null, "Instable if takes more than 100 ms to run"),
+				report);
 	}
 	
 	@Test
@@ -102,7 +103,8 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Performance", "200 ms", true), report);
+		assertReport(new Report(Problematic, "Performance", "200 ms", null, "Should not take more than 150 ms to run"),
+				report);
 	}
 	
 	@Test
@@ -125,7 +127,8 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Performance", "200 ms", true), report);
+		assertReport(new Report(SoSo, "Performance", "200 ms", null, "Instable if has less than 30 runs per second"),
+				report);
 	}
 	
 	@Test
@@ -136,7 +139,8 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Performance", "200 ms", true), report);
+		assertReport(new Report(Problematic, "Performance", "200 ms", null,
+				"Should not have less than 30 runs per second"), report);
 	}
 	
 	@Test
@@ -209,7 +213,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(SoSo, "Performance", "130 ms", true, //
+		assertReport(new Report(SoSo, "Performance", "130 ms", null, "Instable if takes more than 5 ms to run", //
 				new Report(Good, "Java", "130 ms", //
 						new Report(Good, "Japex", "130 ms", //
 								new Report(Good, "A", "30 ms", //
@@ -235,18 +239,21 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Problematic, "Performance", "130 ms", //
-				new Report(Problematic, "Java", "130 ms", //
-						new Report(Problematic, "Japex", "130 ms", //
-								new Report(SoSo, "A", "30 ms", //
-										new Report(SoSo, "B", "10 ms", true), //
-										new Report(Good, "C", "20 ms") //
-								), //
-								new Report(Problematic, "X", "10 runs per second", //
-										new Report(Problematic, "Y", "10 runs per second", true) //
+		assertReport(
+				new Report(Problematic, "Performance", "130 ms", //
+						new Report(Problematic, "Java", "130 ms", //
+								new Report(Problematic, "Japex", "130 ms", //
+										new Report(SoSo, "A", "30 ms", //
+												new Report(SoSo, "B", "10 ms", null,
+														"Instable if takes more than 5 ms to run"), //
+												new Report(Good, "C", "20 ms") //
+										), //
+										new Report(Problematic, "X", "10 runs per second", //
+												new Report(Problematic, "Y", "10 runs per second", null,
+														"Should not take more than 30 ms to run") //
+										) //
 								) //
 						) //
-				) //
 				), report);
 	}
 	
@@ -264,8 +271,9 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		assertReport(new Report(Problematic, "Performance", "130 ms", //
 				new Report(SoSo, "Java", "130 ms", //
 						new Report(SoSo, "Japex", "130 ms", //
-								new Report(SoSo, "A", "30 ms", true, //
-										new Report(Problematic, "B", "10 ms", true), //
+								new Report(SoSo, "A", "30 ms", null, "Instable if takes more than 5 ms to run", //
+										new Report(Problematic, "B", "10 ms", null,
+												"Should not take more than 5 ms to run"), //
 										new Report(Good, "C", "20 ms") //
 								), //
 								new Report(Good, "X", "10 runs per second", //
@@ -287,18 +295,21 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full | HighlightProblems);
 		
-		assertReport(new Report(Problematic, "Performance", "130 ms", //
-				new Report(Problematic, "Java", "130 ms", //
-						new Report(Problematic, "Japex", "130 ms", //
-								new Report(Problematic, "X", "10 runs per second", //
-										new Report(Problematic, "Y", "10 runs per second", true) //
-								), //
-								new Report(SoSo, "A", "30 ms", //
-										new Report(SoSo, "C", "20 ms", true), //
-										new Report(Good, "B", "10 ms") //
+		assertReport(
+				new Report(Problematic, "Performance", "130 ms", //
+						new Report(Problematic, "Java", "130 ms", //
+								new Report(Problematic, "Japex", "130 ms", //
+										new Report(Problematic, "X", "10 runs per second", //
+												new Report(Problematic, "Y", "10 runs per second", null,
+														"Should not take more than 30 ms to run") //
+										), //
+										new Report(SoSo, "A", "30 ms", //
+												new Report(SoSo, "C", "20 ms", null,
+														"Instable if takes more than 5 ms to run"), //
+												new Report(Good, "B", "10 ms") //
+										) //
 								) //
 						) //
-				) //
 				), report);
 	}
 	
@@ -316,7 +327,7 @@ public class PerformanceAnalyserTest extends BaseAnalyserTest {
 				new Report(SoSo, "Java", "130 ms", //
 						new Report(SoSo, "Japex", "130 ms", //
 								new Report(SoSo, "A", "30 ms", //
-										new Report(SoSo, "C", "20 ms", true) //
+										new Report(SoSo, "C", "20 ms", null, "Instable if takes more than 5 ms to run") //
 								) //
 						) //
 				) //

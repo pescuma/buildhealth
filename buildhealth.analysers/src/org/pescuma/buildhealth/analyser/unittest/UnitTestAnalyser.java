@@ -2,7 +2,7 @@ package org.pescuma.buildhealth.analyser.unittest;
 
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 
 import java.util.ArrayDeque;
@@ -247,7 +247,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		Stats stats = node.getData();
 		
 		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
-				stats.getTime(), stats.computeDescription(), stats.isSourceOfProblem(), children);
+				stats.getTime(), stats.computeDescription(), stats.getProblemDescription(), children);
 	}
 	
 	private static class Stats {
@@ -280,8 +280,16 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 			return getErrors() + getFailures() > 0 ? BuildStatus.Problematic : BuildStatus.Good;
 		}
 		
-		public boolean isSourceOfProblem() {
-			return isFromData && getStatus() != BuildStatus.Good;
+		public String getProblemDescription() {
+			if (!isFromData)
+				return null;
+			
+			if (getFailures() > 0)
+				return "Unit test failed";
+			else if (getErrors() > 0)
+				return "Unit test with error";
+			else
+				return null;
 		}
 		
 		int getInt(String type) {

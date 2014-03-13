@@ -4,8 +4,8 @@ import static com.google.common.base.Objects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.apache.commons.lang.StringUtils.*;
+import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayDeque;
@@ -15,16 +15,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.BuildStatusAndExplanation;
+import org.pescuma.buildhealth.analyser.utils.BuildStatusFromThresholdComputer;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
-import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -70,6 +73,47 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	
 	private boolean showDetailsInDescription = false;
 	
+	private final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(true) {
+		@Override
+		protected String formatValue(double value) {
+			return format1000(value) + "%";
+		}
+		
+		@Override
+		protected String computeSoSoMessage(double good, String[] prefKey) {
+			return getName(prefKey) + " is unstable if less than " + formatValue(good);
+		}
+		
+		@Override
+		protected String computeProblematicMessage(double warn, String[] prefKey) {
+			return getName(prefKey) + " should not be less than " + formatValue(warn);
+		}
+		
+		private String getName(String[] prefKey) {
+			if (prefKey.length < 2)
+				return "Coverage";
+			
+			Deque<String> pieces = new LinkedList<String>(asList(prefKey));
+			pieces.removeFirst();
+			
+			StringBuilder result = new StringBuilder();
+			result.append(capitalize(pieces.removeLast()));
+			result.append(" coverage");
+			
+			if (!pieces.isEmpty())
+				result.append(" for ").append(pieces.removeFirst());
+			
+			if (!pieces.isEmpty())
+				result.append(" measured by ").append(pieces.removeFirst());
+			
+			if (!pieces.isEmpty())
+				result.append(" in ").append(StringUtils.join(pieces, "."));
+			
+			return result.toString();
+		}
+		
+	};
+	
 	public void setShowDetailsInDescription(boolean showDetailsInDescription) {
 		this.showDetailsInDescription = showDetailsInDescription;
 	}
@@ -95,6 +139,18 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				ANY_VALUE_KEY_PREFIX + "<type>", "good"));
 		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
 				ANY_VALUE_KEY_PREFIX + "<type>", "warn"));
+		
+		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
+				ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<type>", "good"));
+		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
+				ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<type>", "warn"));
+		
+		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage",
+				ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", ANY_VALUE_KEY_PREFIX
+						+ "<type>", "good"));
+		result.add(new BuildHealthPreference("Minimun coverage for a So So build", "<no limit>", "coverage",
+				ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", ANY_VALUE_KEY_PREFIX
+						+ "<type>", "warn"));
 		
 		result.add(new BuildHealthPreference(
 				"Which coverage type will represent the global coverage (can have more than one, separated by ',', with the most important first)",
@@ -242,7 +298,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			// not enough data
 			return;
 		
-		BuildStatus status = computeStatusFromThresholdIfExists(prefs, coverage.getPercentage(), true);
+		BuildStatusAndExplanation status = statusComputer.compute(coverage.getPercentage(), prefs);
 		
 		if (status != null) {
 			coverage.setOwnStatus(status);
@@ -271,9 +327,9 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				children.add(report);
 		}
 		
-		return new CoverageReport(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
+		return new CoverageReport(node.isRoot() ? stats.getStatusWithChildren() : stats.getStatus(), name,
 				defCoverage.getPercentage() + "%", description, coverageMetrics, stats.placeType,
-				stats.isSourceOfProblem(), children);
+				stats.getProblemDescription(), children);
 	}
 	
 	private List<CoverageMetric> getCoverageMetrics(Stats stats) {

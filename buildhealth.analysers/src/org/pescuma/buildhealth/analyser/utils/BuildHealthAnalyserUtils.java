@@ -76,8 +76,10 @@ public class BuildHealthAnalyserUtils {
 	public static class TreeStats {
 		
 		private final String[] names;
-		private boolean hasOwnStatus = false;
-		private BuildStatus ownStatus = BuildStatus.Good;
+		private BuildStatusAndExplanation ownStatus = null;
+		/** Worst status including only first children with own status */
+		private BuildStatus status = BuildStatus.Good;
+		/** Worst status including all children */
 		private BuildStatus statusWithChildren = BuildStatus.Good;
 		
 		protected TreeStats(String... names) {
@@ -88,36 +90,42 @@ public class BuildHealthAnalyserUtils {
 			return names;
 		}
 		
-		public BuildStatus getOwnStatus() {
-			return ownStatus;
-		}
-		
-		public boolean isSourceOfProblem() {
-			return hasOwnStatus && ownStatus != BuildStatus.Good;
-		}
-		
-		public void setOwnStatus(BuildStatus status) {
-			if (hasOwnStatus)
-				ownStatus = ownStatus.mergeWith(status);
-			else
-				ownStatus = status;
-			
-			statusWithChildren = statusWithChildren.mergeWith(status);
-			
-			hasOwnStatus = true;
-		}
-		
-		public boolean hasOwnStatus() {
-			return hasOwnStatus;
+		public BuildStatus getStatus() {
+			return status;
 		}
 		
 		public BuildStatus getStatusWithChildren() {
 			return statusWithChildren;
 		}
 		
+		public boolean hasOwnStatus() {
+			return ownStatus != null;
+		}
+		
+		public BuildStatusAndExplanation getOwnStatus() {
+			return ownStatus;
+		}
+		
+		public void setOwnStatus(BuildStatusAndExplanation status) {
+			if (ownStatus != null)
+				ownStatus = ownStatus.mergeWith(status);
+			else
+				ownStatus = status;
+			
+			this.status = ownStatus.status;
+			statusWithChildren = statusWithChildren.mergeWith(ownStatus.status);
+		}
+		
+		public String getProblemDescription() {
+			if (ownStatus == null)
+				return null;
+			else
+				return ownStatus.explanation;
+		}
+		
 		public void mergeChildStatus(TreeStats other) {
-			if (!hasOwnStatus)
-				ownStatus = ownStatus.mergeWith(other.ownStatus);
+			if (!hasOwnStatus())
+				status = status.mergeWith(other.status);
 			
 			statusWithChildren = statusWithChildren.mergeWith(other.statusWithChildren);
 		}

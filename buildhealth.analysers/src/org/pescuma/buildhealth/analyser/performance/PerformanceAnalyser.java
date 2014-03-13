@@ -1,8 +1,7 @@
 package org.pescuma.buildhealth.analyser.performance;
 
 import static java.util.Arrays.*;
-import static org.pescuma.buildhealth.analyser.BuildStatusHelper.*;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,10 +12,11 @@ import java.util.List;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.BuildStatusAndExplanation;
+import org.pescuma.buildhealth.analyser.utils.BuildStatusFromThresholdComputer;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
-import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -50,6 +50,41 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	
 	public static final String TYPE_MS = "ms";
 	public static final String TYPE_RUNS_PER_S = "runsPerS";
+	
+	private static final BuildStatusFromThresholdComputer runsPerSStatusComputer = new BuildStatusFromThresholdComputer(
+			true) {
+		@Override
+		protected String formatValue(double value) {
+			return formatRunsPerS(value);
+		}
+		
+		@Override
+		protected String computeSoSoMessage(double good, String[] prefKey) {
+			return "Instable if has less than " + formatValue(good);
+		}
+		
+		@Override
+		protected String computeProblematicMessage(double warn, String[] prefKey) {
+			return "Should not have less than " + formatValue(warn);
+		}
+	};
+	
+	private static final BuildStatusFromThresholdComputer msStatusComputer = new BuildStatusFromThresholdComputer(false) {
+		@Override
+		protected String formatValue(double value) {
+			return formatMs(value);
+		}
+		
+		@Override
+		protected String computeSoSoMessage(double good, String[] prefKey) {
+			return "Instable if takes more than " + formatValue(good) + " to run";
+		}
+		
+		@Override
+		protected String computeProblematicMessage(double warn, String[] prefKey) {
+			return "Should not take more than " + formatValue(warn) + " to run";
+		}
+	};
 	
 	@Override
 	public String getName() {
@@ -161,8 +196,8 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		
 		Stats stats = node.getData();
 		
-		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getOwnStatus(), name,
-				stats.toText(prefs), stats.isSourceOfProblem(), children);
+		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getStatus(), name, stats.toText(prefs),
+				null, stats.getProblemDescription(), children);
 	}
 	
 	private static class Stats extends TreeStats {
@@ -195,24 +230,23 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		}
 		
 		void computeStatus(Preferences prefs) {
-			BuildStatus status = BuildStatus.merge(statusFromThreshold(prefs, TYPE_RUNS_PER_S, runsPerSTotal, true),
-					statusFromThreshold(prefs, TYPE_MS, msTotal, false));
+			Preferences child = prefs.child(getNames());
+			
+			BuildStatusAndExplanation status = BuildStatusAndExplanation.merge(
+					runsPerSStatusComputer.compute(runsPerSTotal, child.child(TYPE_RUNS_PER_S)),
+					msStatusComputer.compute(msTotal, child.child(TYPE_MS)));
 			
 			if (status != null)
 				setOwnStatus(status);
-		}
-		
-		private BuildStatus statusFromThreshold(Preferences pref, String type, double total, boolean biggerIsBetter) {
-			return computeStatusFromThresholdIfExists(pref.child(getNames()).child(type), total, biggerIsBetter);
 		}
 		
 		String toText(Preferences prefs) {
 			boolean reportMs = isToReportMs(prefs, msCount);
 			
 			if (reportMs)
-				return format1000(msTotal / 1000, "s");
+				return formatMs(msTotal);
 			else
-				return format1000(runsPerSTotal, "") + " runs per second";
+				return formatRunsPerS(runsPerSTotal);
 		}
 		
 		private boolean isToReportMs(Preferences prefs, int msTotal) {
@@ -227,6 +261,14 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 			else
 				return msTotal > 0;
 		}
+	}
+	
+	private static String formatMs(double v) {
+		return format1000(v / 1000, "s");
+	}
+	
+	private static String formatRunsPerS(double v) {
+		return format1000(v, "") + " runs per second";
 	}
 	
 }

@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.analyser.diskusage;
 
 import static java.util.Arrays.*;
-import static org.pescuma.buildhealth.analyser.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
 
 import java.util.ArrayDeque;
@@ -79,7 +79,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 		if (summaryOnly) {
 			double total = data.sum();
 			
-			return asList(new Report(BuildStatus.Good, getName(), formatBytes(total), false));
+			return asList(new Report(BuildStatus.Good, getName(), formatBytes(total)));
 		}
 		
 		boolean useTags = prefs.get("reportWithTags", true);
@@ -155,7 +155,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 		
 		Stats stats = node.getData();
 		
-		return new Report(BuildStatus.Good, name, formatBytes(stats.total), false, children);
+		return new Report(BuildStatus.Good, name, formatBytes(stats.total), null, null, children);
 	}
 	
 	private static class Stats {

@@ -226,7 +226,7 @@ public class BuildHealth {
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
-		return new Report(status, analyser.getName(), status.name(), false, reports);
+		return new Report(status, analyser.getName(), status.name(), null, null, reports);
 	}
 	
 	private BuildHealthAnalyser findAnalyser(String name) {
