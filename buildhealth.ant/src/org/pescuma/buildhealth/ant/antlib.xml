@@ -26,7 +26,7 @@
 
 	<typedef name="add-pmd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.PMDExtractorAntTask" />
 	<typedef name="add-cpd" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.CPDExtractorAntTask" />
-	<typedef name="add-dotnet-dependency-checker" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.DotNetDependencyCheckerExtractorAntTask" />
+	<typedef name="add-dotnet-dependency-checker" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.DependencyCheckerExtractorAntTask" />
 	<typedef name="add-resharper-dupfinder" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.ResharperDupFinderExtractorAntTask" />
 	<typedef name="add-resharper-inspectcode" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.ResharperInspectCodeExtractorAntTask" />
 	<typedef name="add-findbugs" classname="org.pescuma.buildhealth.ant.tasks.add.staticanalysis.FindBugsExtractorAntTask" />

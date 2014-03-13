@@ -12,17 +12,17 @@ import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
 
-public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
+public class DependencyCheckerExtractor extends BaseXMLExtractor {
 	
-	public DotNetDependencyCheckerExtractor(PseudoFiles files) {
+	public DependencyCheckerExtractor(PseudoFiles files) {
 		super(files);
 	}
 	
 	@Override
 	protected void extractDocument(String path, Document doc, BuildData data) {
-		checkRoot(doc, path, "dotnet-dependency-checker");
+		checkRoot(doc, path, "DependencyChecker-Results");
 		
-		for (Element entry : findElementsXPath(doc, "/dotnet-dependency-checker/Entry")) {
+		for (Element entry : findElementsXPath(doc, "//Entry")) {
 			String type = entry.getAttributeValue("Type", "");
 			String severity = entry.getAttributeValue("Severity", "");
 			String message = firstNonNull(entry.getChildText("Message"), "");
@@ -52,8 +52,8 @@ public class DotNetDependencyCheckerExtractor extends BaseXMLExtractor {
 				}
 			}
 			
-			data.add(1, "Static analysis", "C#", "dotnet-dependency-checker", Location.toFormatedString(locations),
-					type, message, toBuildHealthSeverity(severity));
+			data.add(1, "Static analysis", "C#", "Dependency Checker", Location.toFormatedString(locations), type,
+					message, toBuildHealthSeverity(severity));
 		}
 	}
 	

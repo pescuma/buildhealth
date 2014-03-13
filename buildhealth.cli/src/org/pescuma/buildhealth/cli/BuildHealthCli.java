@@ -21,7 +21,7 @@ import org.pescuma.buildhealth.cli.commands.add.coverage.OpenCoverExtractorComma
 import org.pescuma.buildhealth.cli.commands.add.coverage.VstestCoverageExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.japex.JapexExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.CPDExtractorCommand;
-import org.pescuma.buildhealth.cli.commands.add.staticanalysis.DotNetDependencyCheckerExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.add.staticanalysis.DependencyCheckerExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FindBugsExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.FxCopExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.staticanalysis.GendarmeExtractorCommand;
@@ -86,7 +86,7 @@ public class BuildHealthCli {
 						VstestCoverageExtractorCommand.class,
 						PMDExtractorCommand.class,
 						CPDExtractorCommand.class,
-						DotNetDependencyCheckerExtractorCommand.class,
+						DependencyCheckerExtractorCommand.class,
 						ResharperDupFinderExtractorCommand.class,
 						ResharperInspectCodeExtractorCommand.class,
 						FindBugsExtractorCommand.class,

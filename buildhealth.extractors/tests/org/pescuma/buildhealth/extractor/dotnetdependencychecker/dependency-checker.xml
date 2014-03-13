@@ -1,0 +1,55 @@
+<DependencyChecker-Results>
+  <Summary>
+    <Severity Name="Info" Count="1" />
+    <Severity Name="Warning" Count="1" />
+    <Severity Name="Error" Count="1" />
+  </Summary>
+  <Entry Type="Loading/Project not found" Severity="Info">
+    <Message>The project MyTestProject references the project C:\devel\MyTestProject2.csproj but it could not be loaded. Guessing assembly name to be the same as project name.</Message>
+    <Projects>
+      <Element Type="Project" ProjectName="MyTestProject" LibraryName="MyTestProject" ProjectPath="C:\devel\MyTestProject.csproj" Guid="12345678-0123-4567-8901-234567890123">
+        <Path>C:\devel\MyTestProject.csproj</Path>
+      </Element>
+      <Element Type="Project" ProjectName="MyTestProject2" LibraryName="MyTestProject2" ProjectPath="C:\devel\MyTestProject2.csproj" Guid="12345678-0123-4567-8901-234567890123">
+        <Path>C:\devel\MyTestProject2.csproj</Path>
+      </Element>
+    </Projects>
+    <Dependencies>
+      <Dependency Type="ProjectReference">
+        <Source ProjectName="MyTestProject" LibraryName="MyTestProject" ProjectPath="C:\devel\MyTestProject.csproj" />
+        <Target ProjectName="MyTestProject2" LibraryName="MyTestProject2"  ProjectPath="C:\devel\MyTestProject2.csproj" />
+        <Location File="C:\devel\MyTestProject.csproj" Line="13" />
+      </Dependency>
+    </Dependencies>
+  </Entry>
+  <Entry Type="Dependency" Severity="Error">
+    <Message>Dependence between MyTestProject and MyTestGUIProject (in group GUI) not allowed</Message>
+    <Rule Line="42">rule: regex: .* -X-&gt; GUI</Rule>
+    <Projects>
+      <Element Type="Project" ProjectName="MyTestProject" LibraryName="MyTestProject" ProjectPath="C:\devel\MyTestProject.csproj" Guid="12345678-0123-4567-8901-234567890123">
+        <Path>C:\devel\MyTestProject.csproj</Path>
+      </Element>
+      <Element Type="Library" LibraryName="MyTestGUIProject" Guid="12345678-0123-4567-8901-234567890123">
+        <Path>C:\devel\MyTestGUIProject.dll</Path>
+      </Element>
+    </Projects>
+    <Dependencies>
+      <Dependency Type="DllReference">
+        <Source ProjectName="MyTestProject" LibraryName="MyTestProject" ProjectPath="C:\devel\MyTestProject.csproj" />
+        <Target LibraryName="MyTestGUIProject" />
+        <Location File="C:\devel\MyTestProject.csproj" Line="14" />
+      </Dependency>
+    </Dependencies>
+  </Entry>
+  <Entry Type="Non unique project" Severity="Warning">
+    <Message>2 projects named MyDuplicatedProject and with GUID 12345678-0123-4567-8901-234567890123 found</Message>
+    <Projects>
+      <Element Type="Project" ProjectName="MyDuplicatedProject" LibraryName="MyDuplicatedProject" ProjectPath="C:\devel\1\MyDuplicatedProject.csproj" Guid="12345678-0123-4567-8901-234567890123">
+        <Path>C:\devel\1\MyDuplicatedProject.csproj</Path>
+      </Element>
+      <Element Type="Project" ProjectName="MyDuplicatedProject" LibraryName="MyDuplicatedProject" ProjectPath="C:\devel\2\MyDuplicatedProject.csproj" Guid="12345678-0123-4567-8901-234567890123">
+        <Path>C:\devel\2\MyDuplicatedProject.csproj</Path>
+      </Element>
+    </Projects>
+  </Entry>
+</DependencyChecker-Results>
