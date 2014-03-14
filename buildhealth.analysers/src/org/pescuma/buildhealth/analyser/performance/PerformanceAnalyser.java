@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.analyser.performance;
 
 import static java.util.Arrays.*;
+import static org.apache.commons.lang.ArrayUtils.*;
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 
 import java.util.ArrayDeque;
@@ -60,13 +61,14 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		
 		@Override
 		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return "Instable if has less than " + formatValue(good);
+			return "Instable if has less than " + formatValue(good) + getPrefKeyDetails(removeLast(prefKey));
 		}
 		
 		@Override
 		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return "Should not have less than " + formatValue(warn);
+			return "Should not have less than " + formatValue(warn) + getPrefKeyDetails(removeLast(prefKey));
 		}
+		
 	};
 	
 	private static final BuildStatusFromThresholdComputer msStatusComputer = new BuildStatusFromThresholdComputer(false) {
@@ -77,14 +79,20 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		
 		@Override
 		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return "Instable if takes more than " + formatValue(good) + " to run";
+			return "Instable if takes more than " + formatValue(good) + " to run"
+					+ getPrefKeyDetails(removeLast(prefKey));
 		}
 		
 		@Override
 		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return "Should not take more than " + formatValue(warn) + " to run";
+			return "Should not take more than " + formatValue(warn) + " to run"
+					+ getPrefKeyDetails(removeLast(prefKey));
 		}
 	};
+	
+	private static List<String> removeLast(String[] prefKey) {
+		return asList((String[]) remove(prefKey, prefKey.length - 1));
+	}
 	
 	@Override
 	public String getName() {
@@ -230,11 +238,11 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 		}
 		
 		void computeStatus(Preferences prefs) {
-			Preferences child = prefs.child(getNames());
+			String[] keyStart = getNames();
 			
 			BuildStatusAndExplanation status = BuildStatusAndExplanation.merge(
-					runsPerSStatusComputer.compute(runsPerSTotal, child.child(TYPE_RUNS_PER_S)),
-					msStatusComputer.compute(msTotal, child.child(TYPE_MS)));
+					runsPerSStatusComputer.compute(runsPerSTotal, prefs, keyStart, TYPE_RUNS_PER_S),
+					msStatusComputer.compute(msTotal, prefs, keyStart, TYPE_MS));
 			
 			if (status != null)
 				setOwnStatus(status);

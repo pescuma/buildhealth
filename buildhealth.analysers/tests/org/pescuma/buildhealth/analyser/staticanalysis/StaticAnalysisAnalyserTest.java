@@ -196,7 +196,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1", //
 				new Report(SoSo, "C++", "4", "", //
 						new Report(SoSo, "CppLint", "3", null,
-								"Instable if has more than 1 violations for C++ measured by CppLint"), //
+								"Instable if has more than 1 violations in C++ measured by CppLint"), //
 						new Report(Good, "Task", "1") //
 				), //
 				new Report(Good, "Java", "1", "", //

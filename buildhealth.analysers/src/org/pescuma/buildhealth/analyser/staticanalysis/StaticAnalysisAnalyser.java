@@ -323,7 +323,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		}
 		
 		void computeStatus(Preferences prefs) {
-			BuildStatusAndExplanation status = statusComputer.compute(getTotal(), prefs.child(getNames()));
+			BuildStatusAndExplanation status = statusComputer.compute(getTotal(), prefs, getNames());
 			
 			if (status != null)
 				setOwnStatus(status);

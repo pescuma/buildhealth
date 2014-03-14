@@ -103,6 +103,10 @@ public class Preferences {
 		return new Preferences(store, subkey(key));
 	}
 	
+	public boolean hasChild(String key) {
+		return !store.getKeys(subkey(key)).isEmpty();
+	}
+	
 	private String[] subkey(String... second) {
 		return (String[]) ArrayUtils.addAll(currentKey, second);
 	}

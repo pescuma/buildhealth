@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.prefs.Preferences;
@@ -18,7 +19,11 @@ public class BuildStatusFromThresholdComputer {
 		this.biggerIsBetter = biggerIsBetter;
 	}
 	
-	public BuildStatusAndExplanation compute(double total, Preferences prefs) {
+	public BuildStatusAndExplanation compute(double total, Preferences prefs, String[] startKeys, String... moreKeys) {
+		String[] keys = (String[]) ArrayUtils.addAll(startKeys, moreKeys);
+		
+		prefs = findPrefs(prefs, keys);
+		
 		if (prefs.get("good", null) == null && prefs.get("warn", null) == null)
 			return null;
 		
@@ -35,6 +40,21 @@ public class BuildStatusFromThresholdComputer {
 			message = computeMessage(status, good, warn, prefs.getCurrentKey());
 		
 		return new BuildStatusAndExplanation(status, message);
+	}
+	
+	private Preferences findPrefs(Preferences prefs, String[] keys) {
+		for (String key : keys) {
+			if (prefs.hasChild(key))
+				prefs = prefs.child(key);
+			
+			else if (prefs.hasChild("*"))
+				prefs = prefs.child("*");
+			
+			else
+				return prefs.child(key);
+		}
+		
+		return prefs;
 	}
 	
 	private BuildStatus computeStatus(double total, double good, double warn) {
@@ -86,11 +106,17 @@ public class BuildStatusFromThresholdComputer {
 		
 		StringBuilder result = new StringBuilder();
 		
-		if (!pieces.isEmpty())
-			result.append(" for ").append(pieces.removeFirst());
+		if (!pieces.isEmpty()) {
+			String val = pieces.removeFirst();
+			if (!val.equals("*"))
+				result.append(" in ").append(val);
+		}
 		
-		if (!pieces.isEmpty())
-			result.append(" measured by ").append(pieces.removeFirst());
+		if (!pieces.isEmpty()) {
+			String val = pieces.removeFirst();
+			if (!val.equals("*"))
+				result.append(" measured by ").append(val);
+		}
 		
 		if (!pieces.isEmpty())
 			result.append(" in ").append(StringUtils.join(pieces, "."));

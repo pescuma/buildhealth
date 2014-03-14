@@ -260,11 +260,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	private void computeBuildStatus(Stats stats, Preferences prefs, List<String> preferredCoverageTypes) {
 		CoverageTypeStats prefCoverage = findPrefered(stats, preferredCoverageTypes);
 		if (prefCoverage != null)
-			computeBuildStatus(stats, prefCoverage, prefs.child(stats.getNames()));
+			computeBuildStatus(stats, prefCoverage, prefs);
 		
 		for (String coverageType : stats.coverages.keySet()) {
 			CoverageTypeStats coverage = stats.getCoverage(coverageType);
-			computeBuildStatus(stats, coverage, prefs.child(stats.getNames()).child(coverageType));
+			computeBuildStatus(stats, coverage, prefs, coverageType);
 		}
 		
 		for (CoverageTypeStats coverage : stats.coverages.values())
@@ -283,12 +283,13 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		return null;
 	}
 	
-	private void computeBuildStatus(Stats stats, CoverageTypeStats coverage, Preferences prefs) {
+	private void computeBuildStatus(Stats stats, CoverageTypeStats coverage, Preferences prefs, String... subPrefKeys) {
 		if (!coverage.hasData())
 			// not enough data
 			return;
 		
-		BuildStatusAndExplanation status = statusComputer.compute(coverage.getPercentage(), prefs);
+		BuildStatusAndExplanation status = statusComputer.compute(coverage.getPercentage(), prefs, stats.getNames(),
+				subPrefKeys);
 		
 		if (status != null) {
 			coverage.setOwnStatus(status);

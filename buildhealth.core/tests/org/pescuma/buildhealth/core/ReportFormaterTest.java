@@ -40,7 +40,7 @@ public class ReportFormaterTest {
 				+ "    Unit tests: 100% [10.0 passed]\n" //
 				+ "    Unit tests: 0% [10.0 failed]\n" //
 				+ "\n" //
-				+ "Sources of instability:\n" //
+				+ "Sources of problems:\n" //
 				+ "    Unit test failed [Unit tests: 0%]\n" //
 		, //
 				formater.format( //

@@ -87,7 +87,11 @@ public class ReportFormater {
 			return;
 		
 		out.append("\n");
-		out.append("Sources of instability:\n");
+		if (report.getStatus() == BuildStatus.Problematic)
+			out.append("Sources of problems:\n");
+		else
+			out.append("Sources of instability:\n");
+		
 		for (Report source : sourcesOfProblems) {
 			out.append(PREFIX);
 			out.append(source.getProblemDescription()).append(" [");
