@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
@@ -94,20 +93,11 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 				return "Coverage";
 			
 			Deque<String> pieces = new LinkedList<String>(asList(prefKey));
-			pieces.removeFirst();
 			
 			StringBuilder result = new StringBuilder();
 			result.append(capitalize(pieces.removeLast()));
 			result.append(" coverage");
-			
-			if (!pieces.isEmpty())
-				result.append(" for ").append(pieces.removeFirst());
-			
-			if (!pieces.isEmpty())
-				result.append(" measured by ").append(pieces.removeFirst());
-			
-			if (!pieces.isEmpty())
-				result.append(" in ").append(StringUtils.join(pieces, "."));
+			result.append(getPrefKeyDetails(pieces));
 			
 			return result.toString();
 		}

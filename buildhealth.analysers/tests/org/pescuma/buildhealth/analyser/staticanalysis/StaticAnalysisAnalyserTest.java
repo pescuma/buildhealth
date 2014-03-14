@@ -181,4 +181,27 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 				)//
 				), report);
 	}
+	
+	@Test
+	public void testFullSoSo() {
+		create("Java", "Task", 1);
+		create("C++", "CppLint", 3);
+		create("C++", "Task", 1);
+		
+		prefs.child("staticanalysis", "C++", "CppLint").set("good", 1);
+		prefs.child("staticanalysis", "C++", "CppLint").set("warn", 3);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1", //
+				new Report(SoSo, "C++", "4", "", //
+						new Report(SoSo, "CppLint", "3", null,
+								"Instable if has more than 1 violations for C++ measured by CppLint"), //
+						new Report(Good, "Task", "1") //
+				), //
+				new Report(Good, "Java", "1", "", //
+						new Report(Good, "Task", "1") //
+				)//
+				), report);
+	}
 }

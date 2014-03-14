@@ -2,6 +2,11 @@ package org.pescuma.buildhealth.analyser.utils;
 
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 
+import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
+
+import org.apache.commons.lang.StringUtils;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.prefs.Preferences;
 
@@ -72,4 +77,24 @@ public class BuildStatusFromThresholdComputer {
 		return format1000(value);
 	}
 	
+	protected String getPrefKeyDetails(Collection<String> prefKey) {
+		if (prefKey.size() < 1)
+			return "";
+		
+		Deque<String> pieces = new LinkedList<String>(prefKey);
+		pieces.removeFirst();
+		
+		StringBuilder result = new StringBuilder();
+		
+		if (!pieces.isEmpty())
+			result.append(" for ").append(pieces.removeFirst());
+		
+		if (!pieces.isEmpty())
+			result.append(" measured by ").append(pieces.removeFirst());
+		
+		if (!pieces.isEmpty())
+			result.append(" in ").append(StringUtils.join(pieces, "."));
+		
+		return result.toString();
+	}
 }

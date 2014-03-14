@@ -73,12 +73,14 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	private static final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(false) {
 		@Override
 		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return "Instable if has more than " + formatValue(good) + " violations";
+			return "Instable if has more than " + formatValue(good) + " violations"
+					+ getPrefKeyDetails(asList(prefKey));
 		}
 		
 		@Override
 		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return "Should not have more than " + formatValue(warn) + " violations";
+			return "Should not have more than " + formatValue(warn) + " violations"
+					+ getPrefKeyDetails(asList(prefKey));
 		}
 	};
 	
