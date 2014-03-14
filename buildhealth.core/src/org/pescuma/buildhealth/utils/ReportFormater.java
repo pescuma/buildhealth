@@ -90,12 +90,9 @@ public class ReportFormater {
 		out.append("Sources of instability:\n");
 		for (Report source : sourcesOfProblems) {
 			out.append(PREFIX);
+			out.append(source.getProblemDescription()).append(" [");
 			appendSummaryLine(source, false, out);
-			
-			String description = report.getProblemDescription();
-			if (description != null && !description.isEmpty())
-				out.append(" [").append(description).append("]");
-			
+			out.append("]");
 			out.append("\n");
 		}
 	}

@@ -1,11 +1,8 @@
 package org.pescuma.buildhealth.cli;
 
-import static java.util.Arrays.*;
 import io.airlift.command.Cli;
 import io.airlift.command.Cli.CliBuilder;
 import io.airlift.command.Help;
-import io.airlift.command.ParseArgumentsUnexpectedException;
-import io.airlift.command.ParseCommandUnrecognizedException;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
@@ -166,19 +163,8 @@ public class BuildHealthCli {
 			
 			command.run();
 			
-		} catch (ParseArgumentsUnexpectedException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-			
-		} catch (ParseCommandUnrecognizedException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-			
 		} catch (ParseException e) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(e.getMessage()).append("\n\n");
-			Help.help(parser.getMetadata(), asList(args), stringBuilder);
-			System.err.println(stringBuilder.toString());
+			System.err.println(e.getMessage());
 			System.exit(1);
 		}
 	}
