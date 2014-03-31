@@ -87,8 +87,7 @@
 	<typedef name="compute-tasks" classname="org.pescuma.buildhealth.ant.tasks.compute.tasks.CodeTasksExtractorAntTask" />
 
 	<typedef name="projects-from-eclipse" classname="org.pescuma.buildhealth.ant.tasks.project.ProjectsFromEclipseExtractorAntTask" />
-	<typedef name="projects-from-vsproj" classname="org.pescuma.buildhealth.ant.tasks.project.ProjectsFromVsprojExtractorAntTask" />
-	<typedef name="projects-from-vcproj" classname="org.pescuma.buildhealth.ant.tasks.project.ProjectsFromVcprojExtractorAntTask" />
+	<typedef name="projects-from-vs" classname="org.pescuma.buildhealth.ant.tasks.project.ProjectsFromVisualStudioExtractorAntTask" />
 
 	<typedef name="config" classname="org.pescuma.buildhealth.ant.tasks.ConfigBuildHealthAntTask" />
 

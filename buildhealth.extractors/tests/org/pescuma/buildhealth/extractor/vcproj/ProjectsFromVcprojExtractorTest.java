@@ -9,7 +9,7 @@ import java.io.InputStream;
 import org.junit.Test;
 import org.pescuma.buildhealth.extractor.BaseExtractorTest;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.project.ProjectsFromVcprojExtractor;
+import org.pescuma.buildhealth.extractor.project.ProjectsFromVisualStudioExtractor;
 
 public class ProjectsFromVcprojExtractorTest extends BaseExtractorTest {
 	
@@ -17,7 +17,7 @@ public class ProjectsFromVcprojExtractorTest extends BaseExtractorTest {
 	public void testSimple() {
 		InputStream stream = load("vcproj.xml");
 		
-		ProjectsFromVcprojExtractor extractor = new ProjectsFromVcprojExtractor(new PseudoFiles(stream,
+		ProjectsFromVisualStudioExtractor extractor = new ProjectsFromVisualStudioExtractor(new PseudoFiles(stream,
 				"/devel/MyProj.vcproj"));
 		
 		extractor.extractTo(table, tracker);
