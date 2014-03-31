@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.utils.Location;
@@ -36,9 +37,15 @@ class WarningsHelper {
 			if (!StringUtils.isBlank(ann.getCategory()))
 				category += "/" + ann.getCategory().replace('\\', '/');
 			
+			String message = unescapeHTML(ann.getMessage());
+			
 			data.add(1, "Static analysis", detectLanguage(ann.getFileName()), name, Location.toFormatedString(loc),
-					category, ann.getMessage(), toSeverity(ann.getPriority()));
+					category, message, toSeverity(ann.getPriority()));
 		}
+	}
+	
+	private static String unescapeHTML(String message) {
+		return StringEscapeUtils.unescapeHtml(message).replace("&apos;", "'");
 	}
 	
 	private static String toSeverity(Priority priority) {
