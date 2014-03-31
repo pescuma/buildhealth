@@ -1,7 +1,6 @@
 package org.pescuma.buildhealth.analyser.performance;
 
 import static java.util.Arrays.*;
-import static org.apache.commons.lang.ArrayUtils.*;
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 
 import java.util.ArrayDeque;
@@ -10,6 +9,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
@@ -91,7 +91,7 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	};
 	
 	private static List<String> removeLast(String[] prefKey) {
-		return asList((String[]) remove(prefKey, prefKey.length - 1));
+		return asList((String[]) ArrayUtils.remove(prefKey, prefKey.length - 1));
 	}
 	
 	@Override

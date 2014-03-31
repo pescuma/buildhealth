@@ -14,6 +14,6 @@
 	<classpathentry kind="lib" path="lib/auto/compile/antlr-runtime-3.3-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/stringtemplate-4.0.2-jar.jar" sourcepath="lib/auto/compile/stringtemplate-4.0.2-source.jar"/>
 	<classpathentry kind="lib" path="/buildhealth.extractors/lib/auto/compile/warnings-4.38-jar.jar" sourcepath="/buildhealth.extractors/lib/auto/compile/warnings-4.38-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-lang-2.6-jar.jar" sourcepath="lib/auto/compile/commons-lang-2.6-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/commons-lang3-3.3.1-jar.jar" sourcepath="lib/auto/compile/commons-lang3-3.3.1-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

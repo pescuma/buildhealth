@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.prefs.Preferences;
 
@@ -20,7 +20,7 @@ public class BuildStatusFromThresholdComputer {
 	}
 	
 	public BuildStatusAndExplanation compute(double total, Preferences prefs, String[] startKeys, String... moreKeys) {
-		String[] keys = (String[]) ArrayUtils.addAll(startKeys, moreKeys);
+		String[] keys = ArrayUtils.addAll(startKeys, moreKeys);
 		
 		prefs = findPrefs(prefs, keys);
 		

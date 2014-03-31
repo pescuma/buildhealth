@@ -7,6 +7,6 @@ public class Main {
 		
 		new WarningsExtractorGenerator().generate();
 		
-		System.out.println("DOne!");
+		System.out.println("Done!");
 	}
 }

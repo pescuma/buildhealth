@@ -4,7 +4,6 @@ import static com.google.common.base.Objects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-import static org.apache.commons.lang.StringUtils.*;
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
@@ -19,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
@@ -95,7 +95,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 			Deque<String> pieces = new LinkedList<String>(asList(prefKey));
 			
 			StringBuilder result = new StringBuilder();
-			result.append(capitalize(pieces.removeLast()));
+			result.append(StringUtils.capitalize(pieces.removeLast()));
 			result.append(" coverage");
 			result.append(getPrefKeyDetails(pieces));
 			

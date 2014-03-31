@@ -3,7 +3,7 @@ package org.pescuma.buildhealth.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 public class Location {
 	

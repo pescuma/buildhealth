@@ -15,7 +15,7 @@
 
 	<dependencies>
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
-		<dependency org="commons-lang" name="commons-lang" rev="2.6" />
+		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.1"/>
 		<dependency org="org.kohsuke.metainf-services" name="metainf-services" rev="1.5" conf="compile" />
 
 		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
