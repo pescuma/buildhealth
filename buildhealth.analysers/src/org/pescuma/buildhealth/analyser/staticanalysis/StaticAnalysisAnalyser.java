@@ -73,14 +73,24 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	private static final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(false) {
 		@Override
 		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return "Instable if has more than " + formatValue(good) + " violations"
-					+ getPrefKeyDetails(asList(prefKey));
+			if (isZero(good))
+				return "Instable if has any violations" + getPrefKeyDetails(asList(prefKey));
+			else
+				return "Instable if has more than " + formatValue(good) + " violations"
+						+ getPrefKeyDetails(asList(prefKey));
 		}
 		
 		@Override
 		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return "Should not have more than " + formatValue(warn) + " violations"
-					+ getPrefKeyDetails(asList(prefKey));
+			if (isZero(warn))
+				return "Should have no violations" + getPrefKeyDetails(asList(prefKey));
+			else
+				return "Should not have more than " + formatValue(warn) + " violations"
+						+ getPrefKeyDetails(asList(prefKey));
+		}
+		
+		private boolean isZero(double warn) {
+			return (int) warn == 0;
 		}
 	};
 	
@@ -146,8 +156,14 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
 			
 			String category = line.getColumn(COLUMN_CATEGORY);
-			if (!category.isEmpty())
-				node = node.getChild(category);
+			if (!category.isEmpty()) {
+				for (String cat : category.split("/|\\\\")) {
+					cat = cat.trim();
+					if (cat.isEmpty())
+						cat = "<no name>";
+					node = node.getChild(cat);
+				}
+			}
 			
 			Stats stats = node.getData();
 			stats.add(line);
