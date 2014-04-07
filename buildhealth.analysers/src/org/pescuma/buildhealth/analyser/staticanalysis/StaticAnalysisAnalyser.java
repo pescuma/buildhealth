@@ -88,11 +88,11 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				return "Should not have more than " + formatValue(warn) + " violations"
 						+ getPrefKeyDetails(asList(prefKey));
 		}
-		
-		private boolean isZero(double warn) {
-			return (int) warn == 0;
-		}
 	};
+	
+	private static boolean isZero(double warn) {
+		return (int) warn == 0;
+	}
 	
 	@Override
 	public String getName() {
@@ -179,10 +179,17 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	private void sumChildStatsAndComputeBuildStatuses(SimpleTree<Stats> tree, final Preferences prefs) {
 		tree.visit(new SimpleTree.Visitor<Stats>() {
 			Deque<Stats> parents = new ArrayDeque<Stats>();
+			Deque<StatsAndCount> acceptsNoErrors = new ArrayDeque<StatsAndCount>();
 			
 			@Override
 			public void preVisitNode(SimpleTree<Stats>.Node node) {
-				parents.push(node.getData());
+				Stats stats = node.getData();
+				
+				parents.push(stats);
+				
+				BuildStatusAndExplanation status = statusComputer.compute(1, prefs, stats.getNames());
+				if (status != null && status.status == BuildStatus.Problematic)
+					acceptsNoErrors.add(new StatsAndCount(stats, status));
 			}
 			
 			@Override
@@ -191,12 +198,52 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				
 				Stats stats = node.getData();
 				
-				stats.computeStatus(prefs);
+				if (!acceptsNoErrors.isEmpty()) {
+					if (stats.HasOwnViolation()) {
+						stats.setViolationStatus(acceptsNoErrors.peek().status);
+						
+						for (StatsAndCount sc : acceptsNoErrors)
+							sc.count++;
+					}
+				}
+				
+				if (popFromAcceptsNoErrorsAndTestIfShouldCompute(stats, prefs))
+					stats.computeStatus(prefs);
 				
 				if (!parents.isEmpty())
 					parents.peekFirst().addChild(stats);
 			}
+			
+			private boolean popFromAcceptsNoErrorsAndTestIfShouldCompute(Stats stats, final Preferences prefs) {
+				if (acceptsNoErrors.isEmpty())
+					return true;
+				
+				StatsAndCount top = acceptsNoErrors.peek();
+				if (top.stats == stats) {
+					acceptsNoErrors.pop();
+					
+					if (top.count < 1)
+						return true;
+					else
+						return false;
+					
+				} else {
+					return false;
+				}
+			}
+			
 		});
+	}
+	
+	private static class StatsAndCount {
+		final Stats stats;
+		final BuildStatusAndExplanation status;
+		int count = 0;
+		
+		StatsAndCount(Stats stats, BuildStatusAndExplanation status) {
+			this.stats = stats;
+			this.status = status;
+		}
 	}
 	
 	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs, int showAllFrameworks) {
@@ -270,7 +317,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		List<StaticAnalysisViolation> violations = new ArrayList<StaticAnalysisViolation>();
 		
 		for (Line line : stats.violations)
-			violations.add(toViolation(line));
+			violations.add(toViolation(stats, line));
 		
 		Collections.sort(violations, new Comparator<StaticAnalysisViolation>() {
 			@Override
@@ -301,7 +348,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		return violations;
 	}
 	
-	private StaticAnalysisViolation toViolation(Line line) {
+	private StaticAnalysisViolation toViolation(Stats stats, Line line) {
 		String language = getLanguage(line);
 		String framework = line.getColumn(COLUMN_FRAMEWORK);
 		List<Location> locations = Location.parse(line.getColumn(COLUMN_LOCATION));
@@ -311,14 +358,14 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		String details = line.getColumn(COLUMN_DETAILS);
 		String url = line.getColumn(COLUMN_URL);
 		
-		return new StaticAnalysisViolation(BuildStatus.Good, language, framework, locations, category, message,
-				severity, details, url, null);
+		return new StaticAnalysisViolation(stats.violationStatus.status, language, framework, locations, category,
+				message, severity, details, url, stats.violationStatus.explanation);
 	}
 	
 	private static class Stats extends TreeStats {
-		
 		final List<Line> violations = new ArrayList<Line>();
 		final Map<String, Framework> frameworks = new HashMap<String, Framework>();
+		BuildStatusAndExplanation violationStatus = new BuildStatusAndExplanation(BuildStatus.Good, null);
 		
 		Stats(String[] name) {
 			super(name);
@@ -362,6 +409,18 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 			}
 			
 			return result;
+		}
+		
+		public void setViolationStatus(BuildStatusAndExplanation status) {
+			this.violationStatus = status;
+		}
+		
+		public boolean HasOwnViolation() {
+			for (Line line : violations)
+				if (!isZero(line.getValue()))
+					return true;
+			
+			return false;
 		}
 	}
 	
