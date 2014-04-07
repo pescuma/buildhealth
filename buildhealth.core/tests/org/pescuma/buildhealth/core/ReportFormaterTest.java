@@ -41,7 +41,8 @@ public class ReportFormaterTest {
 				+ "    Unit tests: 0% [10.0 failed]\n" //
 				+ "\n" //
 				+ "Sources of problems:\n" //
-				+ "    Unit test failed [Unit tests: 0%]\n" //
+				+ "    Unit test failed:\n" //
+				+ "        Unit tests: 0% [10.0 failed]\n" //
 		, //
 				formater.format( //
 				new BuildReport(Problematic, "Build", "Problematic", asList(problematic), //

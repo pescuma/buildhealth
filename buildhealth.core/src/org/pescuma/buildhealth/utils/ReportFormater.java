@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.utils;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.pescuma.buildhealth.core.BuildReport;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
@@ -92,11 +93,17 @@ public class ReportFormater {
 		else
 			out.append("Sources of instability:\n");
 		
+		String lastProblemDescription = null;
+		
 		for (Report source : sourcesOfProblems) {
-			out.append(PREFIX);
-			out.append(source.getProblemDescription()).append(" [");
-			appendSummaryLine(source, false, out);
-			out.append("]");
+			String problemDescription = source.getProblemDescription();
+			if (!StringUtils.equals(lastProblemDescription, problemDescription)) {
+				out.append(PREFIX).append(problemDescription).append(":").append("\n");
+				lastProblemDescription = problemDescription;
+			}
+			
+			out.append(PREFIX).append(PREFIX);
+			appendSummaryLine(source, showDescriptions, out);
 			out.append("\n");
 		}
 	}
