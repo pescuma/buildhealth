@@ -80,7 +80,7 @@ public class BuildHealthAnalyserUtils {
 		/** Worst status including only first children with own status */
 		private BuildStatus status = BuildStatus.Good;
 		/** Worst status including all children */
-		protected BuildStatus statusWithChildren = BuildStatus.Good;
+		private BuildStatus statusWithChildren = BuildStatus.Good;
 		
 		protected TreeStats(String... names) {
 			this.names = names;
@@ -128,6 +128,13 @@ public class BuildHealthAnalyserUtils {
 				status = status.mergeWith(other.status);
 			
 			statusWithChildren = statusWithChildren.mergeWith(other.statusWithChildren);
+		}
+		
+		public void mergeChildStatus(BuildStatusAndExplanation other) {
+			if (!hasOwnStatus())
+				status = status.mergeWith(other.status);
+			
+			statusWithChildren = statusWithChildren.mergeWith(other.status);
 		}
 	}
 }
