@@ -278,6 +278,10 @@ function createLines(html, parentId, id, data, config) {
 	html.push('<tr data-tt-id="' + id + '"');
 	if (parentId != '')
 		html.push(' data-tt-parent-id="' + parentId + '"');
+	if (data['status'] == 'Problematic')
+		html.push(' class="problematic-line"');
+	else if (data['status'] == 'SoSo')
+		html.push(' class="soso-line"');
 	html.push('>');
 	
 	for(var i in config) {
