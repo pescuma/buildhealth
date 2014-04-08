@@ -44,6 +44,8 @@ public class FilenameToLanguage {
 		extensions.put("c", "C");
 		extensions.put("C", "C++");
 		extensions.put("cc", "C++");
+		extensions.put("vcproj", "C++");
+		extensions.put("vcxproj", "C++");
 		extensions.put("ccs", "CCS");
 		extensions.put("cfc", "ColdFusion CFScript");
 		extensions.put("cfm", "ColdFusion");
@@ -59,6 +61,7 @@ public class FilenameToLanguage {
 		extensions.put("config", "ASP.Net");
 		extensions.put("cpp", "C++");
 		extensions.put("cs", "C#");
+		extensions.put("csproj", "C#");
 		extensions.put("csh", "C Shell");
 		extensions.put("css", "CSS");
 		extensions.put("ctl", "Visual Basic");
@@ -135,7 +138,6 @@ public class FilenameToLanguage {
 		extensions.put("m", "MATLAB/Objective C/MUMPS");
 		extensions.put("mm", "Objective C++");
 		extensions.put("wdproj", "MSBuild scripts");
-		extensions.put("csproj", "MSBuild scripts");
 		extensions.put("mps", "MUMPS");
 		extensions.put("mth", "Teamcenter mth");
 		extensions.put("oscript", "LiveLink OScript");
@@ -208,6 +210,7 @@ public class FilenameToLanguage {
 		extensions.put("vb", "Visual Basic");
 		extensions.put("vbw", "Visual Basic");
 		extensions.put("vbs", "Visual Basic");
+		extensions.put("vbproj", "Visual Basic");
 		extensions.put("webinfo", "ASP.Net");
 		extensions.put("xml", "XML");
 		extensions.put("mxml", "MXML");
@@ -220,6 +223,8 @@ public class FilenameToLanguage {
 		extensions.put("y", "yacc");
 		extensions.put("yaml", "YAML");
 		extensions.put("yml", "YAML");
+		extensions.put("fs", "F#");
+		extensions.put("fsproj", "F#");
 	};
 	
 	private static final Map<String, String> filenames = new HashMap<String, String>();
