@@ -5,9 +5,13 @@ import static java.util.Arrays.*;
 import static org.apache.commons.io.FileUtils.*;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Map;
 
@@ -41,7 +45,8 @@ public class DiskBuildData implements BuildData {
 			try {
 				forceMkdir(file.getParentFile());
 				
-				FileWriter writer = closer.register(new FileWriter(file, !loadedFromDisk));
+				Writer writer = closer.register(new OutputStreamWriter(new FileOutputStream(file, !loadedFromDisk),
+						"UTF-8"));
 				CSVWriter csv = closer.register(CSV.newWriter(writer));
 				
 				for (Line line : data.getLines()) {
@@ -78,7 +83,7 @@ public class DiskBuildData implements BuildData {
 		try {
 			try {
 				
-				FileReader reader = closer.register(new FileReader(file));
+				Reader reader = closer.register(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				CSVReader csv = closer.register(CSV.newReader(reader));
 				
 				String[] line;

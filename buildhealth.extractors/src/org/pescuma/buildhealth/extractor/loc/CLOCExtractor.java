@@ -4,8 +4,7 @@ import static java.lang.Integer.*;
 import static java.lang.Math.*;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
@@ -22,8 +21,8 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
-		CSVReader reader = CSV.newReader(new InputStreamReader(input));
+	protected void extract(String path, Reader input, BuildData data) throws IOException {
+		CSVReader reader = CSV.newReader(input);
 		
 		String[] headers = null;
 		int languageCol = -1;

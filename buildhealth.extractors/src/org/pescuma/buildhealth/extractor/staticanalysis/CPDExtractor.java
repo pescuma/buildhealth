@@ -4,7 +4,7 @@ import static org.apache.commons.io.IOUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,8 +30,8 @@ public class CPDExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
-		LineIterator lines = lineIterator(input, "UTF-8");
+	protected void extract(String path, Reader input, BuildData data) throws IOException {
+		LineIterator lines = lineIterator(input);
 		
 		StringBuilder msg = null;
 		boolean startCandidate = true;

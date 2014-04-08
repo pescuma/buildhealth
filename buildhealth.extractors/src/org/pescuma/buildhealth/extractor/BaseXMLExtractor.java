@@ -4,6 +4,7 @@ import static com.google.common.base.Objects.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +38,11 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 		} catch (JDOMException e) {
 			throw new BuildDataExtractorException(e);
 		}
+	}
+	
+	@Override
+	protected final void extract(String path, Reader input, BuildData data) throws IOException {
+		throw new IllegalStateException("Do not use");
 	}
 	
 	protected abstract void extractDocument(String path, Document doc, BuildData data);

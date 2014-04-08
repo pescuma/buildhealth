@@ -1,8 +1,7 @@
 package org.pescuma.buildhealth.extractor;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Arrays;
 
 import org.pescuma.buildhealth.core.BuildData;
@@ -17,8 +16,8 @@ public class CSVExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
-		CSVReader reader = CSV.newReader(new InputStreamReader(input));
+	protected void extract(String path, Reader input, BuildData data) throws IOException {
+		CSVReader reader = CSV.newReader(input);
 		
 		String[] line;
 		while ((line = reader.readNext()) != null) {

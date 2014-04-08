@@ -8,8 +8,7 @@ import hudson.plugins.warnings.parser.AbstractWarningsParser;
 import hudson.plugins.warnings.parser.ParsingCanceledException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -20,9 +19,9 @@ import org.pescuma.buildhealth.utils.Location;
 
 class WarningsHelper {
 	
-	static void extractFromParser(String name, AbstractWarningsParser parser, InputStream input, BuildData data)
+	static void extractFromParser(String name, AbstractWarningsParser parser, Reader input, BuildData data)
 			throws IOException, ParsingCanceledException {
-		Collection<FileAnnotation> anns = parser.parse(new InputStreamReader(input));
+		Collection<FileAnnotation> anns = parser.parse(input);
 		
 		// Remove dups
 		anns = new HashSet<FileAnnotation>(anns);

@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis.console;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
@@ -14,7 +14,7 @@ public class MavenConsoleConsoleExtractor extends BaseBuildDataExtractor {
 	}
 
 	@Override
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, Reader input, BuildData data) throws IOException {
 		WarningsHelper.extractFromParser("Maven", new hudson.plugins.warnings.parser.MavenConsoleParser(),
 				input, data);
 	}

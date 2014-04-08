@@ -78,7 +78,7 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 	}
 	
 	private void extractTxt(String filename, InputStream input, BuildData data) throws IOException {
-		LineIterator lines = lineIterator(input, "UTF-8");
+		LineIterator lines = lineIterator(toReader(input));
 		
 		while (lines.hasNext()) {
 			String line = lines.next();
