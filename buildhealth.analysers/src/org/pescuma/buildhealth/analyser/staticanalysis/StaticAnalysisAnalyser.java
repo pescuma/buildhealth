@@ -412,7 +412,8 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		}
 		
 		public void setViolationStatus(BuildStatusAndExplanation status) {
-			this.violationStatus = status;
+			violationStatus = status;
+			statusWithChildren = statusWithChildren.mergeWith(status.status);
 		}
 		
 		public boolean HasOwnViolation() {
