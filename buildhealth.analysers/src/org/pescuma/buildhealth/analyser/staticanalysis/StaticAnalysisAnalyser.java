@@ -72,33 +72,9 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	public static final int COLUMN_DETAILS = 7;
 	public static final int COLUMN_URL = 8;
 	
-	private boolean usingSeverity;
-	
+	private final StaticAnalysisBuildStatusMessageFormater messageFormater = new StaticAnalysisBuildStatusMessageFormater();
 	private final BuildStatusFromThresholdComputerConsideringParents statusComputer = new BuildStatusFromThresholdComputerConsideringParents(
-			new BuildStatusMessageFormater() {
-				@Override
-				public String computeSoSoMessage(double good, String[] prefKey) {
-					if (isZero(good))
-						return "Instable if has any violations" + detailsFrom(prefKey);
-					else
-						return "Instable if has more than " + format1000(good) + " violations" + detailsFrom(prefKey);
-				}
-				
-				@Override
-				public String computeProblematicMessage(double warn, String[] prefKey) {
-					if (isZero(warn))
-						return "Should have no violations" + detailsFrom(prefKey);
-					else
-						return "Should not have more than " + format1000(warn) + " violations" + detailsFrom(prefKey);
-				}
-				
-				private String detailsFrom(String[] prefKey) {
-					if (usingSeverity)
-						return prefKeyWithSeverityToMessage(prefKey);
-					else
-						return prefKeyToMessage(prefKey);
-				}
-			});
+			messageFormater);
 	
 	private static boolean isZero(double warn) {
 		return (int) warn == 0;
@@ -338,15 +314,41 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		String details = line.getColumn(COLUMN_DETAILS);
 		String url = line.getColumn(COLUMN_URL);
 		
-		return new StaticAnalysisViolation(stats.violationStatus.status, language, framework, locations, category,
-				message, severity, details, url, stats.violationStatus.explanation);
+		return new StaticAnalysisViolation(stats.getStatusWithChildren(), language, framework, locations, category,
+				message, severity, details, url, stats.getProblemDescription());
+	}
+	
+	private static class StaticAnalysisBuildStatusMessageFormater implements BuildStatusMessageFormater {
+		boolean usingSeverity;
+		
+		@Override
+		public String computeSoSoMessage(double good, String[] prefKey) {
+			if (isZero(good))
+				return "Instable if has any violations" + detailsFrom(prefKey);
+			else
+				return "Instable if has more than " + format1000(good) + " violations" + detailsFrom(prefKey);
+		}
+		
+		@Override
+		public String computeProblematicMessage(double warn, String[] prefKey) {
+			if (isZero(warn))
+				return "Should have no violations" + detailsFrom(prefKey);
+			else
+				return "Should not have more than " + format1000(warn) + " violations" + detailsFrom(prefKey);
+		}
+		
+		private String detailsFrom(String[] prefKey) {
+			if (usingSeverity)
+				return prefKeyWithSeverityToMessage(prefKey);
+			else
+				return prefKeyToMessage(prefKey);
+		}
 	}
 	
 	private class Stats extends TreeStats {
 		Line violation;
 		final Map<String, Framework> frameworks = new HashMap<String, Framework>();
 		final Map<String, Severity> severities = new HashMap<String, Severity>();
-		BuildStatusAndExplanation violationStatus = new BuildStatusAndExplanation(BuildStatus.Good, null);
 		
 		Stats(String[] name) {
 			super(name);
@@ -380,54 +382,48 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 			String[] names = getNames();
 			double total = getTotal();
 			
-			BuildStatusAndExplanation status;
+			List<BuildStatusAndExplanation> statuses = new ArrayList<BuildStatusAndExplanation>();
 			
 			if (violation != null) {
+				statuses.add(computeChild(total, prefs, names));
+				
 				String severity = violation.getColumn(COLUMN_SEVERITY);
 				if (!severity.isEmpty())
-					status = computeChild(total, prefs, names, severity);
-				else
-					status = computeChild(total, prefs, names, null);
+					statuses.add(computeChild(total, prefs, names, severity));
 				
 			} else {
 				BuildStatus statusWithChildren = getStatusWithChildren();
 				
-				List<BuildStatusAndExplanation> statuses = new ArrayList<BuildStatusAndExplanation>();
-				statuses.add(computeParent(total, statusWithChildren, prefs, names, null));
+				statuses.add(computeParent(total, statusWithChildren, prefs, names));
 				for (Severity severity : severities.values())
 					statuses.add(computeParent(severity.total, statusWithChildren, prefs, names, severity.name));
-				
-				status = findWorse(statuses);
 			}
+			
+			BuildStatusAndExplanation status = findWorse(statuses);
 			
 			if (status != null)
 				setOwnStatus(status);
 		}
 		
 		private BuildStatusAndExplanation computeParent(double total, BuildStatus statusWithChildren,
-				Preferences prefs, String[] names, String severity) {
-			if (severity != null) {
-				usingSeverity = true;
-				try {
-					return statusComputer.computeParent(total, statusWithChildren, prefs, names, severity);
-				} finally {
-					usingSeverity = false;
-				}
-			} else {
-				return statusComputer.computeParent(total, statusWithChildren, prefs, names);
+				Preferences prefs, String[] names, String... severity) {
+			// TODO [pescuma] make this better
+			messageFormater.usingSeverity = (severity.length > 0);
+			try {
+				return statusComputer.computeParent(total, statusWithChildren, prefs, names, severity);
+			} finally {
+				messageFormater.usingSeverity = false;
 			}
 		}
 		
-		private BuildStatusAndExplanation computeChild(double total, Preferences prefs, String[] names, String severity) {
-			if (severity != null) {
-				usingSeverity = true;
-				try {
-					return statusComputer.computeChild(total, prefs, names, severity);
-				} finally {
-					usingSeverity = false;
-				}
-			} else {
-				return statusComputer.computeChild(total, prefs, names);
+		private BuildStatusAndExplanation computeChild(double total, Preferences prefs, String[] names,
+				String... severity) {
+			// TODO [pescuma] make this better
+			messageFormater.usingSeverity = (severity.length > 0);
+			try {
+				return statusComputer.computeChild(total, prefs, names, severity);
+			} finally {
+				messageFormater.usingSeverity = false;
 			}
 		}
 		

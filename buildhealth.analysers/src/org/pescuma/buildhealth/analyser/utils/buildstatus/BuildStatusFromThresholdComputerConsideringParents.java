@@ -3,7 +3,6 @@ package org.pescuma.buildhealth.analyser.utils.buildstatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.prefs.Preferences;
 
@@ -16,8 +15,8 @@ public class BuildStatusFromThresholdComputerConsideringParents {
 	}
 	
 	public BuildStatusAndExplanation computeParent(double total, BuildStatus childrenStatus, Preferences prefs,
-			String[] startKeys, String... moreKeys) {
-		prefs = computer.findPrefs(prefs, startKeys, moreKeys);
+			String[] keys, String... requiredSuffixKeys) {
+		prefs = computer.findPrefs(prefs, keys, requiredSuffixKeys);
 		
 		BuildStatusThresholds thresholds = computer.findThresholds(prefs);
 		if (thresholds == null)
@@ -35,9 +34,9 @@ public class BuildStatusFromThresholdComputerConsideringParents {
 		return (int) thresholds.warn == 0;
 	}
 	
-	public BuildStatusAndExplanation computeChild(double total, Preferences prefs, String[] startKeys,
-			String... moreKeys) {
-		Preferences thisPrefs = computer.findPrefs(prefs, startKeys, moreKeys);
+	public BuildStatusAndExplanation computeChild(double total, Preferences prefs, String[] keys,
+			String... requiredSuffixKeys) {
+		Preferences thisPrefs = computer.findPrefs(prefs, keys, requiredSuffixKeys);
 		
 		BuildStatusAndExplanation result = compute(total, thisPrefs);
 		if (result != null)
@@ -46,7 +45,7 @@ public class BuildStatusFromThresholdComputerConsideringParents {
 		if ((int) total == 0)
 			return null;
 		
-		Preferences parentPrefs = findParentPrefs(prefs, startKeys, moreKeys);
+		Preferences parentPrefs = findParentPrefs(prefs, keys, requiredSuffixKeys);
 		if (parentPrefs == null)
 			return null;
 		
@@ -63,10 +62,10 @@ public class BuildStatusFromThresholdComputerConsideringParents {
 		return new BuildStatusAndExplanation(status, message);
 	}
 	
-	private Preferences findParentPrefs(Preferences prefs, String[] startKeys, String[] moreKeys) {
+	private Preferences findParentPrefs(Preferences prefs, String[] keys, String[] requiredSuffixKeys) {
 		List<Preferences> result = new ArrayList<Preferences>();
 		
-		findPreferences(result, prefs, ArrayUtils.addAll(startKeys, moreKeys), 0);
+		findPreferences(result, prefs, keys, requiredSuffixKeys, 0);
 		
 		for (Preferences candidate : result) {
 			BuildStatusThresholds thresholds = computer.findThresholds(candidate);
@@ -77,14 +76,22 @@ public class BuildStatusFromThresholdComputerConsideringParents {
 		return null;
 	}
 	
-	private void findPreferences(List<Preferences> result, Preferences prefs, String[] keys, int index) {
+	private void findPreferences(List<Preferences> result, Preferences prefs, String[] keys,
+			String[] requiredSuffixKeys, int index) {
 		
-		if (keys.length < index) {
+		if (index < keys.length) {
 			if (prefs.hasChild(keys[index]))
-				findPreferences(result, prefs.child(keys[index]), keys, index++);
+				findPreferences(result, prefs.child(keys[index]), keys, requiredSuffixKeys, index + 1);
 			
 			if (prefs.hasChild("*"))
-				findPreferences(result, prefs.child("*"), keys, index++);
+				findPreferences(result, prefs.child("*"), keys, requiredSuffixKeys, index + 1);
+		}
+		
+		for (String key : requiredSuffixKeys) {
+			if (!prefs.hasChild(key))
+				return;
+			
+			prefs = prefs.child(key);
 		}
 		
 		result.add(prefs);
