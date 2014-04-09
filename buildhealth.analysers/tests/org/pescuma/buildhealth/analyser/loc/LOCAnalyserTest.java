@@ -110,10 +110,10 @@ public class LOCAnalyserTest extends BaseAnalyserTest {
 		Report report = createReport(Full);
 		
 		assertReport(new Report(Good, "Lines of code", "195", "6 comment, 123 source, 66 unknown, in 1 file", //
-				new Report(Good, "java", "195", //
-						new Report(Good, "Comment", "6"), //
-						new Report(Good, "Source", "123"), //
-						new Report(Good, "Unknown", "66"), //
+				new Report(Good, "java", "195", "6 comment, 123 source, 66 unknown, in 1 file", //
+						new Report(Good, "comment", "6"), //
+						new Report(Good, "source", "123"), //
+						new Report(Good, "unknown", "66"), //
 						new Report(Good, "Files", "1")) //
 				), report);
 	}
