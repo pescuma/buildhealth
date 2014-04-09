@@ -250,7 +250,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 	}
 	
 	@Test
-	public void testSeveityThreshold_GlobalDoesntMatch() {
+	public void testSeverityThreshold_GlobalDoesntMatch() {
 		create("Java", "Task", "Low", 1);
 		create("C++", "CppLint", "High", 3);
 		
@@ -264,6 +264,29 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 				), //
 				new Report(Good, "Java", "1", "", //
 						new Report(Good, "Task", "1") //
+				)//
+				), report);
+	}
+	
+	@Test
+	public void testProjects_Full() {
+		data.add(1, "Static analysis", "Java", "Task", "/src/a/a.txt>10");
+		data.add(2, "Static analysis", "Java", "Task", "/src/b/b.txt>11");
+		
+		projects.addProjectBasePath("P A", "/src/a");
+		projects.addProjectBasePath("P B", "/src/b");
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Good, "Static analysis", "3", "Task: 3", //
+				new Report(Good, "Java", "3", "", //
+						new Report(Good, "Task", "3", //
+								new Report(Good, "P A", "1", //
+										new Report(Good, "/src/a/a.txt", "10") //
+								), //
+								new Report(Good, "P B", "2", //
+										new Report(Good, "/src/b/b.txt", "11") //
+								)) //
 				)//
 				), report);
 	}

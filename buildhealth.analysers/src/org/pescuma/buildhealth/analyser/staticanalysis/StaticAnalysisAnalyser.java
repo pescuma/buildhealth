@@ -144,14 +144,14 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		for (Line line : data.getLines()) {
 			SimpleTree<Stats>.Node node = tree.getRoot();
 			
+			node = node.getChild(getLanguage(line));
+			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
+			
 			String location = line.getColumn(COLUMN_LOCATION);
 			
 			String project = projects.findProjectForFile(location);
 			if (project != null)
 				node = node.getChild(project);
-			
-			node = node.getChild(getLanguage(line));
-			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
 			
 			String category = line.getColumn(COLUMN_CATEGORY);
 			if (!category.isEmpty()) {

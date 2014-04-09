@@ -140,13 +140,13 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		for (Line line : data.getLines()) {
 			SimpleTree<Stats>.Node node = tree.getRoot();
 			
+			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
+			
 			String file = line.getColumn(COLUMN_FILE);
 			
 			String project = projects.findProjectForFile(file);
 			if (project != null)
 				node = node.getChild(project);
-			
-			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
 			
 			String type = line.getColumn(COLUMN_TYPE);
 			

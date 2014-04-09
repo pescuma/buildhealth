@@ -20,6 +20,7 @@ public abstract class BaseAnalyserTest {
 	protected Locale oldLocale;
 	protected BuildDataTable data;
 	protected Preferences prefs;
+	protected Projects projects;
 	private BuildHealthAnalyser analyser;
 	
 	protected void setUp(BuildHealthAnalyser analyser) {
@@ -29,6 +30,7 @@ public abstract class BaseAnalyserTest {
 		this.analyser = analyser;
 		this.data = new BuildDataTable();
 		this.prefs = new Preferences(new MemoryPreferencesStore());
+		this.projects = new Projects();
 	}
 	
 	@After
@@ -48,7 +50,7 @@ public abstract class BaseAnalyserTest {
 	}
 	
 	protected List<Report> computeReport(int opts) {
-		return analyser.computeReport(data, new Projects(), prefs, opts);
+		return analyser.computeReport(data, projects, prefs, opts);
 	}
 	
 	protected void assertReport(Report expected, Report actual) {
