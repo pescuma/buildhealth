@@ -24,6 +24,7 @@ import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 
 import com.google.common.base.Function;
 
@@ -80,7 +81,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 		data = data.filter("Unit test");
 		if (data.isEmpty())
 			return Collections.emptyList();

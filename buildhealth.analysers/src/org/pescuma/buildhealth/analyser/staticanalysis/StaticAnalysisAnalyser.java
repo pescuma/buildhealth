@@ -28,6 +28,7 @@ import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.buildhealth.utils.Location;
 
 import com.google.common.base.Function;
@@ -118,21 +119,21 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 		data = data.filter("Static analysis");
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
 		prefs = prefs.child("staticanalysis");
 		
-		SimpleTree<Stats> tree = buildTree(data);
+		SimpleTree<Stats> tree = buildTree(data, projects);
 		
 		sumChildStatsAndComputeBuildStatuses(tree, prefs);
 		
 		return asList(toReport(tree.getRoot(), getName(), prefs, 1));
 	}
 	
-	private SimpleTree<Stats> buildTree(BuildData data) {
+	private SimpleTree<Stats> buildTree(BuildData data, Projects projects) {
 		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
 			@Override
 			public Stats apply(String[] name) {
@@ -142,6 +143,12 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		
 		for (Line line : data.getLines()) {
 			SimpleTree<Stats>.Node node = tree.getRoot();
+			
+			String location = line.getColumn(COLUMN_LOCATION);
+			
+			String project = projects.findProjectForFile(location);
+			if (project != null)
+				node = node.getChild(project);
 			
 			node = node.getChild(getLanguage(line));
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
@@ -156,7 +163,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				}
 			}
 			
-			if (!line.getColumn(COLUMN_LOCATION).isEmpty())
+			if (!location.isEmpty())
 				node.addUnnamedChild().getData().setViolation(line);
 			else
 				node.getData().addViolation(line);

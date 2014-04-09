@@ -32,6 +32,7 @@ import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 
 import com.google.common.base.Function;
 
@@ -151,7 +152,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 		data = data.filter("Coverage");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -160,7 +161,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		
 		List<String> preferredCoverageTypes = getPreferredCoverageTypes(prefs);
 		
-		SimpleTree<Stats> tree = toTree(data);
+		SimpleTree<Stats> tree = buildTree(data, projects);
 		
 		sumChildStatsAndComputeBuildStatuses(tree, prefs, preferredCoverageTypes);
 		
@@ -180,7 +181,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		return preferredCoverageTypes;
 	}
 	
-	private SimpleTree<Stats> toTree(BuildData data) {
+	private SimpleTree<Stats> buildTree(BuildData data, Projects projects) {
 		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
 			@Override
 			public Stats apply(String[] name) {
@@ -190,6 +191,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		
 		for (Line line : data.getLines()) {
 			SimpleTree<Stats>.Node node = tree.getRoot();
+			
 			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
 			

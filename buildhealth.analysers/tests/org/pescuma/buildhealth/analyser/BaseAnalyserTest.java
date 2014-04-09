@@ -12,6 +12,7 @@ import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.data.BuildDataTable;
 import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.buildhealth.utils.ReportHelper;
 
 public abstract class BaseAnalyserTest {
@@ -40,10 +41,14 @@ public abstract class BaseAnalyserTest {
 	}
 	
 	protected Report createReport(int opts) {
-		List<Report> report = analyser.computeReport(data, prefs, opts);
+		List<Report> report = computeReport(opts);
 		ReportHelper.simplifyReport(report, opts);
 		assertEquals(1, report.size());
 		return report.get(0);
+	}
+	
+	protected List<Report> computeReport(int opts) {
+		return analyser.computeReport(data, new Projects(), prefs, opts);
 	}
 	
 	protected void assertReport(Report expected, Report actual) {
@@ -62,7 +67,7 @@ public abstract class BaseAnalyserTest {
 	
 	@Test
 	public void testNoData() {
-		assertEquals(0, analyser.computeReport(data, prefs, SummaryOnly).size());
+		assertEquals(0, computeReport(SummaryOnly).size());
 	}
 	
 }

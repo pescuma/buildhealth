@@ -6,6 +6,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 
 public interface BuildHealthAnalyser {
 	
@@ -25,7 +26,8 @@ public interface BuildHealthAnalyser {
 	List<BuildHealthPreference> getPreferences();
 	
 	/**
+	 * @param projects TODO
 	 * @param opts Flags from BuildHealth.ReportFlags
 	 */
-	List<Report> computeReport(BuildData data, Preferences prefs, int opts);
+	List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts);
 }

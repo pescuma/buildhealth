@@ -22,6 +22,7 @@ import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 
 /**
  * Expect the lines to be:
@@ -73,7 +74,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 		boolean summaryOnly = (opts & ReportFlags.SummaryOnly) != 0;
 		
 		List<Report> result = computeFromLOC(data, summaryOnly);

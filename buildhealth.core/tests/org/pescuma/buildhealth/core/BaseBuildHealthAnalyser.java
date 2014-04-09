@@ -8,6 +8,7 @@ import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 
 public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
 	
@@ -27,7 +28,7 @@ public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 		return null;
 	}
 	

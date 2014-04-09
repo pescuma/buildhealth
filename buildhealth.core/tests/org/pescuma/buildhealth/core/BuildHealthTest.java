@@ -12,6 +12,7 @@ import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.buildhealth.projects.Projects;
 
 public class BuildHealthTest {
 	
@@ -31,7 +32,7 @@ public class BuildHealthTest {
 	public void testNoDataWithAnalyser() {
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+			public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "", "", ""));
 			}
 		});
@@ -50,7 +51,7 @@ public class BuildHealthTest {
 		
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeReport(BuildData data, Preferences prefs, int opts) {
+			public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "Unit tests", "100%", data.filter("Unit test").sum()
 						+ " passed"));
 			}

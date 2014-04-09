@@ -32,6 +32,8 @@ import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.prefs.PreferencesStore;
 import org.pescuma.buildhealth.prefs.PropertiesPreferencesStore;
+import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.buildhealth.projects.ProjectsAnalyser;
 import org.pescuma.buildhealth.utils.ReportFormater;
 import org.pescuma.buildhealth.utils.ReportHelper;
 
@@ -189,8 +191,10 @@ public class BuildHealth {
 			}
 		});
 		
+		Projects projects = computeProjects();
+		
 		for (BuildHealthAnalyser analyser : analysers)
-			reports.addAll(analyser.computeReport(table, preferences, opts));
+			reports.addAll(analyser.computeReport(table, projects, preferences, opts));
 		
 		List<Report> sourcesOfProblems = null;
 		if ((opts & ReportFlags.ListSourcesOfProblems) != 0)
@@ -214,7 +218,9 @@ public class BuildHealth {
 		if (analyser == null)
 			return null;
 		
-		List<Report> reports = analyser.computeReport(table, preferences, opts);
+		Projects projects = computeProjects();
+		
+		List<Report> reports = analyser.computeReport(table, projects, preferences, opts);
 		
 		ReportHelper.simplifyReport(reports, opts);
 		
@@ -227,6 +233,10 @@ public class BuildHealth {
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
 		return new Report(status, analyser.getName(), status.name(), null, null, reports);
+	}
+
+	private Projects computeProjects() {
+		return new ProjectsAnalyser().computeProjects(table, preferences);
 	}
 	
 	private BuildHealthAnalyser findAnalyser(String name) {

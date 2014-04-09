@@ -146,7 +146,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 	public void testUnknownType() {
 		data.add(10, "Coverage", "java", "emma", "all", "unknown", "all");
 		
-		List<Report> reports = analyser.computeReport(data, prefs, SummaryOnly);
+		List<Report> reports = computeReport(SummaryOnly);
 		
 		assertEquals(0, reports.size());
 	}
@@ -155,7 +155,7 @@ public class CoverageAnalyserTest extends BaseAnalyserTest {
 	public void testOnlyCovered() {
 		data.add(10, "Coverage", "java", "emma", "all", "covered", "all");
 		
-		List<Report> reports = analyser.computeReport(data, prefs, SummaryOnly);
+		List<Report> reports = computeReport(SummaryOnly);
 		
 		assertEquals(0, reports.size());
 	}
