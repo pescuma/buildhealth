@@ -76,6 +76,9 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 				continue;
 			
 			File srcPath = new File(classpathFile.getParentFile(), path);
+			if (!srcPath.exists())
+				continue;
+			
 			for (File file : FileUtils.listFiles(srcPath, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
 				String language = FilenameToLanguage.detectLanguage(file.getName());
 				if (language == null)

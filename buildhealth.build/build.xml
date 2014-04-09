@@ -253,6 +253,7 @@
 
 		<buildhealth home="${reports.dir}/builhealth" report="true" notify="true">
 			<config key="coverage good" value="65" />
+			<projects-from-eclipse dir="${basedir}/.." />
 			<compute-loc>
 				<fileset dir="${basedir}/..">
 					<exclude name="**/bin/**" />
