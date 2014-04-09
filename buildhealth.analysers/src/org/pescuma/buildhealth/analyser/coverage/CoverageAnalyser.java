@@ -5,6 +5,7 @@ import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormaterHelper.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 
 import java.util.ArrayDeque;
@@ -22,9 +23,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusAndExplanation;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusFromThresholdComputer;
-import org.pescuma.buildhealth.analyser.utils.SimpleTree;
+import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.Report;
@@ -72,37 +74,36 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	
 	private boolean showDetailsInDescription = false;
 	
-	private final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(true) {
-		@Override
-		protected String formatValue(double value) {
-			return format1000(value) + "%";
-		}
-		
-		@Override
-		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return getName(prefKey) + " is unstable if less than " + formatValue(good);
-		}
-		
-		@Override
-		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return getName(prefKey) + " should not be less than " + formatValue(warn);
-		}
-		
-		private String getName(String[] prefKey) {
-			if (prefKey.length < 2)
-				return "Coverage";
-			
-			Deque<String> pieces = new LinkedList<String>(asList(prefKey));
-			
-			StringBuilder result = new StringBuilder();
-			result.append(StringUtils.capitalize(pieces.removeLast()));
-			result.append(" coverage");
-			result.append(getPrefKeyDetails(pieces));
-			
-			return result.toString();
-		}
-		
-	};
+	private final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(true,
+			new BuildStatusMessageFormater() {
+				@Override
+				public String computeSoSoMessage(double good, String[] prefKey) {
+					return getName(prefKey) + " is unstable if less than " + formatValue(good);
+				}
+				
+				@Override
+				public String computeProblematicMessage(double warn, String[] prefKey) {
+					return getName(prefKey) + " should not be less than " + formatValue(warn);
+				}
+				
+				private String formatValue(double value) {
+					return format1000(value) + "%";
+				}
+				
+				private String getName(String[] prefKey) {
+					if (prefKey.length < 2)
+						return "Coverage";
+					
+					Deque<String> pieces = new LinkedList<String>(asList(prefKey));
+					
+					StringBuilder result = new StringBuilder();
+					result.append(StringUtils.capitalize(pieces.removeLast()));
+					result.append(" coverage");
+					result.append(prefKeyToMessage(pieces));
+					
+					return result.toString();
+				}
+			});
 	
 	public void setShowDetailsInDescription(boolean showDetailsInDescription) {
 		this.showDetailsInDescription = showDetailsInDescription;

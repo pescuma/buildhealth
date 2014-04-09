@@ -1,22 +1,17 @@
 package org.pescuma.buildhealth.analyser.utils.buildstatus;
 
-import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
-
-import java.util.Collection;
-import java.util.Deque;
-import java.util.LinkedList;
-
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.prefs.Preferences;
 
 public class BuildStatusFromThresholdComputer {
 	
 	private final boolean biggerIsBetter;
+	private final BuildStatusMessageFormater formater;
 	
-	public BuildStatusFromThresholdComputer(boolean biggerIsBetter) {
+	public BuildStatusFromThresholdComputer(boolean biggerIsBetter, BuildStatusMessageFormater formater) {
 		this.biggerIsBetter = biggerIsBetter;
+		this.formater = formater;
 	}
 	
 	public BuildStatusAndExplanation compute(double total, Preferences prefs, String[] startKeys, String... moreKeys) {
@@ -81,50 +76,11 @@ public class BuildStatusFromThresholdComputer {
 			case Good:
 				return null;
 			case SoSo:
-				return computeSoSoMessage(thresholds.good, prefKey);
+				return formater.computeSoSoMessage(thresholds.good, prefKey);
 			case Problematic:
-				return computeProblematicMessage(thresholds.warn, prefKey);
+				return formater.computeProblematicMessage(thresholds.warn, prefKey);
 			default:
 				throw new IllegalArgumentException();
 		}
-	}
-	
-	protected String computeSoSoMessage(double good, String[] prefKey) {
-		return "Unstable if " + (biggerIsBetter ? "less" : "more") + " than " + formatValue(good);
-	}
-	
-	protected String computeProblematicMessage(double warn, String[] prefKey) {
-		return "Should not be " + (biggerIsBetter ? "less" : "more") + " than " + formatValue(warn);
-	}
-	
-	protected String formatValue(double value) {
-		return format1000(value);
-	}
-	
-	protected String getPrefKeyDetails(Collection<String> prefKey) {
-		if (prefKey.size() < 1)
-			return "";
-		
-		Deque<String> pieces = new LinkedList<String>(prefKey);
-		pieces.removeFirst();
-		
-		StringBuilder result = new StringBuilder();
-		
-		if (!pieces.isEmpty()) {
-			String val = pieces.removeFirst();
-			if (!val.equals("*"))
-				result.append(" in ").append(val);
-		}
-		
-		if (!pieces.isEmpty()) {
-			String val = pieces.removeFirst();
-			if (!val.equals("*"))
-				result.append(" measured by ").append(val);
-		}
-		
-		if (!pieces.isEmpty())
-			result.append(" in ").append(StringUtils.join(pieces, "."));
-		
-		return result.toString();
 	}
 }

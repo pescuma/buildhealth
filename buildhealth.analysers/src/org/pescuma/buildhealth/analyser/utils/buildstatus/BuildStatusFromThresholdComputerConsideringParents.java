@@ -7,25 +7,27 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.prefs.Preferences;
 
-public class BuildStatusFromThresholdComputerConsideringParents extends BuildStatusFromThresholdComputer {
+public class BuildStatusFromThresholdComputerConsideringParents {
 	
-	public BuildStatusFromThresholdComputerConsideringParents() {
-		super(false);
+	private final BuildStatusFromThresholdComputer computer;
+	
+	public BuildStatusFromThresholdComputerConsideringParents(BuildStatusMessageFormater formater) {
+		computer = new BuildStatusFromThresholdComputer(false, formater);
 	}
 	
 	public BuildStatusAndExplanation computeParent(double total, BuildStatus childrenStatus, Preferences prefs,
 			String[] startKeys, String... moreKeys) {
-		prefs = findPrefs(prefs, startKeys, moreKeys);
+		prefs = computer.findPrefs(prefs, startKeys, moreKeys);
 		
-		BuildStatusThresholds thresholds = findThresholds(prefs);
+		BuildStatusThresholds thresholds = computer.findThresholds(prefs);
 		if (thresholds == null)
 			return null;
 		
 		if (childrenStatus == BuildStatus.Problematic && reportChildrenInsteadOfParent(thresholds))
 			return null;
 		
-		BuildStatus status = computeStatus(total, thresholds);
-		String message = computeMessage(status, thresholds, prefs.getCurrentKey());
+		BuildStatus status = computer.computeStatus(total, thresholds);
+		String message = computer.computeMessage(status, thresholds, prefs.getCurrentKey());
 		return new BuildStatusAndExplanation(status, message);
 	}
 	
@@ -35,7 +37,7 @@ public class BuildStatusFromThresholdComputerConsideringParents extends BuildSta
 	
 	public BuildStatusAndExplanation computeChild(double total, Preferences prefs, String[] startKeys,
 			String... moreKeys) {
-		Preferences thisPrefs = findPrefs(prefs, startKeys, moreKeys);
+		Preferences thisPrefs = computer.findPrefs(prefs, startKeys, moreKeys);
 		
 		BuildStatusAndExplanation result = compute(total, thisPrefs);
 		if (result != null)
@@ -52,12 +54,12 @@ public class BuildStatusFromThresholdComputerConsideringParents extends BuildSta
 	}
 	
 	private BuildStatusAndExplanation compute(double total, Preferences prefs) {
-		BuildStatusThresholds thresholds = findThresholds(prefs);
+		BuildStatusThresholds thresholds = computer.findThresholds(prefs);
 		if (thresholds == null)
 			return null;
 		
-		BuildStatus status = computeStatus(total, thresholds);
-		String message = computeMessage(status, thresholds, prefs.getCurrentKey());
+		BuildStatus status = computer.computeStatus(total, thresholds);
+		String message = computer.computeMessage(status, thresholds, prefs.getCurrentKey());
 		return new BuildStatusAndExplanation(status, message);
 	}
 	
@@ -67,7 +69,7 @@ public class BuildStatusFromThresholdComputerConsideringParents extends BuildSta
 		findPreferences(result, prefs, ArrayUtils.addAll(startKeys, moreKeys), 0);
 		
 		for (Preferences candidate : result) {
-			BuildStatusThresholds thresholds = findThresholds(candidate);
+			BuildStatusThresholds thresholds = computer.findThresholds(candidate);
 			if (thresholds != null && reportChildrenInsteadOfParent(thresholds))
 				return candidate;
 		}

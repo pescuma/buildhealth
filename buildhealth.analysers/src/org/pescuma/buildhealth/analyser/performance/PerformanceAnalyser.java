@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.analyser.performance;
 
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormaterHelper.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,9 +14,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusAndExplanation;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusFromThresholdComputer;
-import org.pescuma.buildhealth.analyser.utils.SimpleTree;
+import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.Report;
@@ -53,45 +55,36 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	public static final String TYPE_RUNS_PER_S = "runsPerS";
 	
 	private static final BuildStatusFromThresholdComputer runsPerSStatusComputer = new BuildStatusFromThresholdComputer(
-			true) {
-		@Override
-		protected String formatValue(double value) {
-			return formatRunsPerS(value);
-		}
-		
-		@Override
-		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return "Instable if has less than " + formatValue(good) + getPrefKeyDetails(removeLast(prefKey));
-		}
-		
-		@Override
-		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return "Should not have less than " + formatValue(warn) + getPrefKeyDetails(removeLast(prefKey));
-		}
-		
-	};
+			true, new BuildStatusMessageFormater() {
+				@Override
+				public String computeSoSoMessage(double good, String[] prefKey) {
+					return "Instable if has less than " + formatRunsPerS(good) + prefKeyToMessage(removeLast(prefKey));
+				}
+				
+				@Override
+				public String computeProblematicMessage(double warn, String[] prefKey) {
+					return "Should not have less than " + formatRunsPerS(warn) + prefKeyToMessage(removeLast(prefKey));
+				}
+				
+			});
 	
-	private static final BuildStatusFromThresholdComputer msStatusComputer = new BuildStatusFromThresholdComputer(false) {
-		@Override
-		protected String formatValue(double value) {
-			return formatMs(value);
-		}
-		
-		@Override
-		protected String computeSoSoMessage(double good, String[] prefKey) {
-			return "Instable if takes more than " + formatValue(good) + " to run"
-					+ getPrefKeyDetails(removeLast(prefKey));
-		}
-		
-		@Override
-		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			return "Should not take more than " + formatValue(warn) + " to run"
-					+ getPrefKeyDetails(removeLast(prefKey));
-		}
-	};
+	private static final BuildStatusFromThresholdComputer msStatusComputer = new BuildStatusFromThresholdComputer(
+			false, new BuildStatusMessageFormater() {
+				@Override
+				public String computeSoSoMessage(double good, String[] prefKey) {
+					return "Instable if takes more than " + formatMs(good) + " to run"
+							+ prefKeyToMessage(removeLast(prefKey));
+				}
+				
+				@Override
+				public String computeProblematicMessage(double warn, String[] prefKey) {
+					return "Should not take more than " + formatMs(warn) + " to run"
+							+ prefKeyToMessage(removeLast(prefKey));
+				}
+			});
 	
 	private static List<String> removeLast(String[] prefKey) {
-		return asList((String[]) ArrayUtils.remove(prefKey, prefKey.length - 1));
+		return asList(ArrayUtils.remove(prefKey, prefKey.length - 1));
 	}
 	
 	@Override

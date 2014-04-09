@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.analyser.staticanalysis;
 
 import static java.util.Arrays.*;
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
+import static org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormaterHelper.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
 
@@ -17,9 +18,10 @@ import java.util.Map;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
+import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusAndExplanation;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusFromThresholdComputerConsideringParents;
-import org.pescuma.buildhealth.analyser.utils.SimpleTree;
+import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormater;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
@@ -72,36 +74,31 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	
 	private boolean usingSeverity;
 	
-	private final BuildStatusFromThresholdComputerConsideringParents statusComputer = new BuildStatusFromThresholdComputerConsideringParents() {
-		@Override
-		protected String computeSoSoMessage(double good, String[] prefKey) {
-			if (isZero(good))
-				return "Instable if has any violations" + detailsFrom(prefKey);
-			else
-				return "Instable if has more than " + formatValue(good) + " violations" + detailsFrom(prefKey);
-		}
-		
-		@Override
-		protected String computeProblematicMessage(double warn, String[] prefKey) {
-			if (isZero(warn))
-				return "Should have no violations" + detailsFrom(prefKey);
-			else
-				return "Should not have more than " + formatValue(warn) + " violations" + detailsFrom(prefKey);
-		}
-		
-		private String detailsFrom(String[] prefKey) {
-			List<String> prefs = new ArrayList<String>(asList(prefKey));
-			
-			if (prefs.size() > 1 && usingSeverity) {
-				String severity = prefs.remove(prefs.size() - 1);
-				return getPrefKeyDetails(prefs) + " with severity " + severity;
+	private final BuildStatusFromThresholdComputerConsideringParents statusComputer = new BuildStatusFromThresholdComputerConsideringParents(
+			new BuildStatusMessageFormater() {
+				@Override
+				public String computeSoSoMessage(double good, String[] prefKey) {
+					if (isZero(good))
+						return "Instable if has any violations" + detailsFrom(prefKey);
+					else
+						return "Instable if has more than " + format1000(good) + " violations" + detailsFrom(prefKey);
+				}
 				
-			} else {
-				return getPrefKeyDetails(prefs);
-			}
-			
-		}
-	};
+				@Override
+				public String computeProblematicMessage(double warn, String[] prefKey) {
+					if (isZero(warn))
+						return "Should have no violations" + detailsFrom(prefKey);
+					else
+						return "Should not have more than " + format1000(warn) + " violations" + detailsFrom(prefKey);
+				}
+				
+				private String detailsFrom(String[] prefKey) {
+					if (usingSeverity)
+						return prefKeyWithSeverityToMessage(prefKey);
+					else
+						return prefKeyToMessage(prefKey);
+				}
+			});
 	
 	private static boolean isZero(double warn) {
 		return (int) warn == 0;
