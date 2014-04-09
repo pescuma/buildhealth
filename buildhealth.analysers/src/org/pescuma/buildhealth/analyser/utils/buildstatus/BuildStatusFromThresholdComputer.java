@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.analyser.utils;
+package org.pescuma.buildhealth.analyser.utils.buildstatus;
 
 import static org.pescuma.buildhealth.analyser.utils.NumbersFormater.*;
 
@@ -20,29 +20,20 @@ public class BuildStatusFromThresholdComputer {
 	}
 	
 	public BuildStatusAndExplanation compute(double total, Preferences prefs, String[] startKeys, String... moreKeys) {
-		String[] keys = ArrayUtils.addAll(startKeys, moreKeys);
+		prefs = findPrefs(prefs, startKeys, moreKeys);
 		
-		prefs = findPrefs(prefs, keys);
-		
-		if (prefs.get("good", null) == null && prefs.get("warn", null) == null)
+		BuildStatusThresholds thresholds = findThresholds(prefs);
+		if (thresholds == null)
 			return null;
 		
-		double defVal = biggerIsBetter ? 0.0 : Double.MAX_VALUE;
-		double good = prefs.get("good", defVal);
-		double warn = prefs.get("warn", defVal);
-		
-		BuildStatus status = computeStatus(total, good, warn);
-		
-		String message;
-		if (status == BuildStatus.Good)
-			message = null;
-		else
-			message = computeMessage(status, good, warn, prefs.getCurrentKey());
-		
+		BuildStatus status = computeStatus(total, thresholds);
+		String message = computeMessage(status, thresholds, prefs.getCurrentKey());
 		return new BuildStatusAndExplanation(status, message);
 	}
 	
-	private Preferences findPrefs(Preferences prefs, String[] keys) {
+	Preferences findPrefs(Preferences prefs, String[] startKeys, String... moreKeys) {
+		String[] keys = ArrayUtils.addAll(startKeys, moreKeys);
+		
 		for (String key : keys) {
 			if (prefs.hasChild(key))
 				prefs = prefs.child(key);
@@ -57,29 +48,42 @@ public class BuildStatusFromThresholdComputer {
 		return prefs;
 	}
 	
-	private BuildStatus computeStatus(double total, double good, double warn) {
+	BuildStatusThresholds findThresholds(Preferences prefs) {
+		if (prefs.get("good", null) == null && prefs.get("warn", null) == null)
+			return null;
+		
+		double defVal = biggerIsBetter ? 0.0 : Double.MAX_VALUE;
+		double good = prefs.get("good", defVal);
+		double warn = prefs.get("warn", defVal);
+		
+		return new BuildStatusThresholds(good, warn);
+	}
+	
+	BuildStatus computeStatus(double total, BuildStatusThresholds thresholds) {
 		if (biggerIsBetter) {
-			if (total < warn)
+			if (total < thresholds.warn)
 				return BuildStatus.Problematic;
-			if (total < good)
+			if (total < thresholds.good)
 				return BuildStatus.SoSo;
 			return BuildStatus.Good;
 			
 		} else {
-			if (total > warn)
+			if (total > thresholds.warn)
 				return BuildStatus.Problematic;
-			if (total > good)
+			if (total > thresholds.good)
 				return BuildStatus.SoSo;
 			return BuildStatus.Good;
 		}
 	}
 	
-	private String computeMessage(BuildStatus status, double good, double warn, String[] prefKey) {
+	String computeMessage(BuildStatus status, BuildStatusThresholds thresholds, String[] prefKey) {
 		switch (status) {
+			case Good:
+				return null;
 			case SoSo:
-				return computeSoSoMessage(good, prefKey);
+				return computeSoSoMessage(thresholds.good, prefKey);
 			case Problematic:
-				return computeProblematicMessage(warn, prefKey);
+				return computeProblematicMessage(thresholds.warn, prefKey);
 			default:
 				throw new IllegalArgumentException();
 		}

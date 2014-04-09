@@ -17,8 +17,8 @@ import java.util.Map;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
-import org.pescuma.buildhealth.analyser.utils.BuildStatusAndExplanation;
-import org.pescuma.buildhealth.analyser.utils.BuildStatusFromThresholdComputer;
+import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusAndExplanation;
+import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusFromThresholdComputerConsideringParents;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.BuildData.Line;
@@ -70,23 +70,36 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	public static final int COLUMN_DETAILS = 7;
 	public static final int COLUMN_URL = 8;
 	
-	private static final BuildStatusFromThresholdComputer statusComputer = new BuildStatusFromThresholdComputer(false) {
+	private boolean usingSeverity;
+	
+	private final BuildStatusFromThresholdComputerConsideringParents statusComputer = new BuildStatusFromThresholdComputerConsideringParents() {
 		@Override
 		protected String computeSoSoMessage(double good, String[] prefKey) {
 			if (isZero(good))
-				return "Instable if has any violations" + getPrefKeyDetails(asList(prefKey));
+				return "Instable if has any violations" + detailsFrom(prefKey);
 			else
-				return "Instable if has more than " + formatValue(good) + " violations"
-						+ getPrefKeyDetails(asList(prefKey));
+				return "Instable if has more than " + formatValue(good) + " violations" + detailsFrom(prefKey);
 		}
 		
 		@Override
 		protected String computeProblematicMessage(double warn, String[] prefKey) {
 			if (isZero(warn))
-				return "Should have no violations" + getPrefKeyDetails(asList(prefKey));
+				return "Should have no violations" + detailsFrom(prefKey);
 			else
-				return "Should not have more than " + formatValue(warn) + " violations"
-						+ getPrefKeyDetails(asList(prefKey));
+				return "Should not have more than " + formatValue(warn) + " violations" + detailsFrom(prefKey);
+		}
+		
+		private String detailsFrom(String[] prefKey) {
+			List<String> prefs = new ArrayList<String>(asList(prefKey));
+			
+			if (prefs.size() > 1 && usingSeverity) {
+				String severity = prefs.remove(prefs.size() - 1);
+				return getPrefKeyDetails(prefs) + " with severity " + severity;
+				
+			} else {
+				return getPrefKeyDetails(prefs);
+			}
+			
 		}
 	};
 	
@@ -117,6 +130,11 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", "good"));
 		result.add(new BuildHealthPreference("Maximun munber of violations for a So So build", "<no limit>",
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", "warn"));
+		
+		result.add(new BuildHealthPreference("Maximun munber of violations for a Good build", "<no limit>",
+				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", "good"));
+		result.add(new BuildHealthPreference("Maximun munber of violations for a So So build", "<no limit>",
+				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", "warn"));
 		
 		result.add(new BuildHealthPreference("Maximun munber of violations for a Good build", "<no limit>",
 				"staticanalysis", ANY_VALUE_KEY_PREFIX + "<language>", ANY_VALUE_KEY_PREFIX + "<framework>", "good"));
@@ -165,8 +183,10 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				}
 			}
 			
-			Stats stats = node.getData();
-			stats.add(line);
+			if (!line.getColumn(COLUMN_LOCATION).isEmpty())
+				node.addUnnamedChild().getData().setViolation(line);
+			else
+				node.getData().addViolation(line);
 		}
 		
 		return tree;
@@ -179,17 +199,12 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	private void sumChildStatsAndComputeBuildStatuses(SimpleTree<Stats> tree, final Preferences prefs) {
 		tree.visit(new SimpleTree.Visitor<Stats>() {
 			Deque<Stats> parents = new ArrayDeque<Stats>();
-			Deque<StatsAndCount> acceptsNoErrors = new ArrayDeque<StatsAndCount>();
 			
 			@Override
 			public void preVisitNode(SimpleTree<Stats>.Node node) {
 				Stats stats = node.getData();
 				
 				parents.push(stats);
-				
-				BuildStatusAndExplanation status = statusComputer.compute(1, prefs, stats.getNames());
-				if (status != null && status.status == BuildStatus.Problematic)
-					acceptsNoErrors.add(new StatsAndCount(stats, status));
 			}
 			
 			@Override
@@ -198,63 +213,26 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				
 				Stats stats = node.getData();
 				
-				if (!acceptsNoErrors.isEmpty()) {
-					if (stats.HasOwnViolation()) {
-						stats.setViolationStatus(acceptsNoErrors.peek().status);
-						
-						for (StatsAndCount sc : acceptsNoErrors)
-							sc.count++;
-					}
-				}
-				
-				if (popFromAcceptsNoErrorsAndTestIfShouldCompute(stats, prefs))
-					stats.computeStatus(prefs);
+				stats.computeStatus(prefs);
 				
 				if (!parents.isEmpty())
 					parents.peekFirst().addChild(stats);
 			}
-			
-			private boolean popFromAcceptsNoErrorsAndTestIfShouldCompute(Stats stats, final Preferences prefs) {
-				if (acceptsNoErrors.isEmpty())
-					return true;
-				
-				StatsAndCount top = acceptsNoErrors.peek();
-				if (top.stats == stats) {
-					acceptsNoErrors.pop();
-					
-					if (top.count < 1)
-						return true;
-					else
-						return false;
-					
-				} else {
-					return false;
-				}
-			}
-			
 		});
-	}
-	
-	private static class StatsAndCount {
-		final Stats stats;
-		final BuildStatusAndExplanation status;
-		int count = 0;
-		
-		StatsAndCount(Stats stats, BuildStatusAndExplanation status) {
-			this.stats = stats;
-			this.status = status;
-		}
 	}
 	
 	private Report toReport(SimpleTree<Stats>.Node node, String name, Preferences prefs, int showAllFrameworks) {
 		Stats stats = node.getData();
 		
-		List<Report> children = new ArrayList<Report>();
+		if (stats.violation != null)
+			return toViolation(stats, stats.violation);
 		
-		children.addAll(toViolations(stats));
+		List<Report> children = new ArrayList<Report>();
 		
 		for (SimpleTree<Stats>.Node child : node.getChildren())
 			children.add(toReport(child, child.getName(), prefs, showAllFrameworks - 1));
+		
+		sort(children);
 		
 		String description = "";
 		if (showAllFrameworks > 0)
@@ -262,6 +240,46 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		
 		return new Report(node.isRoot() ? stats.getStatusWithChildren() : stats.getStatus(), name,
 				format1000(stats.getTotal()), description, stats.getProblemDescription(), children);
+	}
+	
+	private void sort(List<Report> children) {
+		Collections.sort(children, new Comparator<Report>() {
+			@Override
+			public int compare(Report o1, Report o2) {
+				boolean r1S = o1 instanceof StaticAnalysisViolation;
+				boolean r2S = o2 instanceof StaticAnalysisViolation;
+				
+				if (r1S != r2S)
+					return (r1S ? 1 : 0) - (r2S ? 1 : 0);
+				
+				if (!r1S)
+					return o1.getName().compareToIgnoreCase(o2.getName());
+				
+				StaticAnalysisViolation v1 = (StaticAnalysisViolation) o1;
+				StaticAnalysisViolation v2 = (StaticAnalysisViolation) o1;
+				
+				List<Location> ls1 = v1.getLocations();
+				List<Location> ls2 = v2.getLocations();
+				
+				if (ls1.isEmpty() != ls2.isEmpty())
+					return ls1.isEmpty() ? 0 : 1;
+				
+				if (!ls1.isEmpty() && !ls2.isEmpty()) {
+					Location l1 = ls1.get(0);
+					Location l2 = ls2.get(0);
+					
+					int cmp = l1.file.compareToIgnoreCase(l2.file);
+					if (cmp != 0)
+						return cmp;
+					
+					cmp = l1.beginLine - l2.beginLine;
+					if (cmp != 0)
+						return cmp;
+				}
+				
+				return v1.getMessage().compareToIgnoreCase(v2.getMessage());
+			}
+		});
 	}
 	
 	private String toDescription(Stats stats) {
@@ -313,41 +331,6 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		return languages;
 	}
 	
-	private List<StaticAnalysisViolation> toViolations(Stats stats) {
-		List<StaticAnalysisViolation> violations = new ArrayList<StaticAnalysisViolation>();
-		
-		for (Line line : stats.violations)
-			violations.add(toViolation(stats, line));
-		
-		Collections.sort(violations, new Comparator<StaticAnalysisViolation>() {
-			@Override
-			public int compare(StaticAnalysisViolation o1, StaticAnalysisViolation o2) {
-				List<Location> ls1 = o1.getLocations();
-				List<Location> ls2 = o2.getLocations();
-				
-				if (ls1.isEmpty() != ls2.isEmpty())
-					return ls1.isEmpty() ? 0 : 1;
-				
-				if (!ls1.isEmpty() && !ls2.isEmpty()) {
-					Location l1 = ls1.get(0);
-					Location l2 = ls2.get(0);
-					
-					int cmp = l1.file.compareToIgnoreCase(l2.file);
-					if (cmp != 0)
-						return cmp;
-					
-					cmp = l1.beginLine - l2.beginLine;
-					if (cmp != 0)
-						return cmp;
-				}
-				
-				return o1.getMessage().compareToIgnoreCase(o2.getMessage());
-			}
-		});
-		
-		return violations;
-	}
-	
 	private StaticAnalysisViolation toViolation(Stats stats, Line line) {
 		String language = getLanguage(line);
 		String framework = line.getColumn(COLUMN_FRAMEWORK);
@@ -362,34 +345,113 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				message, severity, details, url, stats.violationStatus.explanation);
 	}
 	
-	private static class Stats extends TreeStats {
-		final List<Line> violations = new ArrayList<Line>();
+	private class Stats extends TreeStats {
+		Line violation;
 		final Map<String, Framework> frameworks = new HashMap<String, Framework>();
+		final Map<String, Severity> severities = new HashMap<String, Severity>();
 		BuildStatusAndExplanation violationStatus = new BuildStatusAndExplanation(BuildStatus.Good, null);
 		
 		Stats(String[] name) {
 			super(name);
 		}
 		
-		void add(Line line) {
+		void addViolation(Line line) {
 			getFramework(getLanguage(line), line.getColumn(COLUMN_FRAMEWORK)).total += line.getValue();
 			
-			if (!line.getColumn(COLUMN_LOCATION).isEmpty())
-				violations.add(line);
+			String severity = line.getColumn(COLUMN_SEVERITY);
+			if (!severity.isEmpty())
+				getSeverity(severity).total += line.getValue();
+		}
+		
+		void setViolation(Line line) {
+			this.violation = line;
+			
+			addViolation(line);
 		}
 		
 		void addChild(Stats stats) {
 			for (Framework framework : stats.frameworks.values())
 				getFramework(framework.language, framework.framework).total += framework.total;
 			
+			for (Severity severity : stats.severities.values())
+				getSeverity(severity.name).total += severity.total;
+			
 			mergeChildStatus(stats);
 		}
 		
 		void computeStatus(Preferences prefs) {
-			BuildStatusAndExplanation status = statusComputer.compute(getTotal(), prefs, getNames());
+			String[] names = getNames();
+			double total = getTotal();
+			
+			BuildStatusAndExplanation status;
+			
+			if (violation != null) {
+				String severity = violation.getColumn(COLUMN_SEVERITY);
+				if (!severity.isEmpty())
+					status = computeChild(total, prefs, names, severity);
+				else
+					status = computeChild(total, prefs, names, null);
+				
+			} else {
+				BuildStatus statusWithChildren = getStatusWithChildren();
+				
+				List<BuildStatusAndExplanation> statuses = new ArrayList<BuildStatusAndExplanation>();
+				statuses.add(computeParent(total, statusWithChildren, prefs, names, null));
+				for (Severity severity : severities.values())
+					statuses.add(computeParent(severity.total, statusWithChildren, prefs, names, severity.name));
+				
+				status = findWorse(statuses);
+			}
 			
 			if (status != null)
 				setOwnStatus(status);
+		}
+		
+		private BuildStatusAndExplanation computeParent(double total, BuildStatus statusWithChildren,
+				Preferences prefs, String[] names, String severity) {
+			if (severity != null) {
+				usingSeverity = true;
+				try {
+					return statusComputer.computeParent(total, statusWithChildren, prefs, names, severity);
+				} finally {
+					usingSeverity = false;
+				}
+			} else {
+				return statusComputer.computeParent(total, statusWithChildren, prefs, names);
+			}
+		}
+		
+		private BuildStatusAndExplanation computeChild(double total, Preferences prefs, String[] names, String severity) {
+			if (severity != null) {
+				usingSeverity = true;
+				try {
+					return statusComputer.computeChild(total, prefs, names, severity);
+				} finally {
+					usingSeverity = false;
+				}
+			} else {
+				return statusComputer.computeChild(total, prefs, names);
+			}
+		}
+		
+		private BuildStatusAndExplanation findWorse(List<BuildStatusAndExplanation> statuses) {
+			BuildStatusAndExplanation result = null;
+			
+			for (BuildStatusAndExplanation status : statuses) {
+				if (status == null)
+					continue;
+				
+				else if (status.status == BuildStatus.Problematic)
+					return status;
+				
+				else if (result == null)
+					result = status;
+				
+				else if (result.status == BuildStatus.Good)
+					result = status;
+			}
+			
+			return result;
 		}
 		
 		double getTotal() {
@@ -411,17 +473,13 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 			return result;
 		}
 		
-		public void setViolationStatus(BuildStatusAndExplanation status) {
-			violationStatus = status;
-			mergeChildStatus(status);
-		}
-		
-		public boolean HasOwnViolation() {
-			for (Line line : violations)
-				if (!isZero(line.getValue()))
-					return true;
-			
-			return false;
+		Severity getSeverity(String name) {
+			Severity result = severities.get(name);
+			if (result == null) {
+				result = new Severity(name);
+				severities.put(name, result);
+			}
+			return result;
 		}
 	}
 	
@@ -433,6 +491,15 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 		Framework(String language, String framwork) {
 			this.language = language;
 			this.framework = framwork;
+		}
+	}
+	
+	private static class Severity {
+		final String name;
+		double total = 0;
+		
+		public Severity(String name) {
+			this.name = name;
 		}
 	}
 	

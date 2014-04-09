@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.analyser.utils;
+package org.pescuma.buildhealth.analyser.utils.buildstatus;
 
 import org.pescuma.buildhealth.core.BuildStatus;
 

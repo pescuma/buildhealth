@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusAndExplanation;
 import org.pescuma.buildhealth.core.BuildStatus;
 
 import com.google.common.base.Predicate;
@@ -68,7 +69,7 @@ public class BuildHealthAnalyserUtils {
 				public boolean apply(SimpleTree<T>.Node node) {
 					T data = node.getData();
 					return data.getStatusWithChildren() == BuildStatus.Good
-							|| (!node.isRoot() && !data.hasOwnStatus() && node.getChildren().isEmpty());
+							|| (!node.isRoot() && !data.hasOwnStatus() && node.hasChildren());
 				}
 			});
 	}

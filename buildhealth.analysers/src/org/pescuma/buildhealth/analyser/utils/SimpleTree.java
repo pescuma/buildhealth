@@ -1,8 +1,10 @@
 package org.pescuma.buildhealth.analyser.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -52,6 +54,7 @@ public class SimpleTree<T> {
 		private final String[] name;
 		private T data;
 		private final Map<String, Node> children = new TreeMap<String, Node>(String.CASE_INSENSITIVE_ORDER);
+		private final List<Node> unnamedChildren = new ArrayList<Node>();
 		
 		/** Create the root node */
 		private Node() {
@@ -63,6 +66,11 @@ public class SimpleTree<T> {
 			this.name = Arrays.copyOf(path, path.length + 1);
 			this.name[path.length] = name;
 			this.data = factory.apply(this.name);
+		}
+		
+		private Node(String[] name) {
+			this.name = name;
+			this.data = factory.apply(name);
 		}
 		
 		public boolean isRoot() {
@@ -85,11 +93,13 @@ public class SimpleTree<T> {
 		}
 		
 		public Collection<Node> getChildren() {
-			return children.values();
-		}
-		
-		public Iterator<Node> getChildrenIterator() {
-			return children.values().iterator();
+			if (unnamedChildren == null)
+				return children.values();
+			else {
+				List<Node> result = new ArrayList<Node>(children.values());
+				result.addAll(unnamedChildren);
+				return result;
+			}
 		}
 		
 		public boolean hasChild(String... names) {
@@ -126,10 +136,19 @@ public class SimpleTree<T> {
 			return result;
 		}
 		
+		public Node addUnnamedChild() {
+			Node node = new Node(this.name);
+			unnamedChildren.add(node);
+			return node;
+		}
+		
 		public void visit(Visitor<T> visitor) {
 			visitor.preVisitNode(this);
 			
 			for (Node child : children.values())
+				child.visit(visitor);
+			
+			for (Node child : unnamedChildren)
 				child.visit(visitor);
 			
 			visitor.posVisitNode(this);
@@ -141,7 +160,17 @@ public class SimpleTree<T> {
 				if (predicate.apply(node))
 					it.remove();
 			}
+			for (Iterator<Node> it = unnamedChildren.iterator(); it.hasNext();) {
+				Node node = it.next();
+				if (predicate.apply(node))
+					it.remove();
+			}
 		}
+		
+		public boolean hasChildren() {
+			return !children.isEmpty() || !unnamedChildren.isEmpty();
+		}
+		
 	}
 	
 	public static class Visitor<T> {

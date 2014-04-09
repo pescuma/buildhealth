@@ -20,7 +20,11 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 	}
 	
 	private void create(String language, String type, int count) {
-		data.add(count, "Static analysis", language, type);
+		create(language, type, "", count);
+	}
+	
+	private void create(String language, String type, String severity, int count) {
+		data.add(count, "Static analysis", language, type, "", "", "", severity);
 	}
 	
 	@Test
@@ -198,6 +202,65 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 						new Report(SoSo, "CppLint", "3", null,
 								"Instable if has more than 1 violations in C++ measured by CppLint"), //
 						new Report(Good, "Task", "1") //
+				), //
+				new Report(Good, "Java", "1", "", //
+						new Report(Good, "Task", "1") //
+				)//
+				), report);
+	}
+	
+	@Test
+	public void testSeveityThreshold_Simple() {
+		create("Java", "Task", "Low", 1);
+		create("C++", "CppLint", "High", 3);
+		
+		prefs.child("staticanalysis").set("warn", 2);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Problematic, "Static analysis", "4", "C++: CppLint: 3; Java: Task: 1", //
+				"Should not have more than 2 violations", //
+				new Report(Good, "C++", "3", "", //
+						new Report(Good, "CppLint", "3") //
+				), //
+				new Report(Good, "Java", "1", "", //
+						new Report(Good, "Task", "1") //
+				)//
+				), report);
+	}
+	
+	@Test
+	public void testSeveityThreshold_GlobalMatches() {
+		create("Java", "Task", "Low", 1);
+		create("C++", "CppLint", "High", 3);
+		
+		prefs.child("staticanalysis", "High").set("warn", 2);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Problematic, "Static analysis", "4", "C++: CppLint: 3; Java: Task: 1", //
+				"Should not have more than 2 violations with severity High", //
+				new Report(Good, "C++", "3", "", //
+						new Report(Good, "CppLint", "3") //
+				), //
+				new Report(Good, "Java", "1", "", //
+						new Report(Good, "Task", "1") //
+				)//
+				), report);
+	}
+	
+	@Test
+	public void testSeveityThreshold_GlobalDoesntMatch() {
+		create("Java", "Task", "Low", 1);
+		create("C++", "CppLint", "High", 3);
+		
+		prefs.child("staticanalysis", "Low").set("warn", 2);
+		
+		Report report = createReport(Full);
+		
+		assertReport(new Report(Good, "Static analysis", "4", "C++: CppLint: 3; Java: Task: 1", //
+				new Report(Good, "C++", "3", "", //
+						new Report(Good, "CppLint", "3") //
 				), //
 				new Report(Good, "Java", "1", "", //
 						new Report(Good, "Task", "1") //
