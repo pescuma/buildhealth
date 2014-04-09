@@ -1,4 +1,4 @@
-package org.pescuma.buildhealth.extractor.project;
+package org.pescuma.buildhealth.extractor.projects;
 
 import static org.pescuma.buildhealth.extractor.BaseXMLExtractor.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
