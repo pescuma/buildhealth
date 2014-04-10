@@ -88,6 +88,9 @@ public class DiskBuildData implements BuildData {
 				
 				String[] line;
 				while ((line = csv.readNext()) != null) {
+					if (line.length == 1 && line[0].trim().isEmpty())
+						continue;
+					
 					double val = Double.parseDouble(line[0]);
 					String[] info = copyOfRange(line, 1, line.length);
 					data.add(val, info);
