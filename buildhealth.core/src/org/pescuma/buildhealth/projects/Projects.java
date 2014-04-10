@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.projects;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,25 +18,59 @@ public class Projects {
 		if (isEmpty())
 			return null;
 		
-		Set<String> projects = findProjectsForFile(filename);
+		Set<Project> projects = findProjectsForFile(filename);
 		
 		if (projects.size() == 1)
-			return projects.iterator().next();
+			return projects.iterator().next().name;
 		else
 			return "Unknown project";
 	}
 	
-	private Set<String> findProjectsForFile(String filename) {
+	private Set<Project> findProjectsForFile(String filename) {
 		filename = fixPath(filename);
 		
-		Set<String> result = new HashSet<String>();
+		Set<Project> result = new HashSet<Project>();
 		
 		for (Project proj : projects.values()) {
+			if (proj.files.contains(filename))
+				result.add(proj);
+		}
+		
+		if (!result.isEmpty())
+			return result;
+		
+		// Try by path
+		
+		for (Project proj : projects.values())
 			if (proj.isInside(filename))
-				result.add(proj.name);
+				result.add(proj);
+		
+		if (result.size() < 2)
+			return result;
+		
+		for (Iterator<Project> it = result.iterator(); it.hasNext();) {
+			Project proj = it.next();
+			
+			String projBasePath = proj.findBasePath(filename);
+			
+			if (hasABetterProject(projBasePath, filename, result)) {
+				it.remove();
+				continue;
+			}
 		}
 		
 		return result;
+	}
+	
+	private boolean hasABetterProject(String projBasePath, String filename, Set<Project> result) {
+		for (Project other : result) {
+			String otherBasePath = other.findBasePath(filename);
+			
+			if (otherBasePath.length() > projBasePath.length() && otherBasePath.startsWith(projBasePath))
+				return true;
+		}
+		
+		return false;
 	}
 	
 	public void addProjectBasePath(String project, String basePath) {
@@ -72,16 +107,23 @@ public class Projects {
 			this.name = name;
 		}
 		
-		boolean isInside(String filename) {
-			if (files.contains(filename))
-				return true;
-			
+		String findBasePath(String filename) {
 			for (String base : basePaths)
 				if (filename.startsWith(base))
-					return true;
+					return base;
 			
-			return false;
+			return null;
 		}
+		
+		boolean isInside(String filename) {
+			return findBasePath(filename) != null;
+		}
+		
+		@Override
+		public String toString() {
+			return "Project [" + name + "]";
+		}
+		
 	}
 	
 }
