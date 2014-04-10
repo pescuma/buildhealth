@@ -1,10 +1,9 @@
 package org.pescuma.buildhealth.computer.loc;
 
-import static org.apache.commons.io.IOUtils.closeQuietly;
-import static org.apache.commons.io.IOUtils.copy;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.isKnownFileType;
-import static org.pescuma.buildhealth.utils.FileHelper.deleteFile;
-import static org.pescuma.buildhealth.utils.FileHelper.getCanonicalFile;
+import static java.lang.Math.*;
+import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
+import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,13 +43,18 @@ public class LOCComputer implements BuildDataComputer {
 			
 			cloc = extractCLOCToTmp();
 			fileList = createFileList();
-			out = new File(folder, "cloc-" + new Random().nextInt() + ".csv");
+			
+			Random random = new Random();
+			do {
+				out = new File(folder, "cloc-" + abs(random.nextInt()) + ".csv");
+			} while (out.exists());
 			
 			if (cloc.getName().endsWith(".pl"))
-				run("perl", toPath(cloc), "--by-file", "--csv", "--list-file=" + toPath(fileList), "--out="
-						+ toPath(out));
+				run("perl", toPath(cloc), "--by-file", "--csv", "--skip-uniqueness", "--list-file=" + toPath(fileList),
+						"--out=" + toPath(out), "--progress-rate=0");
 			else
-				run(toPath(cloc), "--by-file", "--csv", "--list-file=" + toPath(fileList), "--out=" + toPath(out));
+				run(toPath(cloc), "--by-file", "--csv", "--skip-uniqueness", "--list-file=" + toPath(fileList),
+						"--out=" + toPath(out), "--progress-rate=0");
 			
 			tracker.onFileOutputCreated(out);
 			
