@@ -7,6 +7,7 @@ import hudson.plugins.analysis.util.model.Priority;
 import hudson.plugins.warnings.parser.AbstractWarningsParser;
 import hudson.plugins.warnings.parser.ParsingCanceledException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collection;
@@ -28,8 +29,10 @@ class WarningsHelper {
 		
 		for (FileAnnotation ann : anns) {
 			LineRange r = ann.getLineRanges().iterator().next();
-			Location loc = Location.create(ann.getFileName(), r.getStart(), ann.getColumnStart(), r.getEnd(),
-					ann.getColumnEnd());
+			String fileName = ann.getFileName().replace('/', File.separatorChar);
+			
+			Location loc = Location
+					.create(fileName, r.getStart(), ann.getColumnStart(), r.getEnd(), ann.getColumnEnd());
 			
 			String category = (ann.getPriority() == Priority.HIGH ? "Compiler errors" : "Compiler warnings");
 			
@@ -38,8 +41,8 @@ class WarningsHelper {
 			
 			String message = unescapeHTML(ann.getMessage());
 			
-			data.add(1, "Static analysis", detectLanguage(ann.getFileName()), name, Location.toFormatedString(loc),
-					category, message, toSeverity(ann.getPriority()));
+			data.add(1, "Static analysis", detectLanguage(fileName), name, Location.toFormatedString(loc), category,
+					message, toSeverity(ann.getPriority()));
 		}
 	}
 	
