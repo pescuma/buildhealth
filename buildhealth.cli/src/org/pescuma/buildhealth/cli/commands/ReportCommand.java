@@ -20,12 +20,20 @@ public class ReportCommand extends BuildHealthCliCommand {
 	@Option(name = { "-h", "--highlight-problems" }, title = "Highlight problems", description = "Show problems first, and show then always")
 	public boolean highlightProblems;
 	
+	@Option(name = "--color", title = "color", description = "Configuration of output colors (auto, no, ansi)")
+	public String color;
+	
 	@Arguments(title = "category", description = "Category to provide a detailed report")
 	public String category;
 	
 	@Override
 	public void execute() {
 		Report report = createReport();
+		
+		if ("ansi".equals(color))
+			System.setProperty("jansi.passthrough", "true");
+		else if ("no".equals(color))
+			Ansi.setEnabled(false);
 		
 		final Ansi ansi = Ansi.ansi();
 		
