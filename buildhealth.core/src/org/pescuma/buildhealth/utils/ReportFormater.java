@@ -41,7 +41,14 @@ public class ReportFormater {
 	
 	private void appendSummaryLine(Report report, boolean withDescription, Outputer out) {
 		if (report instanceof BuildReport) {
-			out.append("Your build is ").append(createTitle(report.getStatus()), report.getStatus());
+			BuildReport br = (BuildReport) report;
+			if ("Build".equals(br.getName()))
+				out.append("Your build");
+			else
+				out.append(br.getName());
+			
+			out.append(" is ");
+			out.append(createTitle(report.getStatus()), report.getStatus());
 			
 		} else {
 			out.append(report.getName());
@@ -70,12 +77,19 @@ public class ReportFormater {
 			out.append("\n");
 			
 		} else {
+			BuildReport br = (report instanceof BuildReport ? (BuildReport) report : null);
+			if (br != null && StringUtils.isNotEmpty(br.getPrefix()))
+				out.append(br.getPrefix().replace("\\n", "\n")).append("\n").append("\n");
+			
 			appendSummaryLine(report, showDescriptions, out);
 			out.append("\n");
 			
 			append(PREFIX, report.getChildren(), out);
 			
 			appendSourcesOfProblems(report, out);
+			
+			if (br != null && StringUtils.isNotEmpty(br.getSuffix()))
+				out.append("\n").append(br.getSuffix().replace("\\n", "\n"));
 		}
 	}
 	
