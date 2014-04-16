@@ -2,6 +2,7 @@ package org.pescuma.buildhealth.cli.commands.config;
 
 import static java.lang.Math.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
+import io.airlift.command.Arguments;
 import io.airlift.command.Command;
 
 import java.util.Arrays;
@@ -17,9 +18,8 @@ import org.pescuma.buildhealth.prefs.Preferences;
 @Command(name = "list", description = "List report preferences")
 public class ListConfigCommand extends BuildHealthCliCommand {
 	
-	// TODO
-	// @Arguments(title = "key", description = "only show keys starting with this value")
-	// public List<String> args;
+	@Arguments(title = "key", description = "only show keys starting with this value")
+	public List<String> args;
 	
 	@Override
 	public void execute() {
@@ -39,6 +39,9 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			String[] key = entry.getKey();
 			BuildHealthPreference bhp = entry.getValue();
 			
+			if (!startsWith(key, args))
+				continue;
+			
 			if (lastRoot != null && !key[0].equals(lastRoot))
 				out.append("\n");
 			lastRoot = key[0];
@@ -53,6 +56,24 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			out.append("No preferences set");
 		
 		System.out.print(out.toString());
+	}
+	
+	private boolean startsWith(String[] key, List<String> prefix) {
+		if (prefix == null)
+			return true;
+		
+		int size = prefix.size();
+		if (size < 1)
+			return true;
+		
+		if (key.length < size)
+			return false;
+		
+		for (int i = 0; i < size; i++)
+			if (!prefix.get(i).equals(key[i]))
+				return false;
+		
+		return true;
 	}
 	
 	private BuildHealthPreference findKnownPreference(List<BuildHealthPreference> knownPreferences, String[] key) {
