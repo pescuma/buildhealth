@@ -1,5 +1,6 @@
 package org.pescuma.buildhealth.prefs;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PreferencesStore {
@@ -13,5 +14,7 @@ public interface PreferencesStore {
 	void removeChildren(String... key);
 	
 	List<String[]> getKeys(String... key);
+	
+	Collection<String> getChildrenKeys(String... key);
 	
 }

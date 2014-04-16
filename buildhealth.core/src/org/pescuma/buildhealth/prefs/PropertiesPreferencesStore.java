@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -93,6 +96,20 @@ public class PropertiesPreferencesStore implements DiskPreferencesStore {
 		}
 		
 		return Collections.unmodifiableList(result);
+	}
+	
+	@Override
+	public Collection<String> getChildrenKeys(String... key) {
+		Set<String> result = new HashSet<String>();
+		
+		String sks = toSimpleKey(key) + SEPARATOR;
+		for (Iterator<Object> it = props().keySet().iterator(); it.hasNext();) {
+			String candidate = (String) it.next();
+			if (key.length == 0 || candidate.startsWith(sks))
+				result.add(candidate.split("\\" + SEPARATOR)[key.length]);
+		}
+		
+		return Collections.unmodifiableSet(result);
 	}
 	
 	@Override

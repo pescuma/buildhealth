@@ -3,11 +3,14 @@ package org.pescuma.buildhealth.prefs;
 import static java.lang.Math.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class MemoryPreferencesStore implements PreferencesStore {
@@ -75,5 +78,18 @@ public class MemoryPreferencesStore implements PreferencesStore {
 				return o1.length - o2.length;
 			}
 		};
+	}
+	
+	@Override
+	public Collection<String> getChildrenKeys(String... key) {
+		Set<String> result = new HashSet<String>();
+		
+		for (Iterator<String[]> it = data.keySet().iterator(); it.hasNext();) {
+			String[] candidate = it.next();
+			if (startsWith(candidate, key) && candidate.length > key.length)
+				result.add(candidate[key.length]);
+		}
+		
+		return Collections.unmodifiableSet(result);
 	}
 }

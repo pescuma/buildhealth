@@ -40,7 +40,7 @@ public class GrowlNotifier implements BuildHealthNotifier {
 	public List<BuildHealthPreference> getPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
-		result.add(new BuildHealthPreference("Growl server name", "true", "notification", "growl", "enabled"));
+		result.add(new BuildHealthPreference("Growl notification enabled", "true", "notification", "growl", "enabled"));
 		result.add(new BuildHealthPreference("Growl server name", "localhost", "notification", "growl", "server"));
 		result.add(new BuildHealthPreference("Growl server port", "23053", "notification", "growl", "port"));
 		

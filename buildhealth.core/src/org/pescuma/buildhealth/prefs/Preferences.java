@@ -1,5 +1,6 @@
 package org.pescuma.buildhealth.prefs;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -112,11 +113,15 @@ public class Preferences {
 	}
 	
 	public List<String[]> getKeys() {
-		return store.getKeys();
+		return store.getKeys(currentKey);
 	}
 	
 	public String[] getCurrentKey() {
 		return currentKey;
+	}
+	
+	public Collection<String> getChildrenKeys() {
+		return store.getChildrenKeys(currentKey);
 	}
 	
 }

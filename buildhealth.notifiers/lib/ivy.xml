@@ -14,6 +14,9 @@
 	</publications>
 
 	<dependencies>
+		<dependency org="org.igniterealtime.smack" name="smack" rev="3.2.1" />
+		<dependency org="org.igniterealtime.smack" name="smackx" rev="3.2.1" />
+
 		<dependency org="org.kohsuke.metainf-services" name="metainf-services" rev="1.5" conf="compile" />
 
 		<dependency org="junit" name="junit" rev="4.11" conf="compile" />

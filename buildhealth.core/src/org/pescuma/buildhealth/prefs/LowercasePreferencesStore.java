@@ -1,6 +1,7 @@
 package org.pescuma.buildhealth.prefs;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class LowercasePreferencesStore implements PreferencesStore {
@@ -41,6 +42,11 @@ public class LowercasePreferencesStore implements PreferencesStore {
 	@Override
 	public List<String[]> getKeys(String... key) {
 		return next.getKeys(toLower(key));
+	}
+	
+	@Override
+	public Collection<String> getChildrenKeys(String... key) {
+		return next.getChildrenKeys(toLower(key));
 	}
 	
 }
