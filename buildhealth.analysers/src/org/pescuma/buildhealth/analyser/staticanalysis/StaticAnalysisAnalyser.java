@@ -92,7 +92,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
 		result.add(new BuildHealthPreference("Maximun munber of violations for a Good build", "<no limit>",

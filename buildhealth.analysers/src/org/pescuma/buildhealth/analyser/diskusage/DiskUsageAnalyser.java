@@ -58,7 +58,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
 		result.add(new BuildHealthPreference("If file tags should be used in the full report tree", "true",

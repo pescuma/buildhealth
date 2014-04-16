@@ -21,7 +21,7 @@ public interface BuildHealthNotifier {
 	/**
 	 * @return Can't be null
 	 */
-	List<BuildHealthPreference> getPreferences();
+	List<BuildHealthPreference> getKnownPreferences();
 	
 	void sendNotification(Report report, Preferences prefs, BuildHealthNotifierTracker tracker);
 	

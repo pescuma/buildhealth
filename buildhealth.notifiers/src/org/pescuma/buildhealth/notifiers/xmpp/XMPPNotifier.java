@@ -38,7 +38,7 @@ public class XMPPNotifier implements BuildHealthNotifier {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
 		result.add(new BuildHealthPreference("XMPP notification enabled", "true", "notification", "xmpp",

@@ -23,7 +23,7 @@ public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		return Collections.emptyList();
 	}
 	

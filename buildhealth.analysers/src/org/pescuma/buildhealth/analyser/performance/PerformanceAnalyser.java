@@ -99,7 +99,7 @@ public class PerformanceAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
 		result.add(new BuildHealthPreference("Minimun runs per second for a Good build", "<no limit>", "performace",

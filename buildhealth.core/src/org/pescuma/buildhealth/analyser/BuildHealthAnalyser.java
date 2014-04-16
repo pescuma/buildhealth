@@ -23,7 +23,7 @@ public interface BuildHealthAnalyser {
 	/**
 	 * @return Can't be null
 	 */
-	List<BuildHealthPreference> getPreferences();
+	List<BuildHealthPreference> getKnownPreferences();
 	
 	/**
 	 * @param projects TODO

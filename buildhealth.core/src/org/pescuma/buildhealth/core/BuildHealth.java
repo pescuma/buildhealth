@@ -21,6 +21,7 @@ import org.pescuma.buildhealth.core.data.BuildDataTable;
 import org.pescuma.buildhealth.core.data.DiskBuildData;
 import org.pescuma.buildhealth.core.listener.BuildHealthListener;
 import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
+import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.notifiers.BuildHealthNotifier;
@@ -204,7 +205,12 @@ public class BuildHealth {
 		
 		BuildStatus status = Report.mergeBuildStatus(reports);
 		
-		return new BuildReport(status, "Build", status.name(), sourcesOfProblems, reports);
+		Preferences prefs = preferences.child("build");
+		String buildName = prefs.get("name", "Build");
+		String prefix = prefs.child("report").get("prefix", "");
+		String suffix = prefs.child("report").get("suffix", "");
+		
+		return new BuildReport(status, buildName, status.name(), prefix, suffix, sourcesOfProblems, reports);
 	}
 	
 	/**
@@ -234,7 +240,7 @@ public class BuildHealth {
 		
 		return new Report(status, analyser.getName(), status.name(), null, null, reports);
 	}
-
+	
 	private Projects computeProjects() {
 		return new ProjectsAnalyser().computeProjects(table, preferences);
 	}
@@ -247,6 +253,24 @@ public class BuildHealth {
 				return analyser;
 		
 		return null;
+	}
+	
+	public List<BuildHealthPreference> getKnownPreferences() {
+		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
+		
+		result.add(new BuildHealthPreference("Name of this build", "Build", "build", "name"));
+		result.add(new BuildHealthPreference("Text added before the report for this build", "", "build", "report",
+				"prefix"));
+		result.add(new BuildHealthPreference("Text added after the report for this build", "", "build", "report",
+				"suffix"));
+		
+		for (BuildHealthAnalyser analyser : getAnalysers())
+			result.addAll(analyser.getKnownPreferences());
+		
+		for (BuildHealthNotifier notifier : getNotifiers())
+			result.addAll(notifier.getKnownPreferences());
+		
+		return result;
 	}
 	
 	// Helper methods to find home

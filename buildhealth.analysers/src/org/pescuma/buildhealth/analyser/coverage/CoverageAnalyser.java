@@ -121,7 +121,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
 		result.add(new BuildHealthPreference("Minimun coverage for a Good build", "<no limit>", "coverage", "good"));

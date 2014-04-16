@@ -81,7 +81,7 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		return Collections.emptyList();
 	}
 	

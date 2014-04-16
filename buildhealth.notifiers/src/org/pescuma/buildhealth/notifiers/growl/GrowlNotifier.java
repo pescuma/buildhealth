@@ -37,7 +37,7 @@ public class GrowlNotifier implements BuildHealthNotifier {
 	}
 	
 	@Override
-	public List<BuildHealthPreference> getPreferences() {
+	public List<BuildHealthPreference> getKnownPreferences() {
 		List<BuildHealthPreference> result = new ArrayList<BuildHealthPreference>();
 		
 		result.add(new BuildHealthPreference("Growl notification enabled", "true", "notification", "growl", "enabled"));
