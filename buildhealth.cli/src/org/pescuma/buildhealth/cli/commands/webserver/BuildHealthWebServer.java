@@ -51,8 +51,8 @@ public class BuildHealthWebServer extends NanoHTTPD {
 				return reportJson();
 				
 			} else if ("/report.xml".equals(session.getUri())) {
-				
 				return reportXml();
+				
 			} else {
 				Response response = respond(session.getHeaders(), session.getUri());
 				if (response != null)
@@ -129,11 +129,7 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		
 		StringWriter result = new StringWriter();
 		mapper.writeValue(result, report);
-		
-		String json = result.toString();
-		
-		Response response = new Response(Response.Status.OK, "	text/plain", json);
-		return response;
+		return new Response(Response.Status.OK, "application/json; charset=utf-8", result.toString());
 	}
 	
 	private Response reportXml() throws IOException {
@@ -144,8 +140,9 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		mapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(first, second));
 		
 		StringWriter result = new StringWriter();
+		result.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		mapper.writeValue(result, report);
-		return new Response(Response.Status.OK, "application/xml", result.toString());
+		return new Response(Response.Status.OK, "application/xml; charset=utf-8", result.toString());
 		
 	}
 	
