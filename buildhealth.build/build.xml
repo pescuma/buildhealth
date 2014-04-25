@@ -254,7 +254,7 @@
 		         classpath="${build.dir}/buildhealth-${version}.jar" />
 
 		<buildhealth home="${reports.dir}/builhealth" report="true" notify="true">
-			<config key="coverage good" value="65" />
+			<config key="coverage good" value="64" />
 			<projects-from-eclipse dir="${basedir}/.." />
 			<compute-loc>
 				<fileset dir="${basedir}/..">
