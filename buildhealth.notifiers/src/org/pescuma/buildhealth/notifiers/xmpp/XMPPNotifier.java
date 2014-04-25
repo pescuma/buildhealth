@@ -105,7 +105,7 @@ public class XMPPNotifier implements BuildHealthNotifier {
 			return;
 		}
 		
-		String reportText = new ReportFormater().hideDescriptions().writeBuildStatuses().format(report).trim();
+		String reportText = new ReportFormater().writeBuildStatuses().format(report).trim();
 		
 		Connection conn = null;
 		try {

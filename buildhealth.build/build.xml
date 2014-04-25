@@ -134,6 +134,7 @@
 			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
 			-keep interface hudson.ExtensionPoint {*;}
 			-keep class hudson.util.IOException2 {*;}
+			-keep class * implements org.jivesoftware.smack.sasl.SASLMechanism {*;}
 			
 			-dontnote **
 		</proguard>
@@ -182,6 +183,7 @@
 			-keep class * implements com.fasterxml.jackson.databind.jsontype.TypeIdResolver {*;}
 			-keep interface hudson.ExtensionPoint {*;}
 			-keep class hudson.util.IOException2 {*;}
+			-keep class * implements org.jivesoftware.smack.sasl.SASLMechanism {*;}
 			
 			-dontnote **
 		</proguard>
