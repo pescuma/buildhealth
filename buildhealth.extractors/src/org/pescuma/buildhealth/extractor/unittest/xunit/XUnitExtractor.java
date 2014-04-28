@@ -61,8 +61,14 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 			
 		} else {
 			for (File f : files.getFilesByExtension("xml")) {
-				extractFile(f, getBaseName(f.getName()), data);
-				tracker.onFileProcessed(f);
+				try {
+					
+					extractFile(f, getBaseName(f.getName()), data);
+					tracker.onFileProcessed(f);
+					
+				} catch (BuildDataExtractorException e) {
+					tracker.onErrorProcessingFile(f, e);
+				}
 			}
 		}
 	}
@@ -98,6 +104,11 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 						
 						@Override
 						public void onProcessed(String message) {
+							// Ignore
+						}
+						
+						@Override
+						public void onErrorProcessingFile(File file, Exception ex) {
 							// Ignore
 						}
 					});

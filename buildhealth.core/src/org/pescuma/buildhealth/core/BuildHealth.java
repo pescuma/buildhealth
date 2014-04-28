@@ -147,6 +147,11 @@ public class BuildHealth {
 			}
 			
 			@Override
+			public void onErrorProcessingFile(File file, Exception ex) {
+				listeners.onErrorComputingFile(computer, file, ex);
+			}
+			
+			@Override
 			public void onFileOutputCreated(File file) {
 				listeners.onFileComputed(computer, file);
 			}
@@ -160,6 +165,11 @@ public class BuildHealth {
 			@Override
 			public void onFileProcessed(File file) {
 				listeners.onFileExtracted(extractor, file);
+			}
+			
+			@Override
+			public void onErrorProcessingFile(File file, Exception ex) {
+				listeners.onErrorExtractingFile(extractor, file, ex);
 			}
 			
 			@Override

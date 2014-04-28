@@ -3,6 +3,7 @@ package org.pescuma.buildhealth.ant;
 import java.io.File;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.core.BuildHealth;
@@ -24,8 +25,18 @@ public abstract class BaseBuildHealthAntSubTask extends Task {
 			}
 			
 			@Override
+			public void onErrorExtractingFile(BuildDataExtractor extractor, File file, Exception ex) {
+				log("Error processing file: " + file + " : " + ex.getMessage(), ex, Project.MSG_WARN);
+			}
+			
+			@Override
 			public void onFileComputed(BuildDataComputer computer, File file) {
 				log("File computed: " + file);
+			}
+			
+			@Override
+			public void onErrorComputingFile(BuildDataComputer computer, File file, Exception ex) {
+				log("Error computing file: " + file + " : " + ex.getMessage(), ex, Project.MSG_WARN);
 			}
 			
 			@Override

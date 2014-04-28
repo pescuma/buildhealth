@@ -98,7 +98,7 @@ public class LOCComputer implements BuildDataComputer {
 			
 			writer = new FileWriter(result);
 			for (File file : files.getFilesByExtension()) {
-				if (!isKnownFileType(file.getPath()))
+				if (!isKnownFileType(file.getPath(), false))
 					continue;
 				
 				writer.write(toPath(file) + "\n");

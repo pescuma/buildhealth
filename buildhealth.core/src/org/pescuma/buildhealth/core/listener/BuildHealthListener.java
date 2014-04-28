@@ -9,7 +9,11 @@ public interface BuildHealthListener {
 	
 	void onFileComputed(BuildDataComputer computer, File file);
 	
+	void onErrorComputingFile(BuildDataComputer computer, File file, Exception ex);
+	
 	void onFileExtracted(BuildDataExtractor extractor, File file);
+	
+	void onErrorExtractingFile(BuildDataExtractor extractor, File file, Exception ex);
 	
 	void onStreamExtracted(BuildDataExtractor extractor);
 	

@@ -10,13 +10,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.LineIterator;
 import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.computer.BuildDataComputerException;
 import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
@@ -105,27 +108,54 @@ public class CodeTasksComputer implements BuildDataComputer {
 		}
 	}
 	
-	private void extractTo(CSVWriter out, BuildDataComputerTracker tracker) {
+	private void extractTo(final CSVWriter out, final BuildDataComputerTracker tracker) {
 		try {
 			if (files.isStream()) {
 				extractStream(files.getStreamPath(), null, new InputStreamReader(files.getStream()), out);
 				tracker.onStreamProcessed();
 				
 			} else {
-				for (File file : files.getFilesByExtension()) {
-					String language = detectLanguage(file.getPath());
+				
+				ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+				
+				for (final File file : files.getFilesByExtension()) {
+					final String language = detectLanguage(file.getPath(), false);
 					if (language.isEmpty())
 						continue;
 					
-					FileReader reader = new FileReader(file);
-					try {
-						
-						extractStream(file.getPath(), language, reader, out);
-						tracker.onFileProcessed(file);
-						
-					} finally {
-						IOUtils.closeQuietly(reader);
-					}
+					exec.submit(new Runnable() {
+						@Override
+						public void run() {
+							List<String> lines;
+							
+							FileReader reader = null;
+							try {
+								
+								reader = new FileReader(file);
+								lines = IOUtils.readLines(reader);
+								
+							} catch (IOException e) {
+								tracker.onErrorProcessingFile(file, e);
+								return;
+								
+							} finally {
+								IOUtils.closeQuietly(reader);
+							}
+							
+							extractLines(file.getPath(), language, out, lines);
+							tracker.onFileProcessed(file);
+						}
+					});
+				}
+				
+				exec.shutdown();
+				try {
+					
+					if (!exec.awaitTermination(1, TimeUnit.HOURS))
+						throw new BuildDataComputerException("Could not finish computing tasks in 1 hour");
+					
+				} catch (InterruptedException e) {
+					throw new BuildDataComputerException(e);
 				}
 			}
 		} catch (IOException e) {
@@ -134,13 +164,17 @@ public class CodeTasksComputer implements BuildDataComputer {
 	}
 	
 	private void extractStream(String filename, String language, Reader reader, CSVWriter out) throws IOException {
+		List<String> lines = IOUtils.readLines(reader);
+		
+		extractLines(filename, language, out, lines);
+	}
+	
+	private void extractLines(String filename, String language, CSVWriter out, List<String> lines) {
 		if (language == null)
 			language = detectLanguage(filename);
 		
-		LineIterator it = IOUtils.lineIterator(reader);
 		int lineNum = 0;
-		while (it.hasNext()) {
-			String line = it.next();
+		for (String line : lines) {
 			lineNum++;
 			
 			if (line.isEmpty())
@@ -193,7 +227,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 			return text;
 	}
 	
-	private void write(CSVWriter out, String... line) {
+	private synchronized void write(CSVWriter out, String... line) {
 		out.writeNext(line);
 	}
 }

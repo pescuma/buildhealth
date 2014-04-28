@@ -20,19 +20,31 @@ public class CompositeBuildHealthListener implements BuildHealthListener {
 	}
 	
 	@Override
-	public void onFileComputed(BuildDataComputer computer, File file) {
+	public synchronized void onFileComputed(BuildDataComputer computer, File file) {
 		for (BuildHealthListener listener : listeners)
 			listener.onFileComputed(computer, file);
 	}
 	
 	@Override
-	public void onFileExtracted(BuildDataExtractor extractor, File file) {
+	public synchronized void onErrorComputingFile(BuildDataComputer computer, File file, Exception ex) {
+		for (BuildHealthListener listener : listeners)
+			listener.onErrorComputingFile(computer, file, ex);
+	}
+	
+	@Override
+	public synchronized void onFileExtracted(BuildDataExtractor extractor, File file) {
 		for (BuildHealthListener listener : listeners)
 			listener.onFileExtracted(extractor, file);
 	}
 	
 	@Override
-	public void onStreamExtracted(BuildDataExtractor extractor) {
+	public synchronized void onErrorExtractingFile(BuildDataExtractor extractor, File file, Exception ex) {
+		for (BuildHealthListener listener : listeners)
+			listener.onErrorExtractingFile(extractor, file, ex);
+	}
+	
+	@Override
+	public synchronized void onStreamExtracted(BuildDataExtractor extractor) {
 		for (BuildHealthListener listener : listeners)
 			listener.onStreamExtracted(extractor);
 	}

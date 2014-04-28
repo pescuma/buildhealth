@@ -27,8 +27,20 @@ public abstract class BuildHealthCliCommand implements Runnable {
 			}
 			
 			@Override
+			public void onErrorExtractingFile(BuildDataExtractor extractor, File file, Exception ex) {
+				System.out.println("Error processing file: " + file + " : " + ex.getMessage());
+				ex.printStackTrace();
+			}
+			
+			@Override
 			public void onFileComputed(BuildDataComputer computer, File file) {
 				System.out.println("File computed: " + file);
+			}
+			
+			@Override
+			public void onErrorComputingFile(BuildDataComputer computer, File file, Exception ex) {
+				System.out.println("Error computing file: " + file + " : " + ex.getMessage());
+				ex.printStackTrace();
 			}
 			
 			@Override

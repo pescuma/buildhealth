@@ -14,7 +14,6 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
-import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
@@ -38,17 +37,17 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 		// Streams are not supported yet
 		Validate.isTrue(!files.isStream());
 		
-		try {
-			
-			for (File projectFile : files.getFilesByName(PROJECT_FILENAME)) {
-				tracker.onFileProcessed(projectFile);
+		for (File projectFile : files.getFilesByName(PROJECT_FILENAME)) {
+			try {
+				
 				processProject(data, projectFile);
+				tracker.onFileProcessed(projectFile);
+				
+			} catch (JDOMException e) {
+				tracker.onErrorProcessingFile(projectFile, e);
+			} catch (IOException e) {
+				tracker.onErrorProcessingFile(projectFile, e);
 			}
-			
-		} catch (JDOMException e) {
-			throw new BuildDataExtractorException(e);
-		} catch (IOException e) {
-			throw new BuildDataExtractorException(e);
 		}
 	}
 	

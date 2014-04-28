@@ -33,23 +33,32 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	
 	@Override
 	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
-		try {
-			
-			if (files.isStream()) {
+		
+		if (files.isStream()) {
+			try {
+				
 				extractStream(files.getStreamPath(), files.getStream(), data);
 				tracker.onStreamProcessed();
 				
-			} else {
-				Collection<File> toProcess = (extensions.length == 0 ? files.getFilesByExtension() : files
-						.getFilesByExtension(extensions));
-				for (File file : toProcess) {
-					extractFile(file, data);
-					tracker.onFileProcessed(file);
-				}
+			} catch (IOException e) {
+				throw new BuildDataExtractorException(e);
 			}
 			
-		} catch (IOException e) {
-			throw new BuildDataExtractorException(e);
+		} else {
+			Collection<File> toProcess = (extensions.length == 0 ? files.getFilesByExtension() : files
+					.getFilesByExtension(extensions));
+			for (File file : toProcess) {
+				try {
+					
+					extractFile(file, data);
+					tracker.onFileProcessed(file);
+					
+				} catch (BuildDataExtractorException e) {
+					tracker.onErrorProcessingFile(file, e);
+				} catch (IOException e) {
+					tracker.onErrorProcessingFile(file, e);
+				}
+			}
 		}
 	}
 	

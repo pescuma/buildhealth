@@ -108,7 +108,6 @@ public class FilenameToLanguage {
 		extensions.put("pde", "Arduino Sketch");
 		extensions.put("itk", "Tcl/Tk");
 		extensions.put("java", "Java");
-		extensions.put("jar", "Java");
 		extensions.put("jcl", "JCL");
 		extensions.put("jl", "Lisp");
 		extensions.put("js", "Javascript");
@@ -227,6 +226,11 @@ public class FilenameToLanguage {
 		extensions.put("fsproj", "F#");
 	};
 	
+	private static final Map<String, String> binaryExtensions = new HashMap<String, String>();
+	static {
+		extensions.put("jar", "Java");
+	};
+	
 	private static final Map<String, String> filenames = new HashMap<String, String>();
 	static {
 		filenames.put("makefile", "make");
@@ -237,6 +241,10 @@ public class FilenameToLanguage {
 	};
 	
 	public static String detectLanguage(String filename) {
+		return detectLanguage(filename, true);
+	}
+	
+	public static String detectLanguage(String filename, boolean includeBinaries) {
 		if (filename == null)
 			return "";
 		
@@ -244,13 +252,25 @@ public class FilenameToLanguage {
 		if (result != null)
 			return result;
 		
-		result = extensions.get(getDoubleExtension(filename).toLowerCase(Locale.ENGLISH));
+		String doubleExtension = getDoubleExtension(filename).toLowerCase(Locale.ENGLISH);
+		result = extensions.get(doubleExtension);
 		if (result != null)
 			return result;
 		
-		result = extensions.get(getExtension(filename).toLowerCase(Locale.ENGLISH));
+		String extension = getExtension(filename).toLowerCase(Locale.ENGLISH);
+		result = extensions.get(extension);
 		if (result != null)
 			return result;
+		
+		if (includeBinaries) {
+			result = binaryExtensions.get(doubleExtension);
+			if (result != null)
+				return result;
+			
+			result = extensions.get(extension);
+			if (result != null)
+				return result;
+		}
 		
 		return "";
 	}
@@ -268,6 +288,10 @@ public class FilenameToLanguage {
 	}
 	
 	public static boolean isKnownFileType(String filename) {
-		return !detectLanguage(filename).isEmpty();
+		return isKnownFileType(filename, true);
+	}
+	
+	public static boolean isKnownFileType(String filename, boolean includeBinaries) {
+		return !detectLanguage(filename, includeBinaries).isEmpty();
 	}
 }
