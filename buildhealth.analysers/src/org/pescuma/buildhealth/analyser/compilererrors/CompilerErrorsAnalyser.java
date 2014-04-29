@@ -298,7 +298,7 @@ public class CompilerErrorsAnalyser implements BuildHealthAnalyser {
 				oldLanguage = f.language;
 				
 				if (result.length() > 0)
-					result.append("; ");
+					result.append(" ; ");
 				
 				result.append(f.language).append(": ");
 				
