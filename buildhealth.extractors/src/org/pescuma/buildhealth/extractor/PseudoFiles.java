@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.extractor;
 
-import static java.util.Arrays.asList;
-import static org.apache.commons.io.FileUtils.listFiles;
-import static org.apache.commons.io.FilenameUtils.directoryContains;
+import static java.util.Arrays.*;
+import static org.apache.commons.io.FileUtils.*;
+import static org.apache.commons.io.FilenameUtils.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,23 +43,23 @@ public class PseudoFiles {
 		this(asList(file), null);
 	}
 	
-	public PseudoFiles(List<File> files) {
+	public PseudoFiles(Collection<File> files) {
 		this(files, null);
 	}
 	
-	public PseudoFiles(File file, List<File> excludes) {
+	public PseudoFiles(File file, Collection<File> excludes) {
 		this(asList(file), excludes);
 	}
 	
-	public PseudoFiles(List<File> files, List<File> excludes) {
+	public PseudoFiles(Collection<File> files, Collection<File> excludes) {
 		this(files, excludes, true);
 	}
 	
-	public PseudoFiles(File file, List<File> excludes, boolean ignoreSourceControlFolders) {
+	public PseudoFiles(File file, Collection<File> excludes, boolean ignoreSourceControlFolders) {
 		this(asList(file), excludes, ignoreSourceControlFolders);
 	}
 	
-	public PseudoFiles(List<File> files, List<File> excludes, boolean ignoreSourceControlFolders) {
+	public PseudoFiles(Collection<File> files, Collection<File> excludes, boolean ignoreSourceControlFolders) {
 		for (File file : files)
 			this.files.add(fixFileName(file));
 		if (excludes != null) {

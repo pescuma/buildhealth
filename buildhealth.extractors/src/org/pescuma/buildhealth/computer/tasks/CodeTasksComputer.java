@@ -13,9 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +24,7 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.CSVExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.buildhealth.extractor.utils.SimpleExecutor;
 import org.pescuma.buildhealth.utils.CSV;
 import org.pescuma.buildhealth.utils.Location;
 
@@ -110,13 +108,14 @@ public class CodeTasksComputer implements BuildDataComputer {
 	
 	private void extractTo(final CSVWriter out, final BuildDataComputerTracker tracker) {
 		try {
+			
 			if (files.isStream()) {
 				extractStream(files.getStreamPath(), null, new InputStreamReader(files.getStream()), out);
 				tracker.onStreamProcessed();
 				
 			} else {
 				
-				ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+				SimpleExecutor exec = new SimpleExecutor();
 				
 				for (final File file : files.getFilesByExtension()) {
 					final String language = detectLanguage(file.getPath(), false);
@@ -148,17 +147,12 @@ public class CodeTasksComputer implements BuildDataComputer {
 					});
 				}
 				
-				exec.shutdown();
-				try {
-					
-					if (!exec.awaitTermination(1, TimeUnit.HOURS))
-						throw new BuildDataComputerException("Could not finish computing tasks in 1 hour");
-					
-				} catch (InterruptedException e) {
-					throw new BuildDataComputerException(e);
-				}
+				exec.awaitTermination();
 			}
+			
 		} catch (IOException e) {
+			throw new BuildDataExtractorException(e);
+		} catch (InterruptedException e) {
 			throw new BuildDataExtractorException(e);
 		}
 	}

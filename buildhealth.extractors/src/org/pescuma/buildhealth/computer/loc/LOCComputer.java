@@ -7,13 +7,16 @@ import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang.Validate;
 import org.pescuma.buildhealth.computer.BuildDataComputer;
@@ -22,6 +25,7 @@ import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.loc.CLOCExtractor;
+import org.pescuma.buildhealth.extractor.utils.MapReduceExecutor;
 
 public class LOCComputer implements BuildDataComputer {
 	
@@ -32,47 +36,69 @@ public class LOCComputer implements BuildDataComputer {
 	}
 	
 	@Override
-	public BuildDataExtractor compute(File folder, BuildDataComputerTracker tracker) {
+	public BuildDataExtractor compute(final File folder, final BuildDataComputerTracker tracker) {
 		Validate.isTrue(!files.isStream());
 		
-		File cloc = null;
-		File fileList = null;
-		File out = null;
-		boolean success = false;
+		File clocTmp = null;
 		try {
 			
-			cloc = extractCLOCToTmp();
-			fileList = createFileList();
+			final File cloc = extractCLOCToTmp();
+			clocTmp = cloc;
 			
-			Random random = new Random();
-			do {
-				out = new File(folder, "cloc-" + abs(random.nextInt()) + ".csv");
-			} while (out.exists());
+			List<String> allFiles = findFilesToProcess();
 			
-			if (cloc.getName().endsWith(".pl"))
-				run("perl", toPath(cloc), "--by-file", "--csv", "--skip-uniqueness", "--list-file=" + toPath(fileList),
-						"--out=" + toPath(out), "--progress-rate=0");
-			else
-				run(toPath(cloc), "--by-file", "--csv", "--skip-uniqueness", "--list-file=" + toPath(fileList),
-						"--out=" + toPath(out), "--progress-rate=0");
+			Collection<File> clocFiles = MapReduceExecutor.submit(allFiles, 500,
+					new MapReduceExecutor.Func<String, File>() {
+						@Override
+						public File process(Collection<String> files) throws Exception {
+							boolean success = false;
+							File out = null;
+							File fileList = null;
+							try {
+								
+								fileList = File.createTempFile("cloc.flielist.", ".txt");
+								FileUtils.writeLines(fileList, files);
+								
+								Random random = new Random();
+								do {
+									out = new File(folder, "cloc-" + abs(random.nextInt()) + ".csv");
+								} while (out.exists());
+								
+								if (cloc.getName().endsWith(".pl"))
+									exec("perl", toPath(cloc), "--by-file", "--csv", "--skip-uniqueness",
+											"--list-file=" + toPath(fileList), "--out=" + toPath(out),
+											"--progress-rate=0");
+								else
+									exec(toPath(cloc), "--by-file", "--csv", "--skip-uniqueness", "--list-file="
+											+ toPath(fileList), "--out=" + toPath(out), "--progress-rate=0");
+								
+								tracker.onFileOutputCreated(out);
+								success = true;
+								
+								return out;
+								
+							} catch (IOException e) {
+								tracker.onErrorProcessingFile(out, e);
+								
+								return null;
+								
+							} finally {
+								deleteFile(fileList);
+								
+								if (!success)
+									deleteFile(out);
+							}
+						}
+					});
 			
-			tracker.onFileOutputCreated(out);
-			
-			success = true;
-			return new CLOCExtractor(new PseudoFiles(out));
+			return new CLOCExtractor(new PseudoFiles(clocFiles));
 			
 		} catch (IOException e) {
 			throw new BuildDataComputerException(e);
-			
 		} catch (InterruptedException e) {
 			throw new BuildDataComputerException(e);
-			
 		} finally {
-			deleteFile(fileList);
-			deleteFile(cloc);
-			
-			if (!success)
-				deleteFile(out);
+			deleteFile(clocTmp);
 		}
 	}
 	
@@ -80,7 +106,7 @@ public class LOCComputer implements BuildDataComputer {
 		return getCanonicalFile(file).getPath();
 	}
 	
-	private void run(String... args) throws IOException, InterruptedException {
+	private void exec(String... args) throws IOException, InterruptedException {
 		Process process = Runtime.getRuntime().exec(args);
 		
 		int result = process.waitFor();
@@ -88,31 +114,17 @@ public class LOCComputer implements BuildDataComputer {
 			throw new IOException("Process returned: " + result);
 	}
 	
-	private File createFileList() throws IOException {
-		File result = null;
-		FileWriter writer = null;
-		boolean success = false;
-		try {
+	private List<String> findFilesToProcess() {
+		List<String> result = new ArrayList<String>();
+		
+		for (File file : files.getFilesByExtension()) {
+			if (!isKnownFileType(file.getPath(), false))
+				continue;
 			
-			result = File.createTempFile("cloc.flielist.", ".txt");
-			
-			writer = new FileWriter(result);
-			for (File file : files.getFilesByExtension()) {
-				if (!isKnownFileType(file.getPath(), false))
-					continue;
-				
-				writer.write(toPath(file) + "\n");
-			}
-			
-			success = true;
-			return result;
-			
-		} finally {
-			closeQuietly(writer);
-			
-			if (!success)
-				deleteFile(result);
+			result.add(toPath(file));
 		}
+		
+		return result;
 	}
 	
 	private File extractCLOCToTmp() throws IOException {
