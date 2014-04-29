@@ -66,7 +66,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1 ; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1 ; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -150,7 +150,8 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(Problematic, "Static analysis", "5", "C++: CppLint: 3, Task: 1 ; Java: Task: 1"),
+				report);
 	}
 	
 	@Test
@@ -164,7 +165,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1"), report);
+		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1 ; Java: Task: 1"), report);
 	}
 	
 	@Test
@@ -175,7 +176,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1", //
+		assertReport(new Report(Good, "Static analysis", "5", "C++: CppLint: 3, Task: 1 ; Java: Task: 1", //
 				new Report(Good, "C++", "4", "", //
 						new Report(Good, "CppLint", "3"), //
 						new Report(Good, "Task", "1") //
@@ -197,7 +198,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1; Java: Task: 1", //
+		assertReport(new Report(SoSo, "Static analysis", "5", "C++: CppLint: 3, Task: 1 ; Java: Task: 1", //
 				new Report(SoSo, "C++", "4", "", //
 						new Report(SoSo, "CppLint", "3", null,
 								"Instable if has more than 1 violations in C++ measured by CppLint"), //
@@ -218,7 +219,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Problematic, "Static analysis", "4", "C++: CppLint: 3; Java: Task: 1", //
+		assertReport(new Report(Problematic, "Static analysis", "4", "C++: CppLint: 3 ; Java: Task: 1", //
 				"Should not have more than 2 violations", //
 				new Report(Good, "C++", "3", "", //
 						new Report(Good, "CppLint", "3") //
@@ -238,7 +239,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Problematic, "Static analysis", "4", "C++: CppLint: 3; Java: Task: 1", //
+		assertReport(new Report(Problematic, "Static analysis", "4", "C++: CppLint: 3 ; Java: Task: 1", //
 				"Should not have more than 2 violations with severity High", //
 				new Report(Good, "C++", "3", "", //
 						new Report(Good, "CppLint", "3") //
@@ -258,7 +259,7 @@ public class StaticAnalysisAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Static analysis", "4", "C++: CppLint: 3; Java: Task: 1", //
+		assertReport(new Report(Good, "Static analysis", "4", "C++: CppLint: 3 ; Java: Task: 1", //
 				new Report(Good, "C++", "3", "", //
 						new Report(Good, "CppLint", "3") //
 				), //

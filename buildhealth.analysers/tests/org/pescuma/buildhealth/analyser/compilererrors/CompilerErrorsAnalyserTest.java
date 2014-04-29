@@ -65,7 +65,7 @@ public class CompilerErrorsAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Compiler errors", "5", "C++: gcc: 1, msbuild: 3; Java: javac: 1",
+		assertReport(new Report(Problematic, "Compiler errors", "5", "C++: gcc: 1, msbuild: 3 ; Java: javac: 1",
 				"Should have no compiler errors"), report);
 	}
 	
@@ -137,7 +137,7 @@ public class CompilerErrorsAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1; Java: javac: 1"), report);
+		assertReport(new Report(SoSo, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1 ; Java: javac: 1"), report);
 	}
 	
 	@Test
@@ -152,7 +152,8 @@ public class CompilerErrorsAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(Problematic, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1; Java: javac: 1"), report);
+		assertReport(new Report(Problematic, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1 ; Java: javac: 1"),
+				report);
 	}
 	
 	@Test
@@ -167,7 +168,7 @@ public class CompilerErrorsAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport();
 		
-		assertReport(new Report(SoSo, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1; Java: javac: 1"), report);
+		assertReport(new Report(SoSo, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1 ; Java: javac: 1"), report);
 	}
 	
 	@Test
@@ -180,7 +181,7 @@ public class CompilerErrorsAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(Good, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1; Java: javac: 1", //
+		assertReport(new Report(Good, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1 ; Java: javac: 1", //
 				new Report(Good, "C++", "4", "", //
 						new Report(Good, "gcc", "3"), //
 						new Report(Good, "msbuild", "1") //
@@ -203,7 +204,7 @@ public class CompilerErrorsAnalyserTest extends BaseAnalyserTest {
 		
 		Report report = createReport(Full);
 		
-		assertReport(new Report(SoSo, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1; Java: javac: 1", //
+		assertReport(new Report(SoSo, "Compiler errors", "5", "C++: gcc: 3, msbuild: 1 ; Java: javac: 1", //
 				new Report(SoSo, "C++", "4", "", //
 						new Report(SoSo, "gcc", "3", null,
 								"Instable if has more than 1 compiler errors in C++ measured by gcc"), //
