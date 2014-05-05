@@ -186,7 +186,15 @@ public class Location {
 		return create(file, line, null, null, null);
 	}
 	
+	public static Location create(String file, int line) {
+		return create(file, line, null, null, null);
+	}
+	
 	public static Location create(String file, String line, String column) {
+		return create(file, line, column, null, null);
+	}
+	
+	public static Location create(String file, int line, int column) {
 		return create(file, line, column, null, null);
 	}
 	

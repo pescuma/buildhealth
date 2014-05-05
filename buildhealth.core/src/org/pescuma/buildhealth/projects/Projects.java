@@ -3,8 +3,11 @@ package org.pescuma.buildhealth.projects;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.pescuma.buildhealth.utils.Location;
 
 public class Projects {
 	
@@ -12,6 +15,28 @@ public class Projects {
 	
 	public boolean isEmpty() {
 		return projects.isEmpty();
+	}
+	
+	public String findProjectForLocations(List<Location> locations) {
+		if (isEmpty())
+			return null;
+		
+		Set<Project> projects = findProjectsForLocations(locations);
+		
+		if (projects.size() == 1)
+			return projects.iterator().next().name;
+		else
+			return "Unknown project";
+		
+	}
+	
+	private Set<Project> findProjectsForLocations(List<Location> locations) {
+		Set<Project> result = new HashSet<Project>();
+		
+		for (Location loc : locations)
+			result.addAll(findProjectsForFile(loc.file));
+		
+		return result;
 	}
 	
 	public String findProjectForFile(String filename) {

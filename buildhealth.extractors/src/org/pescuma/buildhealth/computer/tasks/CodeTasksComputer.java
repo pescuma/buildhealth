@@ -1,10 +1,11 @@
 package org.pescuma.buildhealth.computer.tasks;
 
 import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.extractor.utils.EncodingHelper.*;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +13,6 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +26,7 @@ import org.pescuma.buildhealth.extractor.CSVExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.utils.SimpleExecutor;
 import org.pescuma.buildhealth.utils.CSV;
+import org.pescuma.buildhealth.utils.FileHelper;
 import org.pescuma.buildhealth.utils.Location;
 
 import au.com.bytecode.opencsv.CSVWriter;
@@ -82,7 +83,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 	
 	@Override
 	public BuildDataExtractor compute(File folder, BuildDataComputerTracker tracker) {
-		File outputFile = new File(folder, "tasks-" + new Random().nextInt() + ".csv");
+		File outputFile = FileHelper.createUniquiFileName(folder, "tasks-", ".csv");
 		
 		FileWriter writer = null;
 		CSVWriter out = null;
@@ -127,10 +128,10 @@ public class CodeTasksComputer implements BuildDataComputer {
 						public void run() {
 							List<String> lines;
 							
-							FileReader reader = null;
+							Reader reader = null;
 							try {
 								
-								reader = new FileReader(file);
+								reader = toReader(new FileInputStream(file));
 								lines = IOUtils.readLines(reader);
 								
 							} catch (IOException e) {
@@ -206,7 +207,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 				if (text.isEmpty())
 					text = NO_MESSAGE;
 				
-				Location loc = Location.create(filename, lineNum, null, null, null);
+				Location loc = Location.create(filename, lineNum);
 				
 				write(out, Double.toString(1), "Tasks", "From code", marker, "", text, "", createdBy, "", "", "", "",
 						Location.toFormatedString(loc));

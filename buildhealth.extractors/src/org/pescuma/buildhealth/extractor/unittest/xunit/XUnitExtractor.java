@@ -27,13 +27,19 @@ import com.thalesgroup.dtkit.util.validator.ValidationException;
 
 abstract class XUnitExtractor implements BuildDataExtractor {
 	
+	private final String extension;
 	private final PseudoFiles files;
 	
-	protected XUnitExtractor(PseudoFiles files) {
+	public XUnitExtractor(PseudoFiles files, String extension) {
 		if (files == null)
 			throw new IllegalArgumentException();
 		
+		this.extension = extension;
 		this.files = files;
+	}
+	
+	protected XUnitExtractor(PseudoFiles files) {
+		this(files, "xml");
 	}
 	
 	@Override
@@ -60,7 +66,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 			}
 			
 		} else {
-			for (File f : files.getFilesByExtension("xml")) {
+			for (File f : files.getFilesByExtension(extension)) {
 				try {
 					
 					extractFile(f, getBaseName(f.getName()), data);

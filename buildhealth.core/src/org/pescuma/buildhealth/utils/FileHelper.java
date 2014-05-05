@@ -1,7 +1,10 @@
 package org.pescuma.buildhealth.utils;
 
+import static java.lang.Math.*;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 
@@ -35,6 +38,17 @@ public class FileHelper {
 		
 		if (!FileUtils.deleteQuietly(file))
 			file.deleteOnExit();
+	}
+	
+	public static File createUniquiFileName(File folder, String prefix, String suffix) {
+		File out;
+		
+		Random random = new Random();
+		do {
+			out = new File(folder, prefix + abs(random.nextInt()) + suffix);
+		} while (out.exists());
+		
+		return out;
 	}
 	
 }

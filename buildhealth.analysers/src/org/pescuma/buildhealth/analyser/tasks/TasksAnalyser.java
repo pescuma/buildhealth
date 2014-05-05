@@ -91,14 +91,14 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		if (data.isEmpty())
 			return Collections.emptyList();
 		
-		SimpleTree<Stats> tree = buildTree(data);
+		SimpleTree<Stats> tree = buildTree(data, projects);
 		
 		sumChildStats(tree);
 		
 		return asList(toReport(tree.getRoot(), getName()));
 	}
 	
-	private SimpleTree<Stats> buildTree(BuildData data) {
+	private SimpleTree<Stats> buildTree(BuildData data, Projects projects) {
 		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
 			@Override
 			public Stats apply(String[] name) {
@@ -108,16 +108,17 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		
 		Map<String, Entry> keyToEntry = new HashMap<String, Entry>();
 		
-		convertToEntries(data, tree, keyToEntry);
+		convertToEntries(data, projects, tree, keyToEntry);
 		buildEntriesTree(keyToEntry);
 		addToStatsTree(tree, keyToEntry);
 		
 		return tree;
 	}
 	
-	private void convertToEntries(BuildData data, SimpleTree<Stats> tree, Map<String, Entry> keyToEntry) {
+	private void convertToEntries(BuildData data, Projects projects, SimpleTree<Stats> tree,
+			Map<String, Entry> keyToEntry) {
 		for (Line line : data.getLines()) {
-			Entry entry = new Entry(line);
+			Entry entry = new Entry(line, projects);
 			
 			if (entry.id.isEmpty()) {
 				// Add to tree, no further processing needed
@@ -152,6 +153,9 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 	private void addToTree(SimpleTree<Stats> tree, Entry entry) {
 		SimpleTree<Stats>.Node node = tree.getRoot();
 		node = node.getChild(entry.origin);
+		
+		if (entry.project != null)
+			node = node.getChild(entry.project);
 		
 		addToTree(node, entry);
 	}
@@ -260,10 +264,11 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 		String fullParentId;
 		String details;
 		List<Location> locations;
+		String project;
 		boolean hasParent = false;
 		final List<Entry> children = new ArrayList<Entry>();
 		
-		Entry(Line line) {
+		Entry(Line line, Projects projects) {
 			count = line.getValue();
 			origin = line.getColumn(COLUMN_ORIGIN);
 			text = line.getColumn(COLUMN_TEXT);
@@ -285,6 +290,8 @@ public class TasksAnalyser implements BuildHealthAnalyser {
 				fullParentId = "";
 			else
 				fullParentId = origin + "\n" + parentId;
+			
+			project = projects.findProjectForLocations(locations);
 		}
 		
 		void addChild(Entry stats) {

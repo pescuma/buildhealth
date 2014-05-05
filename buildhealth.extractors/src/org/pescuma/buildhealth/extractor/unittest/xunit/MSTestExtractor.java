@@ -10,7 +10,7 @@ import com.thalesgroup.dtkit.metrics.model.InputMetricFactory;
 public class MSTestExtractor extends XUnitExtractor {
 	
 	public MSTestExtractor(PseudoFiles fileOrFolder) {
-		super(fileOrFolder);
+		super(fileOrFolder, "trx");
 	}
 	
 	@Override

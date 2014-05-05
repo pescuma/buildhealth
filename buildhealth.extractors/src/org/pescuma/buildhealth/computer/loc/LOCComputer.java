@@ -1,6 +1,5 @@
 package org.pescuma.buildhealth.computer.loc;
 
-import static java.lang.Math.*;
 import static org.apache.commons.io.IOUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
@@ -12,7 +11,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,6 +24,7 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.loc.CLOCExtractor;
 import org.pescuma.buildhealth.extractor.utils.MapReduceExecutor;
+import org.pescuma.buildhealth.utils.FileHelper;
 
 public class LOCComputer implements BuildDataComputer {
 	
@@ -59,10 +58,7 @@ public class LOCComputer implements BuildDataComputer {
 								fileList = File.createTempFile("cloc.flielist.", ".txt");
 								FileUtils.writeLines(fileList, files);
 								
-								Random random = new Random();
-								do {
-									out = new File(folder, "cloc-" + abs(random.nextInt()) + ".csv");
-								} while (out.exists());
+								out = FileHelper.createUniquiFileName(folder, "cloc-", ".csv");
 								
 								if (cloc.getName().endsWith(".pl"))
 									exec("perl", toPath(cloc), "--by-file", "--csv", "--skip-uniqueness",

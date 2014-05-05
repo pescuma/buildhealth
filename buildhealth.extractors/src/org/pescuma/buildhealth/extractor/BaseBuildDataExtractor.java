@@ -1,23 +1,19 @@
 package org.pescuma.buildhealth.extractor;
 
 import static org.apache.commons.io.IOUtils.*;
+import static org.pescuma.buildhealth.extractor.utils.EncodingHelper.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Collection;
 
 import org.apache.commons.lang.Validate;
 import org.pescuma.buildhealth.core.BuildData;
-
-import com.ibm.icu.text.CharsetDetector;
-import com.ibm.icu.text.CharsetMatch;
 
 public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	
@@ -77,24 +73,6 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	
 	protected void extract(String path, InputStream input, BuildData data) throws IOException {
 		extract(path, toReader(input), data);
-	}
-	
-	protected Reader toReader(InputStream input) throws IOException {
-		if (!input.markSupported())
-			input = new BufferedInputStream(input);
-		
-		CharsetDetector charsetDetector = new CharsetDetector();
-		charsetDetector.setText(input);
-		
-		CharsetMatch m = charsetDetector.detect();
-		
-		Reader reader;
-		if (m.getConfidence() > 50) {
-			reader = m.getReader();
-		} else {
-			reader = new InputStreamReader(input);
-		}
-		return reader;
 	}
 	
 	protected abstract void extract(String path, Reader input, BuildData data) throws IOException;

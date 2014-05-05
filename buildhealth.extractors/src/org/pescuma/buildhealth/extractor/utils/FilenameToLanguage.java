@@ -228,7 +228,7 @@ public class FilenameToLanguage {
 	
 	private static final Map<String, String> binaryExtensions = new HashMap<String, String>();
 	static {
-		extensions.put("jar", "Java");
+		binaryExtensions.put("jar", "Java");
 	};
 	
 	private static final Map<String, String> filenames = new HashMap<String, String>();
@@ -267,7 +267,7 @@ public class FilenameToLanguage {
 			if (result != null)
 				return result;
 			
-			result = extensions.get(extension);
+			result = binaryExtensions.get(extension);
 			if (result != null)
 				return result;
 		}
