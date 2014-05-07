@@ -81,7 +81,7 @@ public class MSTestExtractor extends BaseXMLExtractor {
 		Element errorInfo = getChildOrEmpty(output, "ErrorInfo");
 		String errorMessage = firstNonNull(errorInfo.getChildText("Message"), "");
 		String stackTrace = firstNonNull(errorInfo.getChildText("StackTrace"), "");
-		if (!message.isEmpty() && !stackTrace.isEmpty())
+		if (!errorMessage.isEmpty() && !stackTrace.isEmpty())
 			stackTrace = errorMessage + "\n" + stackTrace;
 		else if (stackTrace.isEmpty())
 			stackTrace = errorMessage;
