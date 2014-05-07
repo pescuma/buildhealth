@@ -22,11 +22,7 @@
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.2.3" />
 		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-xml" rev="2.2.3" />
 		<dependency org="org.codehaus.woodstox" name="woodstox-core-asl" rev="4.2.0" />
-
-		<!-- js client -->
-		<dependency org="org.webjars" name="jquery" rev="2.0.3" />
-		<dependency org="org.webjars" name="bootstrap" rev="3.0.0" />
-		<dependency org="org.webjars" name="html5shiv" rev="3.6.2" />
+		<dependency org="commons-io" name="commons-io" rev="2.2" />
 
 		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
 

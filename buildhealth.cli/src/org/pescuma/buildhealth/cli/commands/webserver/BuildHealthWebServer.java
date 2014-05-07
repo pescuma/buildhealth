@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -77,20 +78,22 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		if (uri.equals("/"))
 			uri = "/index.html";
 		
-		String resourceName;
-		if (uri.toLowerCase(Locale.ENGLISH).startsWith("/deps/"))
-			resourceName = "/META-INF/resources/webjars/" + uri.substring(6);
-		else if (uri.startsWith("/icons/"))
-			resourceName = uri;
-		else
-			resourceName = "client" + uri;
-		
-		InputStream resource = getClass().getResourceAsStream(resourceName);
+		InputStream resource = findResource(uri);
 		if (resource == null)
 			return null;
 		
 		String mime = getMimeTypeForFile(uri);
 		return new Response(Response.Status.OK, mime, resource);
+	}
+	
+	public static InputStream findResource(String uri) {
+		String resourceName;
+		if (uri.startsWith("/icons/"))
+			resourceName = uri;
+		else
+			resourceName = "client" + uri;
+		
+		return BuildHealthWebServer.class.getResourceAsStream(resourceName);
 	}
 	
 	public static final String MIME_DEFAULT_BINARY = "application/octet-stream";
@@ -121,29 +124,36 @@ public class BuildHealthWebServer extends NanoHTTPD {
 	}
 	
 	private Response reportJson() throws IOException {
+		StringWriter result = new StringWriter();
+		reportJson(result, report);
+		return new Response(Response.Status.OK, "application/json; charset=utf-8", result.toString());
+	}
+	
+	public static void reportJson(Writer out, Report report) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
 		
 		// mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
 		
-		StringWriter result = new StringWriter();
-		mapper.writeValue(result, report);
-		return new Response(Response.Status.OK, "application/json; charset=utf-8", result.toString());
+		mapper.writeValue(out, report);
 	}
 	
 	private Response reportXml() throws IOException {
+		StringWriter result = new StringWriter();
+		reportXml(result, report);
+		return new Response(Response.Status.OK, "application/xml; charset=utf-8", result.toString());
+	}
+	
+	public static void reportXml(Writer out, Report report) throws IOException {
 		XmlMapper mapper = new XmlMapper();
 		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
 		AnnotationIntrospector first = new SimpleTypesAsAttributesAnnotationIntrospector();
 		AnnotationIntrospector second = new JacksonXmlAnnotationIntrospector(false);
 		mapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(first, second));
 		
-		StringWriter result = new StringWriter();
-		result.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		mapper.writeValue(result, report);
-		return new Response(Response.Status.OK, "application/xml; charset=utf-8", result.toString());
-		
+		out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		mapper.writeValue(out, report);
 	}
 	
 	private static class SimpleTypesAsAttributesAnnotationIntrospector extends AnnotationIntrospector implements

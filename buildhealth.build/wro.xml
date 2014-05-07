@@ -1,0 +1,12 @@
+<groups xmlns="http://www.isdc.ro/wro">
+  <group name="index">
+    <js>/js/jquery.js</js>
+    <js>/js/*.js</js>
+    <js>/index.js</js>
+    <css>/css/*.css</css>
+    <css>/index.css</css>
+  </group>
+  <group name="ie8">
+    <js>/ie8/*.js</js>
+  </group>
+</groups>

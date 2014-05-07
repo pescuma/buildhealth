@@ -47,6 +47,7 @@ import org.pescuma.buildhealth.cli.commands.config.ListConfigCommand;
 import org.pescuma.buildhealth.cli.commands.config.SetConfigCommand;
 import org.pescuma.buildhealth.cli.commands.projects.ProjectsFromEclipseExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.projects.ProjectsFromVisualStudioExtractorCommand;
+import org.pescuma.buildhealth.cli.commands.webserver.ExportCommand;
 import org.pescuma.buildhealth.cli.commands.webserver.WebServerCommand;
 
 public class BuildHealthCli {
@@ -58,7 +59,7 @@ public class BuildHealthCli {
 				.withDescription("check the quality of your builds")
 				.withDefaultCommand(Help.class)
 				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class,
-						NotifyCommand.class, WebServerCommand.class);
+						NotifyCommand.class, WebServerCommand.class, ExportCommand.class);
 		
 		builder.withGroup("add")
 				.withDescription("Add information to the current build")
