@@ -56,8 +56,8 @@ import com.google.common.base.Function;
  * Example:
  * 
  * <pre>
- * 1 | Static analysis,Java,Task,/a/b.java,12,Type1,Go to bed
- * 1 | Static analysis,Java,PMD,/a/b.java,12:1:12:5,A/Type1,Go to bed,http://a.com/info.html
+ * 1 | Static analysis,Java,Task,/a/b.java>12,Type1,Go to bed
+ * 1 | Static analysis,Java,PMD,/a/b.java>12:1:12:5,A/Type1,Go to bed,http://a.com/info.html
  * 10 | Static analysis,Java,Task,/a/c.java,,Type2
  * </pre>
  */

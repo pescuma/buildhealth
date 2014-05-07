@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.unittest;
 
-import static com.google.common.base.Objects.firstNonNull;
-import static org.apache.commons.io.FilenameUtils.getBaseName;
+import static com.google.common.base.Objects.*;
+import static org.apache.commons.io.FilenameUtils.*;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -107,7 +107,7 @@ public class JUnitExtractor extends BaseXMLExtractor {
 		if (el == null)
 			return false;
 		
-		data.add(1, "Unit test", language, tool, type, classname, name, el.getAttributeValue("message", ""),
+		data.add(1, "Unit test", language, tool, type, classname, name, "", el.getAttributeValue("message", ""),
 				el.getTextTrim());
 		return true;
 	}

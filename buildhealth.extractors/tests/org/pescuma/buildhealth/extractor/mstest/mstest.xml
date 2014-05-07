@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="950fc305-06ea-4aea-8445-95eea28727e3" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2014-05-07T12:41:05.5948768-03:00" queuing="2014-05-07T12:41:05.5958272-03:00" start="2014-05-07T12:41:05.8029997-03:00" finish="2014-05-07T12:41:08.5955575-03:00" />
+  <TestSettings name="default" id="36ef13e3-1922-4f2d-814b-0ef81cd9d2f9">
+    <Execution>
+      <TestTypeSpecific />
+    </Execution>
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="47f806da-e335-44d6-92de-da0ed30d0021" testId="1556c8f9-fb87-918b-25dc-229d998be336" testName="Test1" computerName="COMPUTER_NAME" duration="00:00:00.0579772" startTime="2014-05-07T12:41:07.2845223-03:00" endTime="2014-05-07T12:41:07.3434736-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="47f806da-e335-44d6-92de-da0ed30d0021" />
+    <UnitTestResult executionId="e628ab59-6f75-4a37-b170-72379384b50e" testId="0f8bef7d-7231-0416-52b3-3ae09e13af7c" testName="Test2" computerName="COMPUTER_NAME" duration="00:00:01.3908040" startTime="2014-05-07T12:41:06.8924455-03:00" endTime="2014-05-07T12:41:07.2845223-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e628ab59-6f75-4a37-b170-72379384b50e">
+      <Output>
+        <StdOut>Some text in the stdout</StdOut>
+        <TextMessages>
+	        <Message>Message 1</Message>
+	        <Message>Message 2
+Moreee text</Message>
+        </TextMessages>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e87743fb-7ac0-4000-a1a8-57ca8955541b" testId="23f03b33-4393-6e5c-ec53-33576a29c7c3" testName="Test3" computerName="COMPUTER_NAME" duration="01:02:03.0188771" startTime="2014-05-07T12:41:07.5294144-03:00" endTime="2014-05-07T12:41:07.5495529-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e87743fb-7ac0-4000-a1a8-57ca8955541b">
+      <Output>
+        <ErrorInfo>
+          <Message>Test method A.B.Test3 threw exception: 
+System.ArgumentException: Bla.</Message>
+          <StackTrace>    at A.B.Test3() in c:\Test Project\B.cs:line 234
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Test1" storage="c:\Test Project\bin\debug\A.dll" id="1556c8f9-fb87-918b-25dc-229d998be336">
+      <Execution id="47f806da-e335-44d6-92de-da0ed30d0021" />
+      <TestMethod codeBase="c:\Test Project\bin\Debug\A.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter" className="A.B" name="Test1" />
+    </UnitTest>
+    <UnitTest name="Test2" storage="c:\Test Project\bin\debug\A.dll" id="0f8bef7d-7231-0416-52b3-3ae09e13af7c">
+      <Execution id="e628ab59-6f75-4a37-b170-72379384b50e" />
+    </UnitTest>
+    <UnitTest name="Test3" storage="c:\Test Project\bin\debug\A.dll" id="23f03b33-4393-6e5c-ec53-33576a29c7c3">
+      <Execution id="e87743fb-7ac0-4000-a1a8-57ca8955541b" />
+      <TestMethod codeBase="c:\Test Project\bin\Debug\A.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter" className="A.B" name="Test3" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+</TestRun>

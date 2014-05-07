@@ -32,10 +32,19 @@ import com.google.common.base.Function;
  * Expect the lines to be:
  * 
  * <pre>
- * Unit test,language,framework,{passed,error,failed,skipped,time},test suite name,method name,message,stack trace
+ * Unit test,language,framework,{passed,error,failed,skipped,time},test suite name,method name,location,message,stack trace
  * </pre>
  * 
  * For time the value is in seconds, for the others is the number of tests.
+ * 
+ * Location can be one of:
+ * <ul>
+ * <li>filename
+ * <li>filename>line
+ * <li>filename>line:column
+ * <li>filename>beginLine:beginColumn:endLine:endColumn
+ * <li>or multiple of above, separated by | (ex: file1|file2:32)
+ * </ul>
  * 
  * Example:
  * 
@@ -43,7 +52,7 @@ import com.google.common.base.Function;
  * 10 | Unit test,Java,JUnit,passed,package.TestWithoutMethodsInfo
  * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodInfo,testMethod1
  * 1 | Unit test,Java,JUnit,failed,package.TestWithMethodInfo,testMethod2
- * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodInfo,testMethod3
+ * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodInfo,testMethod3,/a/b.java>12:1:12:5
  * 1 | Unit test,Java,JUnit,error,package.TestWithMethodInfo,testMethod4
  * 1 | Unit test,Java,JUnit,passed,package.TestWithMethodAndTimeInfo,testMethod1
  * 0.01 | Unit test,Java,JUnit,time,package.TestWithMethodAndTimeInfo,testMethod1
