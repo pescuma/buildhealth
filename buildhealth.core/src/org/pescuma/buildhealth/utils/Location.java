@@ -156,6 +156,9 @@ public class Location {
 	}
 	
 	private static Location parseLocation(String loc) {
+		if (loc.trim().isEmpty())
+			return null;
+		
 		String[] places = loc.split(">");
 		
 		if (places.length < 1)

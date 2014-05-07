@@ -142,9 +142,8 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 			node = node.getChild(getLanguage(line));
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
 			
-			String location = line.getColumn(COLUMN_LOCATION);
-			
-			String project = projects.findProjectForFile(location);
+			List<Location> locations = Location.parse(line.getColumn(COLUMN_LOCATION));
+			String project = projects.findProjectForLocations(locations);
 			if (project != null)
 				node = node.getChild(project);
 			
@@ -158,7 +157,7 @@ public class StaticAnalysisAnalyser implements BuildHealthAnalyser {
 				}
 			}
 			
-			if (!location.isEmpty())
+			if (!locations.isEmpty())
 				node.addUnnamedChild().getData().setViolation(line);
 			else
 				node.getData().addViolation(line);

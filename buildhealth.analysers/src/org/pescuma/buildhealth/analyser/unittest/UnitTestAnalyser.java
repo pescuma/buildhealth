@@ -25,6 +25,7 @@ import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.buildhealth.utils.Location;
 
 import com.google.common.base.Function;
 
@@ -66,8 +67,9 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 	public static final int COLUMN_TYPE = 3;
 	public static final int COLUMN_SUITE = 4;
 	public static final int COLUMN_TEST = 5;
-	public static final int COLUMN_MESSAGE = 6;
-	public static final int COLUMN_STACK = 7;
+	public static final int COLUMN_LOCATION = 6;
+	public static final int COLUMN_MESSAGE = 7;
+	public static final int COLUMN_STACK = 8;
 	
 	public static final String TYPE_ERROR = "error";
 	public static final String TYPE_FAILED = "failed";
@@ -97,7 +99,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		
 		boolean highlighProblems = (opts & HighlightProblems) != 0 && (opts & SummaryOnly) == 0 && hasProblems(data);
 		
-		SimpleTree<Stats> tree = toTree(data);
+		SimpleTree<Stats> tree = toTree(data, projects);
 		
 		if (highlighProblems)
 			tree = splitTree(tree);
@@ -111,13 +113,18 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		return !data.filter(COLUMN_TYPE, TYPE_FAILED).isEmpty() || !data.filter(COLUMN_TYPE, TYPE_ERROR).isEmpty();
 	}
 	
-	private SimpleTree<Stats> toTree(BuildData data) {
+	private SimpleTree<Stats> toTree(BuildData data, Projects projects) {
 		SimpleTree<Stats> tree = newTree();
 		
 		for (Line line : data.getLines()) {
 			SimpleTree<Stats>.Node node = tree.getRoot();
 			node = node.getChild(line.getColumn(COLUMN_LANGUAGE));
 			node = node.getChild(line.getColumn(COLUMN_FRAMEWORK));
+			
+			List<Location> locations = Location.parse(line.getColumn(COLUMN_LOCATION));
+			String project = projects.findProjectForLocations(locations);
+			if (project != null)
+				node = node.getChild(project);
 			
 			String suiteName = line.getColumn(COLUMN_SUITE);
 			if (suiteName.isEmpty())
