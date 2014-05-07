@@ -316,9 +316,12 @@ function createLines(html, parentId, id, data, config) {
 		createLines(html, id, id + "-" + i, data.children[i], config);
 }
 
-// http://stackoverflow.com/questions/14346414/how-do-you-do-html-encode-using-javascript
 function htmlEncode(value) {
-	return $('<div/>').text(value).html();
+	// http://stackoverflow.com/questions/14346414/how-do-you-do-html-encode-using-javascript
+	return $('<div/>').text(value).html()
+		.replace(/\r?\n/g, '<br>')
+		.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+		.replace(/  +/g, function (x) { return new Array(x.length + 1).join('&nbsp;') });
 }
 
 function addTd(html, addDiv, name) {
