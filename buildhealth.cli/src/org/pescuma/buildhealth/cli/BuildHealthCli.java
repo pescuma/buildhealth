@@ -6,8 +6,10 @@ import io.airlift.command.Help;
 import io.airlift.command.ParseException;
 import io.airlift.command.SuggestCommand;
 
+import org.pescuma.buildhealth.cli.commands.ConsoleCommand;
 import org.pescuma.buildhealth.cli.commands.NotifyCommand;
 import org.pescuma.buildhealth.cli.commands.ReportCommand;
+import org.pescuma.buildhealth.cli.commands.ScriptCommand;
 import org.pescuma.buildhealth.cli.commands.StartNewBuildCommand;
 import org.pescuma.buildhealth.cli.commands.add.CLOCExtractorCommand;
 import org.pescuma.buildhealth.cli.commands.add.DiskUsageExtractorCommand;
@@ -52,14 +54,29 @@ import org.pescuma.buildhealth.cli.commands.webserver.WebServerCommand;
 
 public class BuildHealthCli {
 	
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
+		Cli<Runnable> parser = createParser();
+		
+		try {
+			
+			Runnable command = parser.parse(args);
+			command.run();
+			
+		} catch (ParseException e) {
+			System.err.println(e.getMessage());
+			System.exit(1);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Cli<Runnable> createParser() {
 		CliBuilder<Runnable> builder = Cli
 				.<Runnable> builder("buildhealth")
 				.withDescription("check the quality of your builds")
 				.withDefaultCommand(Help.class)
 				.withCommands(Help.class, SuggestCommand.class, StartNewBuildCommand.class, ReportCommand.class,
-						NotifyCommand.class, WebServerCommand.class, ExportCommand.class);
+						NotifyCommand.class, WebServerCommand.class, ExportCommand.class, ConsoleCommand.class,
+						ScriptCommand.class);
 		
 		builder.withGroup("add")
 				.withDescription("Add information to the current build")
@@ -153,18 +170,6 @@ public class BuildHealthCli {
 				.withDefaultCommand(ConfigGroupHelp.class) //
 				.withCommands(SetConfigCommand.class, ListConfigCommand.class);
 		
-		Cli<Runnable> parser = builder.build();
-		
-		Runnable command = null;
-		try {
-			
-			command = parser.parse(args);
-			
-			command.run();
-			
-		} catch (ParseException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-		}
+		return builder.build();
 	}
 }
