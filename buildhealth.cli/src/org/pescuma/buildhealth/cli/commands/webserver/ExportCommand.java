@@ -65,7 +65,7 @@ public class ExportCommand extends BuildHealthCliCommand {
 			
 			copyResources(closer, createIconURL("build", report.getStatus()));
 			for (Report child : report.getChildren())
-				copyResources(closer, createIconURL(getImageId(child), report.getStatus()));
+				copyResources(closer, createIconURL(getImageId(child), child.getStatus()));
 			
 		} else if ("xml".equals(format)) {
 			FileWriter result = closer.register(new FileWriter(path));
