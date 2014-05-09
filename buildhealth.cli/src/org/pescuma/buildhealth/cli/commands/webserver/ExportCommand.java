@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
@@ -57,7 +58,11 @@ public class ExportCommand extends BuildHealthCliCommand {
 		if ("html".equals(format)) {
 			mkdirs(path);
 			
-			BuildHealthWebServer.reportJson(closer.register(new FileWriter(new File(path, "report.json"))), report);
+			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(new File(path, "report.json")),
+					"UTF-8");
+			closer.register(writer);
+			
+			BuildHealthWebServer.reportJson(writer, report);
 			
 			copyResources(closer, "index.html", "index.css", "index.js");
 			copyResources(closer, "images/bg-table-thead.png", "images/collapse.png", "images/expand.png",
