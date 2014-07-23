@@ -129,6 +129,13 @@ function build(id, data) {
 			{ header: "Text", data: "description", size:"500px", wrap:true },
 		];
 		
+	} else if (id == "compilererrors") {
+		config = [
+			{ header: "File", data: "name", size:"600px" },
+			{ header: "Line", data: "value", size:"70px" },
+			{ header: "Text", data: "description", size:"500px", wrap:true },
+		];
+		
 	} else if (id == "unittests") {
 		config = [
 			{ header: "Test", data: "name", size:"600px" },
