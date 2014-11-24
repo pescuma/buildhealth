@@ -1,9 +1,9 @@
 buildhealth
 ===========
 
-[Download buildhealth-0.2.jar](https://github.com/pescuma/buildhealth/releases/download/v0.2/buildhealth-0.2.jar) (command line interface and ant task)
+[Download buildhealth-0.3.jar](https://github.com/pescuma/buildhealth/releases/download/v0.3/buildhealth-0.3.jar) (command line interface and ant task)
 
-[Download buildhealth-0.2.exe](https://github.com/pescuma/buildhealth/releases/download/v0.2/buildhealth-0.2.exe) (Windows command line interface)
+[Download buildhealth-0.3.exe](https://github.com/pescuma/buildhealth/releases/download/v0.3/buildhealth-0.3.exe) (Windows command line interface)
 
 Maven packages can be found on [bintray](https://bintray.com/pescuma/buildhealth/buildhealth)
 
