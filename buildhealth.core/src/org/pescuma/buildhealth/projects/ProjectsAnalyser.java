@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.projects;
 
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.prefs.Preferences;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.DataTable.Line;
 
 /**
  * Expect the lines to be:
@@ -25,7 +25,7 @@ public class ProjectsAnalyser {
 	public static final int COLUMN_TYPE = 2;
 	public static final int COLUMN_FOLDER_OR_FILE = 3;
 	
-	public Projects computeProjects(BuildData data, Preferences prefs) {
+	public Projects computeProjects(DataTable data, Preferences prefs) {
 		Projects result = new Projects();
 		
 		data = data.filter("Project");

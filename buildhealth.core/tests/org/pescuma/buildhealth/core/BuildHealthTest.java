@@ -13,6 +13,7 @@ import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.datatable.DataTable;
 
 public class BuildHealthTest {
 	
@@ -32,7 +33,7 @@ public class BuildHealthTest {
 	public void testNoDataWithAnalyser() {
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+			public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "", "", ""));
 			}
 		});
@@ -44,14 +45,14 @@ public class BuildHealthTest {
 	public void testExtractGenerateSimpleReport() {
 		buildhealth.extract(new BuildDataExtractor() {
 			@Override
-			public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+			public void extractTo(DataTable data, BuildDataExtractorTracker tracker) {
 				data.add(10, "Unit test", "java", "passed");
 			}
 		});
 		
 		buildhealth.addAnalyser(new BaseBuildHealthAnalyser() {
 			@Override
-			public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+			public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 				return asList(new Report(BuildStatus.Good, "Unit tests", "100%", data.filter("Unit test").sum()
 						+ " passed"));
 			}

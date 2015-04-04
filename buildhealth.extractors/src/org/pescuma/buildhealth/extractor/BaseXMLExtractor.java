@@ -14,7 +14,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
-import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.datatable.DataTable;
 
 import com.sun.xml.txw2.IllegalSignatureException;
 
@@ -29,7 +29,7 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, InputStream input, DataTable data) throws IOException {
 		try {
 			
 			Document doc = JDomUtil.parse(input);
@@ -41,11 +41,11 @@ public abstract class BaseXMLExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected final void extract(String path, Reader input, BuildData data) throws IOException {
+	protected final void extract(String path, Reader input, DataTable data) throws IOException {
 		throw new IllegalStateException("Do not use");
 	}
 	
-	protected abstract void extractDocument(String path, Document doc, BuildData data);
+	protected abstract void extractDocument(String path, Document doc, DataTable data);
 	
 	public static void checkRoot(Document doc, String path, String... names) {
 		boolean found = false;

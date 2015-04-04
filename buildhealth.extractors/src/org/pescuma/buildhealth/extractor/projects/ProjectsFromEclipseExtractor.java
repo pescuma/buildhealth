@@ -12,12 +12,12 @@ import org.apache.commons.lang.Validate;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.JDomUtil;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.utils.FilenameToLanguage;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.programminglanguagedetector.FilenameToLanguage;
 
 public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 	
@@ -33,7 +33,7 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+	public void extractTo(DataTable data, BuildDataExtractorTracker tracker) {
 		// Streams are not supported yet
 		Validate.isTrue(!files.isStream());
 		
@@ -51,7 +51,7 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void processProject(BuildData data, File projFile) throws IOException, JDOMException {
+	private void processProject(DataTable data, File projFile) throws IOException, JDOMException {
 		Document projDoc = JDomUtil.parse(projFile);
 		checkRoot(projDoc, PROJECT_FILENAME, "projectDescription");
 		
@@ -64,7 +64,7 @@ public class ProjectsFromEclipseExtractor implements BuildDataExtractor {
 			processClasspath(data, name, classpathFile);
 	}
 	
-	private void processClasspath(BuildData data, String projectName, File classpathFile) throws JDOMException,
+	private void processClasspath(DataTable data, String projectName, File classpathFile) throws JDOMException,
 			IOException {
 		Document classpathDoc = JDomUtil.parse(classpathFile);
 		checkRoot(classpathDoc, CLASSPATH_FILENAME, "classpath");

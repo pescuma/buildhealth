@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.analyser.coverage;
 
-import static com.google.common.base.Objects.*;
+import static com.google.common.base.MoreObjects.*;
 import static java.lang.Math.*;
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
@@ -27,12 +27,12 @@ import org.pescuma.buildhealth.analyser.utils.SimpleTree;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusAndExplanation;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusFromThresholdComputer;
 import org.pescuma.buildhealth.analyser.utils.buildstatus.BuildStatusMessageFormater;
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.DataTable.Line;
 
 import com.google.common.base.Function;
 
@@ -152,7 +152,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+	public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 		data = data.filter("Coverage");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -181,7 +181,7 @@ public class CoverageAnalyser implements BuildHealthAnalyser {
 		return preferredCoverageTypes;
 	}
 	
-	private SimpleTree<Stats> buildTree(BuildData data, Projects projects) {
+	private SimpleTree<Stats> buildTree(DataTable data, Projects projects) {
 		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
 			@Override
 			public Stats apply(String[] name) {

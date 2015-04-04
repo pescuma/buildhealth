@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis.console;
 
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.analysis.util.model.LineRange;
 import hudson.plugins.analysis.util.model.Priority;
@@ -15,12 +15,12 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 class WarningsHelper {
 	
-	static void extractFromParser(String name, AbstractWarningsParser parser, Reader input, BuildData data)
+	static void extractFromParser(String name, AbstractWarningsParser parser, Reader input, DataTable data)
 			throws IOException, ParsingCanceledException {
 		Collection<FileAnnotation> anns = parser.parse(input);
 		

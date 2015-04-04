@@ -16,10 +16,10 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.LineIterator;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // https://github.com/douglascrockford/JSLint
 // https://github.com/FND/jslint-reporter
@@ -52,7 +52,7 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, InputStream input, DataTable data) throws IOException {
 		if (!input.markSupported())
 			input = new BufferedInputStream(input);
 		
@@ -78,7 +78,7 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 				|| Arrays.equals(start, "<jshi".getBytes());
 	}
 	
-	private void extractTxt(String filename, InputStream input, BuildData data) throws IOException {
+	private void extractTxt(String filename, InputStream input, DataTable data) throws IOException {
 		LineIterator lines = lineIterator(toReader(input));
 		
 		while (lines.hasNext()) {
@@ -106,7 +106,7 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "jslint", "jshint");
 		
 		String tool = toTool(doc.getRootElement().getName());
@@ -122,14 +122,14 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 			return "JSHint";
 	}
 	
-	private void extractFile(BuildData data, Element file, String tool) {
+	private void extractFile(DataTable data, Element file, String tool) {
 		String fileName = file.getAttributeValue("name", "");
 		
 		for (Element el : file.getChildren("issue"))
 			extractIssue(data, el, tool, fileName);
 	}
 	
-	private void extractIssue(BuildData data, Element el, String tool, String fileName) {
+	private void extractIssue(DataTable data, Element el, String tool, String fileName) {
 		String lineNum = el.getAttributeValue("line", "");
 		String column = el.getAttributeValue("char", "");
 		String text = el.getAttributeValue("reason", "");
@@ -137,7 +137,7 @@ public class JSXLintExtractor extends BaseXMLExtractor {
 		add(data, tool, fileName, lineNum, column, text);
 	}
 	
-	private void add(BuildData data, String tool, String file, String lineNum, String column, String text) {
+	private void add(DataTable data, String tool, String file, String lineNum, String column, String text) {
 		text = firstNonNull(text, "");
 		
 		if (text.isEmpty())

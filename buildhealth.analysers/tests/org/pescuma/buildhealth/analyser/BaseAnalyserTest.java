@@ -9,16 +9,16 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Test;
 import org.pescuma.buildhealth.core.Report;
-import org.pescuma.buildhealth.core.data.BuildDataTable;
 import org.pescuma.buildhealth.prefs.MemoryPreferencesStore;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.buildhealth.utils.ReportHelper;
+import org.pescuma.datatable.MemoryDataTable;
 
 public abstract class BaseAnalyserTest {
 	
 	protected Locale oldLocale;
-	protected BuildDataTable data;
+	protected MemoryDataTable data;
 	protected Preferences prefs;
 	protected Projects projects;
 	private BuildHealthAnalyser analyser;
@@ -28,7 +28,7 @@ public abstract class BaseAnalyserTest {
 		Locale.setDefault(Locale.US);
 		
 		this.analyser = analyser;
-		this.data = new BuildDataTable();
+		this.data = new MemoryDataTable();
 		this.prefs = new Preferences(new MemoryPreferencesStore());
 		this.projects = new Projects();
 	}

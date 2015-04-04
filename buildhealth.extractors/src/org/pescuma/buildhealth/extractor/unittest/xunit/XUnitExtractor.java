@@ -12,12 +12,12 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.unittest.JUnitExtractor;
+import org.pescuma.datatable.DataTable;
 
 import com.thalesgroup.dtkit.metrics.model.InputMetric;
 import com.thalesgroup.dtkit.metrics.model.InputMetricException;
@@ -43,7 +43,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+	public void extractTo(DataTable data, BuildDataExtractorTracker tracker) {
 		if (files.isStream()) {
 			File tmp = createTmpFile();
 			try {
@@ -87,7 +87,7 @@ abstract class XUnitExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractFile(File inputFile, String filename, BuildData data) {
+	private void extractFile(File inputFile, String filename, DataTable data) {
 		InputMetric metric = getInputMetric();
 		
 		File junitFile = convertFile(metric, inputFile);

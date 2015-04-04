@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.cli.commands.webserver;
 
 import static org.pescuma.buildhealth.core.BuildHealth.ReportFlags.*;
-import io.airlift.command.Arguments;
-import io.airlift.command.Command;
+import io.airlift.airline.Arguments;
+import io.airlift.airline.Command;
 
 import java.io.IOException;
 

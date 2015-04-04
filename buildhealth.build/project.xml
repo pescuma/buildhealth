@@ -4,14 +4,14 @@
 	<property name="project.deps" value="" />
 	<property name="version" value="devel" />
 
-	<script language="javascript">
+	<!--script language="javascript">
 		<![CDATA[ 
 	        importClass(java.util.Locale);
 	        actualDefault = Locale.getDefault();
-	        project.setProperty("---actual-default-locale---", actualDefault);
+	        project.setProperty("- - -actual-default-locale- - -", actualDefault);
 	        Locale.setDefault(Locale.US);
 	    ]]>
-	</script>
+	</script-->
 
 	<property name="project.dir" location="${basedir}" />
 	<property name="src.dir" location="${project.dir}/src" />
@@ -36,7 +36,7 @@
 	<property name="tools.lib.dir" location="${tools.dir}/lib" />
 	<property name="javac.target" value="1.6" />
 
-	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${build.lib.dir}/ant-contrib-1.0b3.jar" />
 
 	<var name="project.deps.path.joined" value="" />
 	<for list="${project.deps}" param="d">

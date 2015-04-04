@@ -2,8 +2,8 @@ package org.pescuma.buildhealth.cli.commands.config;
 
 import static java.lang.Math.*;
 import static org.pescuma.buildhealth.core.prefs.BuildHealthPreference.*;
-import io.airlift.command.Arguments;
-import io.airlift.command.Command;
+import io.airlift.airline.Arguments;
+import io.airlift.airline.Command;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,7 +26,8 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 		Preferences prefs = buildHealth.getPreferences();
 		List<BuildHealthPreference> knownPreferences = buildHealth.getKnownPreferences();
 		
-		Map<String[], BuildHealthPreference> keys = new TreeMap<String[], BuildHealthPreference>(getKeyComparator());
+		Map<String[], BuildHealthPreference> keys = new TreeMap<String[], BuildHealthPreference>(
+				getKeyComparator());
 		for (BuildHealthPreference kp : knownPreferences)
 			keys.put(kp.getKey(), kp);
 		for (String[] key : prefs.getKeys())
@@ -49,7 +50,8 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 			if (bhp == null)
 				append(out, prefs, key, "<no default value>", "");
 			else
-				append(out, prefs, removeAnyKeyEntryPrefix(key), bhp.getDefVal(), bhp.getDescription());
+				append(out, prefs, removeAnyKeyEntryPrefix(key), bhp.getDefVal(),
+						bhp.getDescription());
 		}
 		
 		if (out.length() < 1)
@@ -76,7 +78,8 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 		return true;
 	}
 	
-	private BuildHealthPreference findKnownPreference(List<BuildHealthPreference> knownPreferences, String[] key) {
+	private BuildHealthPreference findKnownPreference(List<BuildHealthPreference> knownPreferences,
+			String[] key) {
 		for (BuildHealthPreference kp : knownPreferences) {
 			if (!hasAnyKeyEntry(kp.getKey()))
 				continue;
@@ -131,7 +134,8 @@ public class ListConfigCommand extends BuildHealthCliCommand {
 		return result;
 	}
 	
-	private void append(StringBuilder out, Preferences prefs, String[] key, String defVal, String description) {
+	private void append(StringBuilder out, Preferences prefs, String[] key, String defVal,
+			String description) {
 		for (int i = 0; i < key.length; i++) {
 			if (i > 0)
 				out.append(" ");

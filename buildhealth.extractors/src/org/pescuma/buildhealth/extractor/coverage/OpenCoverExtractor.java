@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 // https://github.com/OpenCover/opencover
 public class OpenCoverExtractor extends BaseXMLExtractor {
@@ -19,7 +19,7 @@ public class OpenCoverExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "CoverageSession");
 		
 		PlacesTracker place = new PlacesTracker(data, "C#", "OpenCover");

@@ -2,10 +2,10 @@ package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // https://stylecop.codeplex.com/
 // Based on Jenkins Violations plugin: https://github.com/jenkinsci/violations-plugin
@@ -19,7 +19,7 @@ public class StyleCopExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "SourceAnalysisViolations", "StyleCopViolations");
 		
 		for (Element violation : findElementsXPath(doc, "//Violation")) {

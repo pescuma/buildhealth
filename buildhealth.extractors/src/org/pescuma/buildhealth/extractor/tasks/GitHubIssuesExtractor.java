@@ -13,9 +13,9 @@ import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
+import org.pescuma.datatable.DataTable;
 
 // http://developer.github.com/v3/issues/#list-issues-for-a-repository
 public class GitHubIssuesExtractor implements BuildDataExtractor {
@@ -37,7 +37,7 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+	public void extractTo(DataTable data, BuildDataExtractorTracker tracker) {
 		try {
 			
 			GitHub gitHub = GitHub.connectAnonymously();
@@ -56,7 +56,7 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractIssues(BuildData data, List<GHIssue> issues) {
+	private void extractIssues(DataTable data, List<GHIssue> issues) {
 		for (GHIssue issue : issues) {
 			data.add(1, "Tasks", "GitHub", toLabels(issue.getLabels()), toState(issue.getState()), issue.getTitle(),
 					toName(issue.getAssignee()), toName(issue.getUser()), toDate(issue.getCreatedAt()),

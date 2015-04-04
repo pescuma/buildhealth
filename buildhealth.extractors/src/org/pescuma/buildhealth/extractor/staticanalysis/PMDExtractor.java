@@ -1,14 +1,14 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // http://pmd.sourceforge.net/
 public class PMDExtractor extends BaseXMLExtractor {
@@ -18,21 +18,21 @@ public class PMDExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "pmd");
 		
 		for (Element file : doc.getRootElement().getChildren("file"))
 			extractFile(file, data);
 	}
 	
-	private void extractFile(Element file, BuildData data) {
+	private void extractFile(Element file, DataTable data) {
 		String filename = file.getAttributeValue("name", "");
 		
 		for (Element violation : file.getChildren("violation"))
 			extractViolation(filename, violation, data);
 	}
 	
-	private void extractViolation(String filename, Element violation, BuildData data) {
+	private void extractViolation(String filename, Element violation, DataTable data) {
 		Location loc = Location.create(filename, violation.getAttributeValue("beginline", ""),
 				violation.getAttributeValue("begincolumn", ""), violation.getAttributeValue("endline", ""),
 				violation.getAttributeValue("endcolumn", ""));

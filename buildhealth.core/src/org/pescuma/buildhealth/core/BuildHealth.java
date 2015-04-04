@@ -17,8 +17,6 @@ import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.computer.BuildDataComputerException;
 import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
-import org.pescuma.buildhealth.core.data.BuildDataTable;
-import org.pescuma.buildhealth.core.data.DiskBuildData;
 import org.pescuma.buildhealth.core.listener.BuildHealthListener;
 import org.pescuma.buildhealth.core.listener.CompositeBuildHealthListener;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
@@ -37,6 +35,9 @@ import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.buildhealth.projects.ProjectsAnalyser;
 import org.pescuma.buildhealth.utils.ReportFormater;
 import org.pescuma.buildhealth.utils.ReportHelper;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.DiskDataTable;
+import org.pescuma.datatable.MemoryDataTable;
 
 import com.google.common.base.Strings;
 
@@ -45,7 +46,7 @@ public class BuildHealth {
 	private static final String DEFAULT_FOLDER_NAME = ".buildhealth";
 	
 	private final File home;
-	private final BuildData table;
+	private final DataTable table;
 	private final PreferencesStore store;
 	private final Preferences preferences;
 	private final List<BuildHealthAnalyser> analysers = new ArrayList<BuildHealthAnalyser>();
@@ -60,7 +61,7 @@ public class BuildHealth {
 		this(home, getDefaultBuildData(home), getDefaultPreferencesStore(home));
 	}
 	
-	public BuildHealth(File home, BuildData table, PreferencesStore store) {
+	public BuildHealth(File home, DataTable table, PreferencesStore store) {
 		this.home = getCanonicalFile(home);
 		this.table = table;
 		this.store = store;
@@ -68,8 +69,8 @@ public class BuildHealth {
 	}
 	
 	public void shutdown() {
-		if (table instanceof DiskBuildData)
-			((DiskBuildData) table).saveToDisk();
+		if (table instanceof DiskDataTable)
+			((DiskDataTable) table).saveToDisk();
 		
 		if (store instanceof DiskPreferencesStore)
 			((DiskPreferencesStore) store).saveToDisk();
@@ -338,11 +339,11 @@ public class BuildHealth {
 		return getCanonicalFile(new File(home, "config"));
 	}
 	
-	public static BuildData getDefaultBuildData(File home) {
+	public static DataTable getDefaultBuildData(File home) {
 		if (home != null)
-			return new DiskBuildData(getDataFile(home), new BuildDataTable());
+			return new DiskDataTable(getDataFile(home), new MemoryDataTable());
 		else
-			return new BuildDataTable();
+			return new MemoryDataTable();
 	}
 	
 	private static File getDataFile(File home) {

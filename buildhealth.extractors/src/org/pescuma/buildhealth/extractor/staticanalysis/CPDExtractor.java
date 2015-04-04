@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
 import static org.apache.commons.io.IOUtils.*;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -11,10 +11,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.LineIterator;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // http://pmd.sourceforge.net/snapshot/cpd-usage.html
 // TODO Maybe create a Code duplication analyser?
@@ -30,7 +30,7 @@ public class CPDExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, Reader input, BuildData data) throws IOException {
+	protected void extract(String path, Reader input, DataTable data) throws IOException {
 		LineIterator lines = lineIterator(input);
 		
 		StringBuilder msg = null;
@@ -62,7 +62,7 @@ public class CPDExtractor extends BaseBuildDataExtractor {
 		}
 	}
 	
-	private void extract(String message, BuildData data) {
+	private void extract(String message, DataTable data) {
 		message = message.trim();
 		if (message.isEmpty())
 			return;

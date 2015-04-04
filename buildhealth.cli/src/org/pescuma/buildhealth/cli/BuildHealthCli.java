@@ -1,10 +1,10 @@
 package org.pescuma.buildhealth.cli;
 
-import io.airlift.command.Cli;
-import io.airlift.command.Cli.CliBuilder;
-import io.airlift.command.Help;
-import io.airlift.command.ParseException;
-import io.airlift.command.SuggestCommand;
+import io.airlift.airline.Cli;
+import io.airlift.airline.Cli.CliBuilder;
+import io.airlift.airline.Help;
+import io.airlift.airline.ParseException;
+import io.airlift.airline.SuggestCommand;
 
 import org.pescuma.buildhealth.cli.commands.ConsoleCommand;
 import org.pescuma.buildhealth.cli.commands.NotifyCommand;
@@ -157,14 +157,16 @@ public class BuildHealthCli {
 				// End of auto generated entries
 				);
 		
-		builder.withGroup("compute").withDescription("Compute new information and add it to the current build")
+		builder.withGroup("compute")
+				.withDescription("Compute new information and add it to the current build")
 				.withDefaultCommand(ComputeGroupHelp.class) //
 				.withCommands(LOCComputerCommand.class, CodeTasksComputerCommand.class);
 		
 		builder.withGroup("projects")
 				.withDescription("Add projects information to current build")
 				.withDefaultCommand(ProjectsGroupHelp.class)
-				.withCommands(ProjectsFromEclipseExtractorCommand.class, ProjectsFromVisualStudioExtractorCommand.class);
+				.withCommands(ProjectsFromEclipseExtractorCommand.class,
+						ProjectsFromVisualStudioExtractorCommand.class);
 		
 		builder.withGroup("config").withDescription("Configure your report preferences")
 				.withDefaultCommand(ConfigGroupHelp.class) //

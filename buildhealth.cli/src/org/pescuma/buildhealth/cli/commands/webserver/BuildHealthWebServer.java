@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyName;
@@ -131,7 +132,7 @@ public class BuildHealthWebServer extends NanoHTTPD {
 	
 	public static void reportJson(Writer out, Report report) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
+		mapper.addMixIn(Report.class, ReportMixIn.class);
 		
 		// mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
@@ -147,7 +148,7 @@ public class BuildHealthWebServer extends NanoHTTPD {
 	
 	public static void reportXml(Writer out, Report report) throws IOException {
 		XmlMapper mapper = new XmlMapper();
-		mapper.addMixInAnnotations(Report.class, ReportMixIn.class);
+		mapper.addMixIn(Report.class, ReportMixIn.class);
 		AnnotationIntrospector first = new SimpleTypesAsAttributesAnnotationIntrospector();
 		AnnotationIntrospector second = new JacksonXmlAnnotationIntrospector(false);
 		mapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(first, second));
@@ -222,6 +223,11 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		public Boolean isOutputAsText(Annotated ann) {
 			return null;
 		}
+		
+		@Override
+		public Boolean isOutputAsCData(Annotated ann) {
+			return null;
+		}
 	}
 	
 	@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -260,6 +266,11 @@ public class BuildHealthWebServer extends NanoHTTPD {
 		
 		@Override
 		public Id getMechanism() {
+			return null;
+		}
+		
+		@Override
+		public JavaType typeFromId(DatabindContext context, String id) {
 			return null;
 		}
 		

@@ -1,15 +1,12 @@
 package org.pescuma.buildhealth.extractor.loc;
 
-import static java.lang.Integer.*;
-import static java.lang.Math.*;
-
 import java.io.IOException;
 import java.io.Reader;
 
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseBuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.CSV;
+import org.pescuma.datatable.DataTable;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -21,7 +18,7 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 	}
 	
 	@Override
-	protected void extract(String path, Reader input, BuildData data) throws IOException {
+	protected void extract(String path, Reader input, DataTable data) throws IOException {
 		CSVReader reader = CSV.newReader(input);
 		
 		String[] headers = null;
@@ -54,17 +51,17 @@ public class CLOCExtractor extends BaseBuildDataExtractor {
 			if (filenameCol >= 0) {
 				data.add(1, "LOC", language, "files", filename);
 			} else {
-				int files = parseInt(line[filesCol]);
+				int files = Integer.parseInt(line[filesCol]);
 				if (files > 0)
 					data.add(files, "LOC", language, "files");
 			}
 			
-			int length = min(line.length, headers.length);
+			int length = Math.min(line.length, headers.length);
 			for (int i = 0; i < length; i++) {
 				if (i == languageCol || i == filenameCol || i == filesCol)
 					continue;
 				
-				int val = parseInt(line[i]);
+				int val = Integer.parseInt(line[i]);
 				if (val > 0)
 					data.add(val, "LOC", language, headers[i], filename);
 			}

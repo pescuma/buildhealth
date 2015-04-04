@@ -4,9 +4,9 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 // http://www.jetbrains.com/dotcover/
 public class DotCoverExtractor extends BaseXMLExtractor {
@@ -16,7 +16,7 @@ public class DotCoverExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "Root");
 		
 		PlacesTracker place = new PlacesTracker(data, "C#", "dotCover");

@@ -12,10 +12,10 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jsoup.Jsoup;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // http://findbugs.sourceforge.net/
 public class FindBugsExtractor extends BaseXMLExtractor {
@@ -25,7 +25,7 @@ public class FindBugsExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "BugCollection");
 		
 		Map<String, String> categoryFullName = findCategories(doc);

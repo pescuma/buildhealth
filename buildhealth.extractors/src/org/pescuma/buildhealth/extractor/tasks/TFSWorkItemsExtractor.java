@@ -8,9 +8,9 @@ import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 // From tfpt query /collection:uri /format:xml > wis.xml
 public class TFSWorkItemsExtractor extends BaseXMLExtractor {
@@ -22,13 +22,13 @@ public class TFSWorkItemsExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "WorkItems");
 		
 		extractChildren(data, doc.getRootElement(), "");
 	}
 	
-	private void extractChildren(BuildData data, Element el, String parentId) {
+	private void extractChildren(DataTable data, Element el, String parentId) {
 		for (Element child : el.getChildren("WorkItem"))
 			extractWorkItem(data, child, parentId);
 		
@@ -38,7 +38,7 @@ public class TFSWorkItemsExtractor extends BaseXMLExtractor {
 		}
 	}
 	
-	private void extractWorkItem(BuildData data, Element el, String parentId) {
+	private void extractWorkItem(DataTable data, Element el, String parentId) {
 		// Keep insertion order so we show data in a nice order in details
 		@SuppressWarnings("serial")
 		Map<String, String> fields = new LinkedHashMap<String, String>() {

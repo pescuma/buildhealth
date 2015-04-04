@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // http://www.mono-project.com/Gendarme
 public class GendarmeExtractor extends BaseXMLExtractor {
@@ -28,7 +28,7 @@ public class GendarmeExtractor extends BaseXMLExtractor {
 	private static final Pattern SOURCE_PATTERN = Pattern.compile("(.*)\\(\\u2248?(\\d+)(?:,(\\d*))?\\)");
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "gendarme-output");
 		
 		Map<String, String> fullNames = findRuleFullNames(doc);

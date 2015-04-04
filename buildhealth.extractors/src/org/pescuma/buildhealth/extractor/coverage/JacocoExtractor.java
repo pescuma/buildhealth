@@ -6,9 +6,9 @@ import static com.google.common.base.Strings.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 // http://www.eclemma.org/jacoco/
 public class JacocoExtractor extends BaseXMLExtractor {
@@ -18,7 +18,7 @@ public class JacocoExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "report");
 		
 		PlacesTracker place = new PlacesTracker(data, "Java", "JaCoCo");

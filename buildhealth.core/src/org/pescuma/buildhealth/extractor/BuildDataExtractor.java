@@ -1,9 +1,9 @@
 package org.pescuma.buildhealth.extractor;
 
-import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.datatable.DataTable;
 
 public interface BuildDataExtractor {
 	
-	void extractTo(BuildData data, BuildDataExtractorTracker tracker);
+	void extractTo(DataTable data, BuildDataExtractorTracker tracker);
 	
 }

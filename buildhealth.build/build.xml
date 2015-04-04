@@ -304,6 +304,12 @@
 		</antcall>
 	</target>
 
+	<target name="check-deps" description="Check new versions of the dependencies">
+		<antcall target="call-in-projs">
+			<param name="target" value="check-deps" />
+		</antcall>
+	</target>
+
 	<target name="mvn-publish" description="Publish to maven repo at bintray">
 		<antcall target="call-in-projs">
 			<param name="target" value="mvn-publish" />

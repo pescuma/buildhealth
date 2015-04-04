@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.cli.commands.add;
 
-import io.airlift.command.Command;
-import io.airlift.command.Option;
+import io.airlift.airline.Command;
+import io.airlift.airline.Option;
 
 import org.pescuma.buildhealth.cli.BaseBuildHealthFilesCliCommand;
 import org.pescuma.buildhealth.extractor.diskusage.DiskUsageExtractor;

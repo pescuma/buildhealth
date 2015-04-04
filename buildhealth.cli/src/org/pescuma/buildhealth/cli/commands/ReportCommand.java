@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.cli.commands;
 
-import io.airlift.command.Arguments;
-import io.airlift.command.Command;
-import io.airlift.command.Option;
+import io.airlift.airline.Arguments;
+import io.airlift.airline.Command;
+import io.airlift.airline.Option;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
@@ -72,7 +72,8 @@ public class ReportCommand extends BuildHealthCliCommand {
 		int hp = highlightProblems ? ReportFlags.HighlightProblems : 0;
 		
 		if (category == null || category.isEmpty())
-			return buildHealth.generateReport(ReportFlags.SummaryOnly | ReportFlags.ListSourcesOfProblems | hp);
+			return buildHealth.generateReport(ReportFlags.SummaryOnly
+					| ReportFlags.ListSourcesOfProblems | hp);
 		else
 			return buildHealth.generateReport(category, ReportFlags.Full | hp);
 	}

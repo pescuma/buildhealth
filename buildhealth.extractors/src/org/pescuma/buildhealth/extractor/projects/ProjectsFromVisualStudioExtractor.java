@@ -8,10 +8,10 @@ import java.io.File;
 import org.apache.commons.lang.Validate;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
-import org.pescuma.buildhealth.extractor.utils.FilenameToLanguage;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.programminglanguagedetector.FilenameToLanguage;
 
 public class ProjectsFromVisualStudioExtractor extends BaseXMLExtractor {
 	
@@ -20,7 +20,7 @@ public class ProjectsFromVisualStudioExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		Validate.notNull(path);
 		
 		if (doc.getRootElement().getName().equals("VisualStudioProject")) {
@@ -64,11 +64,11 @@ public class ProjectsFromVisualStudioExtractor extends BaseXMLExtractor {
 		}
 	}
 	
-	private void AddBasePath(BuildData data, String project, File basePath) {
+	private void AddBasePath(DataTable data, String project, File basePath) {
 		data.add(0, "Project", project, "BasePath", basePath.getPath());
 	}
 	
-	private void AddFile(BuildData data, String project, File basePath, String include) {
+	private void AddFile(DataTable data, String project, File basePath, String include) {
 		if (include.isEmpty())
 			return;
 		

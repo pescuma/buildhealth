@@ -14,17 +14,17 @@
 	</publications>
 
 	<dependencies>
-		<dependency org="io.airlift" name="airline" rev="0.5" />
-		<dependency org="org.fusesource.jansi" name="jansi" rev="1.9" />
-		<dependency org="com.google.guava" name="guava" rev="14.0" />
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.2.3" />
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.2.3" />
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.2.3" />
-		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-xml" rev="2.2.3" />
-		<dependency org="org.codehaus.woodstox" name="woodstox-core-asl" rev="4.2.0" />
+		<dependency org="io.airlift" name="airline" rev="0.7" />
+		<dependency org="org.fusesource.jansi" name="jansi" rev="1.11" />
+		<dependency org="com.google.guava" name="guava" rev="18.0" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.5.2" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.5.2" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.5.2" />
+		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-xml" rev="2.5.2" />
+		<dependency org="org.codehaus.woodstox" name="woodstox-core-asl" rev="4.4.1" />
 		<dependency org="commons-io" name="commons-io" rev="2.2" />
 
-		<dependency org="junit" name="junit" rev="4.11" conf="compile" />
+		<dependency org="junit" name="junit" rev="4.12" conf="compile" />
 
 		<!-- Excluded -->
 		<exclude org="javax.xml.stream" module="stax-api" />

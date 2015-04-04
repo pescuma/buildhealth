@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorException;
 import org.pescuma.buildhealth.extractor.BuildDataExtractorTracker;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 import com.google.common.base.Strings;
 
@@ -29,7 +29,7 @@ public class DiskUsageExtractor implements BuildDataExtractor {
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+	public void extractTo(DataTable data, BuildDataExtractorTracker tracker) {
 		long total = 0;
 		
 		if (files.isStream()) {
@@ -48,7 +48,7 @@ public class DiskUsageExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void addUsage(BuildData data, long total, String filename) {
+	private void addUsage(DataTable data, long total, String filename) {
 		if (Strings.isNullOrEmpty(tag))
 			data.add(total, "Disk usage", filename);
 		else

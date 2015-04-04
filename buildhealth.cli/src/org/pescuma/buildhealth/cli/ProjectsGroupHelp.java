@@ -1,9 +1,9 @@
 package org.pescuma.buildhealth.cli;
 
 import static java.util.Arrays.*;
-import io.airlift.command.Command;
-import io.airlift.command.Help;
-import io.airlift.command.model.GlobalMetadata;
+import io.airlift.airline.Command;
+import io.airlift.airline.Help;
+import io.airlift.airline.model.GlobalMetadata;
 
 import javax.inject.Inject;
 

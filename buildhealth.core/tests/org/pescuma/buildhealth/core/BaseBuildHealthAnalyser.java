@@ -4,11 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.datatable.DataTable;
 
 public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
 	
@@ -28,7 +28,7 @@ public abstract class BaseBuildHealthAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+	public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 		return null;
 	}
 	

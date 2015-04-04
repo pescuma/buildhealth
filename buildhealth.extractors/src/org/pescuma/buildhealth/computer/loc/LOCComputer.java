@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.computer.loc;
 
 import static org.apache.commons.io.IOUtils.*;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -114,7 +114,7 @@ public class LOCComputer implements BuildDataComputer {
 		List<String> result = new ArrayList<String>();
 		
 		for (File file : files.getFilesByExtension()) {
-			if (!isKnownFileType(file.getPath(), false))
+			if (!isKnownFileType(file.getPath()))
 				continue;
 			
 			result.add(toPath(file));

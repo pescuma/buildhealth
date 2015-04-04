@@ -8,9 +8,9 @@ import java.text.ParseException;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 /**
  * Based on hudson.tasks.junit.SuiteResult by Kohsuke Kawaguchi
@@ -32,14 +32,14 @@ public class JUnitExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "testsuite", "testsuites");
 		
 		for (Element suite : findElementsXPath(doc, "//testsuite"))
 			extractSuite(path, suite, data);
 	}
 	
-	private void extractSuite(String path, Element suite, BuildData data) {
+	private void extractSuite(String path, Element suite, DataTable data) {
 		// some user reported that name is null in their environment.
 		// see http://www.nabble.com/Unexpected-Null-Pointer-Exception-in-Hudson-1.131-tf4314802.html
 		String filename = (path != null ? getBaseName(path) : null);
@@ -63,7 +63,7 @@ public class JUnitExtractor extends BaseXMLExtractor {
 			extractTest(name, testcase, data);
 	}
 	
-	private void extractTest(String suite, Element testcase, BuildData data) {
+	private void extractTest(String suite, Element testcase, DataTable data) {
 		String name = testcase.getAttributeValue("name", "");
 		
 		// https://hudson.dev.java.net/issues/show_bug.cgi?id=1233 indicates that
@@ -103,7 +103,7 @@ public class JUnitExtractor extends BaseXMLExtractor {
 		data.add(1, "Unit test", language, tool, "passed", classname, name);
 	}
 	
-	private boolean extractTestType(String classname, String name, Element el, String type, BuildData data) {
+	private boolean extractTestType(String classname, String name, Element el, String type, DataTable data) {
 		if (el == null)
 			return false;
 		

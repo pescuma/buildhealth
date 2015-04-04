@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 public class DependencyCheckerExtractor extends BaseXMLExtractor {
 	
@@ -19,7 +19,7 @@ public class DependencyCheckerExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "DependencyChecker-Results");
 		
 		for (Element entry : findElementsXPath(doc, "//Entry")) {

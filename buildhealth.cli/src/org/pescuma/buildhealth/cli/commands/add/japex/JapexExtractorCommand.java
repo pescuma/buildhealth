@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.cli.commands.add.japex;
 
-import io.airlift.command.Command;
+import io.airlift.airline.Command;
 
 import org.pescuma.buildhealth.cli.BaseBuildHealthFilesCliCommand;
 import org.pescuma.buildhealth.extractor.performance.JapexExtractor;

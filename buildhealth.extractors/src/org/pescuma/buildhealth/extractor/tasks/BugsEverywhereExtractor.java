@@ -4,9 +4,9 @@ import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 // http://bugseverywhere.org/
 public class BugsEverywhereExtractor extends BaseXMLExtractor {
@@ -16,14 +16,14 @@ public class BugsEverywhereExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "be-xml");
 		
 		for (Element bug : doc.getRootElement().getChildren("bug"))
 			extractBug(data, bug);
 	}
 	
-	private void extractBug(BuildData data, Element bug) {
+	private void extractBug(DataTable data, Element bug) {
 		String id = firstNonNull(bug.getChildText("short-name"), bug.getChildText("uuid"), "");
 		String severity = firstNonNull(bug.getChildText("severity"), "");
 		String status = firstNonNull(bug.getChildText("status"), "");

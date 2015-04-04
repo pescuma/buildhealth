@@ -1,12 +1,13 @@
 package org.pescuma.buildhealth.cli.commands;
 
+import static com.google.common.base.MoreObjects.*;
 import static com.google.common.collect.Maps.*;
 import static org.pescuma.buildhealth.cli.commands.CliUtils.*;
-import io.airlift.command.Command;
-import io.airlift.command.UsagePrinter;
-import io.airlift.command.model.CommandGroupMetadata;
-import io.airlift.command.model.CommandMetadata;
-import io.airlift.command.model.GlobalMetadata;
+import io.airlift.airline.Command;
+import io.airlift.airline.UsagePrinter;
+import io.airlift.airline.model.CommandGroupMetadata;
+import io.airlift.airline.model.CommandMetadata;
+import io.airlift.airline.model.GlobalMetadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +20,6 @@ import javax.inject.Inject;
 import org.pescuma.buildhealth.cli.BuildHealthCliCommand;
 
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -81,7 +81,7 @@ public class ConsoleCommand extends BuildHealthCliCommand {
 				new Function<Entry<String, String>, Iterable<String>>() {
 					@Override
 					public Iterable<String> apply(Entry<String, String> entry) {
-						return ImmutableList.of(entry.getKey(), Objects.firstNonNull(entry.getValue(), ""));
+						return ImmutableList.of(entry.getKey(), firstNonNull(entry.getValue(), ""));
 					}
 				}));
 		

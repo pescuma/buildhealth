@@ -3,8 +3,8 @@ package org.pescuma.buildhealth.cli.commands;
 import static org.apache.commons.io.IOUtils.*;
 import static org.pescuma.buildhealth.cli.commands.CliUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.EncodingHelper.*;
-import io.airlift.command.Arguments;
-import io.airlift.command.Command;
+import io.airlift.airline.Arguments;
+import io.airlift.airline.Command;
 
 import java.io.File;
 import java.io.FileInputStream;

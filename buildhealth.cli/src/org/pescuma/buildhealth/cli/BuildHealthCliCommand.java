@@ -1,7 +1,7 @@
 package org.pescuma.buildhealth.cli;
 
-import io.airlift.command.Option;
-import io.airlift.command.OptionType;
+import io.airlift.airline.Option;
+import io.airlift.airline.OptionType;
 
 import java.io.File;
 

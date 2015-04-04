@@ -20,14 +20,14 @@ import org.pescuma.buildhealth.analyser.coverage.CoverageAnalyser;
 import org.pescuma.buildhealth.analyser.utils.BuildHealthAnalyserUtils.TreeStats;
 import org.pescuma.buildhealth.analyser.utils.NumbersFormater;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildData.Line;
-import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildHealth.ReportFlags;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.DataTable.Line;
+import org.pescuma.datatable.DataTable.Value;
 
 import com.google.common.base.Function;
 
@@ -82,7 +82,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+	public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 		boolean summaryOnly = (opts & ReportFlags.SummaryOnly) != 0;
 		
 		List<Report> result = computeFromLOC(data, projects, summaryOnly);
@@ -93,7 +93,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		return result;
 	}
 	
-	private List<Report> computeFromCoverage(BuildData data, boolean summaryOnly) {
+	private List<Report> computeFromCoverage(DataTable data, boolean summaryOnly) {
 		data = data.filter("Coverage").filter(CoverageAnalyser.COLUMN_PLACE_START, "")
 				.filter(CoverageAnalyser.COLUMN_TYPE, "line").filter(CoverageAnalyser.COLUMN_WHAT, "total");
 		if (data.isEmpty())
@@ -108,7 +108,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		
 	}
 	
-	private List<Report> computeLanguagesFromCoverage(BuildData data) {
+	private List<Report> computeLanguagesFromCoverage(DataTable data) {
 		List<Report> children = new ArrayList<Report>();
 		
 		for (Map.Entry<String, Value> language : data.sumDistinct(COLUMN_LANGUAGE).entrySet())
@@ -117,7 +117,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		return children;
 	}
 	
-	private List<Report> computeFromLOC(BuildData data, Projects projects, boolean summaryOnly) {
+	private List<Report> computeFromLOC(DataTable data, Projects projects, boolean summaryOnly) {
 		data = data.filter("LOC");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -129,7 +129,7 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 		return asList(toReport(tree.getRoot(), getName()));
 	}
 	
-	private SimpleTree<Stats> buildTree(BuildData data, Projects projects) {
+	private SimpleTree<Stats> buildTree(DataTable data, Projects projects) {
 		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
 			@Override
 			public Stats apply(String[] name) {

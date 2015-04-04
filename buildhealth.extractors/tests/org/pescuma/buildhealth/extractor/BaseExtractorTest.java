@@ -19,14 +19,14 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.data.BuildDataTable;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.MemoryDataTable;
 
 import com.google.common.io.Closer;
 
 public abstract class BaseExtractorTest {
 	
-	protected BuildDataTable table;
+	protected MemoryDataTable table;
 	protected BuildDataExtractorTracker tracker;
 	protected BuildDataComputerTracker computerTracker;
 	protected Closer closer;
@@ -34,7 +34,7 @@ public abstract class BaseExtractorTest {
 	
 	@Before
 	public void setUp() {
-		table = new BuildDataTable();
+		table = new MemoryDataTable();
 		tracker = Mockito.mock(BuildDataExtractorTracker.class);
 		closer = Closer.create();
 		
@@ -74,7 +74,7 @@ public abstract class BaseExtractorTest {
 		return new ReaderInputStream(new StringReader(str), "UTF-8");
 	}
 	
-	protected void assertTable(int size, double sum, BuildData data) {
+	protected void assertTable(int size, double sum, DataTable data) {
 		assertEquals(size, data.size());
 		assertEquals(sum, data.sum(), 0.0001);
 	}

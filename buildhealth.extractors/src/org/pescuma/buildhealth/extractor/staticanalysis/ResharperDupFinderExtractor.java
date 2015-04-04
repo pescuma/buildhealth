@@ -1,17 +1,17 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 public class ResharperDupFinderExtractor extends BaseXMLExtractor {
 	
@@ -20,7 +20,7 @@ public class ResharperDupFinderExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "DuplicatesReport");
 		
 		for (Element duplicate : findElementsXPath(doc, "//Duplicate")) {

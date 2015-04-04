@@ -9,10 +9,10 @@ import java.io.InputStream;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.extractor.BaseExtractorTest;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.unittest.JUnitExtractor;
+import org.pescuma.datatable.DataTable.Line;
 
 public class JUnitExtractorTest extends BaseExtractorTest {
 	

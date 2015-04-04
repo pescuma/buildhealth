@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.datatable.DataTable;
 
 class PlacesTracker {
 	
-	private final BuildData data;
+	private final DataTable data;
 	private final String language;
 	private final String framework;
 	private final List<String> current = new ArrayList<String>();
 	private final Set<String> added = new HashSet<String>();
 	
-	PlacesTracker(BuildData data, String language, String framework) {
+	PlacesTracker(DataTable data, String language, String framework) {
 		this.data = data;
 		this.language = language;
 		this.framework = framework;

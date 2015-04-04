@@ -17,15 +17,15 @@ import java.util.TreeMap;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildData.Line;
-import org.pescuma.buildhealth.core.BuildData.Value;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.DataTable.Line;
+import org.pescuma.datatable.DataTable.Value;
 
 import com.google.common.base.Function;
 
@@ -92,7 +92,7 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+	public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 		data = data.filter("Unit test");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -109,11 +109,11 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		return asList((Report) toReport(tree.getRoot(), getName()));
 	}
 	
-	private boolean hasProblems(BuildData data) {
+	private boolean hasProblems(DataTable data) {
 		return !data.filter(COLUMN_TYPE, TYPE_FAILED).isEmpty() || !data.filter(COLUMN_TYPE, TYPE_ERROR).isEmpty();
 	}
 	
-	private SimpleTree<Stats> toTree(BuildData data, Projects projects) {
+	private SimpleTree<Stats> toTree(DataTable data, Projects projects) {
 		SimpleTree<Stats> tree = newTree();
 		
 		for (Line line : data.getLines()) {

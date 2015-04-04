@@ -1,8 +1,8 @@
 package org.pescuma.buildhealth.cli.commands.config;
 
-import io.airlift.command.Arguments;
-import io.airlift.command.Command;
-import io.airlift.command.ParseException;
+import io.airlift.airline.Arguments;
+import io.airlift.airline.Command;
+import io.airlift.airline.ParseException;
 
 import java.util.List;
 

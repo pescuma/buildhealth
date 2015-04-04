@@ -1,9 +1,9 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
 import static org.pescuma.buildhealth.extractor.utils.StringBuilderUtils.*;
 import static org.pescuma.buildhealth.utils.ObjectUtils.*;
 import static org.pescuma.buildhealth.utils.StringHelper.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -12,10 +12,10 @@ import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.utils.Location;
+import org.pescuma.datatable.DataTable;
 
 // http://msdn.microsoft.com/en-us/library/bb429476%28v=vs.80%29.aspx
 public class FxCopExtractor extends BaseXMLExtractor {
@@ -27,7 +27,7 @@ public class FxCopExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "FxCopReport");
 		
 		Map<String, Rule> rules = findRules(doc);
@@ -35,7 +35,7 @@ public class FxCopExtractor extends BaseXMLExtractor {
 		processChildren(data, doc.getRootElement(), "", rules);
 	}
 	
-	private void processChildren(BuildData data, Element el, String target, Map<String, Rule> rules) {
+	private void processChildren(DataTable data, Element el, String target, Map<String, Rule> rules) {
 		extractMessages(data, el, target, rules);
 		
 		processChildren(data, el, "Target", "", rules);
@@ -47,7 +47,7 @@ public class FxCopExtractor extends BaseXMLExtractor {
 		processChildren(data, el, "Accessor", target + " ", rules);
 	}
 	
-	private void processChildren(BuildData data, Element el, String childName, String target, Map<String, Rule> rules) {
+	private void processChildren(DataTable data, Element el, String childName, String target, Map<String, Rule> rules) {
 		Element group = el.getChild(childName + "s");
 		if (group == null)
 			return;
@@ -56,7 +56,7 @@ public class FxCopExtractor extends BaseXMLExtractor {
 			processChildren(data, child, target + child.getAttributeValue("Name", ""), rules);
 	}
 	
-	private void extractMessages(BuildData data, Element el, String target, Map<String, Rule> rules) {
+	private void extractMessages(DataTable data, Element el, String target, Map<String, Rule> rules) {
 		Element messages = el.getChild("Messages");
 		if (messages == null)
 			return;

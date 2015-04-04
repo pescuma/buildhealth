@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.pescuma.buildhealth.core.BuildData;
 import org.pescuma.buildhealth.extractor.BaseXMLExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
+import org.pescuma.datatable.DataTable;
 
 // http://msdn.microsoft.com/en-us/library/ms182486.aspx
 public class MSTestExtractor extends BaseXMLExtractor {
@@ -27,7 +27,7 @@ public class MSTestExtractor extends BaseXMLExtractor {
 	}
 	
 	@Override
-	protected void extractDocument(String path, Document doc, BuildData data) {
+	protected void extractDocument(String path, Document doc, DataTable data) {
 		checkRoot(doc, path, "TestRun");
 		removeNamespace(doc, "http://microsoft.com/schemas/VisualStudio/TeamTest/2010", path);
 		
@@ -67,7 +67,7 @@ public class MSTestExtractor extends BaseXMLExtractor {
 		return result;
 	}
 	
-	private void processTestResult(BuildData data, Map<String, UnitTest> tests, Element el) {
+	private void processTestResult(DataTable data, Map<String, UnitTest> tests, Element el) {
 		String id = el.getAttributeValue("testId", "");
 		String codeBase = "";
 		String className = "";

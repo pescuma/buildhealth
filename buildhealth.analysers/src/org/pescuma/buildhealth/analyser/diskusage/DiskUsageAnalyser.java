@@ -14,13 +14,13 @@ import java.util.List;
 import org.kohsuke.MetaInfServices;
 import org.pescuma.buildhealth.analyser.BuildHealthAnalyser;
 import org.pescuma.buildhealth.analyser.utils.SimpleTree;
-import org.pescuma.buildhealth.core.BuildData;
-import org.pescuma.buildhealth.core.BuildData.Line;
 import org.pescuma.buildhealth.core.BuildStatus;
 import org.pescuma.buildhealth.core.Report;
 import org.pescuma.buildhealth.core.prefs.BuildHealthPreference;
 import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
+import org.pescuma.datatable.DataTable;
+import org.pescuma.datatable.DataTable.Line;
 
 import com.google.common.base.Function;
 
@@ -68,7 +68,7 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 	}
 	
 	@Override
-	public List<Report> computeReport(BuildData data, Projects projects, Preferences prefs, int opts) {
+	public List<Report> computeReport(DataTable data, Projects projects, Preferences prefs, int opts) {
 		data = data.filter("Disk usage");
 		if (data.isEmpty())
 			return Collections.emptyList();
@@ -94,12 +94,12 @@ public class DiskUsageAnalyser implements BuildHealthAnalyser {
 		return asList(toReport(tree.getRoot(), getName()));
 	}
 	
-	private boolean hasTags(BuildData data) {
+	private boolean hasTags(DataTable data) {
 		Collection<String> tags = data.getDistinct(COLUMN_TAG);
 		return tags.size() > 1 || !tags.iterator().next().isEmpty();
 	}
 	
-	private SimpleTree<Stats> buildTree(BuildData data, boolean useTags) {
+	private SimpleTree<Stats> buildTree(DataTable data, boolean useTags) {
 		SimpleTree<Stats> tree = new SimpleTree<Stats>(new Function<String[], Stats>() {
 			@Override
 			public Stats apply(String[] name) {

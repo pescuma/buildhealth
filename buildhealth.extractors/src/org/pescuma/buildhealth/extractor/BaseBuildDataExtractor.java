@@ -13,7 +13,7 @@ import java.io.Reader;
 import java.util.Collection;
 
 import org.apache.commons.lang.Validate;
-import org.pescuma.buildhealth.core.BuildData;
+import org.pescuma.datatable.DataTable;
 
 public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	
@@ -28,7 +28,7 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 	}
 	
 	@Override
-	public void extractTo(BuildData data, BuildDataExtractorTracker tracker) {
+	public void extractTo(DataTable data, BuildDataExtractorTracker tracker) {
 		
 		if (files.isStream()) {
 			try {
@@ -58,7 +58,7 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractFile(File file, BuildData data) throws IOException {
+	private void extractFile(File file, DataTable data) throws IOException {
 		InputStream input = new FileInputStream(file);
 		try {
 			extract(getCanonicalPath(file), input, data);
@@ -67,14 +67,14 @@ public abstract class BaseBuildDataExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractStream(String path, InputStream input, BuildData data) throws IOException {
+	private void extractStream(String path, InputStream input, DataTable data) throws IOException {
 		extract(path, input, data);
 	}
 	
-	protected void extract(String path, InputStream input, BuildData data) throws IOException {
+	protected void extract(String path, InputStream input, DataTable data) throws IOException {
 		extract(path, toReader(input), data);
 	}
 	
-	protected abstract void extract(String path, Reader input, BuildData data) throws IOException;
+	protected abstract void extract(String path, Reader input, DataTable data) throws IOException;
 	
 }

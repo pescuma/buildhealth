@@ -36,5 +36,7 @@
 	<classpathentry kind="lib" path="lib/auto/compile/commons-codec-1.7-jar.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/commons-lang-2.6-jar.jar" sourcepath="lib/auto/compile/commons-lang-2.6-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/icu4j-52.1-jar.jar" sourcepath="lib/auto/compile/icu4j-52.1-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/datatable-0.1-jar.jar" sourcepath="lib/auto/compile/datatable-0.1-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/programming-language-detector-0.2-jar.jar" sourcepath="lib/auto/compile/programming-language-detector-0.2-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

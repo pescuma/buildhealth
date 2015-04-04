@@ -2,7 +2,8 @@ package org.pescuma.buildhealth.computer.tasks;
 
 import static org.apache.commons.io.IOUtils.*;
 import static org.pescuma.buildhealth.extractor.utils.EncodingHelper.*;
-import static org.pescuma.buildhealth.extractor.utils.FilenameToLanguage.*;
+import static org.pescuma.buildhealth.utils.StringHelper.*;
+import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -119,8 +120,8 @@ public class CodeTasksComputer implements BuildDataComputer {
 				SimpleExecutor exec = new SimpleExecutor();
 				
 				for (final File file : files.getFilesByExtension()) {
-					final String language = detectLanguage(file.getPath(), false);
-					if (language.isEmpty())
+					final String language = detectLanguage(file.getPath());
+					if (language == null)
 						continue;
 					
 					exec.submit(new Runnable() {
@@ -166,7 +167,7 @@ public class CodeTasksComputer implements BuildDataComputer {
 	
 	private void extractLines(String filename, String language, CSVWriter out, List<String> lines) {
 		if (language == null)
-			language = detectLanguage(filename);
+			language = firstNonEmpty(detectLanguage(filename), "");
 		
 		int lineNum = 0;
 		for (String line : lines) {
