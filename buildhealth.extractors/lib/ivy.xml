@@ -30,7 +30,7 @@
 		<dependency org="net.sourceforge.saxon" name="saxon" rev="9.1.0.8" />
 		<dependency org="com.google.guava" name="guava" rev="18.0" />
 		<dependency org="commons-io" name="commons-io" rev="2.4" />
-		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.1" />
+		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" />
 		<dependency org="org.jsoup" name="jsoup" rev="1.8.1" />
 		<dependency org="org.kohsuke" name="github-api" rev="1.66" />
 		<dependency org="com.ibm.icu" name="icu4j" rev="55.1" />

@@ -22,7 +22,7 @@
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.5.2" />
 		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-xml" rev="2.5.2" />
 		<dependency org="org.codehaus.woodstox" name="woodstox-core-asl" rev="4.4.1" />
-		<dependency org="commons-io" name="commons-io" rev="2.2" />
+		<dependency org="commons-io" name="commons-io" rev="2.4" />
 
 		<dependency org="junit" name="junit" rev="4.12" conf="compile" />
 

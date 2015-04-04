@@ -21,6 +21,6 @@
 	<classpathentry kind="lib" path="lib/auto/compile/junit-4.12-jar.jar" sourcepath="lib/auto/compile/junit-4.12-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/stax2-api-3.1.4-bundle.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/woodstox-core-asl-4.4.1-jar.jar" sourcepath="lib/auto/compile/woodstox-core-asl-4.4.1-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-io-2.2-jar.jar" sourcepath="lib/auto/compile/commons-io-2.2-source.jar"/>
+	<classpathentry kind="lib" path="lib/auto/compile/commons-io-2.4-jar.jar" sourcepath="lib/auto/compile/commons-io-2.4-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
