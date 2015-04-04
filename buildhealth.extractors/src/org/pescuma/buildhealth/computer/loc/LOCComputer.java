@@ -5,17 +5,11 @@ import static org.pescuma.buildhealth.utils.FileHelper.*;
 import static org.pescuma.programminglanguagedetector.FilenameToLanguage.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang.Validate;
 import org.pescuma.buildhealth.computer.BuildDataComputer;
 import org.pescuma.buildhealth.computer.BuildDataComputerException;
@@ -23,8 +17,15 @@ import org.pescuma.buildhealth.computer.BuildDataComputerTracker;
 import org.pescuma.buildhealth.extractor.BuildDataExtractor;
 import org.pescuma.buildhealth.extractor.PseudoFiles;
 import org.pescuma.buildhealth.extractor.loc.CLOCExtractor;
-import org.pescuma.buildhealth.extractor.utils.MapReduceExecutor;
+import org.pescuma.buildhealth.extractor.utils.SimpleExecutor;
+import org.pescuma.buildhealth.utils.CSV;
 import org.pescuma.buildhealth.utils.FileHelper;
+import org.pescuma.programminglanguagedetector.SimpleFileParser;
+import org.pescuma.programminglanguagedetector.SimpleFileParser.LineCount;
+
+import au.com.bytecode.opencsv.CSVWriter;
+
+import com.google.common.io.Closer;
 
 public class LOCComputer implements BuildDataComputer {
 	
@@ -34,144 +35,95 @@ public class LOCComputer implements BuildDataComputer {
 		this.files = files;
 	}
 	
+	private static class Line {
+		File file;
+		String language;
+		int empty;
+		int comment;
+		int code;
+		
+		public Line(File file, String language) {
+			super();
+			this.file = file;
+			this.language = language;
+		}
+	}
+	
 	@Override
 	public BuildDataExtractor compute(final File folder, final BuildDataComputerTracker tracker) {
 		Validate.isTrue(!files.isStream());
 		
-		File clocTmp = null;
+		List<Line> allFiles = findFilesToProcess();
+		
+		SimpleExecutor exec = new SimpleExecutor();
+		
+		for (final Line file : allFiles) {
+			exec.submit(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						
+						LineCount lines = SimpleFileParser.countLines(file.file);
+						file.code = lines.codeLines;
+						file.comment = lines.commentLines;
+						file.empty = lines.emptyLines;
+						
+					} catch (IOException e) {
+						tracker.onErrorProcessingFile(file.file, e);
+					}
+				}
+			});
+		}
+		
 		try {
-			
-			final File cloc = extractCLOCToTmp();
-			clocTmp = cloc;
-			
-			List<String> allFiles = findFilesToProcess();
-			
-			Collection<File> clocFiles = MapReduceExecutor.submit(allFiles, 500,
-					new MapReduceExecutor.Func<String, File>() {
-						@Override
-						public File process(Collection<String> files) throws Exception {
-							boolean success = false;
-							File out = null;
-							File fileList = null;
-							try {
-								
-								fileList = File.createTempFile("cloc.flielist.", ".txt");
-								FileUtils.writeLines(fileList, files);
-								
-								out = FileHelper.createUniquiFileName(folder, "cloc-", ".csv");
-								
-								if (cloc.getName().endsWith(".pl"))
-									exec("perl", toPath(cloc), "--by-file", "--csv", "--skip-uniqueness",
-											"--list-file=" + toPath(fileList), "--out=" + toPath(out),
-											"--progress-rate=0");
-								else
-									exec(toPath(cloc), "--by-file", "--csv", "--skip-uniqueness", "--list-file="
-											+ toPath(fileList), "--out=" + toPath(out), "--progress-rate=0");
-								
-								tracker.onFileOutputCreated(out);
-								success = true;
-								
-								return out;
-								
-							} catch (IOException e) {
-								tracker.onErrorProcessingFile(out, e);
-								
-								return null;
-								
-							} finally {
-								deleteFile(fileList);
-								
-								if (!success)
-									deleteFile(out);
-							}
-						}
-					});
-			
-			return new CLOCExtractor(new PseudoFiles(clocFiles));
-			
-		} catch (IOException e) {
-			throw new BuildDataComputerException(e);
+			exec.awaitTermination();
 		} catch (InterruptedException e) {
 			throw new BuildDataComputerException(e);
-		} finally {
-			deleteFile(clocTmp);
-		}
-	}
-	
-	private String toPath(File file) {
-		return getCanonicalFile(file).getPath();
-	}
-	
-	private void exec(String... args) throws IOException, InterruptedException {
-		Process process = Runtime.getRuntime().exec(args);
-		
-		int result = process.waitFor();
-		if (result != 0)
-			throw new IOException("Process returned: " + result);
-	}
-	
-	private List<String> findFilesToProcess() {
-		List<String> result = new ArrayList<String>();
-		
-		for (File file : files.getFilesByExtension()) {
-			if (!isKnownFileType(file.getPath()))
-				continue;
-			
-			result.add(toPath(file));
 		}
 		
-		return result;
-	}
-	
-	private File extractCLOCToTmp() throws IOException {
-		File result = null;
-		ZipInputStream in = null;
-		FileOutputStream out = null;
 		boolean success = false;
+		Closer closer = Closer.create();
+		File out = null;
 		try {
 			
-			String type = (SystemUtils.IS_OS_WINDOWS ? ".exe" : ".pl");
+			out = FileHelper.createUniquiFileName(folder, "cloc-", ".csv");
 			
-			result = File.createTempFile("cloc.", type);
+			CSVWriter csv = closer.register(CSV.newWriter(closer.register(new FileWriter(out))));
 			
-			in = new ZipInputStream(load("cloc.zip"));
-			if (!findEntryByExtension(in, type))
-				throw new IOException("No files inside zip");
+			csv.writeNext(new String[] { "language", "filename", "blank", "comment", "code" });
 			
-			out = new FileOutputStream(result);
-			
-			copy(in, out);
+			for (Line file : allFiles)
+				csv.writeNext(new String[] { file.language, file.file.getAbsolutePath(), Integer.toString(file.empty),
+						Integer.toString(file.comment), Integer.toString(file.code) });
 			
 			success = true;
-			return result;
+			tracker.onFileOutputCreated(out);
+			
+		} catch (IOException e) {
+			tracker.onErrorProcessingFile(out, e);
+			
+			return null;
 			
 		} finally {
-			closeQuietly(in);
-			closeQuietly(out);
-			
 			if (!success)
-				deleteFile(result);
+				deleteFile(out);
+			
+			closeQuietly(closer);
 		}
+		
+		return new CLOCExtractor(new PseudoFiles(out));
 	}
 	
-	private boolean findEntryByExtension(ZipInputStream zip, String extension) throws IOException {
-		ZipEntry entry;
-		do {
-			entry = zip.getNextEntry();
-			if (entry != null && entry.getName().endsWith(extension))
-				return true;
-		} while (entry != null);
+	private List<Line> findFilesToProcess() {
+		List<Line> result = new ArrayList<Line>();
 		
-		return false;
-	}
-	
-	protected InputStream load(String filename) throws IOException {
-		Class<?> cls = getClass();
-		
-		InputStream result = cls.getClassLoader().getResourceAsStream(
-				cls.getPackage().getName().replace('.', '/') + "/" + filename);
-		if (result == null)
-			throw new IOException("Could not read " + filename);
+		for (File file : files.getFilesByExtension()) {
+			String language = detectLanguage(file);
+			if (language == null)
+				continue;
+			
+			result.add(new Line(file, language));
+		}
 		
 		return result;
 	}

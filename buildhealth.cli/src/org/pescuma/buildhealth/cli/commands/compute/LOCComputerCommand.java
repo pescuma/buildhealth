@@ -5,7 +5,7 @@ import io.airlift.airline.Command;
 import org.pescuma.buildhealth.cli.BaseBuildHealthFilesCliCommand;
 import org.pescuma.buildhealth.computer.loc.LOCComputer;
 
-@Command(name = "loc", description = "Compute lines of code, using cloc")
+@Command(name = "loc", description = "Compute lines of code")
 public class LOCComputerCommand extends BaseBuildHealthFilesCliCommand {
 	
 	@Override

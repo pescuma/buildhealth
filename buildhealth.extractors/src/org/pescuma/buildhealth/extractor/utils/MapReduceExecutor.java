@@ -39,4 +39,5 @@ public class MapReduceExecutor {
 	public static interface Func<I, O> {
 		O process(Collection<I> in) throws Exception;
 	}
+	
 }
