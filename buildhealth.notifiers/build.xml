@@ -1,6 +1,5 @@
 <project name="buildhealth.notifiers" default="all">
 
-	<property name="project" value="buildhealth.notifiers" />
 	<property name="project.deps" value="buildhealth.core" />
 	<property name="ivy.publish.root" value="https://api.bintray.com/maven/pescuma/buildhealth/buildhealth" />
 

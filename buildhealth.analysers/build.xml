@@ -1,6 +1,5 @@
 <project name="buildhealth.analysers" default="all">
 
-	<property name="project" value="buildhealth.analysers" />
 	<property name="project.deps" value="buildhealth.core" />
 	<property name="ivy.publish.root" value="https://api.bintray.com/maven/pescuma/buildhealth/buildhealth" />
 
