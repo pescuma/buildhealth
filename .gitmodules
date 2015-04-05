@@ -1,0 +1,3 @@
+[submodule "buildhealth.build/build"]
+	path = buildhealth.build/build
+	url = https://github.com/pescuma/java-build-utils.git
