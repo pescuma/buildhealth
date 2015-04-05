@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.coverage;
 
-import static com.google.common.base.Objects.*;
+import static com.google.common.base.MoreObjects.*;
 import static com.google.common.base.Strings.*;
 
 import org.apache.commons.lang.ArrayUtils;

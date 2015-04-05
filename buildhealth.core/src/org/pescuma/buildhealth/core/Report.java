@@ -1,11 +1,11 @@
 package org.pescuma.buildhealth.core;
 
+import static com.google.common.base.MoreObjects.*;
 import static java.util.Arrays.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 public class Report {
@@ -40,7 +40,7 @@ public class Report {
 		this.status = status;
 		this.name = name;
 		this.value = value;
-		this.description = Objects.firstNonNull(description, "");
+		this.description = firstNonNull(description, "");
 		this.problemDescription = problemDescription;
 		
 		List<Report> list = new ArrayList<Report>();

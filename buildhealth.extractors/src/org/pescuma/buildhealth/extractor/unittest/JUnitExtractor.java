@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.unittest;
 
-import static com.google.common.base.Objects.*;
+import static com.google.common.base.MoreObjects.*;
 import static org.apache.commons.io.FilenameUtils.*;
 
 import java.text.DecimalFormat;

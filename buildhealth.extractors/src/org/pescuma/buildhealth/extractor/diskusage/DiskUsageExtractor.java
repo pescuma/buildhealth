@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.diskusage;
 
-import static com.google.common.base.Objects.*;
+import static com.google.common.base.MoreObjects.*;
 
 import java.io.File;
 import java.io.IOException;

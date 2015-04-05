@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor.staticanalysis;
 
-import static com.google.common.base.Objects.*;
+import static com.google.common.base.MoreObjects.*;
 import static org.pescuma.buildhealth.utils.FileHelper.*;
 
 import java.io.File;

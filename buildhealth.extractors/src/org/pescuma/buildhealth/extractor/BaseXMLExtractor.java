@@ -1,6 +1,6 @@
 package org.pescuma.buildhealth.extractor;
 
-import static com.google.common.base.Objects.*;
+import static com.google.common.base.MoreObjects.*;
 
 import java.io.IOException;
 import java.io.InputStream;
