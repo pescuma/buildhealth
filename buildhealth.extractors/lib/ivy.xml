@@ -2,9 +2,9 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.extractors" />
 
-	<configurations defaultconfmapping="compile->default,sources;runtime->default;sources->sources">
+	<configurations defaultconfmapping="compile->default,sources;default->default;sources->sources">
 		<conf name="compile" visibility="private" />
-		<conf name="runtime" />
+		<conf name="default" />
 		<conf name="sources" />
 	</configurations>
 

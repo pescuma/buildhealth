@@ -2,11 +2,11 @@
 
 	<property name="projs"
 	          value="buildhealth.core,buildhealth.extractors,buildhealth.analysers,buildhealth.notifiers,buildhealth.cli,buildhealth.ant" />
-	<property name="version" value="0.3" />
+	<property name="version" value="0.4" />
 
 	<property name="tools.lib.dir" location="${basedir}/build/lib" />
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
-	<taskdef resource="proguard/ant/task.properties" classpath="${tools.lib.dir}/proguard-4.11.jar" />
+	<taskdef resource="proguard/ant/task.properties" classpath="${tools.lib.dir}/proguard-5.2.1.jar" />
 	<taskdef resource="org/pescuma/mergeservices/antlib.xml" classpath="${tools.lib.dir}/merge-services.jar" />
 
 	<property name="build.dir" value="${basedir}/build/results" />
@@ -17,6 +17,17 @@
 		<delete dir="${build.dir}" quiet="true" />
 
 		<antcall target="webclient.pack" />
+
+		<for list="${projs}" param="proj">
+			<sequential>
+				<echo>Calling all,ivy-publish-local in @{proj}</echo>
+				<ant antfile="../@{proj}/build.xml" inheritall="false">
+					<property name="version" value="${version}" />
+					<target name="all" />
+					<target name="ivy-publish-local" />
+				</ant>
+			</sequential>
+		</for>
 
 		<antcall target="call-in-projs">
 			<param name="target" value="all,ivy-publish-local" />
