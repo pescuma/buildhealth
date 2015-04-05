@@ -3,40 +3,14 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/auto/compile/guava-14.0-bundle.jar" sourcepath="lib/auto/compile/guava-14.0-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jdom2-2.0.4-jar.jar" sourcepath="lib/auto/compile/jdom2-2.0.4-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jaxen-1.1.4-jar.jar" sourcepath="lib/auto/compile/jaxen-1.1.4-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/dtkit-default-junit-0.14-jar.jar" sourcepath="lib/auto/compile/dtkit-default-junit-0.14-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/dtkit-junit-model-0.12-jar.jar" sourcepath="lib/auto/compile/dtkit-junit-model-0.12-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/dtkit-metrics-model-0.11-jar.jar" sourcepath="lib/auto/compile/dtkit-metrics-model-0.11-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/dtkit-metrics-util-0.11-jar.jar" sourcepath="lib/auto/compile/dtkit-metrics-util-0.11-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/dtkit-processor-0.1-jar.jar" sourcepath="lib/auto/compile/dtkit-processor-0.1-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/dtkit-tusar-model-0.11-jar.jar" sourcepath="lib/auto/compile/dtkit-tusar-model-0.11-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jaxb-impl-2.2.1.1-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/mockito-all-1.9.5-jar.jar" sourcepath="lib/auto/compile/mockito-all-1.9.5-source.jar"/>
 	<classpathentry kind="lib" path="lib/saxon/saxon9-s9api.jar"/>
 	<classpathentry kind="lib" path="lib/saxon/saxon9.jar"/>
 	<classpathentry kind="lib" path="lib/saxon/saxon9-dom.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/opencsv-2.3-jar.jar" sourcepath="lib/auto/compile/opencsv-2.3-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jsoup-1.7.2-jar.jar" sourcepath="lib/auto/compile/jsoup-1.7.2-source.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-io-2.2-jar.jar" sourcepath="lib/auto/compile/commons-io-2.2-source.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/buildhealth.core"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jackson-annotations-2.2.3-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jackson-core-2.2.3-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/jackson-databind-2.2.3-jar.jar" sourcepath="lib/auto/compile/jackson-databind-2.2.3-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/hamcrest-core-1.3-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/junit-4.11-jar.jar" sourcepath="lib/auto/compile/junit-4.11-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/github-api-1.49-jar.jar" sourcepath="lib/auto/compile/github-api-1.49-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/warnings-4.38-jar.jar" sourcepath="lib/auto/compile/warnings-4.38-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-codec-1.7-jar.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/commons-lang-2.6-jar.jar" sourcepath="lib/auto/compile/commons-lang-2.6-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/icu4j-52.1-jar.jar" sourcepath="lib/auto/compile/icu4j-52.1-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/datatable-0.1-jar.jar" sourcepath="lib/auto/compile/datatable-0.1-source.jar"/>
-	<classpathentry kind="lib" path="lib/auto/compile/programming-language-detector-0.2-jar.jar" sourcepath="lib/auto/compile/programming-language-detector-0.2-source.jar"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=buildhealth.extractors&amp;ivyXmlPath=lib%2Fivy.xml&amp;confs=compile&amp;ivySettingsPath=%24%7Bworkspace_loc%3Abuildhealth.build%2Fbuild%2Fivysettings.xml%7D&amp;loadSettingsOnDemand=false&amp;ivyUserDir=&amp;propertyFiles="/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

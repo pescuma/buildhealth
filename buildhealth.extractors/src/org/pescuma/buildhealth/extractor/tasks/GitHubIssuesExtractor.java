@@ -10,6 +10,7 @@ import java.util.TimeZone;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
@@ -56,7 +57,7 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private void extractIssues(DataTable data, List<GHIssue> issues) {
+	private void extractIssues(DataTable data, List<GHIssue> issues) throws IOException {
 		for (GHIssue issue : issues) {
 			data.add(1, "Tasks", "GitHub", toLabels(issue.getLabels()), toState(issue.getState()), issue.getTitle(),
 					toName(issue.getAssignee()), toName(issue.getUser()), toDate(issue.getCreatedAt()),
@@ -65,10 +66,10 @@ public class GitHubIssuesExtractor implements BuildDataExtractor {
 		}
 	}
 	
-	private String toLabels(Collection<GHIssue.Label> labels) {
+	private String toLabels(Collection<GHLabel> collection) {
 		StringBuilder result = new StringBuilder();
 		
-		for (GHIssue.Label label : labels) {
+		for (GHLabel label : collection) {
 			if (result.length() > 0)
 				result.append(", ");
 			result.append(label.getName());

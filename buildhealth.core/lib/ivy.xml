@@ -2,15 +2,16 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.core" />
 
-	<configurations defaultconfmapping="compile->default,sources;runtime->default">
-		<conf name="compile" />
+	<configurations defaultconfmapping="compile->default,sources;runtime->default;sources->sources">
+		<conf name="compile" visibility="private" />
 		<conf name="runtime" />
+		<conf name="sources" />
 	</configurations>
 
 	<publications>
 		<artifact name="buildhealth.core" type="jar" />
 		<artifact name="buildhealth.core" type="pom" />
-		<artifact name="buildhealth.core" type="jar" e:classifier="sources" />
+		<artifact name="buildhealth.core" type="sources" ext="jar" e:classifier="sources" />
 	</publications>
 
 	<dependencies>

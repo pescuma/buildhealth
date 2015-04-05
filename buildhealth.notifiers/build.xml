@@ -2,8 +2,8 @@
 
 	<property name="project" value="buildhealth.notifiers" />
 	<property name="project.deps" value="buildhealth.core" />
+	<property name="ivy.publish.root" value="https://api.bintray.com/maven/pescuma/buildhealth/buildhealth" />
 
-	<import file="../buildhealth.build/ivy.xml" />
-	<import file="../buildhealth.build/project.xml" />
+	<import file="../buildhealth.build/build/build.xml" />
 
 </project>

@@ -2,18 +2,24 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.ant" />
 
-	<configurations defaultconfmapping="compile->default,sources;runtime->default">
-		<conf name="compile" />
+	<configurations defaultconfmapping="compile->default,sources;runtime->default;sources->sources">
+		<conf name="compile" visibility="private" />
 		<conf name="runtime" />
+		<conf name="sources" />
 	</configurations>
-
+	
 	<publications>
 		<artifact name="buildhealth.ant" type="jar" />
 		<artifact name="buildhealth.ant" type="pom" />
-		<artifact name="buildhealth.ant" type="jar" e:classifier="sources" />
+		<artifact name="buildhealth.ant" type="sources" ext="jar" e:classifier="sources" />
 	</publications>
 
 	<dependencies>
+		<dependency org="org.pescuma" name="buildhealth.core" rev="${version}" />
+		<dependency org="org.pescuma" name="buildhealth.extractors" rev="${version}" />
+		<dependency org="org.pescuma" name="buildhealth.analysers" rev="${version}" />
+		<dependency org="org.pescuma" name="buildhealth.notifiers" rev="${version}" />
+
 		<dependency org="org.apache.ant" name="ant" rev="1.7.0" conf="compile" />
 		<dependency org="junit" name="junit" rev="4.12" conf="compile" />
 	</dependencies>

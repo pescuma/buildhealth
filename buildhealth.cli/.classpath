@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/auto/compile/stax2-api-3.1.4-bundle.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/woodstox-core-asl-4.4.1-jar.jar" sourcepath="lib/auto/compile/woodstox-core-asl-4.4.1-source.jar"/>
 	<classpathentry kind="lib" path="lib/auto/compile/commons-io-2.4-jar.jar" sourcepath="lib/auto/compile/commons-io-2.4-source.jar"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=buildhealth.cli&amp;ivyXmlPath=lib%2Fivy.xml&amp;confs=compile&amp;ivySettingsPath=%24%7Bworkspace_loc%3Abuildhealth.build%2Fbuild%2Fivysettings.xml%7D&amp;loadSettingsOnDemand=false&amp;ivyUserDir=&amp;propertyFiles="/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

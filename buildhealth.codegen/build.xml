@@ -1,6 +1,5 @@
 <project name="buildhealth.codegen" default="deps">
 
-	<import file="../buildhealth.build/ivy.xml" />
-	<import file="../buildhealth.build/project.xml" />
+	<import file="../buildhealth.build/build/build.xml" />
 
 </project>

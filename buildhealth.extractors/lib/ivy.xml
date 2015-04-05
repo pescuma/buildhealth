@@ -2,18 +2,21 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.extractors" />
 
-	<configurations defaultconfmapping="compile->default,sources;runtime->default">
-		<conf name="compile" />
+	<configurations defaultconfmapping="compile->default,sources;runtime->default;sources->sources">
+		<conf name="compile" visibility="private" />
 		<conf name="runtime" />
+		<conf name="sources" />
 	</configurations>
 
 	<publications>
 		<artifact name="buildhealth.extractors" type="jar" />
 		<artifact name="buildhealth.extractors" type="pom" />
-		<artifact name="buildhealth.extractors" type="jar" e:classifier="sources" />
+		<artifact name="buildhealth.extractors" type="sources" ext="jar" e:classifier="sources" />
 	</publications>
 
 	<dependencies>
+		<dependency org="org.pescuma" name="buildhealth.core" rev="${version}" />
+
 		<dependency org="org.pescuma" name="datatable" rev="0.1" />
 		<dependency org="org.pescuma" name="programming-language-detector" rev="0.2" />
 
@@ -23,7 +26,9 @@
 		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-metrics-util" rev="0.11" />
 		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-tusar-model" rev="0.11" />
 		<dependency org="org.jvnet.hudson.dtkit" name="dtkit-processor" rev="0.1" />
-		<dependency org="org.jvnet.hudson.plugins" name="warnings" rev="4.42" transitive="false" />
+		<dependency org="org.jvnet.hudson.plugins" name="warnings" rev="4.42" transitive="false">
+			<artifact name="warnings" type="hpi" ext="jar" />
+		</dependency>
 		<dependency org="net.sf.opencsv" name="opencsv" rev="2.3" />
 		<dependency org="org.jdom" name="jdom2" rev="2.0.6" />
 		<dependency org="jaxen" name="jaxen" rev="1.1.4" />
