@@ -2,16 +2,15 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.notifiers" />
 
-	<configurations defaultconfmapping="compile->default,sources;default->default;sources->sources">
+	<configurations defaultconfmapping="compile->default;default->default">
 		<conf name="compile" visibility="private" />
 		<conf name="default" />
-		<conf name="sources" />
 	</configurations>
 	
 	<publications>
 		<artifact name="buildhealth.notifiers" type="jar" />
 		<artifact name="buildhealth.notifiers" type="pom" />
-		<artifact name="buildhealth.notifiers" type="sources" ext="jar" e:classifier="sources" />
+		<artifact name="buildhealth.notifiers" type="source" ext="jar" e:classifier="source" />
 	</publications>
 
 	<dependencies>

@@ -2,16 +2,15 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.pescuma" module="buildhealth.analysers" />
 
-	<configurations defaultconfmapping="compile->default,sources;default->default;sources->sources">
+	<configurations defaultconfmapping="compile->default;default->default">
 		<conf name="compile" visibility="private" />
 		<conf name="default" />
-		<conf name="sources" />
 	</configurations>
 
 	<publications>
 		<artifact name="buildhealth.analysers" type="jar" />
 		<artifact name="buildhealth.analysers" type="pom" />
-		<artifact name="buildhealth.analysers" type="sources" ext="jar" e:classifier="sources" />
+		<artifact name="buildhealth.analysers" type="source" ext="jar" e:classifier="source" />
 	</publications>
 
 	<dependencies>
