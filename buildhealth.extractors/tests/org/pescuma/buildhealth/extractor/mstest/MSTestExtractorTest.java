@@ -30,7 +30,7 @@ public class MSTestExtractorTest extends BaseExtractorTest {
 		assertTable(2, 2, table.filter("Unit test").filter(3, "passed"));
 		assertTable(1, 1, table.filter("Unit test").filter(3, "failed"));
 		assertTable(3, 3724.465, table.filter("Unit test").filter(3, "time"));
-		assertEquals(6, table.size(), 0.0001);
+		assertEquals(6, table.count(), 0.0001);
 		
 		Collection<Line> lines = table.filter(5, "Test1").filter(3, "passed").getLines();
 		assertEquals(1, lines.size());

@@ -75,7 +75,7 @@ public abstract class BaseExtractorTest {
 	}
 	
 	protected void assertTable(int size, double sum, DataTable data) {
-		assertEquals(size, data.size());
+		assertEquals(size, data.count());
 		assertEquals(sum, data.sum(), 0.0001);
 	}
 }

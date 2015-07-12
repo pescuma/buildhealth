@@ -25,7 +25,7 @@ public class FindBugsExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(1, table.size());
+		assertEquals(1, table.count());
 		
 		assertEquals(1, table.filter("Static analysis", "Java", "FindBugs").sum(), 0.0001);
 	}
@@ -41,7 +41,7 @@ public class FindBugsExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(2, table.size());
+		assertEquals(2, table.count());
 		assertEquals(2, table.sum(), 0.001);
 	}
 	

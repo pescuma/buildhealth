@@ -29,7 +29,7 @@ public class JUnitExtractorTest extends BaseExtractorTest {
 		
 		assertTable(6, 6, table.filter("Unit test").filter(3, "passed"));
 		assertTable(6, 0.031, table.filter("Unit test").filter(3, "time"));
-		assertEquals(12, table.size(), 0.0001);
+		assertEquals(12, table.count(), 0.0001);
 		
 		Collection<Line> lines = table.filter(5, "test1").filter(3, "passed").getLines();
 		assertEquals(1, lines.size());

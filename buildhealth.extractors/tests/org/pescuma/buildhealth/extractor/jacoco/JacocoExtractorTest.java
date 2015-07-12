@@ -25,8 +25,8 @@ public class JacocoExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(40, table.size());
-		assertEquals(40, table.filter("Coverage", "Java", "JaCoCo").size());
+		assertEquals(40, table.count());
+		assertEquals(40, table.filter("Coverage", "Java", "JaCoCo").count());
 		
 		assertEquals(0, table.get("Coverage", "Java", "JaCoCo", "type", "package", "org.pescuma.buildhealth.analyser"),
 				0.0001);

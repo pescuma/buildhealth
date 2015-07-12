@@ -26,7 +26,7 @@ public class VstestCoverageExtractorTest extends BaseExtractorTest {
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
 		assertTable(8, 13, table);
-		assertEquals(8, table.filter("Coverage", "C#", "vstest").size());
+		assertEquals(8, table.filter("Coverage", "C#", "vstest").count());
 		
 		assertEquals(0, table.get("Coverage", "C#", "vstest", "type", "library", "some.random.dll"), 0.0001);
 		assertEquals(0,

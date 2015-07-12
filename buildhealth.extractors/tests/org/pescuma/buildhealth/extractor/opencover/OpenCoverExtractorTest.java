@@ -26,8 +26,8 @@ public class OpenCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(20, table.size());
-		assertEquals(20, table.filter("Coverage", "C#", "OpenCover").size());
+		assertEquals(20, table.count());
+		assertEquals(20, table.filter("Coverage", "C#", "OpenCover").count());
 		
 		assertEquals(0, table.get("Coverage", "C#", "OpenCover", "type", "library", "MyAssembly"), 0.0001);
 		assertEquals(2, table.get("Coverage", "C#", "OpenCover", "covered", "line", "MyAssembly", "mypkg", "MyClass",

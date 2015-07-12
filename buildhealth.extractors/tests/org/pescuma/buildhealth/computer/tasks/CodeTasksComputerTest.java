@@ -36,7 +36,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(4, table.size());
+		assertEquals(4, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "tasks.java>2"),
 				0.001);
@@ -62,7 +62,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(1, table.size());
+		assertEquals(1, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "a"), 0.001);
 	}
@@ -73,7 +73,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(1, table.size());
+		assertEquals(1, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", CodeTasksComputer.NO_MESSAGE), 0.001);
 	}
@@ -84,7 +84,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(1, table.size());
+		assertEquals(1, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "Works", "", "pescuma"), 0.001);
 	}
@@ -95,7 +95,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(1, table.size());
+		assertEquals(1, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", CodeTasksComputer.NO_MESSAGE, "", "pescuma"), 0.001);
 	}
@@ -106,7 +106,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(1, table.size());
+		assertEquals(1, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "abc", "", "", "", "", "", "", "a.java>1"), 0.001);
 	}
@@ -119,7 +119,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(0, table.size());
+		assertEquals(0, table.count());
 	}
 	
 	@Test
@@ -130,7 +130,7 @@ public class CodeTasksComputerTest extends BaseExtractorTest {
 		
 		computeAndExtract(extractor);
 		
-		assertEquals(4, table.size());
+		assertEquals(4, table.count());
 		
 		assertEquals(1, table.get("Tasks", "From code", "TODO", "", "123", "", "", "", "", "", "", "c:\\a.cpp>2"),
 				0.001);

@@ -25,8 +25,8 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(11, table.size());
-		assertEquals(11, table.filter("Coverage", "C#", "dotCover").size());
+		assertEquals(11, table.count());
+		assertEquals(11, table.filter("Coverage", "C#", "dotCover").count());
 		
 		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "library", "Assembly.Name"), 0.0001);
 		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace.Name"),
@@ -53,8 +53,8 @@ public class DotCoverExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(37, table.size());
-		assertEquals(37, table.filter("Coverage", "C#", "dotCover").size());
+		assertEquals(37, table.count());
+		assertEquals(37, table.filter("Coverage", "C#", "dotCover").count());
 		
 		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "library", "Assembly.Name"), 0.0001);
 		assertEquals(0, table.get("Coverage", "C#", "dotCover", "type", "package", "Assembly.Name", "Namespace.Name"),

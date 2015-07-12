@@ -25,8 +25,8 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(8, table.size());
-		assertEquals(8, table.filter("Coverage", "Java", "Emma").size());
+		assertEquals(8, table.count());
+		assertEquals(8, table.filter("Coverage", "Java", "Emma").count());
 		
 		assertEquals(85, table.get("Coverage", "Java", "Emma", "covered", "class"), 0.0001);
 		assertEquals(85, table.get("Coverage", "Java", "Emma", "total", "class"), 0.0001);
@@ -49,8 +49,8 @@ public class EmmaExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(39, table.size());
-		assertEquals(39, table.filter("Coverage", "Java", "Emma").size());
+		assertEquals(39, table.count());
+		assertEquals(39, table.filter("Coverage", "Java", "Emma").count());
 		
 		assertEquals(0, table.get("Coverage", "Java", "Emma", "type", "package", "com.sun.tools.javac.v8.resources"),
 				0.0001);

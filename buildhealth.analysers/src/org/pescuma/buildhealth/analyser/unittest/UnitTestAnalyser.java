@@ -25,7 +25,6 @@ import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.buildhealth.utils.Location;
 import org.pescuma.datatable.DataTable;
 import org.pescuma.datatable.DataTable.Line;
-import org.pescuma.datatable.DataTable.Value;
 
 import com.google.common.base.Function;
 
@@ -265,6 +264,10 @@ public class UnitTestAnalyser implements BuildHealthAnalyser {
 		
 		return new UnitTestReport(stats.getStatus(), name, stats.getPassed(), stats.getErrors(), stats.getFailures(),
 				stats.getTime(), stats.computeDescription(), stats.getProblemDescription(), children);
+	}
+	
+	private static class Value {
+		public double value;
 	}
 	
 	private static class Stats {

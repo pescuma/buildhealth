@@ -27,7 +27,6 @@ import org.pescuma.buildhealth.prefs.Preferences;
 import org.pescuma.buildhealth.projects.Projects;
 import org.pescuma.datatable.DataTable;
 import org.pescuma.datatable.DataTable.Line;
-import org.pescuma.datatable.DataTable.Value;
 
 import com.google.common.base.Function;
 
@@ -111,8 +110,8 @@ public class LOCAnalyser implements BuildHealthAnalyser {
 	private List<Report> computeLanguagesFromCoverage(DataTable data) {
 		List<Report> children = new ArrayList<Report>();
 		
-		for (Map.Entry<String, Value> language : data.sumDistinct(COLUMN_LANGUAGE).entrySet())
-			children.add(new Report(Good, language.getKey(), format(language.getValue().value)));
+		for (Line language : data.groupBy(COLUMN_LANGUAGE).getLines())
+			children.add(new Report(Good, language.getColumn(0), format(language.getValue())));
 		
 		return children;
 	}

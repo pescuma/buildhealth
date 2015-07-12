@@ -25,8 +25,8 @@ public class DependencyCheckerExtractorTest extends BaseExtractorTest {
 		verify(tracker).onStreamProcessed();
 		verify(tracker, never()).onFileProcessed(any(File.class));
 		
-		assertEquals(3, table.size());
-		assertEquals(3, table.filter("Static analysis", "C#", "Dependency Checker").size());
+		assertEquals(3, table.count());
+		assertEquals(3, table.filter("Static analysis", "C#", "Dependency Checker").count());
 		
 		assertEquals(
 				1,
